@@ -199,9 +199,28 @@ FakesAssemblies/
 
 
 # typescript project
-*.js
-*.map
+api/*.js
+api/*.map
+api/*~.js
+api/*~.map
+
+kernel/*.js
+kernel/*.map
+kernel/~*.js
+kernel/~*.map
+
+routes/*.js
+routes/*.map
+routes/~*.js
+routes/~*.map
+
+utils/*.js
+utils/*.map
+utils/~*.js
+utils/~*.map
 
 ~*.js
 ~*.map
+
+log/
 

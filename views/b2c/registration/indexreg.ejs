@@ -1,0 +1,246 @@
+﻿<% include ../include/headcss.ejs %>
+
+
+<body id="b2creg" ng-app="b2clogin" ng-controller="userLoginController as register">
+
+    <b2c-header showlogin="true"></b2c-header>
+
+    <div class="middle" ng-if="register.css.showRegForm" >
+        <div class="b2c-container">
+            <div class="header-pics pull-left">
+                <div id="carousel-header-pics" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-header-pics" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-header-pics" data-slide-to="1"></li>
+                        <li data-target="#carousel-header-pics" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <img src="/app/css/images/b2c_reg_header_1.png">
+                        </div>
+                        <div class="item">
+                            <img src="/app/css/images/b2c_reg_header_2.png">
+                        </div>
+                        <div class="item">
+                            <img src="/app/css/images/b2c_reg_header_3.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form autocomplete="off" class="reg-form pull-left" name="regForm" novalidate ng-cloak>
+                <div class="title">{{'RegisterPageRegisterLabel' | translate}}</div>
+
+                <div class="form-group has-feedback" ng-class="{'has-success':regForm.username.$dirty&&regForm.username.$valid, 'has-error':regForm.username.$dirty&&regForm.username.$invalid}">
+                    <input ng-model-options="{ debounce: 500 }"
+                           async-validate="register.verifyUsername"
+                           class="input-lg form-control" type="text" name="username"
+                           placeholder="{{'RegisterPageUsernamePlaceholder' | translate}}"
+                           ng-model="register.newUser.username" required ng-minlength="6" ng-maxlength="20"/>
+                    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="regForm.username.$dirty&&regForm.username.$valid"></span>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" ng-if="regForm.username.$dirty&&regForm.username.$invalid"></span>
+                    <span class="err-msg" ng-if="regForm.username.$dirty&&regForm.username.$error.required">{{'RegisterPageInputNameTip' | translate}}</span>
+                    <span class="err-msg" ng-if="regForm.username.$dirty&&regForm.username.$error.minlength || regForm.username.$dirty&&regForm.username.$error.maxlength">{{'RegisterPageNameLengthTip' | translate}}!</span>
+                    <span class="err-msg" ng-if="regForm.username.$dirty&&regForm.username.$error.asyncValid">{{'RegisterPageNameExistTip' | translate}}</span>
+                </div>
+
+                <div class="form-group has-feedback" ng-class="{'has-success':regForm.email.$dirty&&regForm.email.$valid, 'has-error':regForm.email.$dirty&&regForm.email.$invalid}">
+                    <input ng-model-options="{ debounce: 500 }"
+                           async-validate="register.verifyEmail"
+                           class="input-lg form-control" type="email" name="email"
+                           placeholder="{{'RegisterPageEmailPlaceholder' | translate}}"
+                           ng-model="register.newUser.email" required/>
+                    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="regForm.email.$dirty&&regForm.email.$valid"></span>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" ng-if="regForm.email.$dirty&&regForm.email.$invalid"></span>
+                    <span class="err-msg" ng-if="regForm.email.$dirty&&regForm.email.$error.required || regForm.email.$dirty&&regForm.email.$error.email">{{'RegisterPageInputEmailTip' | translate}}</span>
+                    <span class="err-msg" ng-if="regForm.username.$dirty&&regForm.email.$error.asyncValid">{{'RegisterPageEmailExistTip' | translate}}</span>
+                </div>
+
+                <div class="form-group has-feedback" ng-class="{'has-success':regForm.password.$dirty&&regForm.password.$valid, 'has-error':regForm.password.$dirty&&regForm.password.$invalid}">
+                    <input class="input-lg form-control" type="password" name="password" placeholder="{{'RegisterPagePasswordPlaceholder' | translate}}" ng-model="register.newUser.password" required ng-minlength="6" ng-maxlength="20"/>
+                    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="regForm.password.$dirty&&regForm.password.$valid"></span>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" ng-if="regForm.password.$dirty&&regForm.password.$invalid"></span>
+                    <span class="err-msg" ng-if="regForm.password.$dirty&&regForm.password.$invalid">{{'RegisterPageInputPasswordTip' | translate}}!</span>
+                </div>
+
+                <div class="form-group has-feedback" ng-class="{'has-success':regForm.passwordreinput.$dirty&&regForm.passwordreinput.$valid, 'has-error':regForm.passwordreinput.$dirty&&regForm.passwordreinput.$invalid}">
+                    <input class="input-lg form-control" type="password" name="passwordreinput" placeholder="{{'RegisterPageReTypePasswordPlaceholder' | translate}}" ng-model="register.newUser.passwordreinput" required ng-match="register.newUser.password"/>
+                    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="regForm.passwordreinput.$dirty&&regForm.passwordreinput.$valid"></span>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" ng-if="regForm.passwordreinput.$dirty&&regForm.passwordreinput.$invalid"></span>
+                    <span class="err-msg" ng-if="regForm.passwordreinput.$dirty&&regForm.passwordreinput.$invalid">{{'RegisterPageReTypePasswordTip' | translate}}</span>
+                </div>
+
+                <div class="form-group has-feedback" ng-class="{'has-success':regForm.mobilePhone.$dirty&&regForm.mobilePhone.$valid, 'has-error':regForm.mobilePhone.$dirty&&regForm.mobilePhone.$invalid}">
+                    <input class="input-lg form-control"
+                           type="mobilePhone"
+                           name="mobilePhone"
+                           async-validate="register.verifyPhone"
+                           placeholder="{{'RegisterPageMobilePhonePlaceholder' | translate}}"
+                           ng-model-options="{ debounce: 500 }"
+                           ng-model="register.newUser.mobilePhone" required ng-minlength="11" ng-maxlength="11"/>
+
+                    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                          ng-if="regForm.mobilePhone.$dirty&&regForm.mobilePhone.$valid"></span>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                          ng-if="regForm.mobilePhone.$dirty&&regForm.mobilePhone.$invalid"></span>
+
+                    <span class="err-msg"
+                          ng-if="regForm.mobilePhone.$dirty&&regForm.mobilePhone.$error.minlength || regForm.mobilePhone.$dirty&&regForm.mobilePhone.$error.maxlength">
+                        {{'ProfilePageInvalidMobilePhoneNumber' | translate}}
+                    </span>
+                    <span class="err-msg"
+                          ng-if="regForm.mobilePhone.$dirty&&regForm.mobilePhone.$error.required || regForm.mobilePhone.$dirty&&regForm.mobilePhone.$error.email">
+                        必填
+                    </span>
+                    <span class="err-msg" ng-if="regForm.mobilePhone.$dirty&&regForm.mobilePhone.$error.asyncValid">号码已存在</span>
+                </div>
+
+                <div class="form-group has-feedback"
+                     ng-class="{'has-success':regForm.captcha.$dirty&&regForm.captcha.$valid, 'has-error':regForm.captcha.$dirty&&regForm.captcha.$invalid}">
+                    <div class="reg-captcha-input-container">
+                        <input class="input-lg form-control" type="text" name="captcha"
+                               ng-model-options="{ debounce: 500 }"
+                               placeholder="{{'RegisterPageCaptchaPlaceholder' | translate}}"
+                               ng-model="register.newUser.captcha" required ng-minlength="6" ng-maxlength="6"/>
+                        <span ng-if="regForm.captcha.$dirty&&regForm.captcha.$valid"
+                              class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                        <span ng-if="regForm.captcha.$dirty&&(regForm.captcha.$error.minlength || regForm.captcha.$error.maxlength)"
+                              class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <span class="btn btn-default reg-captcha" ng-if="!register.css.mobileVerifyCodeResend"
+                          ng-click="register.getCaptcha(regForm)"
+                          ng-disabled="regForm.mobilePhone.$invalid">{{'ProfileContactInfoMobilePhoneVerifySend' | translate}}
+                    </span>
+                    <span class="btn btn-default reg-captcha" ng-if="register.css.mobileVerifyCodeResend"
+                          ng-click="register.getCaptcha(regForm)"
+                          ng-disabled="register.css.mobileVerifyCodeTimeCounter>0">{{'ProfileContactInfoMobilePhoneVerifyReSend' | translate}}
+                        <span ng-hide="register.css.mobileVerifyCodeTimeCounter==0">{{register.css.mobileVerifyCodeTimeCounter}}</span>
+                    </span>
+                    <span class="err-msg" ng-if="regForm.captcha.$dirty&&regForm.captcha.$invalid">{{'RegisterPageInputCaptchaTip' | translate}}</span>
+                </div>
+
+                <div class="form-group">
+                    <span class="terms-link">点击注册即代表你同意我们的<a data-container="body" data-template="terms.html" bs-modal="modal" href="javascript:;">信息使用条款</a></span>
+                </div>
+                <!-- enter success template -->
+                <script type="text/ng-template" id="terms.html">
+                    <div class="terms">
+                        <button class="close" ng-click="$hide()"><span>×</span></button>
+                        <h5 class="text-center">Bridge+用户信息使用条款</h5>
+
+                        <h6>--我们收集哪些信息</h6>
+                        <p>
+                            我们收集您在使用我们的服务时提供的内容和其他信息，包括在注册帐户、填写个人信息
+                            、进行游戏、游戏结束，以及与他人发消息或交流时提供的信息。我们还收集有关您如何
+                            使用我们服务的信息，例如您查看或参与的内容类型或此类活动的频率及持续时间。
+                        </p>
+
+                        <h6>--我们如何使用这些信息</h6>
+                        <p>
+                            利用这些信息，我们能够了解您如何使用我们的服务并与之互动，从而使我们能够为您提
+                            供服务、个性化内容以及建议。<br>
+                            我们还利用这些信息对您的兴趣和能力进行评估，帮您与合适的企业进行匹配。<br>
+                            在您许可的情况下，我们有可能把您的信息推荐给企业，帮您带来职业发展机会。<br>
+                            我们使用您的信息向您发送营销信息、与您沟通我们的服务并让您了解我们的政策和条款
+                            。当您与我们联系时我们还使用您的信息给您答复。
+                        </p>
+
+                        <h6>--隐私政策</h6>
+                        <p>
+                            当您到我们网站上注册并填写个人信息的时候，您会被要求提供如您的姓名、生日、电子
+                            邮件、电话号码等等一系列信息。除非我们认为出于法律的需要，我们不会向第三方公开
+                            上述信息。但这些资料将会被我们统计、汇总进行使用，详见“我们如何使用这些信息”
+                        </p>
+                    </div>
+                </script>
+
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" ng-click="register.clickregister(regForm)" >{{'RegisterPageRegisterButton' | translate}}</button>
+                </div>
+            </form>
+    </div>
+
+    <div class="middle b2c-container" ng-if="!register.css.showRegForm" ng-cloak>
+        <div class="reg-verify-account text-justify">
+            <p class="tip-header">{{register.newUser.username}} {{'RegisterPageGreet' | translate}}</p>
+            <p>{{'RegisterPageCheckEmailText1' | translate}}</p>
+            <p>{{'RegisterPageCheckEmailText2' | translate}}<a href="{{register.newUser.email | emailaddress}}" target="_blank">{{register.newUser.email}}</a></p>
+            <p>{{'RegisterPageCheckEmailText3' | translate}} <a class="btn btn-info mk-btn-red" href="{{register.newUser.email | emailaddress}}" target="_blank">{{'RegisterPageCheckEmailText4' | translate}}</a></p>
+
+        </div>
+    </div>
+
+
+    <div class="down-box">
+        <div class="pic-area b2c-container">
+            <div class="pic pic-1">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="front"></div>
+                        <div class="back">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pic pic-2">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="front"></div>
+                        <div class="back">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pic pic-3">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="front"></div>
+                        <div class="back"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pic pic-4">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="front"></div>
+                        <div class="back"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pic pic-5">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="front"></div>
+                        <div class="back"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pic pic-6">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="front"></div>
+                        <div class="back"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="b2c-container">
+            <div  class="switch-button">
+                <a href="javascript:void(0);" class="selected">{{'RegisterPageIntroduction1' | translate}}</a>
+                <a href="javascript:void(0);">{{'RegisterPageIntroduction2' | translate}}</a>
+            </div>
+        </div>
+    </div>
+
+
+<% include ../include/footer.ejs %>
+<% include ../include/footerscriptlogin.ejs %>

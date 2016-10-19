@@ -1,0 +1,221 @@
+<% include ./include/registerheader.html %>
+<body ng-app="e4eregister">
+
+	<div id="header" class="white-header" ng-controller="registerHeaderController">
+		<div class="wrap">
+			<div class="e4e-logo">
+				<a href="#">
+					<img src="/appe4e/img/LOGO-E4E-white.png" alt="">
+				</a>
+			</div>
+			<div class="learning-logo">
+				<a href="/">
+					<img src="/appe4e/img/LOGO-HCDLEARNING-white.png" alt="">
+				</a>
+			</div>
+
+			<div class="languages">
+				<nav class="nav-header">
+					<ul>
+						<li ng-class="{'active':!isEnglish}">
+							<a href='' class="f-bold" ng-click="changeLanguage('zh_CN')">中</a>
+						</li>
+						<li ng-class="{'active':isEnglish}">
+							<a href='' class="f-bold" ng-click="changeLanguage('en_US')">EN</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div id="footer">
+		<div class="wrap">
+			<span class="col-lg-6 text-left">© HCD Learning Ltd. 沪ICP 10011451号</span>
+			<span class="col-lg-6 text-right">HCD Learning 合得软件</span>
+		</div>
+	</div>
+
+	<div id="company-register"  ng-controller="companyRegisterController">
+		<form name="companyRegisterForm" role="form">
+			<div class="section section-gray" id="section0">
+				<div>
+					<div class="register-title">
+						<h3 class="f-semibold text-center f-size-26">{{'e4eCompanyRegisterTitle' | translate }}</h3>
+					</div>
+					<div class="company-back">
+						<h4 class="f-semibold text-center f-size-20 padding-10">{{'e4eCompanyFirstPageTitle' | translate }}</h4>
+						<div class="form-horizontal">
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.userName.$dirty && companyRegisterForm.userName.$valid, 'has-error': companyRegisterForm.userName.$dirty && companyRegisterForm.userName.$invalid}">
+							    <label for="user-name" class="col-sm-3-9 control-label">{{'e4eCompanyUserName' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="user-name" name="userName" ng-model='userName' placeholder="xxxxxxx" required>
+							    	
+
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.userName.$dirty && companyRegisterForm.userName.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.userName.$dirty && companyRegisterForm.userName.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.companyName.$dirty && companyRegisterForm.companyName.$valid, 'has-error': companyRegisterForm.companyName.$dirty && companyRegisterForm.companyName.$invalid}">
+							    <label for="company-name" class="col-sm-3-9 control-label">{{'e4eCompanyCompanyName' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="company-name" name="companyName" ng-model='companyName' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.companyName.$dirty && companyRegisterForm.companyName.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.companyName.$dirty && companyRegisterForm.companyName.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.holdingCompany.$dirty && companyRegisterForm.holdingCompany.$valid, 'has-error': companyRegisterForm.holdingCompany.$dirty && companyRegisterForm.holdingCompany.$invalid}">
+							    <label for="holding-company" class="col-sm-3-9 control-label">{{'e4eCompanyHoldingCompany' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="holding-company" name='holdingCompany' ng-model='holdingCompany' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.holdingCompany.$dirty && companyRegisterForm.holdingCompany.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.holdingCompany.$dirty && companyRegisterForm.holdingCompany.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.division.$dirty && companyRegisterForm.division.$valid, 'has-error': companyRegisterForm.division.$dirty && companyRegisterForm.division.$invalid}">
+							    <label for="division" class="col-sm-3-9 control-label">{{'e4eCompanyDivision' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="division" name='division' ng-model='division' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.division.$dirty && companyRegisterForm.division.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.division.$dirty && companyRegisterForm.division.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.numberOfEmployees.$dirty && companyRegisterForm.numberOfEmployees.$valid, 'has-error': companyRegisterForm.numberOfEmployees.$dirty && companyRegisterForm.numberOfEmployees.$invalid}">
+							    <label for="number-of-e" class="col-sm-3-9 control-label">{{'e4eCompanyNumberOfEmployees' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="number-of-e" name='numberOfEmployees' ng-model='numberOfEmployees' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.numberOfEmployees.$dirty && companyRegisterForm.numberOfEmployees.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.numberOfEmployees.$dirty && companyRegisterForm.numberOfEmployees.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.compmayAddress.$dirty && companyRegisterForm.compmayAddress.$valid, 'has-error': companyRegisterForm.compmayAddress.$dirty && companyRegisterForm.compmayAddress.$invalid}">
+							    <label for="company-address" class="col-sm-3-9 control-label">{{'e4eCompmayAddress' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="company-address" name='compmayAddress' ng-model='compmayAddress' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.compmayAddress.$dirty && companyRegisterForm.compmayAddress.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.compmayAddress.$dirty && companyRegisterForm.compmayAddress.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-offset-3-9 col-sm-4-2">
+							    	<button type="text" class="btn btn-default next">{{'e4eCompanyNext' | translate }}</button>
+							    </div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="section section-gray" id="section1">
+				
+				<div>
+					<div class="register-title">
+						<h3 class="f-semibold text-center f-size-26">{{'e4eCompanyRegisterTitle' | translate }}</h3>
+					</div>
+					<div class="company-back">
+						<h4 class="f-semibold text-center f-size-20 padding-10">{{'e4eCompanyFirstPageTitle' | translate }}</h4>
+						<div class="form-horizontal">
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.nameOfContactPerson.$dirty && companyRegisterForm.nameOfContactPerson.$valid, 'has-error': companyRegisterForm.nameOfContactPerson.$dirty && companyRegisterForm.nameOfContactPerson.$invalid}">
+							    <label for="number-of-contact" class="col-sm-3-9 control-label">{{'e4eCompanyNameOfContactPerson' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="number-of-contact" name='nameOfContactPerson'
+							    	ng-model='nameOfContactPerson' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.nameOfContactPerson.$dirty && companyRegisterForm.nameOfContactPerson.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.nameOfContactPerson.$dirty && companyRegisterForm.nameOfContactPerson.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.designation.$dirty && companyRegisterForm.designation.$valid, 'has-error': companyRegisterForm.designation.$dirty && companyRegisterForm.designation.$invalid}">
+							    <label for="designation" class="col-sm-3-9 control-label">{{'e4eCompanyDesignation' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="designation" name='designation' ng-model='designation' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.designation.$dirty && companyRegisterForm.designation.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.designation.$dirty && companyRegisterForm.designation.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.officalContactNumber.$dirty && companyRegisterForm.officalContactNumber.$valid, 'has-error': companyRegisterForm.officalContactNumber.$dirty && companyRegisterForm.officalContactNumber.$invalid}">
+							    <label for="offical-contact-number" class="col-sm-3-9 control-label">{{'e4eCompanyOfficalContactNumber' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="offical-contact-number" name='officalContactNumber' ng-model='officalContactNumber' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.officalContactNumber.$dirty && companyRegisterForm.officalContactNumber.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.officalContactNumber.$dirty && companyRegisterForm.officalContactNumber.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.mobileNumber.$dirty && companyRegisterForm.mobileNumber.$valid, 'has-error': companyRegisterForm.mobileNumber.$dirty && companyRegisterForm.mobileNumber.$invalid}">
+							    <label for="mobile-number" class="col-sm-3-9 control-label">{{'e4eCompanyMobileNumber' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="mobile-number" name='mobileNumber' ng-model='mobileNumber' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.mobileNumber.$dirty && companyRegisterForm.mobileNumber.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.mobileNumber.$dirty && companyRegisterForm.mobileNumber.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.email.$dirty && companyRegisterForm.email.$valid, 'has-error': companyRegisterForm.email.$dirty && companyRegisterForm.email.$invalid}">
+							    <label for="email-id" class="col-sm-3-9 control-label">{{'e4eCompanyEmailID' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="email" class="form-control" id="email-id" name='email' ng-model='email' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.email.$dirty && companyRegisterForm.email.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.email.$dirty && companyRegisterForm.email.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-offset-3-9 col-sm-4-2">
+							    	<button type="text" class="btn btn-default next">{{'e4eCompanyNext' | translate }}</button>
+							    </div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="section section-gray" id="section2">
+				<div>
+					<div class="register-title">
+						<h3 class="f-semibold text-center f-size-26">{{'e4eCompanyRegisterTitle' | translate }}</h3>
+					</div>
+					<div class="company-back">
+						<h4 class="f-semibold text-center f-size-20 padding-10">{{'e4eCompanyThirdPageTitle' | translate }}</h4>
+						<div class="form-horizontal">
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.companyFunction.$dirty && companyRegisterForm.companyFunction.$valid, 'has-error': companyRegisterForm.companyFunction.$dirty && companyRegisterForm.companyFunction.$invalid}">
+							    <label for="company-function" class="col-sm-3-9 control-label">{{'e4eCompanyFunction' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="company-function" name='companyFunction' ng-model='companyFunction' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.companyFunction.$dirty && companyRegisterForm.companyFunction.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.companyFunction.$dirty && companyRegisterForm.companyFunction.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.companyRole.$dirty && companyRegisterForm.companyRole.$valid, 'has-error': companyRegisterForm.companyRole.$dirty && companyRegisterForm.companyRole.$invalid}">
+							    <label for="company-role" class="col-sm-3-9 control-label">{{'e4eCompanyRole' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="company-role" name='companyRole' ng-model='companyRole' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.companyRole.$dirty && companyRegisterForm.companyRole.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.companyRole.$dirty && companyRegisterForm.companyRole.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.numberOfPositions.$dirty && companyRegisterForm.numberOfPositions.$valid, 'has-error': companyRegisterForm.numberOfPositions.$dirty && companyRegisterForm.numberOfPositions.$invalid}">
+							    <label for="number-of-position" class="col-sm-3-9 control-label">{{'e4eCompanyNumberOfPositions' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="number-of-position" name='numberOfPositions' ng-model='numberOfPositions' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.numberOfPositions.$dirty && companyRegisterForm.numberOfPositions.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.numberOfPositions.$dirty && companyRegisterForm.numberOfPositions.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group has-feedback" ng-class="{'has-success':companyRegisterForm.jobDescription.$dirty && companyRegisterForm.jobDescription.$valid, 'has-error': companyRegisterForm.jobDescription.$dirty && companyRegisterForm.jobDescription.$invalid}">
+							    <label for="job-description" class="col-sm-3-9 control-label">{{'e4eCompanyJobDescription' | translate }}</label>
+							    <div class="col-sm-4-2">
+							    	<input type="text" class="form-control" id="job-description" name='jobDescription' ng-model='jobDescription' placeholder="xxxxxxx" required>
+							    	<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="companyRegisterForm.jobDescription.$dirty && companyRegisterForm.jobDescription.$valid"></span>
+							    	<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="companyRegisterForm.jobDescription.$dirty && companyRegisterForm.jobDescription.$invalid"></span>
+							    </div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-offset-3-9 col-sm-4-2">
+							    	<button class="btn btn-default" ng-click='submitRegister()' ng-disabled='companyRegisterForm.$invalid'>{{'e4eCompanySubmit' | translate }}</button>
+							    </div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+<% include ./include/registerfooter.html %>

@@ -1,0 +1,163 @@
+    <% include include/headcss.ejs %>
+
+
+    <body ng-app="b2clogin" class="profile-body" ng-controller="profileController as profile">
+
+    <b2c-header currentuser="profile.currentUser"></b2c-header>
+
+    <div class="profile-main" >
+        <div class="container-fluid profile-content" ng-cloak>
+            <header class="row">
+                <div class="col-xs-12">
+                    <div class="banner"></div>
+                    <div class="user-info">
+                        <img ng-src="/{{profile.currentUser.avatar.path || profile.css.defaultAvatar}}" class="profile-head"/>
+                        <div class="text-info">
+                            <div class="profile-username">{{profile.currentUser.username}}</div>
+                            <div class="profile-school-name">{{profile.currentUser.organizationOrUniversity}}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <nav class="col-md-6 col-md-offset-2">
+                            <div class="row">
+                                <!--<div class="col-md-4"><span>{{'个人主页' | translate}}</span></div>-->
+                                <div class="col-md-6"><span class="selected">{{'ProfilePageHeaderTitle' | translate}}</span></div>
+                                <!--<div class="col-md-4"><span>{{'更多' | translate}}</span><span class="small-down-triangle"></span></div>-->
+                            </div>
+                        </nav>
+                    </div>
+
+                    <div class="guide" ng-if="profile.showGuide()" ng-class="{'extra-long': profile.css.guideStep == 'teamInfo.join'}">
+                        <div class="steps">
+                            <div class="step" ng-if="profile.css.guideStep == 'basicInfo'">
+                                <h5>{{'ProfilePageGuideStepOne' | translate}}</h5>
+                                <div>{{'ProfilePageGuideStepOneText' | translate}}<button class="btn mk-btn-red" ng-disabled="!profile.stepOneDone()" ng-click="profile.goToStep('schoolInfo')">{{'ProfilePageGuideStepNext' | translate}}</button></div>
+                            </div>
+                            <div class="step" ng-if="profile.css.guideStep == 'schoolInfo'">
+                                <h5>{{'ProfilePageGuideStepTwo' | translate}}</h5>
+                                <div>{{'ProfilePageGuideStepTwoText' | translate}}<button class="btn mk-btn-red" ng-disabled="!profile.stepTwoDone()" ng-click="profile.goToStep('teamInfo.title')">{{'ProfilePageGuideStepNext' | translate}}</button></div>
+                            </div>
+                            <div class="step" ng-if="profile.css.guideStep == 'teamInfo.title'">
+                                <h5>{{'ProfilePageGuideStepThree' | translate}}</h5>
+                                <div>{{'ProfilePageGuideStepThreeText' | translate}}<button class="btn mk-btn-red" ng-disabled="!profile.stepThreeDone()" ng-click="profile.goToStep('teamInfo.join')">{{'ProfilePageGuideStepNext' | translate}}</button></div>
+                            </div>
+                            <div class="step" ng-if="profile.css.guideStep == 'teamInfo.join'">
+                                <h5>{{'ProfilePageGuideStepFour' | translate}}</h5>
+                                <div>{{'ProfilePageGuideStepFourText1' | translate}}<br>{{'ProfilePageGuideStepFourText2' | translate}}<button class="btn mk-btn-red" ng-disabled="!profile.stepFourDone()" ng-click="profile.goToStep('societyExperienceInfo')">{{'ProfilePageGuideStepNext' | translate}}</button></div>
+                            </div>
+                            <div class="step" ng-if="profile.css.guideStep == 'societyExperienceInfo'">
+                                <h5>{{'ProfilePageGuideStepFive' | translate}}</h5>
+                                <div>{{'ProfilePageGuideStepFiveText' | translate}}<button class="btn mk-btn-red" ng-disabled="!profile.stepFiveDone()" ng-click="profile.goToStep('end')">{{'ProfilePageGuideStepNext' | translate}}</button></div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <circle-progress-bar cx="63.5" cy="63.5" r="60" stroke-width="7" progress="profile.guideProgress()"></circle-progress-bar>
+                        </div>
+                        <div class="indicator">
+                            {{profile.guideProgress() * 100}}<i class="percentage">%</i>
+                        </div>
+                    </div>
+                    <!--<circle-progress-bar cx="100", cy="100", r="95" stroke-width="10" progress="profile._progress" class="profile-progress"></circle-progress-bar>-->
+                </div>
+            </header>
+
+            <section class="row profile-section">
+                <aside class="col-md-4 detail-nav">
+                    <img class="avatar" ng-src="/{{profile.currentUser.avatar.path || profile.css.defaultAvatar}}" />
+
+                    <nav class="profile-nav">
+                        <ul><!--['{{'上传头像' | translate}}', '{{'基本信息' | translate}}', '{{'安全信息' | translate}}', '{{'学校信息' | translate}}', '{{'团队信息' | translate}}', '{{'联系方式' | translate}}']-->
+                            <li ng-class="{selected: profile.css.currentTab == 'uploadAvatar'}" ng-click="profile.clickSwitchTab('uploadAvatar')">{{'ProfilePageTabUploadAvatar' | translate}}</li>
+                            <li ng-class="{selected: profile.css.currentTab == 'basicInfo'}" ng-click="profile.clickSwitchTab('basicInfo')">{{'ProfilePageTabBasicInfo' | translate}}</li>
+                            <li ng-class="{selected: profile.css.currentTab == 'schoolInfo'}" ng-click="profile.clickSwitchTab('schoolInfo')">{{'ProfilePageTabSchoolInfo' | translate}}</li>
+                            <li ng-class="{selected: profile.css.currentTab == 'experienceInfo'}" ng-click="profile.clickSwitchTab('experienceInfo')">{{'ProfilePageTabExperienceInfo' | translate}}</li>
+                            <li ng-class="{selected: profile.css.currentTab == 'societyExperienceInfo'}" ng-click="profile.clickSwitchTab('societyExperienceInfo')">{{'ProfilePageTabSocietyExperienceInfo' | translate}}</li>
+                            <li ng-class="{selected: profile.css.currentTab == 'securityInfo'}" ng-click="profile.clickSwitchTab('securityInfo')">{{'ProfilePageTabSecurityInfo' | translate}}</li>
+                            <li ng-class="{selected: profile.css.currentTab == 'teamInfo'}" ng-click="profile.clickSwitchTab('teamInfo')">{{'ProfilePageTabTeamInfo' | translate}}</li>
+                        </ul>
+                    </nav>
+                </aside>
+                <article class="col-md-8 profile-detail">
+                    <div class="row alert-container">
+                        <div id="profile-alert-container"></div>
+                        <script type="text/ng-template" id="profile-alert-success.html">
+                            <div class="alert alert-success">
+                                <span>{{'ProfilePageAlertSaveSuccessful' | translate}}</span>
+                            </div>
+                        </script>
+                        <script type="text/ng-template" id="profile-alert-failed.html">
+                            <div class="alert alert-danger">
+                                <span>{{'ProfilePageAlertSaveFailed' | translate}}</span>
+                            </div>
+                        </script>
+                        <script type="text/ng-template" id="profile-alert-user-not-found.html">
+                            <div class="alert alert-danger">
+                                <span>{{'ProfilePageAlertUserNotFound' | translate}}</span>
+                            </div>
+                        </script>
+                        <script type="text/ng-template" id="profile-alert-team-name-exist.html">
+                            <div class="alert alert-danger">
+                                <span>{{'ProfilePageAlertTeamNameExist' | translate}}</span>
+                            </div>
+                        </script>
+                        <script type="text/ng-template" id="profile-alert-invalid-password.html">
+                            <div class="alert alert-danger">
+                                <span>{{'ProfilePageAlertInvalidPassword' | translate}}</span>
+                            </div>
+                        </script>
+                    </div>
+                    <div class="row" ng-if="profile.css.currentTab == 'uploadAvatar'">
+                        <div class="file-input-wrapper glyphicon glyphicon-plus center-block">
+                            <span class="file-upload-text">{{'ProfilePageUploadAvatarSelectionButton' | translate}}</span>
+                            <span class="file-upload-text-info">{{'ProfilePageUploadAvatarSelectionButtonInfo' | translate}}</span>
+                            <div class="wrapper">
+                                <input class="file-input" type="file" nv-file-select uploader="profile.uploader" accept=".jpg,.png,.jpeg,.bmp,.gif"/>
+                            </div>
+                        </div>
+                        <ul class="center-block preview-avatar profile-button-container">
+                            <li ng-repeat="item in profile.uploader.queue">
+                                <div ng-thumb="{ file: item._file}"></div>
+                                <button type="submit" class="center-block" ng-click="item.upload()">{{'ProfilePageUploadAvatarSelectionButton' | translate}}</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="row" ng-if="profile.css.currentTab == 'basicInfo'">
+                        <profile-basic-info-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-basic-info-form>
+                    </div>
+
+                    <div class="row education-background" ng-if="profile.css.currentTab == 'schoolInfo'">
+                        <profile-education-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-education-form>
+                        <profile-new-education-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-new-education-form>
+
+                        <profile-language-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-language-form>
+                        <profile-new-language-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-new-language-form>
+                    </div>
+
+                    <div class="row work-experience" ng-if="profile.css.currentTab == 'experienceInfo'">
+                        <profile-work-experience-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-work-experience-form>
+                        <profile-new-work-experience-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-new-work-experience-form>
+                    </div>
+                    <div class="row work-experience" ng-if="profile.css.currentTab == 'societyExperienceInfo'">
+                        <profile-society-experience-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-society-experience-form>
+                        <profile-new-society-experience-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-new-society-experience-form>
+                    </div>
+
+                    <div class="row" ng-if="profile.css.currentTab == 'securityInfo'">
+                        <profile-change-password-form current-user="profile.currentUser" update="profile.updatePassword(data)"></profile-change-password-form>
+                        <profile-mobile-phone-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)" send-phone-verify-code="profile.sendPhoneVerifyCode(code)" get-phone-verify-code="profile.getPhoneVerifyCode()"></profile-mobile-phone-form>
+                    </div>
+
+                    <div class="row team-info" ng-if="profile.css.currentTab == 'teamInfo'">
+                        <profile-title-form current-user="profile.currentUser" update="profile.updateBasicInfo(data)"></profile-title-form>
+                        <profile-team-form current-user="profile.currentUser" update="profile.updateTeamName(data)" add-student-to-team="profile.addStudentToTeam(username)" remove-student-to-team="profile.removeStudentToTeam(id)" ></profile-team-form>
+                    </div>
+
+                </article>
+            </section>
+        </div>
+    </div>
+
+
+    <% include include/footer.ejs %>
+    <% include include/footerscriptlogin.ejs %>

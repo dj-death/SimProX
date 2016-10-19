@@ -1,0 +1,51 @@
+<% include ./include/headcssuser.html %>
+
+
+<body ng-app="marksimoslogin">
+
+<div class="container-fluid width_big_screen" >
+
+    <user-header showmenu="false" showlogout="false"></user-header>
+
+
+    <div class="row login" ng-controller="userLoginController" ng-cloak>
+        <div class="col-md-8 col-md-offset-2 panelbox">
+
+            <div class="row">
+                <div class="col-md-12"><h3>{{'LoginPageLabelWelcome' | translate}} </h3></div>
+            </div>
+
+
+            <div class="row contentbox">
+                <div class="col-md-5 col-md-offset-7 divider_left">
+
+                    <h4>{{'LoginPageLabelSignIn' | translate}}</h4>
+                    <form role="form" name="loginForm">
+                        <div class="form-group has-feedback" ng-class="{'has-success':loginForm.username.$dirty && loginForm.username.$valid, 'has-error': loginForm.username.$dirty && loginForm.username.$invalid}">
+                            <label class="control-label" for="loginInputEmail">{{'LoginPageLabelEmail' | translate}}</label>
+                            <input type="text" class="form-control" id="loginInputEmail" name="username" placeholder="" ng-model="data.newUser.username" required>
+                            <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="loginForm.username.$dirty && loginForm.username.$valid"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="loginForm.username.$dirty && loginForm.username.$invalid"></span>
+                        </div>
+
+                        <div class="form-group has-feedback" ng-class="{'has-success':loginForm.password.$dirty && loginForm.password.$valid, 'has-error': loginForm.password.$dirty && loginForm.password.$invalid}">
+                            <label class="control-label" for="loginInputpassword" ng-hide="css.newUser.passwordPrompt && loginForm.password.$invalid">{{'LoginPageLabelPassword' | translate}}</label>
+                            <label class="control-label" for="loginInputpassword" ng-show="css.newUser.passwordPrompt && loginForm.password.$invalid">{{'LoginPageLabelPasswordErrorInfo' | translate}} </label>
+                            <input type="password" class="form-control" id="loginInputpassword" name="password" placeholder="" ng-model="data.newUser.password" required ng-minlength="5" ng-maxlength="12">
+                            <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="loginForm.password.$dirty && loginForm.password.$valid"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback" ng-show="loginForm.password.$dirty && loginForm.password.$invalid"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-default login_button" ng-click="login(loginForm)">{{'LoginPageButtonSignIn' | translate}}</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<% include ./include/footerscriptuserlogin.html %>
+

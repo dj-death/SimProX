@@ -1,0 +1,63 @@
+<% include ./include/registerheader.html %>
+<body ng-app='e4eregister'>
+
+	<div id="header" class="transparent-header" ng-controller="registerHeaderController">
+		<div class="wrap">
+			<div class="e4e-logo">
+				<a href="#">
+					<img src="/appe4e/img/LOGO-E4E-white.png" alt="">
+				</a>
+			</div>
+			<div class="learning-logo">
+				<a href="/">
+					<img src="/appe4e/img/LOGO-HCDLEARNING-white.png" alt="">
+				</a>
+			</div>
+			<div class="languages">
+				<nav class="nav-header">
+					<ul>
+						<li ng-class="{'active':!isEnglish}">
+							<a href='' class="f-bold" ng-click="changeLanguage('zh_CN')">中</a>
+						</li>
+						<li ng-class="{'active':isEnglish}">
+							<a href='' class="f-bold" ng-click="changeLanguage('en_US')">EN</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div id="footer">
+		<div class="wrap">
+			<span class="col-lg-6 text-left">© HCD Learning Ltd. 沪ICP 10011451号</span>
+			<span class="col-lg-6 text-right">HCD Learning 合得软件</span>
+		</div>
+	</div>
+
+	<div id="company-register" ng-controller="registerSuccessController">
+		<div class="section" id="section0">
+			<div class="absolute-item section-register-clouds move-down"></div>
+			<div>
+				<div class="absolute-item section-regisert-heart fade-in-left"></div>
+				<div class="absolute-item section-company-success fade-in-right"></div>
+				<h3 class="f-bold absolute-item congratulations fade-in">{{'e4eSuccessCon' | translate}}!</h3>
+			
+				<h3 class="f-bold absolute-item congratulations-info fade-in company-success-color">
+					{{'e4eSuccessConInfo' | translate}}<br>
+					{{'e4eSuccessConInfoLast' | translate}}
+				</h3>
+				<div class="clear"></div>
+				<div>
+					<p class="absolute-item congratulations-end fade-in">
+						<em class="f-bold f-size-20">{{'e4eSuccessPassword' | translate}} : {{password}}</em>
+						<br>
+						<em class="f-open f-size-16">{{'e4eSuccessProceed' | translate}}</em><em class="f-bold"> ww.hcdlearning.com/marksimos</em><br>
+						<em class="f-open f-size-16">{{'e4eSuccessResetPassword' | translate}}</em>
+					</p>
+				</div>
+			</div>
+			<div class="absolute-item section-register-trees fade-in-up"></div>
+		</div>
+	</div>
+</body>
+<% include ./include/indexfooter.html %>

@@ -1,0 +1,128 @@
+<% include ./include/headcssuser.html %>
+
+<body ng-app="marksimoslogin">
+
+<div class="container-fluid width_big_screen" ng-controller="userIntroController" >
+
+    <user-header showmenu="false" showlogout="true" ></user-header>
+
+
+    <div class="row login" ng-if="css.showBox=='seminar'" ng-cloak>
+        <div class="col-md-10 col-md-offset-1 panelbox ">
+
+
+            <div class="row">
+                <div class="col-md-12"><h2 class="text-center game_list">{{'IntroPageSeminarListTitle' | translate}} </h2></div>
+            </div>
+
+
+            <table class="table table-hover table-striped table-bordered table_seminar_list">
+                <thead>
+                    <tr>
+                        <th>{{'IntroPageSeminarListLabelSeminarID' | translate}}</th>
+                        <th>{{'IntroPageSeminarListLabelSeminarDescription' | translate}}</th>
+                        <th>{{'IntroPageSeminarListLabelTotalRound' | translate}}</th>
+                        <th>{{'IntroPageSeminarListLabelCompetitor' | translate}} </th>
+                        <th>{{'IntroPageSeminarListLabelDateOfCommencement' | translate}}</th>
+                        <th>{{'IntroPageSeminarListLabelSeminarStatus' | translate}}</th>
+                        <!--<th>Facilitator</th>-->
+                        <th>{{'IntroPageSeminarListLabelCountry' | translate}} / {{'IntroPageSeminarListLabelProvince' | translate}} / {{'IntroPageSeminarListLabelCity' | translate}}</th>
+                        <th>{{'IntroPageSeminarListLabelVenue' | translate}}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="seminar in data.seminars">
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.seminarId}}   </a></td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.description}} </a></td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.simulationSpan}}</a></td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.companyNum}} </a></td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">no info  </a></td>
+                        <td>
+                            <a href="" ng-click="chooseSeminar(seminar.seminarId )" ng-if="seminar.isSimulationFinished">Finished </a>
+                            <a href="" ng-click="chooseSeminar(seminar.seminarId )" ng-if="seminar.isInitialized&&!seminar.isSimulationFinished">Initialized, Current Round:{{seminar.currentPeriod}} </a>
+                            <a href="" ng-click="chooseSeminar(seminar.seminarId )" ng-if="!seminar.isInitialized">Not Initialized </a>
+                        </td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.country}} / {{seminar.state}} / {{seminar.city}}  </a></td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.venue}} </a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+    <div class="row login" ng-if="css.showBox=='whoami'" ng-cloak>
+        <div class="col-md-8 col-md-offset-2 panelbox bg_whoami">
+
+            <div class="row">
+                <div class="col-md-12"><h2 class="text-center first_intro">{{'IntroPageSentence1' | translate}}</h2></div>
+            </div>
+
+
+            <div class="row whoami">
+                <div class="col-md-8 col-md-offset-2">
+
+                    <div class="row ">
+                        <div class="col-md-12">
+
+                            <h5 class="text-center">{{'IntroPageSentence2' | translate}} <span class="highlight1">{{data.currentStudentSeminar.companyName}}</span> .
+                                {{'IntroPageSentence3' | translate}} <span class="highlight2">{{data.skuNumber}}</span>  <span class="highlight1">{{'IntroPageSentence4' | translate}}</span> {{'IntroPageSentence5' | translate}} <span class="highlight2">{{data.brandNumber}}</span>  <span class="highlight1">{{'IntroPageSentence6' | translate}}</span> .
+                                <br/> {{'IntroPageSentence7' | translate}} <span class="highlight2">{{data.currentStudentSeminar.numOfCompany - 1 }}</span>  {{'IntroPageSentence8' | translate}}.
+                            </h5>
+
+                        </div>
+                    </div>
+
+                    <div class="row ">
+                        <div class="col-md-12">
+
+                            <h5 class="text-center">{{'IntroPageSentence21' | translate}} <span class="highlight1">{{'IntroPageSentence22' | translate}}</span>  {{'IntroPageSentence23' | translate}} <span class="highlight1">{{'IntroPageSentence24' | translate}}</span> !</h5>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="row brand_list">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <table class="table" >
+
+                            <tbody>
+                                <tr >
+                                    <td class="" ng-repeat="brand in data.currentCompany.d_BrandsDecisions">
+
+                                        <span class="user_brand" ng-cloak>{{brand.d_BrandName}}</span>
+                                        <ul>
+                                            <li class="user_product" ng-cloak ng-repeat="sku in brand.d_SKUsDecisions">{{brand.d_BrandName}}{{sku.d_SKUName}} - <span>{{sku.d_TargetConsumerSegment | usersegment | translate}}</span></li>
+                                        </ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-9">
+                        <button type="submit" class="btn btn-default start_button" ng-click="whoamiNext()">Start</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<% include ./include/footerscriptuserlogin.html %>
+

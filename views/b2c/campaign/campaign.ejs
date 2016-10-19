@@ -1,0 +1,249 @@
+<% include ../include/headcss.ejs %>
+
+
+<body ng-app="b2clogin" ng-controller="campaignController as campaign" class="campaign-body" ng-cloak>
+
+<b2c-header currentuser="campaign.currentUser"></b2c-header>
+
+<nav class="campaign-nav">
+    <div class="center-block nav-container">
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="#enter">{{'CampaignPageNavEnterMatch' | translate}}</a>
+            </li>
+            <li>
+                <a href="#schedules">{{'CampaignPageNavSchedules' | translate}}</a>
+            </li>
+            <li>
+                <a href="#gains">{{'CampaignPageNavGains' | translate}}</a>
+            </li>
+            <li>
+                <a href="#conditions">{{'CampaignPageNavConditions' | translate}}</a>
+            </li>
+            <li>
+                <a href="#process">{{'CampaignPageNavProcess' | translate}}</a>
+            </li>
+            <li>
+                <a href="#winner">{{'CampaignPageNavWinner' | translate}}</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="campaign-banner text-center" style="background-color:<%= campaign.pictures.firstCoverBackgroundColor %> ">
+    <img ng-src="/{{campaign.campaign.pictures.firstCover.path}}">
+</div>
+<div class="container-fluid campaign-main">
+    <div id="enter" class="center-block campaign-enter">
+        <button class="already-entered-button">{{'已截止' | translate}}</button><!--enter-button CampaignPageEnterCampaignEnterButton-->
+        <!--<button ng-if="campaign.css.hasEntered" class="already-entered-button" ng-click="campaign.clickStudentEnter()">{{'CampaignPageEnterCampaignHasEnteredButton' | translate}}</button>-->
+
+        <a href="/cn/marksimos.html" target="_blank" class="introduce">{{'CampaignPageEnterCampaignIntroduce' | translate}}</a>
+        <span class="enter-count">{{'CampaignPageEnterCampaignCountPrefix' | translate}}<strong>{{campaign.campaign.totalMembers}}</strong>{{'CampaignPageEnterCampaignCountSuffix' | translate}}{{campaign.campaign.totalMembers > 1 ? 'CampaignPageEnterCampaignCountPlural' : '' | translate}}</span>
+    </div>
+    <!-- enter success template -->
+    <script type="text/ng-template" id="campaign-modal-enter-success.html">
+        <div class="modal enter-success campaign-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        &nbsp;
+                        <button class="close" ng-click="$hide()"><span>×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="enter-success-icon"></div>
+                        <div class="enter-success-text center-block">
+                            <h2>{{'CampaignPageEnterSuccessTip1' | translate}}！</h2>
+                            <p>{{'CampaignPageEnterSuccessTip2' | translate}}</p>
+                            <p>{{'CampaignPageEnterSuccessTip3' | translate}}</p>
+                            <a class="btn mk-btn-red" href="http://community.bridgeplus.cn">{{'CampaignPageGoToCommunity' | translate}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- cancel enter success template-->
+    <script type="text/ng-template" id="campaign-modal-cancel-enter-success.html">
+        <div class="modal enter-success campaign-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        &nbsp;
+                        <button class="close" ng-click="$hide()"><span>×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="enter-success-icon"></div>
+                        <div class="center-block">
+                            <h2>{{'CampaignPageCancelEnterSuccessTip1' | translate}}！</h2>
+                            <p>{{'CampaignPageCancelEnterSuccessTip2' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- enter failed template. to complete team info -->
+    <script type="text/ng-template" id="campaign-modal-enter-tip-complete-info.html">
+        <div class="modal enter-tip-complete-info campaign-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span>{{'CampaignPageEnterFailedTip1' | translate}}</span>
+                        <button class="close" ng-click="$hide()"><span>×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="enter-failed-icon"></div>
+                        <div class="center-block">
+                            <h3>{{'CampaignPageEnterFailedTip2' | translate}}</h3>
+                            <div>
+                                <a href="/e4e/profile#basicInfo">{{'CampaignPageEnterFailedCompleteInfoButton' | translate}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <div id="schedules" class="center-block campaign-schedules">
+        <h3 class="text-center">{{'CampaignPageNavSchedules' | translate}}</h3>
+        <ul class="schedule-list text-center">
+            <li ng-repeat="seminar in campaign.campaign.seminarListMarksimos"><a href="/marksimos/intro">{{seminar.seminarId + seminar.description}}<span>{{'CampaignPageSchedulesEnter' | translate}}</span></a></li>
+        </ul>
+    </div>
+    <div id="gains" class="row center-block campaign-gains">
+        <h3 class="col-xs-12 text-center">{{'CampaignPageNavGains' | translate}}</h3>
+        <div class="col-xs-12">
+            <ul class="gain-list row">
+                <li class="col-xs-4">
+                    <div class="gain center-block">
+                        <img ng-src="/{{campaign.campaign.pictures.benefit1.path}}">
+                        <!--<h4 class="text-center">a title</h4>
+                        <p>bla bla bla bla bla bla bla bla bla bla bla bla</p>-->
+                    </div>
+                </li>
+                <li class="col-xs-4">
+                    <div class="gain center-block">
+                        <img ng-src="/{{campaign.campaign.pictures.benefit2.path}}">
+                        <!--<h4 class="text-center">a title</h4>
+                        <p>bla bla bla bla bla bla bla bla bla bla bla bla</p>-->
+                    </div>
+                </li>
+                <li class="col-xs-4">
+                    <div class="gain center-block">
+                        <img ng-src="/{{campaign.campaign.pictures.benefit3.path}}">
+                        <!--<h4 class="text-center">a title</h4>
+                        <p>bla bla bla bla bla bla bla bla bla bla bla bla</p>-->
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="conditions" class="enter-condition row">
+        <div class="col-xs-12">
+            <h3 class="text-center">{{'CampaignPageNavConditions' | translate}}</h3>
+            <div class="row">
+                <div class="col-xs-6 text-right">
+                    <img ng-src="/{{campaign.campaign.pictures.qualification.path}}">
+                </div>
+                <div class="col-xs-5 col-xs-offset-1">
+                    <h4>{{'CampaignPageCondition1' | translate}}</h4>
+                    <p>{{'CampaignPageCondition1Detail' | translate}}</p>
+                    <h4>{{'CampaignPageCondition2' | translate}}</h4>
+                    <p>{{'CampaignPageCondition2Detail' | translate}}</p>
+                    <h4>{{'CampaignPageCondition3' | translate}}</h4>
+                    <p>{{'CampaignPageCondition3Detail' | translate}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="process" ng-if="campaign.campaign.pictures.process.path" class="row campaign-process text-center" style="background-color: <%= campaign.pictures.processBackgroundColor%>" >
+        <img ng-src="/{{campaign.campaign.pictures.process.path}}">
+    </div>
+    <div id="winner" class="campaign-winner row">
+        <h3 class="text-center">{{'CampaignPageNavWinner' | translate}}</h3>
+        <div class="center-block">
+            <div class="col-xs-4 text-center">
+                <span container="body" data-animation="am-fade-and-scale" data-placement="center" bs-modal="modal" data-template="campaign-modal-winner.html">{{'CampaignPageRound1' | translate}}</span>
+            </div>
+            <div class="col-xs-4 text-center">
+                <span>{{'CampaignPageRound2' | translate}}</span>
+            </div>
+            <div class="col-xs-4 text-center">
+                <span>{{'CampaignPageRound3' | translate}}</span>
+            </div>
+        </div>
+    </div>
+    <!-- winner template -->
+    <script type="text/ng-template" id="campaign-modal-winner.html">
+        <div class="modal winner-team campaign-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span>{{'CampaignPageNavWinner' | translate}}</span>
+                        <button class="close" ng-click="$hide()"><span>×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="winner-icon center-block"></div>
+                        <div class="winner-text text-center center-block">{{'CampaignPageRoundWinnerLabel' | translate}}</div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>{{'CampaignPageTeamName' | translate}}</td>
+                                <td>{{'CampaignPageTeamName' | translate}}</td>
+                                <td>{{'CampaignPageTeamName' | translate}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                                <td>{{'CampaignPageMember' | translate}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="show-score text-center">{{'CampaignPageCheckScores' | translate}}</div>
+                        <div class="scores text-center">
+                            <div>{{'CampaignPageRound1Score' | translate}}：<i>100</i></div>
+                            <div>{{'CampaignPageRound2Score' | translate}}：<i>100</i></div>
+                            <div>{{'CampaignPageRound3Score' | translate}}：<i>100</i></div>
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>
+<div class="campaign-footer"></div>
+
+<!-- browsers compatibility tip template -->
+<script type="text/ng-template" id="campaign-modal-compatibility.html">
+    <div class="modal enter-tip-compatibility campaign-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>{{'配置提示' | translate}}</span>
+                    <button class="close" ng-click="$hide()"><span>×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="center-block">
+                        <img alt="Browser Compatibility">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<% include ../include/footer.ejs %>
+<% include ../include/footerscriptlogin.ejs %>
