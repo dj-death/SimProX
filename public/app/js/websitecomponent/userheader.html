@@ -1,0 +1,62 @@
+<div class="row header">
+
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/stratege/">
+                    <img src="/app/css/images/logoheader.png" alt="MarkSimosLogo"> MarkSimos
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                <ul class="nav navbar-nav" ng-if="showmenu">
+                    <li ng-class="{'active':currentMenu=='Home'}"><a href="" ng-click="clickMenu('Home')">{{'HomePageMenuBarLabelsHome' | translate}}</a></li>
+                    <li ng-class="{'active':currentMenu=='Report'}"><a href="" ng-click="clickMenu('Report')">{{'HomePageMenuBarLabelsReport' | translate}}</a></li>
+
+                    <li ng-class="{'active':currentMenu=='Decision'}" ng-hide="seminarFinished"><a href="" ng-click="clickMenu('Decision')">{{'HomePageMenuBarLabelsDecision' | translate}}<span class="num" ng-if="currentRound">R{{currentRound}}</span></a></li>
+                    <li ng-class="{'active':currentMenu=='Score'}"><a href="" ng-click="clickMenu('Score')">{{'HomePageMenuBarLabelsScore' | translate}} <span class="num"></span></a></li>
+                </ul>
+
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">{{'HomePageMenuBarLabelsLanguage' | translate}} <b class="caret"></b></a>
+                        <ul class="dropdown-menu mk_dropdownlist">
+                            <li><a href="" ng-click="changeLanguage('en_US')">English</a></li>
+                            <li class="divider mk_dropdowndivider"></li>
+                            <li><a href="" ng-click="changeLanguage('zh_CN')">中文</a></li>
+                        </ul>
+                    </li>
+
+
+                    <!--<li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">{{'HomePageMenuBarLabelsHelp' | translate}} <b class="caret"></b></a>
+                        <ul class="dropdown-menu mk_dropdownlist">
+                            <li><a href="" ng-click='clickHelpMenu("FAQ")'>{{'HomePageMenuBarLabelsHelpFAQ' | translate}}</a></li>
+                            <li class="divider mk_dropdowndivider"></li>
+                            <li><a href="" ng-click='clickHelpMenu("Video")'>{{'HomePageMenuBarLabelsHelpVideo' | translate}}</a></li>
+                            <li class="divider mk_dropdowndivider"></li>
+                            <li><a href="" ng-click='clickHelpMenu("Manual")'>{{'HomePageMenuBarLabelsHelpManual' | translate}}</a></li>
+                        </ul>
+                    </li>-->
+                    <li><a href="/stratege/help" target='_blank'>{{'HomePageMenuBarLabelsHelp' | translate}}</a></li>
+
+                    <li><a href="/cn/marksimos.html" target='_blank'>{{'HomePageMenuBarLabelsAbout' | translate}}</a></li>
+                    <li ng-if="showlogout"><a href="" ng-click="clickLogout()">{{'HomePageMenuBarLabelsLogout' | translate}}</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+</div>

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Stratege", "Stratege.njsproj", "{22E567F9-FF21-42FA-BCA1-5AD68AC6D530}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Plateform", "..\..\Etales-2.0.1\Etales-2.0.1\Plateform.njsproj", "{75E343FF-6C62-4725-8BCE-08F51B19650B}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "iServer", "..\iServer\iServer.njsproj", "{63D8E76F-C672-4EBD-8D24-694AAF77A91E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22E567F9-FF21-42FA-BCA1-5AD68AC6D530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E567F9-FF21-42FA-BCA1-5AD68AC6D530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E567F9-FF21-42FA-BCA1-5AD68AC6D530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E567F9-FF21-42FA-BCA1-5AD68AC6D530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75E343FF-6C62-4725-8BCE-08F51B19650B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75E343FF-6C62-4725-8BCE-08F51B19650B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75E343FF-6C62-4725-8BCE-08F51B19650B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75E343FF-6C62-4725-8BCE-08F51B19650B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63D8E76F-C672-4EBD-8D24-694AAF77A91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63D8E76F-C672-4EBD-8D24-694AAF77A91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63D8E76F-C672-4EBD-8D24-694AAF77A91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63D8E76F-C672-4EBD-8D24-694AAF77A91E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

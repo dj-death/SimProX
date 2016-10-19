@@ -1,0 +1,51 @@
+<table class="table table-striped table-bordered table-hover" >
+    <thead>
+        <tr>
+            <th>{{'ReportCompanyStatusSKUQuarter' | translate}}</th>
+            <th ng-repeat="quarter in data">{{'ReportCompanyStatusSKUQuarter' | translate}} {{quarter.period}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{'HomePageSegmentLabelPriceSensitive' | translate}}</td>
+            <td ng-repeat="quarter in data">{{quarter.priceSensitive * plus | number : 2}}{{unit}}</td>
+        </tr>
+        <tr>
+            <td>{{'HomePageSegmentLabelPretenders' | translate}}</td>
+            <td ng-repeat="quarter in data">{{quarter.pretenders * plus| number : 2}}{{unit}}</td>
+        </tr>
+        <tr>
+            <td>{{'HomePageSegmentLabelModerate' | translate}}</td>
+            <td ng-repeat="quarter in data">{{quarter.moderate * plus| number : 2}}{{unit}}</td>
+        </tr>
+        <tr>
+            <td>{{'HomePageSegmentLabelGoodLife' | translate}}</td>
+            <td ng-repeat="quarter in data">{{quarter.goodLife * plus| number : 2}}{{unit}}</td>
+        </tr>
+        <tr>
+            <td>{{'HomePageSegmentLabelUltimate' | translate}}</td>
+            <td ng-repeat="quarter in data">{{quarter.ultimate * plus| number : 2}}{{unit}}</td>
+        </tr>
+        <tr>
+            <td>{{'HomePageSegmentLabelPragmatic' | translate}}</td>
+            <td ng-repeat="quarter in data">{{quarter.pragmatic * plus| number : 2}}{{unit}}</td>
+        </tr>
+        <tr ng-if="showAllSegments">
+            <td>{{'HomePageSegmentLabelAllSegments' | translate}}</td>
+            <td ng-repeat="quarter in data">{{quarter.allSegments * plus| number : 2}}{{unit}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="pull-right">
+    <div class="btn-group-vertical btn-group-xs">
+        <button type="button" class="btn btn-default" ng-class="{'active': display=='line'}" ng-click="display='line'">{{'ReportTabLabelTableChartDisplayLine' | translate}}</button>
+        <button type="button" class="btn btn-default" ng-class="{'active': display=='bar'}" ng-click="display='bar'">{{'ReportTabLabelTableChartDisplayBar' | translate}}</button>
+        <button type="button" class="btn btn-default" ng-class="{'active': display=='bar'}" ng-click="display='point'">{{'ReportTabLabelTableChartDisplayPoint' | translate}}</button>
+        <!--<button type="button" class="btn btn-default" ng-class="{'active': display=='bar'}" ng-click="display='area'">{{'ReportTabLabelTableChartDisplayArea' | translate}}</button>-->
+        <!--<button type="button" class="btn btn-default" ng-class="{'active': display=='bar'}" ng-click="display='pie'">{{'ReportTabLabelTableChartDisplayPie' | translate}}</button>-->
+    </div>
+</div>
+
+<div ac-chart="display" ac-data="chartdata" ac-config="chartconfig" class="chartBox"></div>
+<p class="text-center">{{'ReportMarketSalesAndInventoryChartBottomTextPeriod' | translate}}</p>

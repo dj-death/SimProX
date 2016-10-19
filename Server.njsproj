@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>Server</Name>
+    <RootNamespace>Server</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>0e295cff-3c6c-4c0e-9a2b-25e00a4ac3a5</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>server.ts</StartupFile>
+    <StartWebBrowser>True</StartWebBrowser>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <ProjectView>ProjectFiles</ProjectView>
+    <NodejsPort>1337</NodejsPort>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <EnableTypeScript>true</EnableTypeScript>
+    <StartWebBrowser>true</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="views\extendedFeedbackRetailer.ejs" />
+    <Content Include="views\extendedFeedbackSupplier.ejs" />
+    <Content Include="views\feedbackENG.ejs" />
+    <TypeScriptCompile Include="api\assemblers\decision.ts" />
+    <TypeScriptCompile Include="api\controllers\b2c\glossary.ts" />
+    <TypeScriptCompile Include="api\controllers\b2c\tag.ts" />
+    <TypeScriptCompile Include="api\controllers\user\admin.ts" />
+    <TypeScriptCompile Include="api\controllers\user\authentication.ts" />
+    <TypeScriptCompile Include="api\controllers\b2c\campaign.ts" />
+    <TypeScriptCompile Include="api\controllers\simulation\decision.ts" />
+    <TypeScriptCompile Include="api\controllers\faq.ts" />
+    <TypeScriptCompile Include="api\controllers\simulation\init.ts" />
+    <TypeScriptCompile Include="api\controllers\questionnaire.ts" />
+    <TypeScriptCompile Include="api\controllers\simulation\seminar.ts" />
+    <TypeScriptCompile Include="api\controllers\simulation\chart.ts" />
+    <TypeScriptCompile Include="api\controllers\simulation\report.ts" />
+    <TypeScriptCompile Include="api\controllers\user\student.ts" />
+    <TypeScriptCompile Include="api\convertors\allResultsCleaner.ts" />
+    <TypeScriptCompile Include="api\convertors\decision.ts" />
+    <TypeScriptCompile Include="api\convertors\decisionCleaner.ts" />
+    <TypeScriptCompile Include="api\models\b2c\Glossary.ts" />
+    <TypeScriptCompile Include="api\models\b2c\Tag.ts" />
+    <TypeScriptCompile Include="api\models\dbUtility.ts" />
+    <TypeScriptCompile Include="api\errorHandlers.ts" />
+    <TypeScriptCompile Include="api\initSeminar.ts" />
+    <TypeScriptCompile Include="api\models\b2c\Campaign.ts" />
+    <TypeScriptCompile Include="api\models\b2c\ChatMessage.ts" />
+    <TypeScriptCompile Include="api\models\b2c\TeamScore.ts" />
+    <TypeScriptCompile Include="api\models\decision\CompanyDecision.ts" />
+    <TypeScriptCompile Include="api\models\decision\Decision.ts" />
+    <TypeScriptCompile Include="api\models\decision\CompanyDecSchema.ts" />
+    <TypeScriptCompile Include="api\models\Faq.ts" />
+    <TypeScriptCompile Include="api\models\Manual.ts" />
+    <TypeScriptCompile Include="api\models\Questionnaire.ts" />
+    <TypeScriptCompile Include="api\models\scenario\Scenario.ts" />
+    <TypeScriptCompile Include="api\models\scenario\Schema.ts" />
+    <TypeScriptCompile Include="api\models\Seminar.ts" />
+    <TypeScriptCompile Include="api\models\seminar\Seminar.ts" />
+    <TypeScriptCompile Include="api\models\seminar\Schema.ts" />
+    <TypeScriptCompile Include="api\models\simulation\Chart.ts" />
+    <TypeScriptCompile Include="api\models\simulation\Report.ts" />
+    <TypeScriptCompile Include="api\models\simulation\Result.ts" />
+    <TypeScriptCompile Include="api\models\simulation\ResultSchema.ts" />
+    <TypeScriptCompile Include="api\models\user\authenticationtoken.ts" />
+    <TypeScriptCompile Include="api\models\user\Captcha.ts" />
+    <TypeScriptCompile Include="api\models\user\EmailContent.ts" />
+    <TypeScriptCompile Include="api\models\user\fileupload.ts" />
+    <TypeScriptCompile Include="api\models\user\GameAuthToken.ts" />
+    <TypeScriptCompile Include="api\models\user\Team.ts" />
+    <TypeScriptCompile Include="api\models\user\UserRole.ts" />
+    <TypeScriptCompile Include="api\passiveSeminar.ts" />
+    <TypeScriptCompile Include="api\promises\request.ts" />
+    <TypeScriptCompile Include="api\runSeminar.ts" />
+    <TypeScriptCompile Include="api\utils\error-code.ts" />
+    <TypeScriptCompile Include="api\utils\ExcelUtils.ts" />
+    <TypeScriptCompile Include="api\utils\express-custom-validator.ts" />
+    <TypeScriptCompile Include="api\utils\Flat.ts" />
+    <TypeScriptCompile Include="api\utils\Mapping.ts" />
+    <TypeScriptCompile Include="api\utils\nodeBB.ts" />
+    <TypeScriptCompile Include="api\utils\sendCloud.ts" />
+    <TypeScriptCompile Include="api\utils\submail\message.ts" />
+    <TypeScriptCompile Include="api\utils\submail\messageXSend.ts" />
+    <TypeScriptCompile Include="api\utils\utility.ts" />
+    <TypeScriptCompile Include="config.ts" />
+    <TypeScriptCompile Include="kernel\app.ts" />
+    <TypeScriptCompile Include="kernel\config.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Company.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\IDepartment.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\ENUMS.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\Bank.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\BuildingContractor.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\CentralBank.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\Currency.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\Demand.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\Economy.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\Environnement.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\Index.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\LabourPool.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\MaterialMarket.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\SubContracter.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\Supplier.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Finance\BankAccount.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Finance\Capital.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Finance\CashFlow.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Finance\Finance.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Finance\index.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Finance\Insurance.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\IObject.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\AbstractObject.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Atelier.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Factory.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\index.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Land.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Machine.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Machinery.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Product.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Production.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\RawMaterial.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\SemiProduct.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Space.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Warehouse.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Manufacturing\Worker.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Marketing\ECommerce.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Marketing\index.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Marketing\Intelligence.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Marketing\Market.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Marketing\Marketing.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Marketing\SalesForce.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Marketing\SalesOffice.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Marketing\Transport.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\ObjectsFactory.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\ObjectsManager.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Personnel\Employee.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Personnel\index.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Personnel\Management.ts" />
+    <TypeScriptCompile Include="kernel\Engine\Game.ts" />
+    <TypeScriptCompile Include="kernel\Engine\Reel.ts" />
+    <TypeScriptCompile Include="kernel\Engine\Scenario.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ScoringEngine\index.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ScoringEngine\Marketplace.ts" />
+    <TypeScriptCompile Include="kernel\simulation\CompanyParams.ts" />
+    <TypeScriptCompile Include="kernel\simulation\environnement\Banks.ts" />
+    <TypeScriptCompile Include="kernel\simulation\environnement\CentralBanks.ts" />
+    <TypeScriptCompile Include="kernel\simulation\environnement\Currencies.ts" />
+    <TypeScriptCompile Include="kernel\simulation\environnement\Economies.ts" />
+    <TypeScriptCompile Include="kernel\simulation\environnement\LabourPools.ts" />
+    <TypeScriptCompile Include="kernel\simulation\environnement\MaterialsMarkets.ts" />
+    <TypeScriptCompile Include="kernel\simulation\environnement\Stakeholders.ts" />
+    <TypeScriptCompile Include="kernel\Engine\ComputeEngine\Environnement\StockMarket.ts" />
+    <TypeScriptCompile Include="kernel\simulation\environnement\StockMarkets.ts" />
+    <TypeScriptCompile Include="kernel\simulation\EnvObjects.ts" />
+    <TypeScriptCompile Include="kernel\simulation\finance\BankAccounts.ts" />
+    <TypeScriptCompile Include="kernel\simulation\finance\Capital.ts" />
+    <TypeScriptCompile Include="kernel\simulation\finance\Insurances.ts" />
+    <TypeScriptCompile Include="kernel\simulation\Games.ts" />
+    <TypeScriptCompile Include="kernel\simulation\initials.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\Ateliers.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\Factories.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\Lands.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\Machineries.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\Products.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\RawMaterials.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\RMWarehouses.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\SemiProducts.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\SubContracters.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\Suppliers.ts" />
+    <TypeScriptCompile Include="kernel\simulation\manufacturing\Workers.ts" />
+    <TypeScriptCompile Include="kernel\simulation\marketing\ECommerce.ts" />
+    <TypeScriptCompile Include="kernel\simulation\marketing\Intelligence.ts" />
+    <TypeScriptCompile Include="kernel\simulation\marketing\Markets.ts" />
+    <TypeScriptCompile Include="kernel\simulation\marketing\SalesForce.ts" />
+    <TypeScriptCompile Include="kernel\simulation\marketing\SalesOffice.ts" />
+    <TypeScriptCompile Include="kernel\simulation\marketing\Transport.ts" />
+    <TypeScriptCompile Include="kernel\simulation\personnel\Management.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\arrays.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\Bag.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\BSTree.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\Dictionary.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\Heap.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\index.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\LinkedDictionary.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\LinkedList.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\MultiDictionary.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\PriorityQueue.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\Queue.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\Set.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\Stack.ts" />
+    <TypeScriptCompile Include="kernel\utils\Collections\util.ts" />
+    <TypeScriptCompile Include="kernel\utils\DataHelpers.ts" />
+    <TypeScriptCompile Include="kernel\utils\Excel.ts" />
+    <TypeScriptCompile Include="kernel\utils\FilesUtils.ts" />
+    <TypeScriptCompile Include="kernel\utils\FinUtils.ts" />
+    <TypeScriptCompile Include="kernel\utils\logger.ts" />
+    <TypeScriptCompile Include="kernel\utils\Mapping.ts" />
+    <TypeScriptCompile Include="kernel\utils\Utils.ts" />
+    <TypeScriptCompile Include="kernel\utils\Validate.ts" />
+    <TypeScriptCompile Include="routes\index.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jStat\jStat.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\node\node.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\PD\PD.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\q\Q.d.ts" />
+    <TypeScriptCompile Include="server.ts" />
+    <Content Include="kernel\Models.xmcd" />
+    <Content Include="kernel\simulation\models.xlsx" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <TypeScriptCompile Include="utils\logger.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="api\" />
+    <Folder Include="api\controllers\" />
+    <Folder Include="api\controllers\b2c\" />
+    <Folder Include="api\controllers\user\" />
+    <Folder Include="api\controllers\simulation\" />
+    <Folder Include="api\models\" />
+    <Folder Include="api\models\b2c\" />
+    <Folder Include="api\models\decision\" />
+    <Folder Include="api\models\simulation\" />
+    <Folder Include="api\models\seminar\" />
+    <Folder Include="api\models\scenario\" />
+    <Folder Include="api\models\user\" />
+    <Folder Include="api\assemblers\" />
+    <Folder Include="api\convertors\" />
+    <Folder Include="api\promises\" />
+    <Folder Include="api\utils\" />
+    <Folder Include="api\utils\submail\" />
+    <Folder Include="kernel\" />
+    <Folder Include="kernel\Engine\" />
+    <Folder Include="kernel\Engine\ComputeEngine\" />
+    <Folder Include="kernel\Engine\ComputeEngine\Environnement\" />
+    <Folder Include="kernel\Engine\ComputeEngine\Finance\" />
+    <Folder Include="kernel\Engine\ComputeEngine\Manufacturing\" />
+    <Folder Include="kernel\Engine\ComputeEngine\Marketing\" />
+    <Folder Include="kernel\Engine\ComputeEngine\Personnel\" />
+    <Folder Include="kernel\Engine\ScoringEngine\" />
+    <Folder Include="kernel\simulation\" />
+    <Folder Include="kernel\simulation\environnement\" />
+    <Folder Include="kernel\simulation\finance\" />
+    <Folder Include="kernel\simulation\manufacturing\" />
+    <Folder Include="kernel\simulation\marketing\" />
+    <Folder Include="kernel\simulation\personnel\" />
+    <Folder Include="kernel\utils\" />
+    <Folder Include="kernel\utils\Collections\" />
+    <Folder Include="kernel\utils\zodiac-ts\" />
+    <Folder Include="kernel\utils\zodiac-ts\test\" />
+    <Folder Include="Scripts\typings\q\" />
+    <Folder Include="views\" />
+    <Folder Include="Scripts\typings\jStat\" />
+    <Folder Include="Scripts\typings\PD\" />
+    <Folder Include="utils\" />
+    <Folder Include="routes\" />
+    <Folder Include="Scripts\" />
+    <Folder Include="Scripts\typings\" />
+    <Folder Include="Scripts\typings\node\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="api\auth.ts" />
+    <Compile Include="api\models\user\User.ts" />
+  </ItemGroup>
+  <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

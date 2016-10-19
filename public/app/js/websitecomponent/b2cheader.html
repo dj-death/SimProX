@@ -1,0 +1,69 @@
+
+    <div class="b2c-header">
+        <div class="b2c-container">
+            <a href="/e4e">
+                <img src="/app/css/images/b2c_logo.png" class="b2c-logo" />
+            </a>
+
+            <div class="b2c-login pull-right" ng-cloak>
+
+                <div class="pull-right" ng-if="!currentuser.username && showlogin" >
+                    <form autocomplete="off">
+                        <div class="b2c-login-field">
+
+                            <div class="inputlabel">
+                                <label for="username">{{'PageHeaderLoginUsernameLabel' | translate}}</label>
+                                <input type="text" class="b2c-login-input form-control" id="username" ng-model="newUser.username"/>
+                            </div>
+
+                            <div class="inputlabel">
+                                <label for="password">{{'PageHeaderLoginPasswordLabel' | translate}}</label>
+                                <input type="password" class="b2c-login-input form-control" id="password" ng-model="newUser.password"/>
+                            </div>
+
+                            <div class="inputlabel">
+                                <button class="button" ng-click="clickLogin()"> {{'PageHeaderLoginButton' | translate}} </button>
+                            </div>
+
+                            <div class="checkboxlabel">
+                                <label><input type="checkbox" ng-model="newUser.rememberMe"> {{'PageHeaderRememberMe' | translate}} </label>
+                            </div>
+                            <div class="checkboxlabel">
+                                <a href="/e4e/forgotpassword">{{'PageHeaderForgetPassword' | translate}}</a>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+
+
+                <div class="b2c-user pull-right" ng-if="currentuser.username">
+                    <button class="btn avatar" type="button" data-animation="am-flip-x" bs-dropdown="dropdown" data-template="dropdown-tpl.html" data-placement="bottom-left">
+                        <img ng-src="/{{currentuser.avatar.path || 'app/css/images/profile_avatar_2.png'}}" alt="avatar"/>
+                        <!--<span class="caret"></span>-->
+                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                    </button>
+
+                    <script type="text/ng-template" id="dropdown-tpl.html">
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/e4e/profile" > {{'ProfilePageHeaderTitle' | translate}} </a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="clickLogout()"> {{'PageHeaderLogOut' | translate}}</a></li>
+                        </ul>
+                    </script>
+
+                </div>
+
+
+
+                <div class="b2c-trans pull-right">
+                    <span ng-class="{'selected' : css.language == 'en_US'}" ng-click="changeLanguage('en_US')">EN</span>
+                    <span ng-class="{'selected' : css.language == 'zh_CN'}" ng-click="changeLanguage('zh_CN')">中</span>
+                </div>
+
+            </div>
+        </div>
+    </div>

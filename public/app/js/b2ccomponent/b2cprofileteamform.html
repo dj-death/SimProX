@@ -1,0 +1,120 @@
+<div class="profile-detail-title">{{'ProfilePageYourTeam' | translate}}</div>
+
+<form novalidate name="teamNameForm" class="none-bottom form-horizontal">
+    <div class="form-group team-name" ng-class="{'has-success':teamNameForm.teamName.$dirty&&teamNameForm.teamName.$valid, 'has-error':teamNameForm.teamName.$dirty&&teamNameForm.teamName.$invalid}" >
+        <label class="col-md-3 control-label text-right team-label" for="teamName">{{'ProfilePageTeamInfoTeamName' | translate}} :</label>
+        <div class="col-xs-5" ng-if="!css.formEditing">
+            <p class="form-control-static">{{currentUser.team.name}}&nbsp</p>
+        </div>
+        <div class="col-xs-5" ng-if="css.formEditing">
+            <input class="form-control col-md-6" required ng-model="formData['team.name']" type="text" id="teamName" name="teamName">
+        </div>
+        <span class="err-msg control-label team-name-err-msg" ng-if="teamNameForm.teamName.$dirty&&teamNameForm.teamName.$error.required">{{'ProfilePageTeamNameRequiredError' | translate}}!</span>
+        <span ng-if="!currentUser.joinedCampaign.length && !css.formEditing" ng-click="clickEditProfile()" class="button done col-md-3">{{'ProfilePageChangeButton' | translate}}</span>
+        <button ng-if="css.formEditing" ng-click="clickUpdateUserInfo(teamNameForm)" class="button col-md-3">{{'ProfilePageSaveButton' | translate}}</button>
+    </div>
+</form>
+
+<form novalidate name="teamForm" class="form-horizontal none-top">
+    <div class="form-group" ng-repeat="member in currentUser.team.memberList">
+        <label class="control-label col-md-3 team-label text-right">{{'ProfilePageTeamInfoMember' | translate}}{{$index + 1}} :</label>
+        <div class="col-xs-5">
+            <p class="form-control-static">{{member.username}} {{member.gameMarksimosPosition ? '(' + member.gameMarksimosPosition + ')' : ''}}</p>
+        </div>
+        <span ng-if="!currentUser.joinedCampaign.length" ng-click="clickRemoveStudentToTeam(member._id)" class="form-control-static remove-button glyphicon glyphicon-minus col-md-3 button"></span>
+    </div>
+
+    <div ng-if="!currentUser.joinedCampaign.length" class="form-group add-new-member" ng-class="{'has-success':teamForm.name.$dirty&&teamForm.name.$valid, 'has-error':teamForm.name.$dirty&&teamForm.name.$invalid}">
+        <label for="name" class="control-label col-xs-3 text-right team-label">{{'ProfilePageTeamInfoNewMember' | translate}} :</label>
+        <div class="col-xs-5">
+            <input ng-maxlength="20" ng-minlength="6" placeholder="{{'ProfilePageNewMemberInputPlaceholder' | translate}}" ng-model="formData.newTeamMember" required type="text" name="name" id="name" class="form-control">
+        </div>
+        <button type="submit" ng-click="clickAddStudentToTeam(teamForm)" class="button glyphicon glyphicon-plus add-button col-xs-1"></button>
+        <span class="form-control-static err-msg control-label col-xs-3" ng-if="teamForm.name.$dirty&&teamForm.name.$error.required">{{'ProfilePageNewMemberNameError' | translate}}!</span>
+        <span class="form-control-static err-msg control-label col-xs-3" ng-if="teamForm.name.$dirty&&(teamForm.name.$error.maxlength || teamForm.name.$error.minlength)">{{'ProfilePageNameLengthError' | translate}}!</span>
+    </div>
+
+    <div class="form-group joined-campaigns" ng-repeat="campaign in currentUser.joinedCampaign">
+        <label class="control-label col-xs-3 text-right team-label">{{$index == 0 ? 'ProfilePageJoinedCampaigns' : '' | translate}}</label>
+        <div class="col-xs-5">
+            <p class="form-control-static">
+                <a class="campaign-link" ng-href="/e4e/campaign/{{campaign._id}}">
+                    <span class="campaign-name">{{campaign.name}}</span>
+                </a>
+            </p>
+        </div>
+        <a class="col-xs-3 form-control-static" ng-href="/e4e/campaign/{{campaign._id}}">{{'ProfilePageCancelEnter' | translate}}</a>
+    </div>
+
+    <div class="form-group" ng-if="!currentUser.joinedCampaign.length">
+        <label class="control-label col-xs-3 text-right team-label">{{'ProfilePageJoinedCampaigns'| translate}}</label>
+        <div class="col-xs-8 form-control-static">
+            {{'ProfilePageJoinedNoCampaign' | translate}}<a class="join-campaign" href="/e4e/campaigns">{{'ProfilePageGoToCampaigns' | translate}}</a>
+        </div>
+    </div>
+</form>
+
+<div class="profile-detail-title">{{'ProfilePageJoinedTeams' | translate}}</div>
+<form class="form-horizontal">
+
+    <div class="form-group none-bottom" ng-repeat="team in currentUser.belongToTeam">
+        <label class="control-label col-xs-2 text-right team-label">{{'ProfilePageTeamName' | translate}} :</label>
+        <div class="col-xs-6 form-control-static">{{team.name}} {{(team.campaign.name ? 'ProfilePageAlreadyJoinedCampaignLabel' : '') | translate}}<a href="/e4e/campaign/{{team.campaign._id}}">{{team.campaign.name}}</a></div>
+        <label class="control-label col-xs-2 text-right team-label">{{'ProfilePageTeamCreator' | translate}} :</label>
+        <div class="col-xs-2 form-control-static">{{team.creator.username}}</div>
+    </div>
+
+    <div ng-if="!currentUser.belongToTeam.length" class="form-group">
+        <span class="col-xs-offset-1" ng-if="!currentUser.belongToTeam.length">{{'ProfilePageJoinedNoTeam' | translate}}</span>
+    </div>
+
+    <div class="form-group text-center">
+        <span class="btn mk-btn-red find-teammate-btn" ng-click="clickFindTeammate()">找战友</span>
+    </div>
+    <!-- enter success template -->
+    <script type="text/ng-template" id="profile-find-teammate.html">
+        <div class="modal find-teammate-panel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        &nbsp;
+                        <button class="close" ng-click="$hide()"><span>×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3 class="way-title">方法一</h3>
+                        <div class="way-detail">
+                            用Bridge+注册账号登陆社区(community.bridgeplus.cn)，<br>
+                            进入赛事组队板块，发布组队信息。
+                            <a class="btn mk-btn-red" href="http://community.bridgeplus.cn/category/5/%E8%B5%9B%E4%BA%8B%E7%BB%84%E9%98%9F">进入社区</a>
+                        </div>
+                        <h3 class="way-title">方法二</h3>
+                        <div class="way-detail">
+                            扫码进入各大赛区微信群，寻找队友。
+                            <ul class="qr-codes row list-inline">
+                                <li class="qr-code col-xs-4 text-center">
+                                    <img src="/app/css/images/华东g.GIF" alt="huadong qr code"/>
+                                    <div>华东赛区群</div>
+                                </li>
+                                <li class="qr-code col-xs-4 text-center">
+                                    <img src="/app/css/images/京津g.GIF" alt="jingjin qr code"/>
+                                    <div>京津赛区群</div>
+                                </li>
+                                <li class="qr-code col-xs-4 text-center">
+                                    <img src="/app/css/images/东北g.GIF" alt="dongbei qr code"/>
+                                    <div>东北赛区群</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <h3 class="way-title">方法三</h3>
+                        <div class="way-detail">
+                            填写在线表单，接受组委员会的随机组队调配。（不推荐）
+                            <div class="text-center">
+                                <a class="btn mk-btn-red form-btn" href="http://app.askform.cn/48e3f40e-6099-4cd7-a451-a061d856ca6d.aspx?Type=2">填表单</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+</form>

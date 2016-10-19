@@ -1,0 +1,105 @@
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar sidebar-offcanvas">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+			<li class="header"></li>
+            
+			<li class="active" ng-if="showtab[1]">
+                <a href="" ng-click="clickMenu(11)">
+                    <i class="fa fa-dashboard" ></i>
+                    <span>Statistiques</span>
+                </a>
+            </li>
+
+            <li class="treeview" ng-if="showtab[2]">
+                <a href="">
+                    <i class="fa fa-edit"></i>
+                    <span>Distributeurs</span>
+					<span class="pull-right-container">
+						<i class="fa pull-right"></i>
+					</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ng-class="{'active' : currentMenu==21 }"><a href="" ng-click="clickMenu(21)"><i class="fa fa-angle-double-right"></i> Liste des Distributeurs</a></li>
+                    <li ng-class="{'active' : currentMenu==22 }"><a href="" ng-click="clickMenu(22)"><i class="fa fa-angle-double-right"></i> Créer Distributeur</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" ng-if="showtab[3]">
+                <a href="">
+                    <i class="fa fa-edit"></i>
+                    <span>Animateurs</span>
+                    <span class="pull-right-container">
+						<i class="fa pull-right"></i>
+					</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ng-class="{'active' : currentMenu==31 }"><a href="" ng-click="clickMenu(31)"><i class="fa fa-angle-double-right"></i> Liste des Animateurs</a></li>
+                    <li ng-class="{'active' : currentMenu==32 }"><a href="" ng-click="clickMenu(32)"><i class="fa fa-angle-double-right"></i> Créer Animateur</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" ng-if="showtab[4]">
+                <a href="">
+                    <i class="fa fa-laptop"></i>
+                    <span>Participants</span>
+					<span class="pull-right-container">
+						<i class="fa pull-right"></i>
+					</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ng-class="{'active' : currentMenu==41 }"><a href="" ng-click="clickMenu(41)"><i class="fa fa-angle-double-right"></i> Liste des Participants</a></li>
+                    <li ng-class="{'active' : currentMenu==42 }"><a href="" ng-click="clickMenu(42)"><i class="fa fa-angle-double-right"></i> Créer Etudiant</a></li>
+                    <li ng-class="{'active' : currentMenu==43 }"><a href="" ng-click="clickMenu(43)"><i class="fa fa-angle-double-right"></i> Créer Entreprise</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" ng-if="showtab[5]">
+                <a href="">
+                    <i class="fa fa-table"></i>
+                    <span>Séminaires</span>
+					<span class="pull-right-container">
+						<i class="fa pull-right"></i>
+					</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ng-class="{'active' : currentMenu==51 }"><a href="" ng-click="clickMenu(51)"><i class="fa fa-angle-double-right"></i> Liste des Séminaires</a></li>
+                    <li ng-class="{'active' : currentMenu==52 }"><a href="" ng-click="clickMenu(52)"><i class="fa fa-angle-double-right"></i> Créer Séminaire</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" ng-if="showtab[6]">
+                <a href="">
+                    <i class="fa fa-bullhorn"></i>
+                    <span>Tournois</span>
+					<span class="pull-right-container">
+						<i class="fa pull-right"></i>
+					</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ng-class="{'active' : currentMenu==63 }"><a href="" ng-click="clickMenu(63)"><i class="fa fa-angle-double-right"></i> Scores des Equipes</a></li>
+                    <li ng-class="{'active' : currentMenu==61 }"><a href="" ng-click="clickMenu(61)"><i class="fa fa-angle-double-right"></i> Liste des Tournois</a></li>
+                    <li ng-class="{'active' : currentMenu==62 }"><a href="" ng-click="clickMenu(62)"><i class="fa fa-angle-double-right"></i> Créer Tournois</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" ng-if="showtab[7]">
+                <a href="">
+                    <i class="fa fa-bullhorn"></i>
+                    <span>Glossaire</span>
+					<span class="pull-right-container">
+						<i class="fa pull-right"></i>
+					</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ng-class="{'active' : currentMenu==71 }"><a href="" ng-click="clickMenu(71)"><i class="fa fa-angle-double-right"></i> Liste</a></li>
+                    <li ng-class="{'active' : currentMenu==72 }"><a href="" ng-click="clickMenu(72)"><i class="fa fa-angle-double-right"></i> Créer</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
