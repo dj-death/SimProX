@@ -11,7 +11,7 @@
 				
 				<tbody>
 					<tr>
-						<td>Actions émises ou revendues (+/- ' 000 dh)</td>
+						<td>Actions Ã©mises ou revendues (+/- ' 000 dh)</td>
 						<td>
 							<input type="number" class="form-control" ng-model="data.currentCompany.sharesVariation" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
@@ -25,7 +25,7 @@
 						<td>
 							<input type="number" class="form-control" ng-model="bkAccount.termLoans" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
-						<td colspan="3">Applications financières (+/- ' 000 dh)</td>
+						<td colspan="3">Applications financiÃ¨res (+/- ' 000 dh)</td>
 						<td>
 							<input type="number" class="form-control" ng-model="bkAccount.termDeposit"  ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
@@ -49,7 +49,7 @@
 							<label for="aec"></label>
 							<span id="sprytextfield67">
 								<input type="number" class="form-control" ng-model="mach.boughtNb" style="width:30px;" value="0" maxlength="2" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure à la maximale requise (99)</span>
+								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquÃ©e est infÃ©rieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supÃ©rieure à la maximale requise (Ã©)</span>
 							</span>
 						</td>
 						<td colspan="3">Vente machines</td>
@@ -57,7 +57,7 @@
 							<label for="aec"></label>
 							<span id="sprytextfield68">
 								<input type="number" class="form-control" ng-model="mach.soldNb" style="width:30px;" value="0" maxlength="2" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure à la maximale requise (99)</span>
+								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquÃ©e est infÃ©rieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supÃ©rieure à la maximale requise (Ã©)</span>
 							</span>
 						</td>
 					</tr>
@@ -68,16 +68,16 @@
 							<label for="aec"></label>
 							<span id="sprytextfield69">
 								<input type="number" class="form-control" ng-model="factory.extension" style="width:30px;" value="10" maxlength="4" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure à la maximale requise (9999)</span>
+								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquÃ©e est infÃ©rieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supÃ©rieure à la maximale requise (Ã©Ã©)</span>
 							</span>
 						</td>
 
-						<td colspan="3">Plan assurance n°(0-4)</td>
+						<td colspan="3">Plan assurance N (0-4)</td>
 						<td ng-repeat="insurance in data.currentCompany.insurances">
 							<label for="aec"></label>
 							<span id="sprytextfield70">
 								<input type="number" class="form-control" ng-model="insurance.plan" style="width:30px;" value="4" maxlength="1" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure à la maximale requise (4)</span>
+								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquÃ©e est infÃ©rieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supÃ©rieure à la maximale requise (4)</span>
 							</span>
 						</td>
 					</tr>

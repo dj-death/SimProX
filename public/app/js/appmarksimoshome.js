@@ -7,7 +7,7 @@
 
 
     /********************  Create New Module For Controllers ********************/
-    angular.module('marksimos', ['pascalprecht.translate', 'angularCharts', 'nvd3ChartDirectives', 'cgNotify', 'marksimos.config', 'marksimos.commoncomponent', 'marksimos.websitecomponent', 'marksimos.model', 'marksimos.socketmodel', 'marksimos.filter', 'marksimos.translation', 'ngAnimate']);
+    angular.module('marksimos', ['pascalprecht.translate', 'angularCharts', 'nvd3ChartDirectives', 'cgNotify', 'marksimos.config', 'marksimos.commoncomponent', 'marksimos.websitecomponent', 'marksimos.model', 'marksimos.socketmodel', 'marksimos.filter', 'marksimos.translation', 'ngAnimate', 'mgo-angular-wizard']);
 
 
 
@@ -943,6 +943,11 @@
                         });
                     }
 
+                    // TODO: make it auto from server
+                    data.marketsRefs = ["Euro", "Nafta", "Internet"];
+                    data.productsRefs = ["Produit 1", "Produit 2", "Produit 3"];
+                    data.futuresRefs = ['Spot', '3 Mois', '6 Mois'];
+
                     $scope.data.currentCompany = data;
 
                     //要处理删除SKU后,同时删除Brand后的问题 currentBrandIndex 要重置为零
@@ -951,8 +956,12 @@
                         $scope.data.currentSkuIndex  = 0;
                     }
 
-                    $scope.css.currentDecisionBrandId = $scope.data.currentCompany.d_BrandsDecisions[$scope.data.currentBrandIndex]._id;
-                    $scope.data.currentBrand = $scope.data.currentCompany.d_BrandsDecisions[$scope.data.currentBrandIndex];
+                    var currentBrandIndex = $scope.data.currentBrandIndex,
+                        currentBrand = $scope.data.currentCompany.d_BrandsDecisions[currentBrandIndex];
+
+                    $scope.css.currentDecisionBrandId = currentBrand && currentBrand._id;
+                    $scope.data.currentBrand = currentBrand;
+
 //                    console.log("Brand :",$scope.data.currentBrand);
 
                     //记录上一次选中的SKU 并找到对应的Index 供本次查询使用
@@ -969,11 +978,12 @@
                         });
                     }
 
-                    $scope.data.currentSku = $scope.data.currentCompany.d_BrandsDecisions[$scope.data.currentBrandIndex].d_SKUsDecisions[$scope.data.currentSkuIndex];
+                    var currentSku = currentBrand && currentBrand.d_SKUsDecisions[$scope.data.currentSkuIndex];
 
+                    $scope.data.currentSku = currentSku;
 
                     if($scope.data.currentSeminar.isSimulationFinished === false){
-                        Company.getCompanyFutureProjectionCalculator($scope.data.currentSku.d_SKUID, $scope.data.currentSeminar.currentCompany.companyId).then(function(data, status, headers, config){
+                        Company.getCompanyFutureProjectionCalculator(currentSku && currentSku.d_SKUID || {}, $scope.data.currentSeminar.currentCompany.companyId).then(function(data, status, headers, config){
                             $scope.data.currentCompanyFutureProjectionCalculator = data;
                         });
                     }

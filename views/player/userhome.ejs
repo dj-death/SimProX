@@ -1897,40 +1897,59 @@
 
     <div class="row mainbody" ng-cloak ng-if="css.menu=='Decision'">
         <div class="col-md-6 decision_box">
+			
 			<div class="row">
                 <div class="col-md-12">
                     <h4 class="text-center">{{'DecisionPageFutureProjectionsTableTitleDATAREFERENCE' | translate}}</h4>
                     <h6 class="text-center">　</h6>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-12">
-
-                    <ul class="nav nav-pills">
-                        <li ng-class="{'active': css.currentDecisionRightMenu==1}"  ng-click="css.currentDecisionRightMenu=1"> <a href="" >Marketing</a> </li>
-                        <li ng-class="{'active': css.currentDecisionRightMenu==2}"  ng-click="css.currentDecisionRightMenu=2"> <a href="" >Production</a> </li>
-                        <li ng-class="{'active': css.currentDecisionRightMenu==3}"  ng-click="css.currentDecisionRightMenu=3"> <a href="" >Finances</a> </li>
-                        <!--<li ng-class="{'active': css.currentDecisionRightMenu==4}"  ng-click="css.currentDecisionRightMenu=4"> <a href="" >My Favorite</a> </li>-->
-                    </ul>
-
-
-                    <div class="row brand_box right_menu">
-
-                        <div class="col-md-12 " ng-if="css.currentDecisionRightMenu==1">
-							<% include ./include/decision/marketing.html %>
-						</div>
+			
+			<div class="row">
+				<div class="col-md-12">
+					<wizard on-finish="finishedWizard()"> 
+						<wz-step wz-title="Prévisions">
+							<h1></h1>
+							<div class="col-md-12">
+								<% include ./include/decision/marketing.html %>
+							</div>
+							
+							<button class="btn btn-default" type="button" wz-next>Suivant</button>
+						</wz-step>
 						
-						<div class="col-md-12 " ng-if="css.currentDecisionRightMenu==2">
-							<% include ./include/decision/production.html %>
-						</div>
+						<wz-step wz-title="Production">
+							<h1></h1>
+							<div class="col-md-12">
+								<% include ./include/decision/production.html %>
+							</div>
+							
+							<button class="btn btn-default" type="button" wz-previous>Précedant</button>
+							<button class="btn btn-default" type="button" wz-next>Suivant</button>
+						</wz-step>
 						
-						<div class="col-md-12 " ng-if="css.currentDecisionRightMenu==3">
-							<% include ./include/decision/finances.html %>
-						</div>
-					</div>
+						<wz-step wz-title="Finances">
+							<h1></h1>
+							<div class="col-md-12">
+								<% include ./include/decision/finances.html %>
+							</div>
+							
+							<button class="btn btn-default" type="button" wz-previous>Précedant</button>
+							<button class="btn btn-default" type="button" wz-next>Suivant</button>
+						</wz-step>
+						
+						
+						
+						<wz-step wz-title="Checklist">
+							<p>Even more steps!!</p>
+							<button class="btn btn-default" type="button" wz-previous>Précedant</button>
+							<button class="btn btn-default" type="button" finish>Valider</button>
+						</wz-step>
+						
+					</wizard>
 				</div>
 			</div>
+
+            
 		</div>
 		
 		
