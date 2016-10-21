@@ -2,7 +2,6 @@
 var mongoose = require('mongoose');
 var Q = require('q');
 var util = require('util');
-var console = require('../../../kernel/utils/logger');
 var tDecisionSchema = require('./CompanyDecSchema');
 //let spendingDetailsAssembler = require('../../dataAssemblers/spendingDetails.js');
 //let consts = require('../../consts.js');
@@ -224,13 +223,11 @@ function findOne(seminarId, period, companyId) {
         deferred.reject(new Error("Invalid argument period."));
     }
     else {
-        console.warn('seminarId:', seminarId, 'period:', period, 'd_CID:', companyId);
         CompanyDecision.findOne({
             seminarId: seminarId,
             period: period,
             d_CID: companyId
         }, function (err, result) {
-            console.warn('result', result);
             if (err) {
                 return deferred.reject(err);
             }

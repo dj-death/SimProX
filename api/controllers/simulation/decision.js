@@ -564,9 +564,15 @@ function lockCompanyDecision(req, res, next) {
         if (!resultSeminar) {
             throw new Error("Cancel promise chains. Because seminar not found.");
         }
-        resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].lockStatus = true;
-        resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].lockTime = new Date();
-        resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].spendHour = resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].lockTime - resultSeminar.roundTime[resultSeminar.currentPeriod - 1].startTime;
+        var roundTime = resultSeminar.roundTime[resultSeminar.currentPeriod - 1];
+        var decisionTime = roundTime && roundTime.lockDecisionTime[company.companyId - 1];
+        if (decisionTime) {
+            var startTime = typeof decisionTime.startTime === 'date' ? decisionTime.startTime : new Date();
+            resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].lockStatus = true;
+            resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].lockTime = new Date();
+            resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].spendHour = decisionTime.lockTime - startTime;
+        }
+        console.warn(resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1]);
         return resultSeminar.saveQ();
     }).then(function (result) {
         if (result[1] === 0) {

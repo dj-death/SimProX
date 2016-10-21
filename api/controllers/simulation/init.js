@@ -32,7 +32,7 @@ function init(io) {
             status = 'pending';
             var seminarResult_1;
             var seminarId_1 = req.params.seminar_id;
-            var simulationSpan_1;
+            var simulation_span_1;
             var company_num_1;
             var currentPeriod_1;
             var simulationScenarioID_1;
@@ -59,7 +59,7 @@ function init(io) {
                 //before init, a new seminar should be created,
                 //and it's currentPeriod should be set correctly = 1
                 currentPeriod_1 = dbSeminar.currentPeriod;
-                simulationSpan_1 = dbSeminar.simulationSpan;
+                simulation_span_1 = dbSeminar.simulation_span;
                 company_num_1 = dbSeminar.company_num;
                 simulationScenarioID_1 = dbSeminar.simulationScenarioID;
                 //create company array
@@ -194,7 +194,7 @@ export function runSimulation(){
                     //run simulation
                     return cgiapi.runSimulation({
                         seminarId: seminarId,
-                        simulationSpan: dbSeminar.simulationSpan,
+                        simulation_span: dbSeminar.simulation_span,
                         teams: utility.createCompanyArray(dbSeminar.companyNum),
                         period: selectedPeriod
                     })
@@ -237,7 +237,7 @@ export function runSimulation(){
                         logger.log('generate report/chart finished.');
                         //for the last period OR re-run last period,
                         //DO NOT create the next period decision automatically
-                        if(dbSeminar.currentPeriod < dbSeminar.simulationSpan){
+                        if(dbSeminar.currentPeriod < dbSeminar.simulation_span){
                             status = 'active';
                             return createNewDecisionBasedOnLastPeriodDecision(seminarId, selectedPeriod, decisionsOverwriteSwitchers, goingToNewPeriod);
                         }else{
@@ -250,13 +250,13 @@ export function runSimulation(){
                         if(goingToNewPeriod){
 
 
-                            if(dbSeminar.currentPeriod < dbSeminar.simulationSpan) {
+                            if(dbSeminar.currentPeriod < dbSeminar.simulation_span) {
                                 //after simulation success, set currentPeriod to next period, only when goingToNewPeriod = true
 
-                            }else if (dbSeminar.currentPeriod = dbSeminar.simulationSpan) {
+                            }else if (dbSeminar.currentPeriod = dbSeminar.simulation_span) {
                                 dbSeminar.isSimulationFinished = true;
                             }else {
-                                throw new Error('Cancel promise chains. Because dbSeminar.currentPeriod > dbSeminar.simulationSpan, you cannot run into next period.');
+                                throw new Error('Cancel promise chains. Because dbSeminar.currentPeriod > dbSeminar.simulation_span, you cannot run into next period.');
                             }
                             
                             if(dbSeminar.roundTime.length > 0 ){
@@ -474,7 +474,7 @@ function submitDecision(companyId, period, seminarId){
 function initBinaryFile(seminarId, simulation_span, companies){
     return cgiapi.init({
         seminarId: seminarId,
-        simulationSpan: simulation_span,
+        simulation_span: simulation_span,
         teams: companies
     });
 }
@@ -518,8 +518,6 @@ function initDecision(seminarId, companies, initData) {
             });
         });
     }
-    console.warn('tempDecisions', tempDecisions.length);
-    global.debug_data.tempDecisions = tempDecisions;
     return dbutility.saveDecision(seminarId, tempDecisions);
 }
 function cleanDecisions(allDecisions) {
@@ -542,7 +540,7 @@ function initChartData(seminarId, allResults){
     .spread(function(seminar, exogenous){
         //generate charts from allResults
         let chartData = chartAssembler.extractChartData(allResults, {
-            simulationSpan: seminar.simulationSpan,
+            simulation_span: seminar.simulation_span,
             exogenous: exogenous
         });
 

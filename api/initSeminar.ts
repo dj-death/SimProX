@@ -26,7 +26,7 @@ export function  initSeminar(io) {
 
                 playersNb: req.body.playersNb,
 
-                simulationSpan: req.body.simulationSpan,
+                simulation_span: req.body.simulation_span,
                 isKeepExistedPeriod1Decision: req.body.isKeepExistedPeriod1Decision
             };
 
@@ -90,7 +90,7 @@ export function  initSeminar(io) {
 
                 let periods = [];
 
-                for (let i = 1; i < options.simulationSpan; i++) {
+                for (let i = 1; i < options.simulation_span; i++) {
                     periods.push(i);
                 }
                 // now empty decisions
@@ -99,7 +99,7 @@ export function  initSeminar(io) {
                 options["endWithPlayerID"] = options.playersNb;
 
                 options["startFromPeriod"] = 1;
-                options["endWithPeriod"] = options.simulationSpan;
+                options["endWithPeriod"] = options.simulation_span;
 
                 var lastDec = options["historiques"][options["historiques"].length - 1];
                 var decision = PlayerDecision.resetRawDecision(lastDec);

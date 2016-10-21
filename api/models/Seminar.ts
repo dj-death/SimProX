@@ -26,7 +26,7 @@ let seminarSchema = new Schema({
     address: String,
 
     currentPeriod: { type: Number, default: 1 },
-    simulationSpan: Number,
+    simulation_span: Number,
 
     simulationScenarioID: String,
 
@@ -39,9 +39,9 @@ let seminarSchema = new Schema({
 
     isTimerActived: Boolean,
 
-    roundTime: Schema.Types.Mixed,
+    //roundTime: Schema.Types.Mixed,
     // intervalle de temps
-    /*roundTime : [{
+    roundTime : [{
         period : {type: Number},
         roundTimeHour : {type: Number},
         startTime : {type: Date},
@@ -55,7 +55,7 @@ let seminarSchema = new Schema({
                 spendHour : {type: Number}
             }
         ]
-    }],*/
+    }],
 
     companies: [],
 

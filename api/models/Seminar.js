@@ -20,7 +20,7 @@ var seminarSchema = new Schema({
     city: String,
     address: String,
     currentPeriod: { type: Number, default: 1 },
-    simulationSpan: Number,
+    simulation_span: Number,
     simulationScenarioID: String,
     seminarDate: {
         type: Date,
@@ -28,23 +28,23 @@ var seminarSchema = new Schema({
     },
     company_num: Number,
     isTimerActived: Boolean,
-    roundTime: Schema.Types.Mixed,
+    //roundTime: Schema.Types.Mixed,
     // intervalle de temps
-    /*roundTime : [{
-        period : {type: Number},
-        roundTimeHour : {type: Number},
-        startTime : {type: Date},
-        endTime : {type: Date},
-        lockDecisionTime : [
-            {
-                companyId : {type: Number},
-                companyName : {type: String},
-                lockStatus : {type: Boolean , default: false},
-                lockTime : {type: Date},
-                spendHour : {type: Number}
-            }
-        ]
-    }],*/
+    roundTime: [{
+            period: { type: Number },
+            roundTimeHour: { type: Number },
+            startTime: { type: Date },
+            endTime: { type: Date },
+            lockDecisionTime: [
+                {
+                    companyId: { type: Number },
+                    companyName: { type: String },
+                    lockStatus: { type: Boolean, default: false },
+                    lockTime: { type: Date },
+                    spendHour: { type: Number }
+                }
+            ]
+        }],
     companies: [],
     isInitialized: { type: Boolean, default: false },
     isSimulationFinished: { type: Boolean, default: false },

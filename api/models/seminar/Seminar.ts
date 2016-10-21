@@ -101,7 +101,7 @@ export let localStrategy = new LocalStrategy(function  (username, password, done
         tempSeminar.seminarCode = doc.seminarCode;
         tempSeminar.seminarDescription = doc.seminarDescription;
         tempSeminar.currentPeriod = doc.currentPeriod;
-        tempSeminar.simulationSpan = doc.simulationSpan;
+        tempSeminar.simulation_span = doc.simulation_span;
 
         return done(null, {
             seminar: tempSeminar,
@@ -153,7 +153,7 @@ export function  deserializeUser (username, done) {
         tempSeminar["seminarCode"] = doc.seminarCode;
         tempSeminar["seminarDescription"] = doc.seminarDescription;
         tempSeminar["currentPeriod"] = doc.currentPeriod;
-        tempSeminar["simulationSpan"] = doc.simulationSpan;
+        tempSeminar["simulation_span"] = doc.simulation_span;
 
         return done(null, {
             seminar: tempSeminar,
@@ -237,7 +237,7 @@ export function  getSeminarInfo (req, res, next) {
             tempSeminar["seminarCode"] = doc.seminarCode;
             tempSeminar["seminarDescription"] = doc.seminarDescription;
             tempSeminar["currentPeriod"] = doc.currentPeriod;
-            tempSeminar["simulationSpan"] = doc.simulationSpan;
+            tempSeminar["simulation_span"] = doc.simulation_span;
 
             res.status(200).send(tempSeminar);
         }
@@ -666,7 +666,7 @@ export function  setCurrentPeriod (io) {
                         io.sockets.emit('socketIO:seminarPeriodChanged', {
                             currentPeriod: queryCondition.period,
                             seminarCode: queryCondition.seminar,
-                            simulationSpan: doc.simulationSpan
+                            simulation_span: doc.simulation_span
                         });
 
                         res.status(200).send({
@@ -724,7 +724,7 @@ export function  addSeminars (req, res, next) {
     var values = {
         seminarCode: req.body.seminarCode,
         seminarDescription: req.body.seminarDescription,
-        simulationSpan: req.body.simulationSpan,
+        simulation_span: req.body.simulation_span,
         playersNb: req.body.playersNb,
         simulationScenarioID: req.body.simulationScenarioID,
         
@@ -755,7 +755,7 @@ export function  addSeminars (req, res, next) {
         });
 
 
-        for (var j = 1; j <= values.simulationSpan; j++) {
+        for (var j = 1; j <= values.simulation_span; j++) {
 
             playerDoc.decisionCommitStatus.push({
                 period: j,
@@ -830,8 +830,8 @@ export function  updateSeminar (io) {
                     case 'updateCurrentPeriod':
                         doc.currentPeriod = queryCondition.value;
                         break;
-                    case 'updateSimulationSpan':
-                        doc.simulationSpan = queryCondition.value;
+                    case 'updatesimulation_span':
+                        doc.simulation_span = queryCondition.value;
                         break;
                     case 'switchTimer':
                         doc.isTimerActived = queryCondition.value;
@@ -862,11 +862,11 @@ export function  updateSeminar (io) {
                         if (err) {
                             return next(new Error(err));
                         }
-                        if (queryCondition.behaviour == "updateCurrentPeriod" || queryCondition.behaviour == "updateSimulationSpan") {
+                        if (queryCondition.behaviour == "updateCurrentPeriod" || queryCondition.behaviour == "updatesimulation_span") {
                             io.sockets.emit('socketIO:seminarPeriodChanged', {
                                 currentPeriod: doc.currentPeriod,
                                 seminarCode: doc.seminarCode,
-                                simulationSpan: doc.simulationSpan
+                                simulation_span: doc.simulation_span
                             });
                         }
 
@@ -1086,7 +1086,7 @@ export function  initializeSeminar (options) {
             console.info(options);
         }
 
-        doc.simulationSpan = options.simulationSpan;
+        doc.simulation_span = options.simulation_span;
         doc.traceActive = options.traceActive;
         doc.forceNextDecisionsOverwrite = options.forceNextDecisionsOverwrite;
 
@@ -1127,7 +1127,7 @@ export function  passiveSeminar (options) {
         var reqOptions = {
             hostname: options.cgiHost,
             port: options.cgiPort,
-            path: options.cgiPath + '?seminar=' + doc.seminarCode + '&span=' + doc.simulationSpan + '&isTraceActive=' + doc.traceActive + '&isTraditionalTradeActive=' + doc.traditionalTradeActive + '&isEMallActive=' + doc.EMallActive + '&isVirtualSupplierActive=' + doc.virtualSupplierActive + '&leadingMarket=' + options.leadingMarket + '&supplier4growthpace=' + options.supplier4growthpace + '&supplier4activationgap=' + options.supplier4activationgap + '&isForceNextDecisionsOverwrite=' + doc.forceNextDecisionsOverwrite + '&market1ID=' + doc.market1ID + '&market2ID=' + doc.market2ID + '&category1ID=' + doc.category1ID + '&category2ID=' + doc.category2ID + '&period=' + options.period
+            path: options.cgiPath + '?seminar=' + doc.seminarCode + '&span=' + doc.simulation_span + '&isTraceActive=' + doc.traceActive + '&isTraditionalTradeActive=' + doc.traditionalTradeActive + '&isEMallActive=' + doc.EMallActive + '&isVirtualSupplierActive=' + doc.virtualSupplierActive + '&leadingMarket=' + options.leadingMarket + '&supplier4growthpace=' + options.supplier4growthpace + '&supplier4activationgap=' + options.supplier4activationgap + '&isForceNextDecisionsOverwrite=' + doc.forceNextDecisionsOverwrite + '&market1ID=' + doc.market1ID + '&market2ID=' + doc.market2ID + '&category1ID=' + doc.category1ID + '&category2ID=' + doc.category2ID + '&period=' + options.period
         };
 
         http.get(reqOptions, function  (response) {
@@ -1178,7 +1178,7 @@ export function  getSimulationParams (options) {
 
         var simParams = {
             simulationScenarioID: doc.simulationScenarioID,
-            simulationSpan: doc.simulationSpan,
+            simulation_span: doc.simulation_span,
             traceActive: doc.traceActive
         };
 
@@ -1210,7 +1210,7 @@ export function  kernelSeminar (options) {
         var reqOptions = {
             hostname: options.cgiHost,
             port: options.cgiPort,
-            path: options.cgiPath + '?seminar=' + doc.seminarCode + '&span=' + doc.simulationSpan + '&isTraceActive=' + doc.traceActive + '&isTraditionalTradeActive=' + doc.traditionalTradeActive + '&isEMallActive=' + doc.EMallActive + '&isVirtualSupplierActive=' + doc.virtualSupplierActive + '&leadingMarket=' + options.leadingMarket + '&supplier4growthpace=' + options.supplier4growthpace + '&supplier4activationgap=' + options.supplier4activationgap + '&isForceNextDecisionsOverwrite=' + doc.forceNextDecisionsOverwrite + '&market1ID=' + doc.market1ID + '&market2ID=' + doc.market2ID + '&category1ID=' + doc.category1ID + '&category2ID=' + doc.category2ID + '&period=' + options.period
+            path: options.cgiPath + '?seminar=' + doc.seminarCode + '&span=' + doc.simulation_span + '&isTraceActive=' + doc.traceActive + '&isTraditionalTradeActive=' + doc.traditionalTradeActive + '&isEMallActive=' + doc.EMallActive + '&isVirtualSupplierActive=' + doc.virtualSupplierActive + '&leadingMarket=' + options.leadingMarket + '&supplier4growthpace=' + options.supplier4growthpace + '&supplier4activationgap=' + options.supplier4activationgap + '&isForceNextDecisionsOverwrite=' + doc.forceNextDecisionsOverwrite + '&market1ID=' + doc.market1ID + '&market2ID=' + doc.market2ID + '&category1ID=' + doc.category1ID + '&category2ID=' + doc.category2ID + '&period=' + options.period
 
         };
         http.get(reqOptions, function  (response) {

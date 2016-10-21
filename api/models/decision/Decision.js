@@ -178,7 +178,6 @@ function addDecisions(seminarId, periods, endWithPlayerID, raw) {
         rawRecordsNb = 1;
         isRepeatClone = true;
     }
-    console.warn('adding decision of period:', seminarId);
     var bulk = Decision.collection.initializeOrderedBulkOp();
     for (var ID = startFromPlayerID; ID <= endWithPlayerID; ID++) {
         periods.forEach(function (period) {

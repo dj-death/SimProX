@@ -263,8 +263,8 @@ function authLoginToken(options) {
                             };
                         }
                         // very important, after seminar finished currentPeriod is last round
-                        if (req.gameMarksimos.currentStudentSeminar.currentPeriod > req.gameMarksimos.currentStudentSeminar.simulationSpan) {
-                            req.gameMarksimos.currentStudentSeminar.currentPeriod = req.gameMarksimos.currentStudentSeminar.simulationSpan;
+                        if (req.gameMarksimos.currentStudentSeminar.currentPeriod > req.gameMarksimos.currentStudentSeminar.simulation_span) {
+                            req.gameMarksimos.currentStudentSeminar.currentPeriod = req.gameMarksimos.currentStudentSeminar.simulation_span;
                         }
                     }
                     else {
@@ -335,11 +335,11 @@ function getUserInfo(req, res, next) {
         userResult = req.gameMarksimos.currentStudent.toObject();
         userResult.currentMarksimosSeminar = req.gameMarksimos.currentStudentSeminar.toObject();
         // very important, after seminar finished currentPeriod is last round
-        if (userResult.currentMarksimosSeminar.currentPeriod > userResult.currentMarksimosSeminar.simulationSpan) {
-            userResult.currentMarksimosSeminar.currentPeriod = userResult.currentMarksimosSeminar.simulationSpan;
+        if (userResult.currentMarksimosSeminar.currentPeriod > userResult.currentMarksimosSeminar.simulation_span) {
+            userResult.currentMarksimosSeminar.currentPeriod = userResult.currentMarksimosSeminar.simulation_span;
         }
         userResult.currentMarksimosSeminar.numOfCompany = userResult.currentMarksimosSeminar.companyNum;
-        userResult.currentMarksimosSeminar.maxPeriodRound = userResult.currentMarksimosSeminar.simulationSpan;
+        userResult.currentMarksimosSeminar.maxPeriodRound = userResult.currentMarksimosSeminar.simulation_span;
         for (var i = 0; i < userResult.currentMarksimosSeminar.companies.length; i++) {
             //if this student is in this company
             if (userResult.currentMarksimosSeminar.companies[i].studentList.indexOf(userResult.email) > -1) {
@@ -353,7 +353,6 @@ function getUserInfo(req, res, next) {
     }
     else {
         if (req.user) {
-            console.warn('mmm', req.user);
             userResult = req.user.toObject();
         }
         else {

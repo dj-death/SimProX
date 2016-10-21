@@ -76,7 +76,7 @@ let seminarSchema = mongoose.Schema({
     //Kernel communicate parameters 
     simulationScenarioID: String,
 
-    simulationSpan: {
+    simulation_span: {
         type: Number,
         default: 9
     }, // round numbers

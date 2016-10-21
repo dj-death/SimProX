@@ -1420,26 +1420,36 @@
                 company_data : {}
             };
 
-            $scope.data.currentModifiedCompany.company_data[fieldname] = $scope.data.currentCompany[fieldname];
+            if (fieldname) {
+                $scope.data.currentModifiedCompany.company_data[fieldname] = $scope.data.currentCompany[fieldname];
+            } else {
+                $scope.data.currentModifiedCompany.company_data = $scope.data.currentCompany;
+            } 
+
+            console.info('mm', $scope.data.currentModifiedCompany);
 
             Company.updateCompany($scope.data.currentModifiedCompany).success(function(data, status, headers, config){
                 $scope.css.additionalBudget = true;
 
+                if (formfieldname) {
+                    form[formfieldname].$valid = true;
+                    form[formfieldname].$invalid = false;
+                }
 
-                form[formfieldname].$valid = true;
-                form[formfieldname].$invalid = false;
-
-//                app.reRun();
+//              app.reRun();
 
                 notify({
                     message : 'Save Success !',
                     templateUrl : notifytemplate.success,
                     position : 'center'
                 });
+
             }).error(function(data, status, headers, config){
 
-                form[formfieldname].$valid = false;
-                form[formfieldname].$invalid = true;
+                if (formfieldname) {
+                    form[formfieldname].$valid = false;
+                    form[formfieldname].$invalid = true;
+                }
 
                 $scope.css.companyErrorInfo = data;
 

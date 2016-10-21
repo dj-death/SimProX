@@ -212,7 +212,6 @@ function  processDecisions(currPData, lastPeriodsData: Array<any>, options, io) 
             msg: msg
         });
 
-        console.warn(msg);
     }
 
 

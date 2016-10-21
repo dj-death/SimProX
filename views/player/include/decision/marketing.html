@@ -1,157 +1,135 @@
-<div class="row ">
-	<div class="col-md-10 col-md-offset-1 product_portfolio ">
-		<h4>{{data.currentCompanyFutureProjectionCalculator.currentPeriodInfo.SKUName}} ({{'DecisionPageFutureProjectionsCalculatorTablePeriod' | translate}} {{data.currentCompanyFutureProjectionCalculator.currentPeriodInfo.period}})</h4>
+<div class="col-md-12">
+	<form class="form-horizontal marketing_form" role="form" name="updateCompanyForm" novalidate>
+		<div class="panel panel-default product_portfolio">
+				<div class="panel-heading text-center">Livraisons pour</div>
+					<table class="table  table-bordered table-hover">
+						<thead>
+							<tr>
+								<th><strong>Marché</strong></th>
+								<th></th>
+								<th ng-repeat="product in data.currentCompany.products">{{data.currentCompany.productsRefs[$index]}}</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr ng-repeat="market in data.currentCompany.markets">
+								<td>{{data.currentCompany.marketsRefs[$index]}}</td>
+								<td></td>
+								
+								<td ng-repeat="subMarket in market.products">
+									<input type="number" class="form-control" ng-model="subMarket.deliveredQ" required ng-blur="updateCompany()" ng-disabled="data.currentCompanyDecisionLock.lockStatus">
+								</td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			
+			
 		
-		<table class="table table-striped table-bordered table-hover">
-			<thead>
-				<tr>
-					<td><strong>Marché</strong></td>
-					<td>Image</td>
-					<td ng-repeat="product in data.currentCompany.products">{{$parent.productsRefs[$index]}}</td>
-				</tr>
-			</thead>
+		<div class="panel panel-default product_portfolio">	
+			<div class="panel-heading text-center">Prix</div>
+			<table class="table  table-bordered table-hover">
+				<thead>
+					<tr>
+						<th><strong>Marché</strong></th>
+						<th></th>
+						<th ng-repeat="product in data.currentCompany.products">{{data.currentCompany.productsRefs[$index]}}</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr ng-repeat="market in data.currentCompany.markets">
+						<td>{{data.currentCompany.marketsRefs[$index]}}</td>
+						<td></td>
+						<td ng-repeat="subMarket in market.products">
+							<input type="number" class="form-control  pristine" ng-model="subMarket.price" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+				
+			<div class="panel-heading text-center">Publicité</div>
+			<table class="table  table-bordered table-hover">
+				<thead>
+					<tr>
+						<th><strong>Marché</strong></th>
+						<th>Communication</th>
+						<th ng-repeat="product in data.currentCompany.products">{{data.currentCompany.productsRefs[$index]}}</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr ng-repeat="market in data.currentCompany.markets">
+						<td>{{data.currentCompany.marketsRefs[$index]}}</td>
+						<td>
+							<input type="number" class="form-control  pristine" ng-model="market.corporateComBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+
+						<td ng-repeat="subMarket in market.products">
+							<input type="number" class="form-control  pristine" ng-model="subMarket.advertisingBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+
+		<div class="panel panel-default product_portfolio">
+						
+			<div class="panel-heading text-center">Agents et Distributeurs</div>		
+			<table class="table  table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>&nbsp;</th>
+						<th>Objectif prochain trimestre</th>
+						<th>Soutien Financier (' 000 Dh)</th>
+						<th>Commission (%)</th>
+						<th>&nbsp;</th>
+					</tr>
+					
+				</thead>
+				
+				<tbody>
+					<tr ng-repeat="agent in data.currentCompany.agents">
+						<td>Agents {{data.currentCompany.marketsRefs[$index]}}</td>
+						<td>
+							<input type="number" class="form-control  pristine" ng-model="agent.appointedNb" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+
+						<td>
+							<input type="number" class="form-control  pristine" ng-model="agent.support" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+
+						<td>
+							<input type="number" class="form-control  pristine" ng-model="agent.commissionRate" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+
+		<div class="panel panel-default product_portfolio">
+		
+		<div class="panel-heading text-center">Intelligence économique et Veille</div>		
+		<table class="table  table-bordered table-hover">
 			
 			<tbody>
-				<tr ng-repeat="market in data.currentCompany.markets">
-					<td>{{$parent.marketsRefs[$index]}}</td>
+				<tr>
+					<td>Parts de Marché</td>
 					<td>
-						<input type="number" class="form-control" ng-model="market.corporateComBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						<input type="checkbox" class="form-control  pristine" ng-model="data.currentCompany.orderMarketSharesInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 					</td>
-
-					<td ng-repeat="subMarket in market.products">
-						<input type="number" class="form-control" ng-model="subMarket.advertisingBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+					
+					<td>Autres Infos</td>
+					<td>
+						<input type="checkbox" class="form-control  pristine" ng-model="data.currentCompany.orderCorporateActivityInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		
-		<table class="table table-striped table-bordered table-hover">
-
-				<thead>
-					<tr>
-						<th colspan="5">Prix ( Dh ):</th>
-					</tr>
-					<tr>
-						<td width="27%"><strong>Marché</strong></td>
-						<td width="16%"></td>
-						<td width="16%" ng-repeat="product in data.currentCompany.products">{{$parent.productsRefs[$index]}}</td>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr ng-repeat="market in data.currentCompany.markets">
-						<td>{{$parent.marketsRefs[$index]}}</td>
-						<td></td>
-						<td ng-repeat="subMarket in market.products">
-							<label for="aec"></label>
-							<span id="sprytextfield13">
-								<input name="pep1" type="text" ng-model="subMarket.price" style="width:30px;" value="339" maxlength="5" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure � la maximale requise (é9)</span>
-							</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			
-			<table class="table table-striped table-bordered table-hover">
-
-				<thead>
-					<tr>
-						<th colspan="5">Livraison pour :</th>
-					</tr>
-					<tr>
-						<td width="27%"><strong>Marché</strong></td>
-						<td width="16%"></td>
-						<td width="16%" ng-repeat="product in data.currentCompany.products">{{$parent.productsRefs[$index]}}</td>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr ng-repeat="market in data.currentCompany.markets">
-						<td>{{$parent.marketsRefs[$index]}}</td>
-						<td></td>
-						<td ng-repeat="subMarket in market.products">
-							<label for="aec"></label>
-							<span id="sprytextfield13">
-								<input name="pep1" type="text" ng-model="subMarket.deliveredQ" style="width:30px;" value="339" maxlength="5" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure � la maximale requise (é9)</span>
-							</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<table class="table table-striped table-bordered table-hover">
-
-				<thead>
-					<tr>
-						<th colspan="6">Agents et Distributeurs</th>
-					</tr>
-					<tr>
-						<td width="28%">&nbsp;</td>
-						<td width="16%">Objectif prochain trimestre</td>
-						<td width="16%">Soutien Financier (' 000 Dh)</td>
-						<td width="16%">Commission (%)</td>
-						<td colspan="2">&nbsp;</td>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr ng-repeat="agent in data.currentCompany.agents">
-						<td>Agents {{$parent.marketsRefs[$index]}}</td>
-						<td>
-							<label for="aec"></label>
-							<span id="sprytextfield43">
-								<input name="agen" type="text" ng-model="agent.appointedNb" style="width:30px;" value="5" maxlength="2" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure � la maximale requise (é)</span>
-							</span>
-						</td>
-
-						<td>
-							<label for="aec"></label>
-							<span id="sprytextfield44">
-								<input name="ages" type="text" ng-model="agent.support" style="width:30px;" value="13" maxlength="2" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (5)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure � la maximale requise (é)</span>
-							</span>
-						</td>
-
-						<td>
-							<label for="aec"></label>
-							<span id="sprytextfield45">
-								<input name="agec" type="text" ng-model="agent.commissionRate" style="width:30px;" value="13" maxlength="2" autocomplete="off">
-								<span class="textfieldInvalidFormatMsg">format non valide</span><span class="textfieldMinValueMsg">La valeur indiquée est inférieur au minimum requis (0)</span><span class="textfieldMaxValueMsg">La valeur saisie est supérieure � la maximale requise (é)</span>
-							</span>
-						</td>
-						<td colspan="2">&nbsp;</td>
-					</tr>
-
-				</tbody>
-			</table>
-			
-			
-			<table class="table table-striped table-bordered table-hover">
-
-				<thead>
-					<tr>
-						<th colspan="6">Informations</th>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr>
-						<td>sur Parts de Marché</td>
-						<td>
-							<input type="checkbox" name="mshares" ng-model="data.currentCompany.orderMarketSharesInfo">
-							<label for="mshares"></label>
-						</td>
-						<td colspan="3">sur autres entreprises</td>
-						<td>
-							<input type="checkbox" name="bint" ng-model="data.currentCompany.orderCorporateActivityInfo">
-							<label for="bint"></label>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 	</div>
+	</form>	
+</div>

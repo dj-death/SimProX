@@ -681,7 +681,7 @@
                                 <table class="table table-striped table-hover text-center table-bordered text-center table-bordered">
                                     <tbody class="table-striped">
                                     <tr class="bg-gray">
-                                        <th>ID</th>
+                                        <th>Code</th>
                                         <th>Description</th>
                                         <th>Activé</th>
 										<th>Terminé</th>
@@ -695,7 +695,7 @@
 										<th style="width:100px">Action</th>
                                     </tr>
                                     <tr ng-repeat="seminar in data.seminars" >
-                                        <td ><span data-highlight-key="data.searchSeminar.filterKey">{{seminar.seminarId}}</span>
+                                        <td ><span data-highlight-key="data.searchSeminar.filterKey">{{seminar.seminarCode}}</span>
                                             <a href="adminhomereport/{{seminar.seminarId}}" target="_blank"  ng-show="seminar.isInitialized"> Report</a>
                                         </td>
                                         <td data-highlight-key="data.searchSeminar.filterKey">{{seminar.description}}</td>
@@ -703,12 +703,12 @@
 										<td><i class="fa fa-check" aria-hidden="true" ng-show="seminar.isSimulationFinished"></i></td>
                                         <!--<td>{{seminar.country}} / {{seminar.city}} </td>-->
                                         <!--<td data-highlight-key="data.searchSeminar.filterKey">{{seminar.address}}</td>-->
-                                        <td>{{seminar.currentPeriod}} / {{seminar.simulationSpan}}
+                                        <td>{{seminar.currentPeriod}} / {{seminar.simulation_span}}
                                             <button type="button" class="btn btn-info" ng-hide="seminar.showLastPeriodScore" ng-click="showFinalScore(seminar)" >Afficher Score</button>
                                             <button type="button" class="btn btn-info" ng-show="seminar.showLastPeriodScore" ng-click="hideFinalScore(seminar)" >Cacher Score</button>
                                         </td>
                                         <!--<td>
-                                            <p ng-repeat="company in seminar.companyAssignment">Company{{company.companyId | companyname }} :
+                                            <p ng-repeat="company in seminar.companies">Company{{company.companyId | companyname }} :
                                                 <span ng-repeat="team in company.teamListData">Team: {{team.name}} / Creator: {{team.creator.username}} <a href="" ng-hide="seminar.isSimulationFinished" ng-click="removeTeamFromSeminar(seminar.seminarId, team._id)">remove</a>, </span>
                                                 <br>
                                                 Members: <span ng-repeat="student in company.studentList">{{student}} <a href="" ng-hide="seminar.isSimulationFinished" ng-click="removeStudentFromSeminar(seminar.seminarId, student)">remove</a>, </span>
@@ -718,7 +718,7 @@
                                             {{seminar.roundTime[seminar.currentPeriod - 1].endTime | date : "yyyy-MM-dd,HH:mm"}}
                                         </td>
                                         <!--<td>
-                                            <p ng-repeat="company in seminar.companyAssignment">
+                                            <p ng-repeat="company in seminar.companies">
                                                 Company{{company.companyId | companyname }}: {{company.totalRoundTime | timecost}}
                                             </p>
                                         </td>-->
@@ -728,7 +728,7 @@
                                                 <div class="input-group-btn">
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{seminar.currentCompanyName}} <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
-                                                        <li ng-repeat="company in seminar.companyAssignment"><a href="" ng-click="chooseCompany(seminar, company)">Company {{company.companyName}}</a></li>
+                                                        <li ng-repeat="company in seminar.companies"><a href="" ng-click="chooseCompany(seminar, company)">Company {{company.companyName}}</a></li>
                                                     </ul>
                                                 </div><!-- /btn-group -->
                                                 <input type="text" class="form-control" placeholder="Student / Team creator Email or Username" ng-model="seminar.inputemail">
@@ -769,6 +769,8 @@
                         <div class="box box-primary">
                             <form novalidate class="form-horizontal" role="form" name="newSeminarForm">
                                 <div class="box-body">
+								
+                                    <text-form-input type="text" name="newSeminarSeminarCode" label="Code :" placeholder="" labelclass="col-sm-2" inputclass="col-sm-4" data="data.newSeminar.seminarCode" required="true" requirederrorinfo="Description is required" minlength="2" minlengtherrorinfo="Description must be at least 6 characters" maxlength="100" maxlengtherrorinfo="Description is a maximum of 100 characters"></text-form-input>
 
                                     <text-form-input type="text" name="newSeminarDescription" label="Description :" placeholder="" labelclass="col-sm-2" inputclass="col-sm-4" data="data.newSeminar.description" required="true" requirederrorinfo="Description is required" minlength="2" minlengtherrorinfo="Description must be at least 6 characters" maxlength="100" maxlengtherrorinfo="Description is a maximum of 100 characters"></text-form-input>
 

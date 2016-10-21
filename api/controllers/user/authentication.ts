@@ -354,8 +354,8 @@ export function authLoginToken(options: any = {}) {
                         }
 
                         // very important, after seminar finished currentPeriod is last round
-                        if (req.gameMarksimos.currentStudentSeminar.currentPeriod > req.gameMarksimos.currentStudentSeminar.simulationSpan) {
-                            req.gameMarksimos.currentStudentSeminar.currentPeriod = req.gameMarksimos.currentStudentSeminar.simulationSpan;
+                        if (req.gameMarksimos.currentStudentSeminar.currentPeriod > req.gameMarksimos.currentStudentSeminar.simulation_span) {
+                            req.gameMarksimos.currentStudentSeminar.currentPeriod = req.gameMarksimos.currentStudentSeminar.simulation_span;
                         }
 
                     } else {
@@ -451,12 +451,12 @@ export function  getUserInfo (req, res, next){
         userResult.currentMarksimosSeminar = req.gameMarksimos.currentStudentSeminar.toObject();
 
         // very important, after seminar finished currentPeriod is last round
-        if (userResult.currentMarksimosSeminar.currentPeriod > userResult.currentMarksimosSeminar.simulationSpan) {
-            userResult.currentMarksimosSeminar.currentPeriod = userResult.currentMarksimosSeminar.simulationSpan;
+        if (userResult.currentMarksimosSeminar.currentPeriod > userResult.currentMarksimosSeminar.simulation_span) {
+            userResult.currentMarksimosSeminar.currentPeriod = userResult.currentMarksimosSeminar.simulation_span;
         }
 
         userResult.currentMarksimosSeminar.numOfCompany = userResult.currentMarksimosSeminar.companyNum;
-        userResult.currentMarksimosSeminar.maxPeriodRound = userResult.currentMarksimosSeminar.simulationSpan;
+        userResult.currentMarksimosSeminar.maxPeriodRound = userResult.currentMarksimosSeminar.simulation_span;
 
 
         for (let i = 0; i < userResult.currentMarksimosSeminar.companies.length; i++) {
@@ -473,8 +473,6 @@ export function  getUserInfo (req, res, next){
     } else {
 
         if (req.user) {
-
-            console.warn('mmm', req.user);
 
             userResult = req.user.toObject();
 

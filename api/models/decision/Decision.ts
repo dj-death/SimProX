@@ -223,9 +223,6 @@ export function addDecisions(seminarId: string, periods: number[], endWithPlayer
     }
 
 
-    console.warn('adding decision of period:', seminarId);
-
-
     var bulk = Decision.collection.initializeOrderedBulkOp();
 
     for (var ID = startFromPlayerID; ID <= endWithPlayerID; ID++) {

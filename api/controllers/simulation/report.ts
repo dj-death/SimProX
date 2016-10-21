@@ -317,7 +317,7 @@ function getFinalScore(seminarId) {
                     originalSOM = 100 * (requestedPeriodResult.p_Companies[i].c_ValueSegmentShare[6] - initialPeriodResult.p_Companies[i].c_ValueSegmentShare[6]);
                     originalProfit = requestedPeriodResult.p_Companies[i].c_CumulatedNetResults;
 
-                    originalBudget = (period / seminarInfo.simulationSpan) * requestedPeriodResult.p_Companies[i].c_TotalInvestmentBudget;
+                    originalBudget = (period / seminarInfo.simulation_span) * requestedPeriodResult.p_Companies[i].c_TotalInvestmentBudget;
 
                     if (originalBudget > 0) {
                         originalBudget = 100 * requestedPeriodResult.p_Companies[i].c_CumulatedInvestments / originalBudget;

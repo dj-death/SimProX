@@ -27,7 +27,7 @@ function addSeminar(req, res, next) {
         isInitialized: false,
         seminarCode: req.body.seminarCode,
         description: req.body.description,
-        simulationSpan: req.body.simulationSpan,
+        simulation_span: req.body.simulation_span,
         company_num: req.body.company_num,
         simulationScenarioID: req.body.simulationScenarioID,
         companies: [],
@@ -48,7 +48,8 @@ function addSeminar(req, res, next) {
             tempRoundTime[time.period] = time.hour;
         }
     });
-    for (var j = 1; j <= seminar.simulationSpan; j++) {
+    console.warn('seminar.simulation_span', seminar.simulation_span);
+    for (var j = 1; j <= seminar.simulation_span; j++) {
         var oneRoundTime = {
             period: j,
             roundTimeHour: tempRoundTime[j] || 0,
@@ -56,6 +57,7 @@ function addSeminar(req, res, next) {
         };
         seminar.roundTime.push(oneRoundTime);
     }
+    console.warn(seminar.roundTime);
     userModel.findOneQ({ _id: facilitatorId })
         .then(function (dbFacilitator) {
         if (!dbFacilitator) {
@@ -510,7 +512,6 @@ function chooseSeminarForStudent(req, res, next) {
                 seminarId: dbSeminar.seminarId
             };
             gameTokenModel.findOneAndUpdateQ({ userId: req.user._id }, newGameToken, { upsert: true }).then(function (gameToken) {
-                console.warn(gameToken);
                 return res.status(200).send({ message: "choose seminar success." });
             }).fail(function (err) {
                 err.message = "save game token failed!";

@@ -39,7 +39,7 @@ export function  addSeminar (req, res, next){
 
         seminarCode: req.body.seminarCode,
         description: req.body.description,
-        simulationSpan: req.body.simulationSpan,
+        simulation_span: req.body.simulation_span,
         company_num: req.body.company_num,
         simulationScenarioID: req.body.simulationScenarioID,
 
@@ -71,7 +71,9 @@ export function  addSeminar (req, res, next){
     });
 
 
-    for(let j = 1; j<=seminar.simulationSpan; j++){
+    console.warn('seminar.simulation_span', seminar.simulation_span);
+
+    for(let j = 1; j <= seminar.simulation_span; j++){
 
         let oneRoundTime = {
             period : j,
@@ -82,7 +84,7 @@ export function  addSeminar (req, res, next){
         seminar.roundTime.push(oneRoundTime);
     }
 
-
+    console.warn(seminar.roundTime);
 
     userModel.findOneQ({_id: facilitatorId})
     .then(function (dbFacilitator){
@@ -724,8 +726,6 @@ export function  chooseSeminarForStudent (req, res, next){
             };
 
             gameTokenModel.findOneAndUpdateQ({ userId: req.user._id }, newGameToken, { upsert : true } ).then(function (gameToken){
-
-                console.warn(gameToken);
 
                 return res.status(200).send({message: "choose seminar success."});
 

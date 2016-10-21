@@ -55,7 +55,7 @@ var seminarSchema = mongoose.Schema({
     facilitator: [facilitatorSchema],
     //Kernel communicate parameters 
     simulationScenarioID: String,
-    simulationSpan: {
+    simulation_span: {
         type: Number,
         default: 9
     },

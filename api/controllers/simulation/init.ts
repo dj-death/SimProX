@@ -56,7 +56,7 @@ export function init(io) {
 
             let seminarId = req.params.seminar_id;
 
-            let simulationSpan;
+            let simulation_span;
             let company_num;
             let currentPeriod;
             let simulationScenarioID;
@@ -95,7 +95,7 @@ export function init(io) {
                 //before init, a new seminar should be created,
                 //and it's currentPeriod should be set correctly = 1
                 currentPeriod = dbSeminar.currentPeriod;
-                simulationSpan = dbSeminar.simulationSpan;
+                simulation_span = dbSeminar.simulation_span;
                 company_num = dbSeminar.company_num;
                 simulationScenarioID = dbSeminar.simulationScenarioID;
 
@@ -274,7 +274,7 @@ export function runSimulation(){
                     //run simulation
                     return cgiapi.runSimulation({
                         seminarId: seminarId,
-                        simulationSpan: dbSeminar.simulationSpan,
+                        simulation_span: dbSeminar.simulation_span,
                         teams: utility.createCompanyArray(dbSeminar.companyNum),
                         period: selectedPeriod
                     })
@@ -317,7 +317,7 @@ export function runSimulation(){
                         logger.log('generate report/chart finished.');
                         //for the last period OR re-run last period,
                         //DO NOT create the next period decision automatically
-                        if(dbSeminar.currentPeriod < dbSeminar.simulationSpan){
+                        if(dbSeminar.currentPeriod < dbSeminar.simulation_span){
                             status = 'active';
                             return createNewDecisionBasedOnLastPeriodDecision(seminarId, selectedPeriod, decisionsOverwriteSwitchers, goingToNewPeriod);
                         }else{
@@ -330,13 +330,13 @@ export function runSimulation(){
                         if(goingToNewPeriod){
 
 
-                            if(dbSeminar.currentPeriod < dbSeminar.simulationSpan) {
+                            if(dbSeminar.currentPeriod < dbSeminar.simulation_span) {
                                 //after simulation success, set currentPeriod to next period, only when goingToNewPeriod = true
 
-                            }else if (dbSeminar.currentPeriod = dbSeminar.simulationSpan) {
+                            }else if (dbSeminar.currentPeriod = dbSeminar.simulation_span) {
                                 dbSeminar.isSimulationFinished = true;
                             }else {
-                                throw new Error('Cancel promise chains. Because dbSeminar.currentPeriod > dbSeminar.simulationSpan, you cannot run into next period.');
+                                throw new Error('Cancel promise chains. Because dbSeminar.currentPeriod > dbSeminar.simulation_span, you cannot run into next period.');
                             }
                             
                             if(dbSeminar.roundTime.length > 0 ){
@@ -554,7 +554,7 @@ function submitDecision(companyId, period, seminarId){
 function initBinaryFile(seminarId, simulation_span, companies){
     return cgiapi.init({
         seminarId: seminarId,
-        simulationSpan: simulation_span,
+        simulation_span: simulation_span,
         teams: companies
     });
 }
@@ -618,8 +618,6 @@ function initDecision(seminarId, companies: any[], initData) {
         //cleanDecisions(tempDecisions);
     }
 
-    console.warn('tempDecisions', tempDecisions.length);
-    global.debug_data.tempDecisions = tempDecisions;
 
     return dbutility.saveDecision(seminarId, tempDecisions);
 }
@@ -648,7 +646,7 @@ function initChartData(seminarId, allResults){
     .spread(function(seminar, exogenous){
         //generate charts from allResults
         let chartData = chartAssembler.extractChartData(allResults, {
-            simulationSpan: seminar.simulationSpan,
+            simulation_span: seminar.simulation_span,
             exogenous: exogenous
         });
 
