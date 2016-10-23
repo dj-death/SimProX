@@ -27,18 +27,17 @@ var Compte = (function () {
 var Company = (function () {
     function Company() {
     }
-    Company.prototype.restoreLastState = function (playerAllLastStates) {
+    Company.prototype.restoreLastState = function (decisions, results) {
         var i = 0;
-        var len = playerAllLastStates.length;
+        var len = results.length;
         this.lastFreeCashFlows = [];
         this.lastNetIncomes = [];
         var res;
         var dec;
         var netIncome;
         for (; i < len; i++) {
-            var state = playerAllLastStates[i];
-            res = state.results;
-            dec = state.decision;
+            res = results[i];
+            dec = decisions[i];
             var freeCashFlow = res.freeCashFlow;
             if (isNaN(freeCashFlow)) {
                 var operatingProfitLoss = res.operatingProfitLoss || (res.grossProfit - res.administrativeExpensesTotalCost + res.insurancesReceipts - res.depreciation);
@@ -80,7 +79,7 @@ var Company = (function () {
         this.lastWorkingCapital = res.workingCapital;
         this.lastSharePrice = res.sharePrice;
     };
-    Company.prototype.init = function (params, economy, ProductionDept, MarketingDept, FinanceDept, CashFlow, ManagementDept, quarter, playerAllLastStates) {
+    Company.prototype.init = function (params, economy, ProductionDept, MarketingDept, FinanceDept, CashFlow, ManagementDept, quarter, lastDecisions, lastResults) {
         this.params = params;
         this.economy = economy;
         this.ProductionDept = ProductionDept;
@@ -93,7 +92,7 @@ var Company = (function () {
             quarter = 0;
         }
         this.currentQuarter = quarter;
-        this.restoreLastState(playerAllLastStates);
+        this.restoreLastState(lastDecisions, lastResults);
     };
     Company.prototype.prepareCompanyBankFile = function () {
         var self = this;

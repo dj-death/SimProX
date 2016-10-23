@@ -12,8 +12,9 @@ var Factory = (function (_super) {
         _super.call(this, params);
         this.departmentName = "production";
     }
-    Factory.prototype.init = function (initialSize, land, lastFactoryNetValue, economy, contractor) {
+    Factory.prototype.init = function (initialSize, land, lastFactoryNetValue, economy, contractor, lastCreditWorthiness) {
         if (contractor === void 0) { contractor = null; }
+        if (lastCreditWorthiness === void 0) { lastCreditWorthiness = Infinity; }
         _super.prototype.init.call(this, initialSize, land, lastFactoryNetValue, economy, contractor);
     };
     Object.defineProperty(Factory.prototype, "machiningSpaceUsed", {

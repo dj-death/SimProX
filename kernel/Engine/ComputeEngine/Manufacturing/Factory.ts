@@ -29,7 +29,7 @@ export default class Factory extends Space.Space  {
         super(params);
     }
 
-    init(initialSize: number, land: Land, lastFactoryNetValue: number, economy: Economy, contractor: BuildingContractor = null) {
+    init(initialSize: number, land: Land, lastFactoryNetValue: number, economy: Economy, contractor: BuildingContractor = null, lastCreditWorthiness: number = Infinity) {
         super.init(initialSize, land, lastFactoryNetValue, economy, contractor);
     }
 

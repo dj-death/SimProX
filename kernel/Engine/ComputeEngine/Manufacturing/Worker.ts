@@ -542,6 +542,10 @@ export default class Worker extends Employee {
     }
 
     setShift(shiftLevel: number) {
+        if (isNaN(shiftLevel) || shiftLevel <= 0) {
+            shiftLevel = 1;
+        }
+
         this.shiftLevel = shiftLevel;
         this.shift = this.params.availablesShifts[shiftLevel - 1];
 

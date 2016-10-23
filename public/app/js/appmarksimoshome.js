@@ -550,7 +550,7 @@
                 tableReport.companyStatus($scope.data.currentSeminar.currentCompany.companyId).then(function(data, status, headers, config){
                     //        console.log(data);
                     $scope.data.tableA1CompanyStatus.allCompanyData = data;
-                    $scope.data.tableA1CompanyStatus.currentCompany = data[$scope.data.currentSeminar.currentCompany.companyId-1];
+                    $scope.data.tableA1CompanyStatus.currentCompany = data[$scope.data.currentSeminar.currentCompany.companyId - 1];
                     $scope.data.tableA1CompanyStatus.currentSKU = $scope.data.tableA1CompanyStatus.currentCompany.SKU[0];
                     $scope.data.tableA1CompanyStatus.currentBrand = $scope.data.tableA1CompanyStatus.currentCompany.brand[0];
                     $scope.data.tableA1CompanyStatus.currentGlobal = $scope.data.tableA1CompanyStatus.currentCompany.global;
@@ -878,6 +878,8 @@
 
                     $scope.css.periods = [];
 
+                    $scope.css.reportsPeriods = [];
+
                     // 处理显示当前第几回合进度条
                     if(angular.isNumber($scope.data.currentSeminar.currentPeriod)){
                         for (var i = -3; i <= $scope.data.currentSeminar.maxPeriodRound; i++) {
@@ -895,6 +897,9 @@
                                     currentPeriod : false,
                                     pastPeriod : true
                                 });
+
+                                $scope.css.reportsPeriods.push(i);
+
                             }else{
                                 $scope.css.periods.push({
                                     value : i,
@@ -1097,6 +1102,36 @@
             $scope.css.chartMenu = chart;
             // 原因 图表渲染的宽度没有撑开 ng-show改为ng-if 就可以撑开了.
         };
+
+
+
+        $scope.downloadReport = function (period) {
+            var seminarId = $scope.data.currentSeminar.seminarId;
+            var d_CID = $scope.data.currentCompany.d_CID;
+
+            Company.downloadReport(d_CID, period).success(function (data, status, headers) {
+                var type = headers('Content-Type');
+                var disposition = headers('Content-Disposition');
+                var defaultFileName;
+
+                if (disposition) {
+                    var match = disposition.match(/.*filename=\"?([^;\"]+)\"?.*/);
+                    if (match[1])
+                        defaultFileName = match[1];
+                }
+
+                defaultFileName = defaultFileName.replace(/[<>:"\/\\|?*]+/g, '_');
+
+                var blob = new Blob([data], {type: type});
+                
+                download(blob, defaultFileName, type);
+
+            }).error(function (data, status) {
+                console.log(data);
+            });
+
+        };
+
 
 
         /********************  切换顶部菜单  ********************/
@@ -1426,7 +1461,6 @@
                 $scope.data.currentModifiedCompany.company_data = $scope.data.currentCompany;
             } 
 
-            console.info('mm', $scope.data.currentModifiedCompany);
 
             Company.updateCompany($scope.data.currentModifiedCompany).success(function(data, status, headers, config){
                 $scope.css.additionalBudget = true;
@@ -1436,13 +1470,13 @@
                     form[formfieldname].$invalid = false;
                 }
 
-//              app.reRun();
-
                 notify({
                     message : 'Save Success !',
                     templateUrl : notifytemplate.success,
                     position : 'center'
                 });
+
+                app.reRun();
 
             }).error(function(data, status, headers, config){
 
@@ -1472,6 +1506,7 @@
                     templateUrl : notifytemplate.success,
                     position : 'center'
                 });
+
             }).error(function(data, status, headers, config){
                 $scope.css.showConfirmLockDecision = false;
                 notify({

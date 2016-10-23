@@ -36,6 +36,27 @@ function findAll(seminarId) {
     return deferred.promise;
 }
 exports.findAll = findAll;
+function findAllBefore(seminarId, period) {
+    if (!mongoose.connection.readyState) {
+        throw new Error("mongoose is not connected.");
+    }
+    var deferred = Q.defer();
+    SimulationResult.find({
+        seminarId: seminarId,
+        period: { $lte: period }
+    })
+        .sort({ period: 'asc' })
+        .exec(function (err, result) {
+        if (err) {
+            deferred.reject(err);
+        }
+        else {
+            deferred.resolve(result);
+        }
+    });
+    return deferred.promise;
+}
+exports.findAllBefore = findAllBefore;
 function removeAll(seminarId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");

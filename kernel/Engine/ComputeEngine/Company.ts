@@ -90,9 +90,9 @@ export class Company {
 
     _marketValuePerShare: number;
 
-    restoreLastState(playerAllLastStates: Scenario.Scenario[]) {
+    restoreLastState(decisions: Scenario.Decision[], results: Scenario.Results[]) {
         let i = 0;
-        let len = playerAllLastStates.length;
+        let len = results.length;
 
         this.lastFreeCashFlows = [];
         this.lastNetIncomes = [];
@@ -103,10 +103,9 @@ export class Company {
         let netIncome;
 
         for (; i < len; i++) {
-            let state = playerAllLastStates[i];
 
-            res = state.results;
-            dec = state.decision;
+            res = results[i];
+            dec = decisions[i];
 
             let freeCashFlow = res.freeCashFlow;
 
@@ -173,7 +172,7 @@ export class Company {
     }
 
 
-    init(params: CompanyParams, economy: Economy, ProductionDept: Production, MarketingDept: Marketing, FinanceDept: Finance, CashFlow: CashFlow, ManagementDept: Management, quarter: number, playerAllLastStates: Scenario.Scenario[]) {
+    init(params: CompanyParams, economy: Economy, ProductionDept: Production, MarketingDept: Marketing, FinanceDept: Finance, CashFlow: CashFlow, ManagementDept: Management, quarter: number, lastDecisions: Scenario.Decision[], lastResults: Scenario.Results[]) {
 
         this.params = params;
 
@@ -186,8 +185,6 @@ export class Company {
 
         this.CashFlow = CashFlow;
 
-
-
         if (isNaN(quarter)) {
             console.warn("quarter NaN");
 
@@ -196,7 +193,7 @@ export class Company {
 
         this.currentQuarter = quarter;
 
-        this.restoreLastState(playerAllLastStates);
+        this.restoreLastState(lastDecisions, lastResults);
     }
 
 

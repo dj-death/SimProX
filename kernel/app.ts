@@ -100,6 +100,9 @@ var CONSTS = {
 };
 
 
+
+
+
 function getImprovementType(str: string) {
     return ENUMS.IMPROVEMENT_TYPE[str.toUpperCase()];
 }
@@ -132,8 +135,8 @@ export function launchSim() {
     ObjectsManager.init(false);
 }
 
-export function initEnvironnemet(playerAllLastStates: Scenario.Results[], currPeriod) {
-    var playerLastPeriodRes = playerAllLastStates[playerAllLastStates.length - 1];
+export function initEnvironnemet(currPeriod: number, lastEnvResults: Scenario.Results[]) {
+    var playerLastPeriodRes = lastEnvResults[lastEnvResults.length - 1];
 
     envObj.currencies.forEach(function (oCurrency: Env.Currency, idx: number) {
         if (!oCurrency || !oCurrency.params) {
@@ -317,11 +320,27 @@ function setCurrentPlayer(playerID: number | string): GameObjects {
 }
 
 
-export function initialize(playerAllLastStates: Scenario.Scenario[], currPeriod: number, playerID: string | number) {
-    var playerLastPeriod = playerAllLastStates[playerAllLastStates.length - 1];
-    playerID = playerID || playerLastPeriod.playerID;
 
-    console.silly("begin initialize player " + playerID);
+export function initialize(playerID: string | number, currPeriod: number, lastDecisions: Scenario.Decision[], lastPeriodsResults: Scenario.Results[], envLastStates: Scenario.Results[]) {
+
+    let lastPeriod = currPeriod - 1;
+
+    var lastPeriodIdx = lastPeriodsResults.length - 1,
+        lastDec = lastDecisions[lastPeriodIdx], // last one is for the current period
+        lastResults = lastPeriodsResults[lastPeriodIdx],
+        envLastState = envLastStates[lastPeriodIdx];
+
+    let statesByCollection = DataHelpers(lastDecisions, lastPeriodsResults);
+
+    var corporateLastRes = envLastState.BI.corporates[Number(playerID) - 1];
+
+    var lastCreditWorthiness = !isNaN(lastResults.creditWorthiness) ? lastResults.creditWorthiness : (lastResults.nextPBorrowingPower + lastResults.cashValue);
+
+
+    global.debug_data.corporateLastRes = corporateLastRes;
+    global.debug_data.envLastStateMY = envLastState;
+    global.debug_data.playerID = playerID;
+    
 
     let o = setCurrentPlayer(playerID);
 
@@ -330,17 +349,11 @@ export function initialize(playerAllLastStates: Scenario.Scenario[], currPeriod:
         return;
     }
 
-    var lastPeriod = playerLastPeriod.period;
-    currPeriod = !isNaN(currPeriod)? currPeriod: lastPeriod + 1;
 
-    var lastDec = playerLastPeriod.decision;
-    var lastResults = playerLastPeriod.results;
-
-    var corporateLastRes = lastResults.BI && lastResults.BI.corporates && lastResults.BI.corporates[Number(playerID) - 1];
 
     console.silly('begin OM initialisation succes');
 
-    var statesByCollection = DataHelpers(playerAllLastStates);
+    
 
 
     console.silly('begin Game initialisation succes');
@@ -430,7 +443,7 @@ export function initialize(playerAllLastStates: Scenario.Scenario[], currPeriod:
         var lastNetValue = Utils.isNumericValid(factoryLastRes.netValue) ? factoryLastRes.netValue : lastResults.buildingsNetValue;
 
         // accept multy contractors
-        oFactory.init(lastAvailableSpace, oLand, lastNetValue, oLocalEconomy, oBuildContractor);
+        oFactory.init(lastAvailableSpace, oLand, lastNetValue, oLocalEconomy, oBuildContractor, lastCreditWorthiness);
         console.silly('factory initialisation %d ', oFactory.isInitialised());
     });
 
@@ -453,7 +466,7 @@ export function initialize(playerAllLastStates: Scenario.Scenario[], currPeriod:
         var lastAvailableSpace = landLastRes.availableSpace;
         var lastNetValue = Utils.isNumericValid(landLastRes.netValue) ? landLastRes.netValue : lastResults.landNetValue;
 
-        oLand.init(lastAvailableSpace, oLand, lastNetValue, oLocalEconomy, oBuildContractor, oFactories);
+        oLand.init(lastAvailableSpace, oLand, lastNetValue, oLocalEconomy, oBuildContractor, lastCreditWorthiness, oFactories);
     });
 
     console.silly('land initialisation succes');
@@ -496,11 +509,12 @@ export function initialize(playerAllLastStates: Scenario.Scenario[], currPeriod:
         var materialLastRes = lastResults.materials[materialID];
         var materialLastDec = lastDec.materials[materialID];
 
+
         var oMaterialaMarket = envObj.materialsMarkets.filter(function (oMaterialMarket: Env.MaterialMarket) {
             return oMaterialMarket.params.materialID === materialID;
         })[0];
 
-        var lastMaterialMarket = lastResults.materialMarkets[oMaterialaMarket.params.materialMarketID];
+        var lastMaterialMarket = envLastState.materialMarkets[oMaterialaMarket.params.materialMarketID];
 
         var lastClosingQ = materialLastRes.closingQ;
         var lastClosingValue = Utils.isNumericValid(materialLastRes.closingValue) ? materialLastRes.closingValue : lastResults.materialsInventoriesValue;
@@ -512,16 +526,17 @@ export function initialize(playerAllLastStates: Scenario.Scenario[], currPeriod:
         var lastPurchases_6mthQ = materialLastDec.purchases[2].quantity;
         var lastPurchases_6mthValue = materialLastDec.purchases[2].quantity * lastMaterialMarket.price6mth;
 
-        var oFactories = o.factories.filter(function (oFac: Prod.Factory) {
+        var oFactory = o.factories.filter(function (oFac: Prod.Factory) {
             return oFac.params.factoryID === oRmWarehouse.params.factoryID;
-        });
+        })[0];
 
+        console.silly('alll rm good');
 
         oRmWarehouse.init(lastClosingQ, lastClosingValue,
             lastDeliveryNextPBoughtBeforeLastPQ, lastDeliveryNextPBoughtBeforeLastPValue,
             lastPurchases_3mthQ, lastPurchases_3mthValue,
             lastPurchases_6mthQ, lastPurchases_6mthValue,
-            oFactories[0]);
+            oFactory);
     });
 
     console.silly('rmw initialisation succes');
@@ -811,6 +826,8 @@ export function initialize(playerAllLastStates: Scenario.Scenario[], currPeriod:
 
     var capitalLastRes = lastResults.capital;
 
+    global.debug_data.corporateLastRes = corporateLastRes;
+
     var shareCapital = capitalLastRes.shareCapital;
     var openingSharePrice = !isNaN(lastResults.sharePrice) ? lastResults.sharePrice : (corporateLastRes.sharePriceByTenThousand / 10000);
     var marketValuation = !isNaN(lastResults.marketValuation) ? lastResults.marketValuation : corporateLastRes.marketValuation;
@@ -849,18 +866,14 @@ export function initialize(playerAllLastStates: Scenario.Scenario[], currPeriod:
     console.silly('Fin initialisation succes');
 
 
-    o.Company.init(o.CompanyParams, oLocalEconomy, o.Production, o.Marketing, o.Finance, o.CashFlow, o.Management, currQuarter, playerAllLastStates);
+    o.Company.init(o.CompanyParams, oLocalEconomy, o.Production, o.Marketing, o.Finance, o.CashFlow, o.Management, currQuarter, lastDecisions, lastPeriodsResults);
 
     console.silly('Company initialisation succes');
 }
 
 
-export function setDecisions(dec: Scenario.Decision, playerAllLastStates: Scenario.Scenario[], playerID: string | number) {
+export function setDecisions(playerID: string | number, currPeriod: number, dec: Scenario.Decision) {
     console.silly("begin setting decisions ");
-
-    var playerLastPeriod = playerAllLastStates[playerAllLastStates.length - 1];
-
-    playerID = playerID || playerLastPeriod.playerID;
 
 
     let o = setCurrentPlayer(playerID);
@@ -872,10 +885,7 @@ export function setDecisions(dec: Scenario.Decision, playerAllLastStates: Scenar
 
     
 
-    var lastPeriod = playerLastPeriod.period;
-    var currPeriod = lastPeriod + 1;
-    var lastDec = playerLastPeriod.decision;
-    var lastResults = playerLastPeriod.results;
+    var lastPeriod = currPeriod - 1;
 
     var machineriesDec = dec.machineries;
     var materialsDec = dec.materials;
@@ -902,16 +912,15 @@ export function setDecisions(dec: Scenario.Decision, playerAllLastStates: Scenar
     console.silly('begin dec succes');
 
     o.lands.forEach(function (oLand: Prod.Land, idx: number) {
-        oLand.extend(0, 0);
+        oLand.extend(0);
     });
 
     // factories 
     factoriesDec.forEach(function (factoryDec: Scenario.factory, idx: number) {
         var oFactory: Prod.Factory = o.factories[idx];
-        var lastCreditWorthiness = !isNaN(lastResults.creditWorthiness) ? lastResults.creditWorthiness : (lastResults.nextPBorrowingPower + lastResults.cashValue);
 
         // at last
-        oFactory.extend(factoryDec.extension, lastCreditWorthiness);
+        oFactory.extend(factoryDec.extension);
     });
 
     console.silly('factory dec succes');
@@ -935,6 +944,7 @@ export function setDecisions(dec: Scenario.Decision, playerAllLastStates: Scenar
     machineriesDec.forEach(function (machDec: Scenario.machinery, idx: number) {
         let oMachinery: Prod.Machinery = o.machineries[idx];
         let machinesTypesDec = machDec.types;
+
 
         machinesTypesDec.forEach(function (machTypeDec, type) {
             oMachinery.buy(machTypeDec.boughtNb, type);
@@ -1281,8 +1291,7 @@ export function getEndState(playerID: string | number, currPeriod: number): Q.Pr
 
         Utils.ObjectApply(endState, result);
 
-        
-
+       
         return o.Production.getEndState();
 
     }).then(function (result) {
@@ -1313,16 +1322,8 @@ export function getEndState(playerID: string | number, currPeriod: number): Q.Pr
 
         return o.Company.getEndState();
 
-    }).then(function (result) {
-        Utils.ObjectApply(endState, result);
-
-        console.log("getting endstate of env...");
-
-        return Environnement.getEndState();
-
     }).done(function (result) {
         Utils.ObjectApply(endState, result);
-
 
         if (Utils.NODE_ENV() === "prod") {
             console.log("try to free memory ...");
@@ -1353,6 +1354,16 @@ export function getEndState(playerID: string | number, currPeriod: number): Q.Pr
 
     return deferred.promise;
 }
+
+
+
+
+
+export function getEnvironnementState(): Q.Promise<any> {
+
+    return ObjectsManager.getPersistedObjectsEndState();
+}
+
 
 
 

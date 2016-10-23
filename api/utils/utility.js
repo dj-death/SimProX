@@ -196,12 +196,12 @@ export function  calculateIngredientsQuality (SKUResult){
 */
 /**
 * Create an array of all the company names
-* @param {Number} companyNum num of companies we need
+* @param {Number} company_num num of companies we need
 */
-function createCompanyArray(companyNum) {
+function createCompanyArray(company_num) {
     var companies = [];
     var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    for (var j = 0; j < companyNum; j++) {
+    for (var j = 0; j < company_num; j++) {
         companies.push(letters[j]);
     }
     return companies;

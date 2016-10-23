@@ -158,6 +158,7 @@ var Marketplace = (function () {
     Marketplace.calcIndustryMarketingMixAvg = function () {
         var that = this.getInstance();
         var firmsMkgMixes = this.getFirmsMarketingMix();
+        global.debug_data.firmsMkgMixes = firmsMkgMixes;
         var supplyMatrix = []; // [f1... [...[m2p1, m2p2, m2p3]...] ...]
         var pricesMatrix = [];
         var qualitiesMatrix = [];
@@ -279,6 +280,7 @@ var Marketplace = (function () {
         var self = this;
         var that = this.getInstance();
         var industrySatisfactionScoreAvgs = this.calcIndustrySatisfactionScoreAvg();
+        console.silly('industrySatisfactionScoreAvgs 1');
         var firmsNb = that.firmsOMarkets.length;
         var period = 0;
         industrySatisfactionScoreAvgs.forEach(function (market, marketIdx) {

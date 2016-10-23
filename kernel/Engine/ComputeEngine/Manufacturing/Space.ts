@@ -57,6 +57,9 @@ export class Space extends IObject.IObject {
 
     protected requests: Collections.Queue<Request>;
 
+
+    creditWorthiness: number;
+
     constructor(params: SpaceParams) {
         super(params);
 
@@ -75,7 +78,7 @@ export class Space extends IObject.IObject {
 
     protected economy: Economy;
 
-    init(initialSize: number, peripherySpace: Space, lastNetValue: number, economy: Economy, contractor: BuildingContractor = null) {
+    init(initialSize: number, peripherySpace: Space, lastNetValue: number, economy: Economy, contractor: BuildingContractor = null, creditWorthiness: number = Infinity) {
         super.init();
 
 
@@ -101,6 +104,8 @@ export class Space extends IObject.IObject {
         this.lastNetValue = lastNetValue;
 
         this.contractor = contractor;
+
+        this.creditWorthiness = creditWorthiness;
 
         this.economy = economy;
     }
@@ -265,7 +270,7 @@ export class Space extends IObject.IObject {
     protected isReady: boolean;
 
 
-    extend(extension: number, creditWorthiness?: number) {
+    extend(extension: number) {
         if (!this.isInitialised()) {
             return false;
         }
@@ -282,7 +287,7 @@ export class Space extends IObject.IObject {
 
         var possibleExtension = extension > this.unusedSpace ? this.unusedSpace : extension;
 
-        var extensionRes = this.contractor.build(possibleExtension, creditWorthiness);
+        var extensionRes = this.contractor.build(possibleExtension, this.creditWorthiness);
 
         var effectiveExtension = extensionRes.squaresNb;
         var extensionDuration = extensionRes.duration;

@@ -338,7 +338,7 @@ function getUserInfo(req, res, next) {
         if (userResult.currentMarksimosSeminar.currentPeriod > userResult.currentMarksimosSeminar.simulation_span) {
             userResult.currentMarksimosSeminar.currentPeriod = userResult.currentMarksimosSeminar.simulation_span;
         }
-        userResult.currentMarksimosSeminar.numOfCompany = userResult.currentMarksimosSeminar.companyNum;
+        userResult.currentMarksimosSeminar.numOfCompany = userResult.currentMarksimosSeminar.company_num;
         userResult.currentMarksimosSeminar.maxPeriodRound = userResult.currentMarksimosSeminar.simulation_span;
         for (var i = 0; i < userResult.currentMarksimosSeminar.companies.length; i++) {
             //if this student is in this company

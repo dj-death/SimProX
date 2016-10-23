@@ -1,6 +1,8 @@
 "use strict";
 var seminarModel = require('../../models/Seminar');
 var Scenario = require('../../models/scenario/Scenario');
+var reportModel = require('../../models/simulation/Report');
+var chartModel = require('../../models/simulation/Chart');
 var companyDecisionModel = require('../../models/decision/CompanyDecision');
 var simulationResultModel = require('../../models/simulation/Result');
 /*var brandDecisionModel = require('../../../models/marksimos/brandDecision.js');
@@ -9,6 +11,8 @@ var SKUDecisionModel = require('../../../models/marksimos/SKUDecision.js');
 var dbutility = require('../../models/dbUtility');
 var decisionCleaner = require('../../convertors/decisionCleaner');
 var allResultsCleaner = require('../../convertors/allResultsCleaner');
+var SimMain = require('../../../kernel/app');
+var Flat = require('../../utils/Flat');
 var console = require('../../../kernel/utils/logger');
 var utility = require('../../utils/utility');
 var _ = require('underscore');
@@ -22,6 +26,7 @@ var oneHour = 60 * 60 * 1000;
  * @method init
  *
  */
+global.debug_data.SimMain = SimMain;
 function init(io) {
     var status;
     return function (req, res, next) {
@@ -64,7 +69,6 @@ function init(io) {
                 simulationScenarioID_1 = dbSeminar.simulationScenarioID;
                 //create company array
                 companies_1 = dbSeminar.companies || utility.createCompanyArray(company_num_1);
-                global.debug_data.companies = companies_1;
                 return Q.all([
                     simulationResultModel.removeAll(seminarId_1),
                     dbutility.removeExistedDecisions(seminarId_1),
@@ -114,245 +118,252 @@ function init(io) {
     }; // end return
 }
 exports.init = init;
-/*
-export function runSimulation(){
-    let status;
-
-    return function(req, res, next){
-        if(status == 'pending'){
-            return res.send(400, {message: "Last request is still pending, please wait for runSimulation process complete..."})
-        } else {
+function runSimulation() {
+    var status;
+    return function (req, res, next) {
+        if (status == 'pending') {
+            return res.send(400, { message: "Last request is still pending, please wait for runSimulation process complete..." });
+        }
+        else {
             status = 'pending';
-
-            let seminarId = req.params._id;
-            let goingToNewPeriod = req.body.goingToNewPeriod;
-            let decisionsOverwriteSwitchers = req.body.decisionsOverwriteSwitchers || [];
-
-            if(!seminarId){
+            var seminarId_2 = req.params.seminar_id;
+            var goingToNewPeriod_1 = req.body.goingToNewPeriod;
+            var decisionsOverwriteSwitchers_1 = req.body.decisionsOverwriteSwitchers || [];
+            var selectedPeriod_1;
+            if (!seminarId_2) {
                 status = 'active';
-                return res.send(400, {message: "You have not choose a seminar."})
+                return res.send(400, { message: "You have not choose a seminar." });
             }
-
-            if(goingToNewPeriod == undefined){
+            if (goingToNewPeriod_1 == undefined) {
                 status = 'active';
-                return res.send(400, {message: "Which period need to run?"})
+                return res.send(400, { message: "Which period need to run?" });
             }
-
-            if((decisionsOverwriteSwitchers == [])){
+            if ((decisionsOverwriteSwitchers_1 == [])) {
                 status = 'active';
-                return res.send(400, {message : 'need parameter decisionsOverwriteSwitchers'});
+                return res.send(400, { message: 'need parameter decisionsOverwriteSwitchers' });
             }
-
             //check if this seminar exists
             seminarModel.findOneQ({
-                seminarId: seminarId
+                seminarId: seminarId_2
             })
-            .then(function(dbSeminar){
-                if(!dbSeminar){
-                    throw {message: "Cancel promise chains. Because seminar doesn't exist."};
+                .then(function (dbSeminar) {
+                if (!dbSeminar) {
+                    throw { message: "Cancel promise chains. Because seminar doesn't exist." };
                 }
-
-                if(!dbSeminar.isInitialized){
-                    throw {message: "Cancel promise chains. Because you have not initialized this seminar."};
+                if (!dbSeminar.isInitialized) {
+                    throw { message: "Cancel promise chains. Because you have not initialized this seminar." };
                 }
-
                 //if all rounds are executed
-                if(dbSeminar.isSimulationFinished){
-                    throw {message: "the last round simulation has been executed."};
+                if (dbSeminar.isSimulationFinished) {
+                    throw { message: "the last round simulation has been executed." };
                 }
-
-
-                if(goingToNewPeriod){
-                    selectedPeriod = dbSeminar.currentPeriod;
-
-                    decisionsOverwriteSwitchers = [];
-                    for(let i=0; i<dbSeminar.companyNum; i++){
-                        decisionsOverwriteSwitchers.push(true);
+                if (goingToNewPeriod_1) {
+                    selectedPeriod_1 = dbSeminar.currentPeriod;
+                    decisionsOverwriteSwitchers_1 = [];
+                    for (var i = 0; i < dbSeminar.company_num; i++) {
+                        decisionsOverwriteSwitchers_1.push(true);
                     }
-                } else {
-                    selectedPeriod = dbSeminar.currentPeriod - 1;
-
-                    if(decisionsOverwriteSwitchers.length != dbSeminar.companyNum){
-                        throw {message: "Cancel promise chains. Because Incorrect parameter decisionsOverwriteSwitchers in the post request."}
-                    }
-
                 }
-
-                let companies = [];
-                for(let i=0; i<dbSeminar.companyNum; i++){
-                    companies.push(i+1);
-                }
-
-                //write decision to binary file
-                return submitDecisionForAllCompany(companies, selectedPeriod, seminarId).then(function(submitDecisionResult){
-                    logger.log('write decision finished.');
-
-                    if(submitDecisionResult.message !== 'submit_decision_success'){
-                         throw {message: 'Cancel promise chains. Because ' + submitDecisionResult.message};
+                else {
+                    selectedPeriod_1 = dbSeminar.currentPeriod - 1;
+                    if (decisionsOverwriteSwitchers_1.length != dbSeminar.company_num) {
+                        throw { message: "Cancel promise chains. Because Incorrect parameter decisionsOverwriteSwitchers in the post request." };
                     }
-
-                    //run simulation
-                    return cgiapi.runSimulation({
-                        seminarId: seminarId,
-                        simulation_span: dbSeminar.simulation_span,
-                        teams: utility.createCompanyArray(dbSeminar.companyNum),
-                        period: selectedPeriod
-                    })
-                    .then(function(simulationResult){
-                        logger.log('run simulation finished.');
-                        if(simulationResult.message !== 'run_simulation_success'){
-                            throw {message: 'Cancel promise chains. Because ' + simulationResult.message};
-                        }
-
-                        return Q.all[
-                            removeCurrentPeriodSimulationResult(seminarId, selectedPeriod),
-                            chartModel.remove(seminarId),
-                            reportModel.remove(seminarId)
-                        ];
-                    })
-                    .then(function(){
-                        logger.log('get current period simulation result finished.');
+                }
+                var companies = [];
+                for (var i = 0; i < dbSeminar.company_num; i++) {
+                    companies.push(i + 1);
+                }
+                // simulate env
+                return simulationResultModel.findAllBefore(seminarId_2, selectedPeriod_1 - 1).then(function (lastResults) {
+                    if (!lastResults.length) {
+                        throw { message: "Cancel promise chains. Because Incorrect parameter decisionsOverwriteSwitchers in the post request." };
+                    }
+                    var envLastStates = [];
+                    var lastCompaniesResults = [];
+                    lastResults.forEach(function (result) {
+                        var envState = result.environnement;
+                        var compsStates = result.companies;
+                        envState.period = result.period;
+                        envLastStates.push(envState);
+                        lastCompaniesResults.push(compsStates);
+                    });
+                    global.debug_data.envLastStates = envLastStates;
+                    global.debug_data.lastCompaniesResults = lastCompaniesResults;
+                    SimMain.launchSim();
+                    console.silly("launch sim success !");
+                    SimMain.initEnvironnemet(selectedPeriod_1, envLastStates);
+                    console.silly("init env success !");
+                    SimMain.simulateEnv(selectedPeriod_1);
+                    console.silly("sim env success !");
+                    // export all decisions grouped by period desc
+                    return companyDecisionModel.findAllBeforePeriod(seminarId_2, selectedPeriod_1).then(function (allCompaniesDecision) {
+                        global.debug_data.allCompaniesDecision = allCompaniesDecision;
+                        allCompaniesDecision.forEach(function (data) {
+                            var d_CID = data._id;
+                            console.warn("sim begin with ", d_CID);
+                            var decisions = [];
+                            var lastResults = [];
+                            lastCompaniesResults.forEach(function (data) {
+                                var res = data[d_CID - 1];
+                                console.warn(d_CID - 1);
+                                global.debug_data.dataBBB = data;
+                                lastResults.push(res);
+                            });
+                            data.decisions.forEach(function (obj) {
+                                decisions.push(obj.decision);
+                            });
+                            var currPDecision = decisions.pop();
+                            global.debug_data.d_CID = d_CID;
+                            global.debug_data.selectedPeriod = selectedPeriod_1;
+                            global.debug_data.decisions = decisions;
+                            global.debug_data.lastResults = lastResults;
+                            global.debug_data.envLastStates = envLastStates;
+                            global.debug_data.currPDecision = currPDecision;
+                            SimMain.initialize(d_CID, selectedPeriod_1, decisions, lastResults, envLastStates);
+                            console.silly("sim init success !");
+                            SimMain.setDecisions(d_CID, selectedPeriod_1, currPDecision);
+                            console.warn("sim set decision success !", d_CID);
+                        });
+                        console.silly("sim market begin !");
+                        SimMain.simulateMarketplace();
+                        console.silly("sim market sim success !");
+                    }).then(function () {
+                        return SimMain.getEnvironnementState().then(convertEndState).then(function (envSimResult) {
+                            if (!envSimResult) {
+                                throw new Error('process envSimResult failed nothing got');
+                            }
+                            global.debug_data.envSimResult = envSimResult;
+                            var p = Q();
+                            var currPeriodResult = {
+                                environnement: envSimResult,
+                                companies: []
+                            };
+                            companies.forEach(function (d_CID) {
+                                p = p.then(function (result) {
+                                    var deferred = Q.defer();
+                                    processEndState(d_CID, selectedPeriod_1).then(function (playerEndState) {
+                                        if (!playerEndState) {
+                                            throw new Error('process end state failed nothing got');
+                                        }
+                                        currPeriodResult.companies.push(playerEndState);
+                                        deferred.resolve(currPeriodResult);
+                                    });
+                                    return deferred.promise;
+                                });
+                            });
+                            return p;
+                        });
+                    });
+                }).then(function (simulationResult) {
+                    console.log('run simulation finished.');
+                    global.debug_data.simulationResult = simulationResult;
+                    if (!simulationResult) {
+                        throw { message: 'Cancel promise chains. Because no simulationResult' };
+                    }
+                    return Q.all([
+                        removeCurrentPeriodSimulationResult(seminarId_2, selectedPeriod_1),
+                        chartModel.remove(seminarId_2),
+                        reportModel.remove(seminarId_2)
+                    ]).then(function () {
+                        console.log('get current period simulation result finished.');
                         //once removeCurrentPeriodSimulationResult success,
                         //query and save the current period simulation result
-                        return initCurrentPeriodSimulationResult(seminarId, selectedPeriod);
-                    })
-                    .then(function(){
-                        return Q.all([
-                            simulationResultModel.findAll(seminarId)
-                        ])
-                        .spread(function(allResults){
-                            return Q.all([
-                                initChartData(seminarId, allResults),
-                                initCompanyStatusReport(seminarId, allResults, selectedPeriod),
-                                initFinancialReport(seminarId, allResults),
-                                initProfitabilityEvolutionReport(seminarId, allResults, selectedPeriod),
-                                initSegmentDistributionReport(seminarId, allResults),
-                                initCompetitorIntelligenceReport(seminarId, allResults),
-                                initMarketTrendsReport(seminarId, allResults, selectedPeriod),
-                                initMarketIndicatorReport(seminarId, selectedPeriod)
-                            ]);
-                        });
-                    })
-                    .then(function(){
-                        logger.log('generate report/chart finished.');
-                        //for the last period OR re-run last period,
-                        //DO NOT create the next period decision automatically
-                        if(dbSeminar.currentPeriod < dbSeminar.simulation_span){
-                            status = 'active';
-                            return createNewDecisionBasedOnLastPeriodDecision(seminarId, selectedPeriod, decisionsOverwriteSwitchers, goingToNewPeriod);
-                        }else{
-                            return undefined;
-                        }
-                    })
-                    .then(function(){
-                        logger.log('create duplicate decision from last period finished.');
-
-                        if(goingToNewPeriod){
-
-
-                            if(dbSeminar.currentPeriod < dbSeminar.simulation_span) {
-                                //after simulation success, set currentPeriod to next period, only when goingToNewPeriod = true
-
-                            }else if (dbSeminar.currentPeriod = dbSeminar.simulation_span) {
-                                dbSeminar.isSimulationFinished = true;
-                            }else {
-                                throw new Error('Cancel promise chains. Because dbSeminar.currentPeriod > dbSeminar.simulation_span, you cannot run into next period.');
-                            }
-                            
-                            if(dbSeminar.roundTime.length > 0 ){
-
-                                if (typeof dbSeminar.roundTime[dbSeminar.currentPeriod ] !== 'undefined') {
-                                    dbSeminar.roundTime[dbSeminar.currentPeriod ].startTime = new Date();
-
-                                    if(dbSeminar.roundTime[dbSeminar.currentPeriod].roundTimeHour !== 0){
-                                        dbSeminar.roundTime[dbSeminar.currentPeriod].endTime = new Date( new Date().getTime() + oneHour * dbSeminar.roundTime[dbSeminar.currentPeriod].roundTimeHour);
-                                    }
-                                }
-
-                            }
-
-                            dbSeminar.currentPeriod = dbSeminar.currentPeriod + 1;
-
-                            return dbSeminar.saveQ().then(function(result){
-                                if(result[1] > 1){
-                                    throw new Error( "Cancel promise chains. Because there's error during update seminar.");
-                                }
-
-                            });
-                        }
-
+                        return initCurrentPeriodSimulationResult(seminarId_2, selectedPeriod_1, simulationResult);
                     });
-
+                }).then(function () {
+                    return Q.all([
+                        simulationResultModel.findAll(seminarId_2)
+                    ]).spread(function (allResults) {
+                        return Q.all([]);
+                    });
+                }).then(function () {
+                    console.log('generate report/chart finished.');
+                    //for the last period OR re-run last period,
+                    //DO NOT create the next period decision automatically
+                    if (dbSeminar.currentPeriod < dbSeminar.simulation_span) {
+                        status = 'active';
+                        return createNewDecisionBasedOnLastPeriodDecision(seminarId_2, selectedPeriod_1, decisionsOverwriteSwitchers_1, goingToNewPeriod_1);
+                    }
+                    else {
+                        return undefined;
+                    }
+                }).then(function () {
+                    console.log('create duplicate decision from last period finished.');
+                    if (goingToNewPeriod_1) {
+                        if (dbSeminar.currentPeriod < dbSeminar.simulation_span) {
+                        }
+                        else if (dbSeminar.currentPeriod = dbSeminar.simulation_span) {
+                            dbSeminar.isSimulationFinished = true;
+                        }
+                        else {
+                            throw new Error('Cancel promise chains. Because dbSeminar.currentPeriod > dbSeminar.simulation_span, you cannot run into next period.');
+                        }
+                        if (dbSeminar.roundTime.length > 0) {
+                            if (typeof dbSeminar.roundTime[dbSeminar.currentPeriod] !== 'undefined') {
+                                dbSeminar.roundTime[dbSeminar.currentPeriod].startTime = new Date();
+                                if (dbSeminar.roundTime[dbSeminar.currentPeriod].roundTimeHour !== 0) {
+                                    dbSeminar.roundTime[dbSeminar.currentPeriod].endTime = new Date(new Date().getTime() + oneHour * dbSeminar.roundTime[dbSeminar.currentPeriod].roundTimeHour);
+                                }
+                            }
+                        }
+                        dbSeminar.currentPeriod = dbSeminar.currentPeriod + 1;
+                        return dbSeminar.saveQ().then(function (result) {
+                            if (result[1] > 1) {
+                                throw new Error("Cancel promise chains. Because there's error during update seminar.");
+                            }
+                        });
+                    }
                 });
-
-
             })
-            .then(function(){
+                .then(function () {
                 status = 'active';
-                return res.status(200).send({message: "run simulation success."});
-
+                return res.status(200).send({ message: "run simulation success." });
             })
-            .fail(function(err){
-                 status = 'active';
-                if(err.httpStatus){
-                    return res.send(err.httpStatus, {message: err.message});
+                .fail(function (err) {
+                status = 'active';
+                if (err.httpStatus) {
+                    return res.send(err.httpStatus, { message: err.message });
                 }
-                res.status(500).send( {message: err.message});
+                res.status(500).send({ message: err.message });
             })
-            .done();
+                .done();
         }
-
+    };
+}
+exports.runSimulation = runSimulation;
+function initCurrentPeriodSimulationResult(seminarId, currentPeriod, currentPeriodResult) {
+    if (!currentPeriodResult) {
+        throw { message: 'Cancel promise chains. Because no currentPeriodResult.' };
     }
-
-
+    //allResultsCleaner.clean(currentPeriodResult);
+    currentPeriodResult.seminarId = seminarId;
+    currentPeriodResult.period = currentPeriod;
+    return simulationResultModel.insert(currentPeriodResult);
 }
-
-/*
-
-function initCurrentPeriodSimulationResult(seminarId, currentPeriod){
-    return cgiapi.queryOnePeriodResult(seminarId, currentPeriod)
-    .then(function(currentPeriodResult){
-        if(currentPeriodResult && currentPeriodResult.message){
-            throw {message: 'Cancel promise chains. Because ' + currentPeriodResult};
-        }
-
-        allResultsCleaner.clean(currentPeriodResult);
-
-        currentPeriodResult.seminarId = seminarId;
-        currentPeriodResult.period = currentPeriod;
-
-        return simulationResultModel.insert(currentPeriodResult);
-    })
-}
-
-function removeCurrentPeriodSimulationResult(seminarId, currentPeriod){
+function removeCurrentPeriodSimulationResult(seminarId, currentPeriod) {
     return simulationResultModel.remove({
         seminarId: seminarId,
         period: currentPeriod
     });
 }
-
-function submitDecisionForAllCompany(companies, period, seminarId){
-    let p = Q();
-
-    companies.forEach(function(companyId){
-        p = p.then(function(){
-            //logger.log("submit decision finished.");
+function submitDecisionForAllCompany(companies, period, seminarId) {
+    var p = Q();
+    companies.forEach(function (companyId) {
+        p = p.then(function () {
+            //console.log("submit decision finished.");
             return submitDecision(companyId, period, seminarId);
         });
     });
-
     return p;
 }
-
-function submitDecision(companyId, period, seminarId){
-    let result = {};
-    logger.log('Submit Decision For companyId:' + companyId + ', period:' + period + ', seminarId:' + seminarId);
-    return companyDecisionModel.findOne(seminarId, period, companyId).then(function(decision){
-        if(!decision){
-            throw {message: "Cancel promise chains. Because decision doesn't exist."};
+function submitDecision(companyId, period, seminarId) {
+    var result = {};
+    console.log('Submit Decision For companyId:' + companyId + ', period:' + period + ', seminarId:' + seminarId);
+    return companyDecisionModel.findOne(seminarId, period, companyId).then(function (decision) {
+        if (!decision) {
+            throw { message: "Cancel promise chains. Because decision doesn't exist." };
         }
-
         result.d_CID = decision.d_CID;
         result.d_CompanyName = decision.d_CompanyName;
         result.d_BrandsDecisions = [];
@@ -361,53 +372,13 @@ function submitDecision(companyId, period, seminarId){
         result.d_InvestmentInEfficiency = decision.d_InvestmentInEfficiency;
         result.d_InvestmentInTechnology = decision.d_InvestmentInTechnology;
         result.d_InvestmentInServicing = decision.d_InvestmentInServicing;
-
-        return brandDecisionModel.findAllInCompany(seminarId, period, companyId).then(function(brandDecisions){
-            let p2 = Q();
-            brandDecisions.forEach(function(brandDecision){
-                let tempBrandDecision = {};
-                tempBrandDecision.d_BrandID = brandDecision.d_BrandID;
-                tempBrandDecision.d_BrandName = brandDecision.d_BrandName;
-                tempBrandDecision.d_SalesForce = brandDecision.d_SalesForce;
-                tempBrandDecision.d_SKUsDecisions = [];
-
-                p2 = p2.then(function(){
-                    return SKUDecisionModel.findAllInBrand(seminarId, period, companyId, brandDecision.d_BrandID);
-                }).then(function(SKUDecisions){
-                    SKUDecisions.forEach(function(SKUDecision){
-                        let tempSKUDecision = {};
-                        tempSKUDecision.d_SKUID = SKUDecision.d_SKUID;
-                        tempSKUDecision.d_SKUName = SKUDecision.d_SKUName;
-                        tempSKUDecision.d_Advertising = SKUDecision.d_Advertising;
-                        tempSKUDecision.d_AdditionalTradeMargin = SKUDecision.d_AdditionalTradeMargin;
-                        tempSKUDecision.d_FactoryPrice = SKUDecision.d_FactoryPrice;
-                        tempSKUDecision.d_ConsumerPrice = SKUDecision.d_ConsumerPrice;
-                        tempSKUDecision.d_RepriceFactoryStocks = SKUDecision.d_RepriceFactoryStocks;
-                        tempSKUDecision.d_IngredientsQuality = SKUDecision.d_IngredientsQuality;
-                        tempSKUDecision.d_PackSize = SKUDecision.d_PackSize;
-                        tempSKUDecision.d_ProductionVolume = SKUDecision.d_ProductionVolume;
-                        tempSKUDecision.d_PromotionalBudget = SKUDecision.d_PromotionalBudget;
-                        tempSKUDecision.d_PromotionalEpisodes = SKUDecision.d_PromotionalEpisodes;
-                        tempSKUDecision.d_TargetConsumerSegment = SKUDecision.d_TargetConsumerSegment;
-                        tempSKUDecision.d_Technology = SKUDecision.d_Technology;
-                        tempSKUDecision.d_ToDrop = SKUDecision.d_ToDrop;
-                        tempSKUDecision.d_TradeExpenses = SKUDecision.d_TradeExpenses;
-                        tempSKUDecision.d_WholesalesBonusMinVolume = SKUDecision.d_WholesalesBonusMinVolume;
-                        tempSKUDecision.d_WholesalesBonusRate = SKUDecision.d_WholesalesBonusRate;
-                        tempSKUDecision.d_WarrantyLength = SKUDecision.d_WarrantyLength;
-                        tempBrandDecision.d_SKUsDecisions.push(tempSKUDecision);
-                    });
-                    result.d_BrandsDecisions.push(tempBrandDecision);
-                });
-            });
-            return p2;
-        });
-    }).then(function(){
-        if(Object.keys(result).length===0){
+        result.decision = decision.decision;
+    }).then(function () {
+        /*if(Object.keys(result).length===0){
             return res.send(500, {message: "fail to get decisions"})
         }
 
-        insertEmptyBrandsAndSKUs(result);
+        //insertEmptyBrandsAndSKUs(result);
         //convert result to data format that can be accepted by CGI service
 
         decisionConvertor.convert(result);
@@ -415,71 +386,15 @@ function submitDecision(companyId, period, seminarId){
 
         let reqUrl = url.resolve(config.cgiService, 'decisions.exe');
 
-        //logger.log(require('util').inspect(result.d_BrandsDecisions));
+        //console.log(require('util').inspect(result.d_BrandsDecisions));
         return request.post(reqUrl, {
             decision: JSON.stringify(result),
             seminarId: seminarId,
             period: period,
             team: companyId
-        });
-    });
-
-
-    /**
-     * CGI service can not convert JSON string to delphi object,
-     * if the number of SKUs or Brands is not the same as
-     * the length of correspond array in delphi data structure.
-     *
-     * @method insertEmptyBrands
-     */
-/*
-    function insertEmptyBrandsAndSKUs(decision){
-        for(let i=0; i< decision.d_BrandsDecisions.length; i++){
-            let brand = decision.d_BrandsDecisions[i];
-            let numOfSKUToInsert = 5 - brand.d_SKUsDecisions.length;
-            for(let j=0; j<numOfSKUToInsert; j++){
-
-                if(typeof brand.d_SKUsDecisions[0] === 'undefined'){
-                    logger.log("insert Empty SKUs of Brand Info: ", brand.d_SKUsDecisions[0]);
-                }
-
-                let emptySKU = JSON.parse(JSON.stringify(brand.d_SKUsDecisions[0]));
-                emptySKU.d_SKUID = 0;
-                emptySKU.d_SKUName = '\u0000\u0000\u0000';
-
-                brand.d_SKUsDecisions.push(emptySKU);
-            }
-        }
-
-        let numOfBrandToInsert = 5 - decision.d_BrandsDecisions.length;
-        for(let k=0; k<numOfBrandToInsert; k++){
-            if(typeof decision.d_BrandsDecisions[0] === 'undefined'){
-                logger.log("insert Empty Brands Info: ", decision.d_BrandsDecisions[0]);
-            }
-
-
-            let emptyBrand = JSON.parse(JSON.stringify(decision.d_BrandsDecisions[0]));
-            for(let p=0; p<emptyBrand.d_SKUsDecisions.length; p++){
-                emptyBrand.d_SKUsDecisions[p].d_SKUID = 0;
-                emptyBrand.d_SKUsDecisions[p].d_SKUName = '\u0000\u0000\u0000';
-            }
-            emptyBrand.d_BrandID = 0;
-            emptyBrand.d_BrandName = '\u0000\u0000\u0000\u0000\u0000\u0000';
-            decision.d_BrandsDecisions.push(emptyBrand);
-        }
-    }
-}
-
-
-function initBinaryFile(seminarId, simulation_span, companies){
-    return cgiapi.init({
-        seminarId: seminarId,
-        simulation_span: simulation_span,
-        teams: companies
+        });*/
     });
 }
-
-*/
 function loadScenario(simulationScenarioID) {
     if (!simulationScenarioID) {
         console.warn("empty scenario");
@@ -509,11 +424,13 @@ function initDecision(seminarId, companies, initData) {
                 return;
             }
             companies.forEach(function (comp) {
-                var decision = clone(data.decision);
-                decision.period = data.period;
-                decision.seminarId = seminarId;
-                decision.d_CID = comp.companyId;
-                decision.d_CompanyName = comp.companyName;
+                var decision = {
+                    period: data.period,
+                    seminarId: seminarId,
+                    d_CID: comp.companyId,
+                    d_CompanyName: comp.companyName,
+                    decision: clone(data.decision)
+                };
                 tempDecisions.push(decision);
             });
         });
@@ -556,18 +473,30 @@ function initSimulationResult(seminarId, companies, initData) {
     var allResults = [];
     if (hists.length) {
         hists.forEach(function (data) {
+            var refResults = clone(data.results);
             var period = data.period;
             if (period > 0) {
                 return;
             }
+            var results = {
+                period: period,
+                seminarId: seminarId,
+            };
+            results.environnement = {
+                economies: refResults.economies,
+                materialMarkets: refResults.materialMarkets,
+                buildingContractors: refResults.buildingContractors,
+                businessReport: refResults.businessReport,
+                BI: refResults.BI
+            };
+            results.companies = [];
             companies.forEach(function (comp) {
-                var results = clone(data.results);
-                results.period = period;
-                results.seminarId = seminarId;
+                var refCompResults = clone(data.results);
                 results.d_CID = comp.companyId;
                 results.d_CompanyName = comp.companyName;
-                allResults.push(results);
+                results.companies.push(refCompResults);
             });
+            allResults.push(results);
         });
     }
     var saveOperations = [];
@@ -698,16 +627,16 @@ function duplicateLastPeriodDecision(seminarId, lastPeriod) {
     return companyDecisionModel.findAllInPeriod(seminarId, lastPeriod)
         .then(function (allCompanyDecision) {
         var p = Q('init');
-        var emptyCompanyDecision = allCompanyDecision[0].toObject();
-        delete emptyCompanyDecision._id;
-        delete emptyCompanyDecision.__v;
+        var emptyCompanyDecision = allCompanyDecision[0].toObject().decision;
         reset(emptyCompanyDecision);
         allCompanyDecision.forEach(function (companyDecision) {
-            var tempCompanyDecision = clone(emptyCompanyDecision);
-            tempCompanyDecision.period = companyDecision.period + 1;
-            tempCompanyDecision.seminarId = companyDecision.seminarId;
-            tempCompanyDecision.d_CID = companyDecision.d_CID;
-            tempCompanyDecision.d_CompanyName = companyDecision.d_CompanyName;
+            var tempCompanyDecision = {
+                period: companyDecision.period + 1,
+                seminarId: companyDecision.seminarId,
+                d_CID: companyDecision.d_CID,
+                d_CompanyName: companyDecision.d_CompanyName,
+                decision: clone(emptyCompanyDecision)
+            };
             p = p.then(function (result) {
                 if (!result) {
                     throw { message: "Cancel promise chains. Because save comanyDecision failed during create copy of last period decision." };
@@ -721,185 +650,205 @@ function duplicateLastPeriodDecision(seminarId, lastPeriod) {
         if (!result) {
             throw { message: "save comanyDecision failed during create copy of last period decision." };
         }
-        /*
-        return brandDecisionModel.findAllInPeriod(seminarId, lastPeriod)
-        .then(function(allBrandDecision){
-            let p = Q('init');
-            allBrandDecision.forEach(function(brandDecision){
-                let tempBrandDecision = brandDecision.toObject();
-
-                delete tempBrandDecision._id;
-                delete tempBrandDecision.__v;
-                tempBrandDecision.period = tempBrandDecision.period + 1;
-                tempBrandDecision.d_SalesForce = 0;
-                p = p.then(function(result){
-                    if(!result){
-                        throw {message: "Cancel promise chains. Because save brandDecision failed during create copy of last period decision."};
-                    }
-                    return brandDecisionModel.initCreate(tempBrandDecision);
-                })
-            })
-            return p;
-        })
-    })
-    .then(function(result){
-        if(!result){
-            throw {message: "Cancel promise chains. Because save comanyDecision failed during create copy of last period decision."};
-        }
-        return SKUDecisionModel.findAllInPeriod(seminarId, lastPeriod)
-        .then(function(allSKUDecision){
-            let p = Q('init');
-            allSKUDecision.forEach(function(SKUDecision){
-                let tempSKUDecision = JSON.parse(JSON.stringify(SKUDecision));
-
-                delete tempSKUDecision._id;
-                delete tempSKUDecision.__v;
-
-                //Make sure to copy all the field instead of field listed below:
-                tempSKUDecision.period = tempSKUDecision.period + 1;
-                tempSKUDecision.d_Advertising = 0;
-                tempSKUDecision.d_AdditionalTradeMargin = 0;
-                tempSKUDecision.d_ProductionVolume = 0;
-                tempSKUDecision.d_PromotionalBudget = 0;
-                tempSKUDecision.d_TradeExpenses = 0;
-                tempSKUDecision.d_WholesalesBonusRate = 0;
-                tempSKUDecision.d_WholesalesBonusMinVolume = 0;
-
-                p = p.then(function(result){
-                    if(!result){
-                        {message: "Cancel promise chains. Because save SKUDecision failed during create copy of last period decision."};
-                    }
-                    return SKUDecisionModel.initCreate(tempSKUDecision);
-                })
-            })
-
-            return p;
-        })*/
         return result;
     });
 }
 /*
-
 //createNewDecisionBasedOnLastPeriodDecision
 //a) copy previous to current except dropped SKUs/Brands
 //b) clean array brandDecisions.d_SKUsDecisions
-//c) clean array companyDecisions.d_BrandsDecisions
-/*
-function createNewDecisionBasedOnLastPeriodDecision(seminarId, lastPeriod, decisionsOverwriteSwitchers, goingToNewPeriod){
-    let discontinuedSKUId = [];
-    let discontinuedBrandId = [];
+//c) clean array companyDecisions.
+*/
+function createNewDecisionBasedOnLastPeriodDecision(seminarId, lastPeriod, decisionsOverwriteSwitchers, goingToNewPeriod) {
+    return companyDecisionModel.findAllInPeriod(seminarId, lastPeriod)
+        .then(function (allCompanyDecision) {
+        var p = Q('init');
+        allCompanyDecision.forEach(function (companyDecision) {
+            var decision = companyDecision.toObject().decision;
+            //reset(decision);
+            var tempCompanyDecision = {
+                period: companyDecision.period + 1,
+                seminarId: companyDecision.seminarId,
+                d_CID: companyDecision.d_CID,
+                d_CompanyName: companyDecision.d_CompanyName,
+                decision: decision
+            };
+            /*
+            if (companyDecision.bs_AdditionalBudgetApplicationCounter >= 2) {
+                tempCompanyDecision.bs_BlockBudgetApplication = true;
+            } else {
+                tempCompanyDecision.bs_BlockBudgetApplication = false;
+            }
 
-    return SKUDecisionModel.findAllInPeriod(seminarId, lastPeriod)
-        .then(function(allSKUDecision){
-            discontinuedSKUId = [];
-            discontinuedBrandId = [];
-
-            let p = Q('init');
-            allSKUDecision.forEach(function(SKUDecision){
-                let tempSKUDecision = JSON.parse(JSON.stringify(SKUDecision));
-
-                if(tempSKUDecision.d_ToDrop){
-                    discontinuedSKUId.push(tempSKUDecision.d_SKUID);
-                } else {
-                    delete tempSKUDecision._id;
-                    delete tempSKUDecision.__v;
-                    //Make sure to copy all the field instead of field listed below:
-                    tempSKUDecision.period = tempSKUDecision.period + 1;
-                    tempSKUDecision.d_Advertising = 0;
-                    tempSKUDecision.d_AdditionalTradeMargin = 0;
-                    tempSKUDecision.d_ProductionVolume = 0;
-                    tempSKUDecision.d_PromotionalBudget = 0;
-                    tempSKUDecision.d_TradeExpenses = 0;
-                    tempSKUDecision.d_WholesalesBonusRate = 0;
-                    tempSKUDecision.d_WholesalesBonusMinVolume = 0;
-
-                    //only when admin turn on the overwrite switchers, delete old & generate new decision for next period
-                    if(decisionsOverwriteSwitchers[tempSKUDecision.d_CID - 1]){
-                        p = p.then(function(result){
-                            if(!result){
-                                throw {message: "Cancel promise chains. Because save SKUDecision failed during create copy of last period decision."};
-                            }
-                            tempSKUDecision.reRunLastRound = !goingToNewPeriod;
-                            return SKUDecisionModel.createSKUDecisionBasedOnLastPeriodDecision(tempSKUDecision);
-                        })
+            tempCompanyDecision.d_BrandsDecisions = _.difference(tempCompanyDecision.d_BrandsDecisions, discontinuedBrandId);
+            tempCompanyDecision.period = tempCompanyDecision.period + 1;
+            tempCompanyDecision.d_RequestedAdditionalBudget = 0;
+            tempCompanyDecision.d_IsAdditionalBudgetAccepted = false;
+            tempCompanyDecision.d_InvestmentInServicing = 0;
+            tempCompanyDecision.d_InvestmentInEfficiency = 0;
+            tempCompanyDecision.d_InvestmentInTechnology = 0;
+            */
+            //only when admin turn on the overwrite switchers, delete old & generate new decision for next period
+            if (decisionsOverwriteSwitchers[tempCompanyDecision.d_CID - 1]) {
+                p = p.then(function (result) {
+                    if (!result) {
+                        throw { message: "Cancel promise chains. Because save comanyDecision failed during create copy of last period decision." };
                     }
-                }
-            })
-            return p;
-    })
-    .then(function(result){
-        if(!result){
-            throw {message: "Cancel promise chains. Because save comanyDecision failed during create copy of last period decision."};
+                    tempCompanyDecision.reRunLastRound = !goingToNewPeriod;
+                    return companyDecisionModel.save(tempCompanyDecision);
+                });
+            }
+        });
+        return p;
+    });
+}
+function convertEndState(endState) {
+    var deferred = Q.defer();
+    if (!endState) {
+        return deferred.reject(new Error("no endState"));
+    }
+    var result = Flat.unflatten(endState, {
+        delimiter: "_"
+    });
+    deferred.resolve(result);
+    return deferred.promise;
+}
+function processEndState(playerID, currPeriod) {
+    var deferred = Q.defer();
+    if (playerID === undefined || currPeriod === undefined) {
+        return deferred.reject(new Error("Invalid argument playerId, currPeriod for processEndState"));
+    }
+    SimMain.getEndState(playerID, currPeriod).then(function (playerEndState) {
+        if (!playerEndState) {
+            return deferred.reject(new Error("Error at genereting endState"));
         }
-        return brandDecisionModel.findAllInPeriod(seminarId, lastPeriod)
-        .then(function(allBrandDecision){
-            let p = Q('init');
-            allBrandDecision.forEach(function(brandDecision){
-                let tempBrandDecision = JSON.parse(JSON.stringify(brandDecision));
+        // flat report
+        playerEndState["report"] = processFlatReport(playerEndState);
+        var playerResults = Flat.unflatten(playerEndState, {
+            delimiter: "_"
+        });
+        console.silly('player:' + playerID + ' endstats succes');
+        deferred.resolve(playerResults);
+    }).fail(function (err) {
+        console.error(err);
+        deferred.reject(err);
+    }).done();
+    function processFlatReport(playerEndState) {
+        var flatReport = {};
+        Object.keys(playerEndState).forEach(function (key) {
+            var newKey = "res_" + key;
+            flatReport[newKey] = playerEndState[key];
+        });
+        return flatReport;
+    }
+    return deferred.promise;
+}
+/*
+function prepareBI(finalResults: any[]) {
 
-                tempBrandDecision.d_SKUsDecisions = _.difference(tempBrandDecision.d_SKUsDecisions, discontinuedSKUId);
-                if(tempBrandDecision.d_SKUsDecisions.length == 0){
-                    discontinuedBrandId.push(tempBrandDecision.d_BrandID);
-                } else {
-                    delete tempBrandDecision._id;
-                    delete tempBrandDecision.__v;
-                    tempBrandDecision.period = tempBrandDecision.period + 1;
-                    tempBrandDecision.d_SalesForce = 0;
-                    //only when admin turn on the overwrite switchers, delete old & generate new decision for next period
-                    if(decisionsOverwriteSwitchers[tempBrandDecision.d_CID - 1]){
-                        p = p.then(function(result){
-                            if(!result){
-                                throw {message: "Cancel promise chains. Because save brandDecision failed during create copy of last period decision."};
-                            }
-                            tempBrandDecision.reRunLastRound = !goingToNewPeriod;
-                            return brandDecisionModel.createBrandDecisionBasedOnLastPeriodDecision(tempBrandDecision);
-                        })
-                    }
+    let deferred = Q.defer();
+
+
+    setImmediate(function () {
+        // BI
+        let BI_free: any = getBIInfos(finalResults, startFromPlayerID, 0);
+        let BI_corporateActivity = getBIInfos(finalResults, startFromPlayerID, 1);
+        let BI_marketShares = getBIInfos(finalResults, startFromPlayerID, 2);
+
+
+        let i = 0;
+        let len = finalResults.length;
+
+        for (; i < len; i++) {
+            let playerEndState: any = finalResults[i];
+
+            let decision = currPData[i].decision;
+            let isCorporateActivityOrdered = decision.orderCorporateActivityInfo;
+            let areMarketSharesOrdered = decision.orderMarketSharesInfo;
+
+
+            playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_free);
+
+            if (isCorporateActivityOrdered) {
+                playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_corporateActivity);
+            }
+
+            if (areMarketSharesOrdered) {
+                playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_marketShares);
+            }
+
+            finalResults[i] = playerEndState;
+        }
+
+        deferred.resolve(finalResults);
+
+    });
+
+    return deferred.promise;
+}
+
+
+function getBIInfos(results, startFromPlayerID, includeInfoType) {
+    var BI = {};
+    var playerID = startFromPlayerID;
+
+    var corporateActivityInfo = SimMain.getList_corporateActivityInfo();
+    var freeInfo = SimMain.getList_freeInfo();
+
+    results.forEach(function (res, idx) {
+        var prefix = "res_BI_corporate" + playerID + "_";
+
+        BI[prefix + "playerID"] = playerID;
+
+
+        var report = res.report;
+
+        for (var key in report) {
+            if (!report.hasOwnProperty(key)) {
+                continue;
+            }
+
+            var splits = key.split("_");
+
+            if (!splits) {
+                continue;
+            }
+
+            // remove res or dec
+            splits.shift();
+
+            var property = splits[splits.length - 1];
+
+            if (property === "marketVolumeShareOfSales") {
+
+                if (includeInfoType !== 2) {
+                    continue;
                 }
 
-            })
-            return p;
-        })
-    }).then(function(result){
-        return companyDecisionModel.findAllInPeriod(seminarId, lastPeriod)
-        .then(function(allCompanyDecision){
-            let p = Q('init');
-            allCompanyDecision.forEach(function(companyDecision){
-                let tempCompanyDecision = JSON.parse(JSON.stringify(companyDecision));
-
-                delete tempCompanyDecision._id;
-                delete tempCompanyDecision.__v;
-
-                if(companyDecision.bs_AdditionalBudgetApplicationCounter >= 2){
-                    tempCompanyDecision.bs_BlockBudgetApplication = true;
-                } else {
-                    tempCompanyDecision.bs_BlockBudgetApplication = false;
+            } else if (corporateActivityInfo.indexOf(property) !== -1) {
+                if (includeInfoType !== 1) {
+                    continue;
                 }
 
-                tempCompanyDecision.d_BrandsDecisions = _.difference(tempCompanyDecision.d_BrandsDecisions, discontinuedBrandId);
-                tempCompanyDecision.period = tempCompanyDecision.period + 1;
-                tempCompanyDecision.d_RequestedAdditionalBudget = 0;
-                tempCompanyDecision.d_IsAdditionalBudgetAccepted = false;
-                tempCompanyDecision.d_InvestmentInServicing = 0;
-                tempCompanyDecision.d_InvestmentInEfficiency = 0;
-                tempCompanyDecision.d_InvestmentInTechnology = 0;
-
-                //only when admin turn on the overwrite switchers, delete old & generate new decision for next period
-                if(decisionsOverwriteSwitchers[tempCompanyDecision.d_CID - 1]){
-                    p = p.then(function(result){
-                        if(!result){
-                            throw {message: "Cancel promise chains. Because save comanyDecision failed during create copy of last period decision."};
-                        }
-                        tempCompanyDecision.reRunLastRound = !goingToNewPeriod;
-                        return companyDecisionModel.save(tempCompanyDecision);
-                    })
+            } else if (freeInfo.indexOf(property) !== -1 || property.indexOf("price") !== -1) {
+                if (includeInfoType !== 0) {
+                    continue;
                 }
 
+            } else {
+                continue;
+            }
 
-            })
-            return p;
-        })
-    })
 
-}*/ 
+            var newKey = prefix + splits.join("_");
+
+            BI[newKey] = report[key];
+        }
+
+        ++playerID;
+    });
+
+    return BI;
+}
+*/ 
 //# sourceMappingURL=init.js.map

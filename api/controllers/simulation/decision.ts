@@ -69,117 +69,20 @@ export function submitDecision (req, res, next) {
         result.d_InvestmentInTechnology = decision.d_InvestmentInTechnology;
         result.d_InvestmentInServicing = decision.d_InvestmentInServicing;
 
+
+        result.decision = decision.decision;
+
+        res.statut(200).send(result);
         
-        /*return brandDecisionModel.findAllInCompany(seminarId, period, companyId)
-            .then(function (brandDecisions) {
-                let p2 = Q();
-                brandDecisions.forEach(function (brandDecision) {
-                    let tempBrandDecision = {};
-                    tempBrandDecision.d_BrandID = brandDecision.d_BrandID;
-                    tempBrandDecision.d_BrandName = brandDecision.d_BrandName;
-                    tempBrandDecision.d_SalesForce = brandDecision.d_SalesForce;
-                    tempBrandDecision.d_SKUsDecisions = [];
-
-                    p2 = p2.then(function () {
-                        return SKUDecisionModel.findAllInBrand(seminarId, period, companyId, brandDecision.d_BrandID);
-                    }).then(function (SKUDecisions) {
-                        SKUDecisions.forEach(function (SKUDecision) {
-                            let tempSKUDecision = {};
-                            tempSKUDecision.d_SKUID = SKUDecision.d_SKUID;
-                            tempSKUDecision.d_SKUName = SKUDecision.d_SKUName;
-                            tempSKUDecision.d_Advertising = SKUDecision.d_Advertising;
-                            tempSKUDecision.d_AdditionalTradeMargin = SKUDecision.d_AdditionalTradeMargin;
-                            tempSKUDecision.d_FactoryPrice = SKUDecision.d_FactoryPrice;
-                            tempSKUDecision.d_ConsumerPrice = SKUDecision.d_ConsumerPrice;
-                            tempSKUDecision.d_RepriceFactoryStocks = SKUDecision.d_RepriceFactoryStocks;
-                            tempSKUDecision.d_IngredientsQuality = SKUDecision.d_IngredientsQuality;
-                            tempSKUDecision.d_PackSize = SKUDecision.d_PackSize;
-                            tempSKUDecision.d_ProductionVolume = SKUDecision.d_ProductionVolume;
-                            tempSKUDecision.d_PromotionalBudget = SKUDecision.d_PromotionalBudget;
-                            tempSKUDecision.d_PromotionalEpisodes = SKUDecision.d_PromotionalEpisodes;
-                            tempSKUDecision.d_TargetConsumerSegment = SKUDecision.d_TargetConsumerSegment;
-                            tempSKUDecision.d_Technology = SKUDecision.d_Technology;
-                            tempSKUDecision.d_ToDrop = SKUDecision.d_ToDrop;
-                            tempSKUDecision.d_TradeExpenses = SKUDecision.d_TradeExpenses;
-                            tempSKUDecision.d_WholesalesBonusMinVolume = SKUDecision.d_WholesalesBonusMinVolume;
-                            tempSKUDecision.d_WholesalesBonusRate = SKUDecision.d_WholesalesBonusRate;
-                            tempSKUDecision.d_WarrantyLength = SKUDecision.d_WarrantyLength;
-                            tempBrandDecision.d_SKUsDecisions.push(tempSKUDecision);
-                        });
-                        result.d_BrandsDecisions.push(tempBrandDecision);
-                    })
-                })
-                return p2;
-            })*/
     })
-        .then(function () {
-            if (Object.keys(result).length === 0) {
-                return res.send(500, { message: "fail to get decisions" })
-            }
+    .fail(function (err) {
+        logger.error(err);
 
-            //insertEmptyBrandsAndSKUs(result);
+        res.send(500, { message: "submit decision failed." })
+    })
+    .done();
 
-            //convert result to data format that can be accepted by CGI service
-            decisionConvertor.convert(result);
-
-            //return res.send(result);
-            //return result;
-            /*let reqUrl = url.resolve(config.cgiService, 'decisions.exe');
-            return request.post(reqUrl, {
-                decision: JSON.stringify(result),
-                seminarId: seminarId,
-                period: period,
-                team: companyId
-            })
-            .then(function (postDecisionResult) {
-                res.send(postDecisionResult);
-                });
-            */
-
-            res.statut(200).send(result);
-
-        })
-        .fail(function (err) {
-            logger.error(err);
-
-            res.send(500, { message: "submit decision failed." })
-        })
-        .done();
-
-    /**
-     * CGI service can not convert JSON string to delphi object,
-     * if the number of SKUs or brnads is not the same as
-     * the length of correspond array in delphi data structure.
-     *
-     * @method insertEmptyBrands
-     */
-
-    /*
-    function insertEmptyBrandsAndSKUs(decision) {
-        for (let i = 0; i < decision.d_BrandsDecisions.length; i++) {
-            let brand = decision.d_BrandsDecisions[i];
-            let numOfSKUToInsert = 5 - brand.d_SKUsDecisions.length;
-            for (let j = 0; j < numOfSKUToInsert; j++) {
-                let emptySKU = JSON.parse(JSON.stringify(brand.d_SKUsDecisions[0]));
-                emptySKU.d_SKUID = 0;
-                emptySKU.d_SKUName = '\u0000\u0000\u0000';
-
-                brand.d_SKUsDecisions.push(emptySKU);
-            }
-        }
-
-        let numOfBrandToInsert = 5 - decision.d_BrandsDecisions.length;
-        for (let k = 0; k < numOfBrandToInsert; k++) {
-            let emptyBrand = JSON.parse(JSON.stringify(decision.d_BrandsDecisions[0]));
-            for (let p = 0; p < emptyBrand.d_SKUsDecisions.length; p++) {
-                emptyBrand.d_SKUsDecisions[p].d_SKUID = 0;
-                emptyBrand.d_SKUsDecisions[p].d_SKUName = '\u0000\u0000\u0000';
-            }
-            emptyBrand.d_BrandID = 0;
-            emptyBrand.d_BrandName = '\u0000\u0000\u0000\u0000\u0000\u0000';
-            decision.d_BrandsDecisions.push(emptyBrand);
-        }
-    }*/
+    
 };
 
 
@@ -585,7 +488,7 @@ export function updateCompanyDecision (req, res, next) {
         return res.send(400, { message: "Invalid period in session." });
     }
 
-    let tempCompanyDecision = filterCompanyDecision(company_data);
+    let tempCompanyDecision = company_data.decision; //filterCompanyDecision(company_data);
 
     //logger.log('tempCompanyDecision:' + util.inspect(tempCompanyDecision));
     companyDecisionModel.updateCompanyDecision(seminarId, period, companyId, tempCompanyDecision)
@@ -655,10 +558,8 @@ export function lockCompanyDecision (req, res, next) {
             resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].spendHour = decisionTime.lockTime - startTime;
         }
 
-        console.warn(resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1]);
-
-
         return resultSeminar.saveQ();
+
     }).then(function (result) {
         if (result[1] === 0) {
             throw new Error("Cancel promise chains. update seminar failed, No seminar update.");
@@ -669,6 +570,7 @@ export function lockCompanyDecision (req, res, next) {
         }
 
         socketio.emitMarksimosDecisionUpdate(req.gameMarksimos.socketRoom.company, req.user);
+
         return res.status(200).send(result);
 
     }).fail(function (err) {

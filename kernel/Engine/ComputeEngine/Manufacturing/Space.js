@@ -24,8 +24,9 @@ var Space = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Space.prototype.init = function (initialSize, peripherySpace, lastNetValue, economy, contractor) {
+    Space.prototype.init = function (initialSize, peripherySpace, lastNetValue, economy, contractor, creditWorthiness) {
         if (contractor === void 0) { contractor = null; }
+        if (creditWorthiness === void 0) { creditWorthiness = Infinity; }
         _super.prototype.init.call(this);
         if (isNaN(initialSize)) {
             console.warn("initialSize NaN");
@@ -40,6 +41,7 @@ var Space = (function (_super) {
         this.availableSpace = initialSize;
         this.lastNetValue = lastNetValue;
         this.contractor = contractor;
+        this.creditWorthiness = creditWorthiness;
         this.economy = economy;
     };
     Space.prototype.reset = function () {
@@ -199,7 +201,7 @@ var Space = (function (_super) {
         this.onSpaceFree();
         return true;
     };
-    Space.prototype.extend = function (extension, creditWorthiness) {
+    Space.prototype.extend = function (extension) {
         if (!this.isInitialised()) {
             return false;
         }
@@ -212,7 +214,7 @@ var Space = (function (_super) {
             return false;
         }
         var possibleExtension = extension > this.unusedSpace ? this.unusedSpace : extension;
-        var extensionRes = this.contractor.build(possibleExtension, creditWorthiness);
+        var extensionRes = this.contractor.build(possibleExtension, this.creditWorthiness);
         var effectiveExtension = extensionRes.squaresNb;
         var extensionDuration = extensionRes.duration;
         if (this === this.peripherySpace && this.params.id === this.peripherySpace.params.id) {

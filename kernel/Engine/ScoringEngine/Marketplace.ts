@@ -156,7 +156,6 @@ export class Marketplace {
 
         let that = this.getInstance();
 
-
         that.firmsOMarkets.forEach(function (firmOMarkets) {
 
             let supplyMatrix = [];
@@ -241,6 +240,9 @@ export class Marketplace {
 
         let firmsMkgMixes = this.getFirmsMarketingMix();
 
+        global.debug_data.firmsMkgMixes = firmsMkgMixes;
+
+
         let supplyMatrix = []; // [f1... [...[m2p1, m2p2, m2p3]...] ...]
         let pricesMatrix = [];
         let qualitiesMatrix = [];
@@ -316,6 +318,7 @@ export class Marketplace {
         let firmsMatrixes = [];
 
         this.calcIndustryMarketingMixAvg();
+
 
         that.firmsOMarkets.forEach(function (oMarkets) {
 
@@ -420,6 +423,8 @@ export class Marketplace {
         let that = this.getInstance();
 
         let industrySatisfactionScoreAvgs = this.calcIndustrySatisfactionScoreAvg();
+
+        console.silly('industrySatisfactionScoreAvgs 1');
 
         let firmsNb = that.firmsOMarkets.length;
         let period = 0;

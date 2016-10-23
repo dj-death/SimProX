@@ -455,7 +455,7 @@ export function  getUserInfo (req, res, next){
             userResult.currentMarksimosSeminar.currentPeriod = userResult.currentMarksimosSeminar.simulation_span;
         }
 
-        userResult.currentMarksimosSeminar.numOfCompany = userResult.currentMarksimosSeminar.companyNum;
+        userResult.currentMarksimosSeminar.numOfCompany = userResult.currentMarksimosSeminar.company_num;
         userResult.currentMarksimosSeminar.maxPeriodRound = userResult.currentMarksimosSeminar.simulation_span;
 
 

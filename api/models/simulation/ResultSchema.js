@@ -248,15 +248,7 @@ var marketResearchRes = Schema({
             consumerStarRatings: Numeric
         }]
 });
-var result = Schema({
-    seminarId: String,
-    period: Number,
-    p_Companies: [],
-    p_Number: Number,
-    p_Brands: [],
-    p_Type: Number,
-    p_SKUs: [],
-    p_Market: {},
+var companyResult = Schema({
     report: mongoose.Schema.Types.Mixed,
     markets: [marketRes],
     products: [productRes],
@@ -277,14 +269,6 @@ var result = Schema({
         sharesIssued: Numeric,
         dividendPaid: Numeric,
         sharesNbAtStartOfYear: Numeric
-    },
-    economies: [economyRes],
-    materialMarkets: [materialMarketRes],
-    buildingContractors: [buildingContractorRes],
-    businessReport: [String],
-    BI: {
-        corporates: [corporateRes],
-        marketResearchs: [marketResearchRes]
     },
     advertisingCost: Numeric,
     internetDistributionCost: Numeric,
@@ -365,6 +349,30 @@ var result = Schema({
     IP: Numeric,
     workingCapital: Numeric,
     freeCashFlow: Numeric
+});
+var result = Schema({
+    seminarId: String,
+    period: Number,
+    p_Companies: [],
+    p_Number: Number,
+    p_Brands: [],
+    p_Type: Number,
+    p_SKUs: [],
+    p_Market: {},
+    environnement: {
+        economies: [economyRes],
+        currencies: [{
+                exchangeRatePerCent: Number
+            }],
+        materialMarkets: [materialMarketRes],
+        buildingContractors: [buildingContractorRes],
+        businessReport: [String],
+        BI: {
+            corporates: [corporateRes],
+            marketResearchs: [marketResearchRes]
+        }
+    },
+    companies: [companyResult]
 });
 module.exports = result;
 //# sourceMappingURL=ResultSchema.js.map

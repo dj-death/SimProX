@@ -7,19 +7,17 @@
 							<tr>
 								<th><strong>Marché</strong></th>
 								<th></th>
-								<th ng-repeat="product in data.currentCompany.products">{{data.currentCompany.productsRefs[$index]}}</th>
+								<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
 							</tr>
 						</thead>
 						
 						<tbody>
-							<tr ng-repeat="market in data.currentCompany.markets">
+							<tr ng-repeat="market in data.currentCompany.decision.markets">
 								<td>{{data.currentCompany.marketsRefs[$index]}}</td>
 								<td></td>
-								
 								<td ng-repeat="subMarket in market.products">
-									<input type="number" class="form-control" ng-model="subMarket.deliveredQ" required ng-blur="updateCompany()" ng-disabled="data.currentCompanyDecisionLock.lockStatus">
+									<input type="number" class="form-control required   pristine" ng-model="subMarket.deliveredQ" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 								</td>
-								
 							</tr>
 						</tbody>
 					</table>
@@ -34,16 +32,16 @@
 					<tr>
 						<th><strong>Marché</strong></th>
 						<th></th>
-						<th ng-repeat="product in data.currentCompany.products">{{data.currentCompany.productsRefs[$index]}}</th>
+						<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
 					</tr>
 				</thead>
 				
 				<tbody>
-					<tr ng-repeat="market in data.currentCompany.markets">
+					<tr ng-repeat="market in data.currentCompany.decision.markets">
 						<td>{{data.currentCompany.marketsRefs[$index]}}</td>
 						<td></td>
 						<td ng-repeat="subMarket in market.products">
-							<input type="number" class="form-control  pristine" ng-model="subMarket.price" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+							<input type="number" class="form-control required   pristine" ng-model="subMarket.price" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
 					</tr>
 				</tbody>
@@ -55,19 +53,19 @@
 					<tr>
 						<th><strong>Marché</strong></th>
 						<th>Communication</th>
-						<th ng-repeat="product in data.currentCompany.products">{{data.currentCompany.productsRefs[$index]}}</th>
+						<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
 					</tr>
 				</thead>
 				
 				<tbody>
-					<tr ng-repeat="market in data.currentCompany.markets">
+					<tr ng-repeat="market in data.currentCompany.decision.markets">
 						<td>{{data.currentCompany.marketsRefs[$index]}}</td>
 						<td>
-							<input type="number" class="form-control  pristine" ng-model="market.corporateComBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+							<input type="number" class="form-control required   pristine" ng-model="market.corporateComBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
 
 						<td ng-repeat="subMarket in market.products">
-							<input type="number" class="form-control  pristine" ng-model="subMarket.advertisingBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+							<input type="number" class="form-control required   pristine" ng-model="subMarket.advertisingBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
 					</tr>
 				</tbody>
@@ -91,18 +89,18 @@
 				</thead>
 				
 				<tbody>
-					<tr ng-repeat="agent in data.currentCompany.agents">
+					<tr ng-repeat="agent in data.currentCompany.decision.agents">
 						<td>Agents {{data.currentCompany.marketsRefs[$index]}}</td>
 						<td>
-							<input type="number" class="form-control  pristine" ng-model="agent.appointedNb" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+							<input type="number" class="form-control required   pristine" ng-model="agent.appointedNb" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
 
 						<td>
-							<input type="number" class="form-control  pristine" ng-model="agent.support" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+							<input type="number" class="form-control required   pristine" ng-model="agent.support" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
 
 						<td>
-							<input type="number" class="form-control  pristine" ng-model="agent.commissionRate" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+							<input type="number" class="form-control required   pristine" ng-model="agent.commissionRate" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 						</td>
 					</tr>
 
@@ -119,12 +117,12 @@
 				<tr>
 					<td>Parts de Marché</td>
 					<td>
-						<input type="checkbox" class="form-control  pristine" ng-model="data.currentCompany.orderMarketSharesInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						<input type="checkbox" class="form-control required   pristine" ng-model="data.currentCompany.decision.orderMarketSharesInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 					</td>
 					
 					<td>Autres Infos</td>
 					<td>
-						<input type="checkbox" class="form-control  pristine" ng-model="data.currentCompany.orderCorporateActivityInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						<input type="checkbox" class="form-control required   pristine" ng-model="data.currentCompany.decision.orderCorporateActivityInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 					</td>
 				</tr>
 			</tbody>

@@ -8,7 +8,7 @@
 				<tr>
 					<td>Actions émises ou revendues (+/- ' 000 dh)</td>
 					<td>
-						<input type="number" class="form-control  pristine" ng-model="data.currentCompany.sharesVariation" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						<input type="number" class="form-control required   pristine" ng-model="data.currentCompany.decision.sharesVariation" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 					</td>
 			
 				</tr>
@@ -16,7 +16,7 @@
 				<tr>
 					<td>Dividende (%)</td>
 					<td>
-						<input type="number" class="form-control  pristine" ng-model="data.currentCompany.dividend" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						<input type="number" class="form-control required   pristine" ng-model="data.currentCompany.decision.dividend" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 					</td>
 				
 				</tr>				
@@ -30,15 +30,15 @@
 		<table class="table  table-bordered table-hover">
 			
 			<tbody>
-				<tr ng-repeat="bkAccount in data.currentCompany.bankAccounts">
+				<tr ng-repeat="bkAccount in data.currentCompany.decision.bankAccounts">
 					<td>Emprunts Moyen Terme (' 000 dh)</td>
 					<td>
-						<input type="number" class="form-control  pristine" ng-model="bkAccount.termLoans" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						<input type="number" class="form-control required   pristine" ng-model="bkAccount.termLoans" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 					</td>
 					
 					<td>Dépôts à terme (+/- ' 000 dh)</td>
 					<td>
-						<input type="number" class="form-control  pristine" ng-model="bkAccount.termDeposit"  ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						<input type="number" class="form-control required   pristine" ng-model="bkAccount.termDeposit"  ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
 					</td>
 				</tr>	
 			</tbody>

@@ -5,30 +5,32 @@ function isObject(val) {
     }
     return ((typeof val === 'object') && !(val instanceof Date));
 }
-function processStates(states) {
-    if (!states.length || !(states[0].decision)) {
+function processStates(decisions, results) {
+    if (!decisions.length || !results.length) {
         return {};
     }
     var newStates = {};
     // c' mieux que results as it so flat
-    var obj = states[0].decision;
+    var obj = decisions[0];
     // iterate over object: machines ...
     for (var prop in obj) {
         if (!obj.hasOwnProperty(prop)) {
             continue;
         }
         var coll = obj[prop];
-        if (!isObject(coll)) {
+        if (!coll || !isObject(coll)) {
             continue;
         }
         newStates[prop] = []; // { machines: [] }
         coll.forEach(function (item, idx) {
             var itemResults = [];
             var itemDecs = [];
-            states.forEach(function (state) {
-                var res = state.results[prop];
-                var dec = state.decision[prop];
+            results.forEach(function (result) {
+                var res = result[prop];
                 res && itemResults.push(res[idx]);
+            });
+            decisions.forEach(function (decision) {
+                var dec = decision[prop];
                 dec && itemDecs.push(dec[idx]);
             });
             newStates[prop].push({

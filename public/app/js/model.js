@@ -270,9 +270,24 @@
 
             submitQuestionnaire : function(postdata){
                 return $http.put(apiPath + 'questionnaire', postdata);
+            },
+
+            downloadReport: function(companyId, period){
+                var url = apiPath + 'downloadReport/';
+                
+                return $http({
+                    method: 'GET',
+                    url: url,
+                    responseType: "arraybuffer",
+                    params:  {
+                        companyId : companyId,
+                        period: period
+                    }
+                });
             }
 
         };
+
         return factory;
     }
 

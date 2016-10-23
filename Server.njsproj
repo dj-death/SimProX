@@ -86,7 +86,6 @@
     <TypeScriptCompile Include="api\models\user\UserRole.ts" />
     <TypeScriptCompile Include="api\passiveSeminar.ts" />
     <TypeScriptCompile Include="api\promises\request.ts" />
-    <TypeScriptCompile Include="api\runSeminar.ts" />
     <TypeScriptCompile Include="api\utils\error-code.ts" />
     <TypeScriptCompile Include="api\utils\ExcelUtils.ts" />
     <TypeScriptCompile Include="api\utils\express-custom-validator.ts" />

@@ -121,7 +121,25 @@
 
 
             <div class="row">
-                <div class="col-md-3 col-md-offset-1">
+			
+				<div class="col-md-3 ">
+                    <div class="panel panel-primary user_chart_list user_chart_list_bg2">
+					
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Rapports de Gestion</h3>
+                        </div>
+
+                        <!-- List group -->
+                        <ul class="list-group">
+                            <li class="list-group-item"  ng-repeat="period in css.reportsPeriods" id="hist{{$index}}" ng-class="{'last':$last, 'spotlight_overlay': period <= 0}">
+								<a href="" ng-click="downloadReport(period)">Periode T{{period}} .xlsx</a>
+							</li>
+                        </ul>
+						
+                    </div>
+                </div>
+				
+                <div class="col-md-3 ">
                     <div class="panel panel-primary user_chart_list user_chart_list_bg2">
                         <div class="panel-heading">
                             <h3 class="panel-title">{{'ReportYourCompany' | translate}}</h3>
@@ -1941,13 +1959,13 @@
 					</div>
 					
 					<div class="row ">
-                        <div class="col-md-offset-1 col-sm-10">
+                        <!--<div class="col-md-offset-1 col-sm-10">
                             <button type="submit" class="btn btn-primary decision_button" ng-hide="css.showConfirmLockDecision || data.currentCompanyDecisionLock.lockStatus" ng-click="confirmLockCompanyDecision()"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> {{'DecisionPageDecisionLockButton' | translate}}</button>
                             <button type="submit" class="btn btn-info " ng-show="css.showConfirmLockDecision" ng-click="lockCompanyDecision()"> {{'DecisionPageDecisionLockButtonConfirmYes' | translate}}</button>
                             <button type="submit" class="btn btn-primary " ng-show="css.showConfirmLockDecision" ng-click="hideLockCompanyDecision()"> {{'DecisionPageDecisionLockButtonConfirmNo' | translate}}</button>
                             <p class="bg-danger decision_button_info" ng-hide="data.currentCompanyDecisionLock.lockStatus"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{'DecisionPageDecisionLockButtonInfo' | translate}}</p>
                             <p class="bg-info decision_button_info" ng-show="data.currentCompanyDecisionLock.lockStatus"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{'DecisionPageDecisionLockStatus' | translate}}</p>
-                        </div>
+                        </div>-->
 						
 						<div class="col-md-offset-1 col-sm-10">
                             <button type="submit" class="btn btn-primary decision_button" ng-hide="css.showConfirmLockDecision || data.currentCompanyDecisionLock.lockStatus" ng-click="confirmLockCompanyDecision()"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> {{'DecisionPageDecisionLockButton' | translate}}</button>

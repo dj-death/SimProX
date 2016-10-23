@@ -329,4 +329,31 @@ export default class ObjectsManager {
 
         return deferred.promise;
     }
+
+
+    public static getPersistedObjectsEndState(): Q.Promise<any> {
+        let that = this;
+        let self = that.getInstance();
+
+
+        let deferred = Q.defer();
+
+        Q(null).then(function () {
+            if (!that.persistentsEndState && that.persistents) {
+                return _getEndState(that.persistents);
+            }
+
+            return {};
+
+        }).done(function (result) {
+            deferred.resolve(result);
+
+        }, function (err) {
+            console.error(err);
+            deferred.reject(err);
+        });
+
+
+        return deferred.promise;
+    }
 }

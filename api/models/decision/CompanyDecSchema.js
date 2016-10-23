@@ -218,55 +218,57 @@ var playerDecisionSchema = mongoose.Schema({
     d_InvestmentInServicing: { type: Number, default: 0 },
     bs_AdditionalBudgetApplicationCounter: { type: Number, default: 0 },
     bs_BlockBudgetApplication: { type: Boolean, default: false },
-    markets: [market],
-    agents: [agent],
-    subProducts: [subProduct],
-    products: [product],
-    materials: [material],
-    machineries: [machinery],
-    shiftLevel: {
-        type: Numeric,
-        default: -1,
-        min: 1,
-        max: 3
-    },
-    factories: [factory],
-    eCommerces: [eCommerce],
-    bankAccounts: [bankAccount],
-    insurances: [insurance],
-    sharesVariation: {
-        type: Numeric,
-        default: 0,
-        min: -999000,
-        max: 999000
-    },
-    dividend: {
-        type: Numeric,
-        default: 0,
-        min: 0,
-        max: 0.99
-    },
-    orderMarketSharesInfo: {
-        type: Boolean,
-        default: false
-    },
-    orderCorporateActivityInfo: {
-        type: Boolean,
-        default: false
-    },
-    staffTrainingDays: {
-        type: Numeric,
-        default: -1,
-        min: 0,
-        max: 90
-    },
-    managementBudget: {
-        type: Numeric,
-        default: -1,
-        min: 30000,
-        max: 999000
-    },
-    workers: [worker]
+    decision: {
+        markets: [market],
+        agents: [agent],
+        subProducts: [subProduct],
+        products: [product],
+        materials: [material],
+        machineries: [machinery],
+        shiftLevel: {
+            type: Numeric,
+            default: -1,
+            min: 1,
+            max: 3
+        },
+        factories: [factory],
+        eCommerces: [eCommerce],
+        bankAccounts: [bankAccount],
+        insurances: [insurance],
+        sharesVariation: {
+            type: Numeric,
+            default: 0,
+            min: -999000,
+            max: 999000
+        },
+        dividend: {
+            type: Numeric,
+            default: 0,
+            min: 0,
+            max: 0.99
+        },
+        orderMarketSharesInfo: {
+            type: Boolean,
+            default: false
+        },
+        orderCorporateActivityInfo: {
+            type: Boolean,
+            default: false
+        },
+        staffTrainingDays: {
+            type: Numeric,
+            default: -1,
+            min: 0,
+            max: 90
+        },
+        managementBudget: {
+            type: Numeric,
+            default: -1,
+            min: 30000,
+            max: 999000
+        },
+        workers: [worker]
+    }
 });
 module.exports = playerDecisionSchema;
 //# sourceMappingURL=CompanyDecSchema.js.map

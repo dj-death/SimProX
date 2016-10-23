@@ -1,5 +1,7 @@
 ﻿import reportModel = require('../../models/simulation/Report');
 import simulationResult = require('../../models/simulation/Result');
+import companyDecisionModel = require('../../models/decision/CompanyDecision');
+
 import seminarModel = require('../../models/Seminar');
 import userRoleModel = require('../../models/user/UserRole');
 import teamModel = require('../../models/user/Team');
@@ -7,12 +9,15 @@ import teamModel = require('../../models/user/Team');
 let teamScoreModel = require('../../models/b2c/TeamScore');
 
 import logger = require('../../../kernel/utils/logger');
+import Utils = require('../../../kernel/utils/Utils');
+
+import Flat = require('../../utils/Flat');
+import Excel = require('../../utils/ExcelUtils');
 
 
 let Q = require('q');
 let _ = require('underscore');
-
-
+let extraString = require("string");
 
 
 
@@ -420,4 +425,88 @@ function extractReportOfOneCompany(report, companyId) {
     }
 
     return tempReportData;
+}
+
+
+
+
+
+
+export function exportToExcel(req, res, next) {
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+
+    if (req.user.role !== userRoleModel.roleList.student.id) {
+        seminarId = +req.query.seminarId;
+    }
+
+    if (!seminarId) {
+        return res.status(400).send({ message: "You don't choose a seminar." });
+    }
+
+
+    let companyId = +req.query.companyId;
+    let period = +req.query.period;
+
+    return Q.all([
+        simulationResult.findOne(seminarId, period),
+        companyDecisionModel.findOne(seminarId, period, companyId)
+
+    ]).spread(function (allPeriodResults, companyDecision) {
+        companyDecision = companyDecision.toObject();
+        allPeriodResults = allPeriodResults.toObject();
+
+        if (!allPeriodResults || !companyDecision) {
+            return res.status(400).send({ message: "Report doesn't exist." })
+        }
+
+        let companyResult = allPeriodResults.companies[companyId - 1];
+
+        var options = {
+            lang: 'fr'//req.params.lang
+        }
+
+
+        var aboutInfos = {
+            "reportDate": (new Date()).toLocaleDateString(),
+            "playerName": 'Entreprise ' + companyDecision.d_CompanyName,
+            "playerID": companyDecision.d_CID,
+            "seminar": companyDecision.seminarCode,
+            "scenarioID": '',
+            "periodYear": companyDecision.period,
+            "periodQuarter": companyDecision.period,
+            "period": companyDecision.period
+        };
+
+
+        var fileName = extraString("Report {{seminar}}{{playerID}} - {{periodYear}}Q{{periodQuarter}}.xlsx").template(aboutInfos).s;
+
+        var flattenDec = Flat.flatten(companyDecision.decision, {
+            delimiter: '_',
+            prefix: 'dec'
+        });
+
+
+        var flattenRes = companyResult.report || Flat.flatten(companyResult, {
+            delimiter: '_',
+            prefix: 'res'
+        });
+
+        var reportData = Utils.ObjectApply(aboutInfos, flattenDec, flattenRes);
+
+        Excel.excelExport(reportData, options, function (err, binary) {
+            if (err) {
+                console.error(err);
+
+                res.status(404).send('error converting to excel');
+                return false;
+            }
+
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+            res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            res.end(binary, 'binary');
+        });
+
+    }).fail(function (err) {
+        res.status(404).send('error exporting');
+    }).done();
 }

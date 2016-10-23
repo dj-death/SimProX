@@ -285,13 +285,13 @@ class SubMarket extends IObject.IObject {
     }
 
     // decision
-    advertisingBudget: number;
+    advertisingBudget: number = 0;
     industryDirectAdsBudgetAvg: number;
 
-    price: number;
+    price: number = Infinity;
     industryPriceAvg: number;
 
-    customerCredit: ENUMS.CREDIT;
+    customerCredit: ENUMS.CREDIT = ENUMS.CREDIT.CASH;
     industryCreditEasingAvg: number;
 
     industryQualityScoreAvg: number;

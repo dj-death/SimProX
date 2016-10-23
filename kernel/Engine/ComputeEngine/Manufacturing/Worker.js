@@ -388,6 +388,9 @@ var Worker = (function (_super) {
         this.hourlyWageRate = Utils.correctFloat(basicRate);
     };
     Worker.prototype.setShift = function (shiftLevel) {
+        if (isNaN(shiftLevel) || shiftLevel <= 0) {
+            shiftLevel = 1;
+        }
         this.shiftLevel = shiftLevel;
         this.shift = this.params.availablesShifts[shiftLevel - 1];
         this.getReady();

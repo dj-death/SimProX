@@ -13,7 +13,7 @@ var wLogger = new (expressWinston.logger)({
 
     transports: [
         new (winston.transports.Console)({
-            level: 'warn', // info ++
+            level: 'silly', // info ++
             handleExceptions: true,
             json: false, 
             colorize: true,

@@ -209,14 +209,14 @@ export function  calculateIngredientsQuality (SKUResult){
 
 /**
 * Create an array of all the company names
-* @param {Number} companyNum num of companies we need
+* @param {Number} company_num num of companies we need
 */
-export function  createCompanyArray (companyNum){
+export function  createCompanyArray (company_num){
     let companies = [];
 
     let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    for(let j=0; j<companyNum; j++){
+    for(let j=0; j<company_num; j++){
         companies.push(letters[j]);
     } 
 

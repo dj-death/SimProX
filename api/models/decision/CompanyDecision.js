@@ -2,6 +2,7 @@
 var mongoose = require('mongoose');
 var Q = require('q');
 var util = require('util');
+var console = require('../../../kernel/utils/logger');
 var tDecisionSchema = require('./CompanyDecSchema');
 //let spendingDetailsAssembler = require('../../dataAssemblers/spendingDetails.js');
 //let consts = require('../../consts.js');
@@ -239,7 +240,7 @@ function findOne(seminarId, period, companyId) {
     return deferred.promise;
 }
 exports.findOne = findOne;
-function updateCompanyDecision(seminarId, period, companyId, companyDecision) {
+function updateCompanyDecision(seminarId, period, companyId, decision) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
@@ -253,7 +254,7 @@ function updateCompanyDecision(seminarId, period, companyId, companyDecision) {
     else if (!companyId) {
         deferred.reject(new Error("Invalid argument companyId."));
     }
-    else if (!companyDecision) {
+    else if (!decision) {
         deferred.reject(new Error("Invalid argument companyDecision."));
     }
     else {
@@ -269,16 +270,20 @@ function updateCompanyDecision(seminarId, period, companyId, companyDecision) {
                 var validateErr = new Error('Cannot find company Decision not found.');
                 return deferred.reject(validateErr);
             }
-            var fields = ['d_RequestedAdditionalBudget',
+            /*let fields = ['d_RequestedAdditionalBudget',
                 'd_InvestmentInEfficiency',
                 'd_InvestmentInTechnology',
                 'd_InvestmentInServicing'];
+
             fields.forEach(function (field) {
                 if (companyDecision[field] !== undefined) {
                     doc.modifiedField = field;
                     doc[field] = companyDecision[field];
                 }
-            });
+            });*/
+            console.warn(decision);
+            doc.decision = decision;
+            doc.markModified('decision');
             doc.save(function (err, doc) {
                 if (err) {
                     deferred.reject(err);
@@ -308,6 +313,47 @@ function findAllInPeriod(seminarId, period) {
     return deferred.promise;
 }
 exports.findAllInPeriod = findAllInPeriod;
+function findAllBeforePeriod(seminarId, period) {
+    if (!mongoose.connection.readyState) {
+        throw new Error("mongoose is not connected.");
+    }
+    var deferred = Q.defer();
+    CompanyDecision.aggregate([{
+            $match: {
+                period: {
+                    $lte: period
+                },
+                seminarId: seminarId
+            }
+        },
+        {
+            $group: {
+                _id: '$d_CID',
+                decisions: {
+                    $push: "$$ROOT"
+                }
+            }
+        },
+        {
+            $sort: {
+                period: 1 // asc
+            }
+        }], function (err, docs) {
+        if (err) {
+            deferred.reject(err);
+        }
+        if (!docs) {
+            deferred.reject({
+                msg: 'Export to json, cannot find matched doc.' + '/seminar:' + seminarId + '/period:' + period
+            });
+        }
+        else {
+            deferred.resolve(docs);
+        }
+    });
+    return deferred.promise;
+}
+exports.findAllBeforePeriod = findAllBeforePeriod;
 /**
  * Insert empty company decisions for all companies in the next period
  */

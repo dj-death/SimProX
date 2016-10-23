@@ -300,17 +300,7 @@ let marketResearchRes = Schema({
 });
 
 
-
-let result = Schema({
-    seminarId: String,
-    period: Number,
-
-    p_Companies: [],
-    p_Number: Number,
-    p_Brands: [],
-    p_Type: Number,
-    p_SKUs: [],
-    p_Market: {},
+let companyResult = Schema({
 
     report: mongoose.Schema.Types.Mixed,
 
@@ -327,8 +317,6 @@ let result = Schema({
 
     bankAccounts: [bankAccountRes],
 
-
-
     capital: {
         sharesNb: Numeric,
         shareCapital: Numeric,
@@ -337,17 +325,6 @@ let result = Schema({
         sharesIssued: Numeric,
         dividendPaid: Numeric,
         sharesNbAtStartOfYear: Numeric
-    },
-
-    economies: [economyRes],
-    materialMarkets: [materialMarketRes],
-    buildingContractors: [buildingContractorRes],
-
-    businessReport: [String],
-
-    BI: {
-        corporates: [corporateRes],
-        marketResearchs: [marketResearchRes]
     },
 
     advertisingCost: Numeric,
@@ -434,6 +411,43 @@ let result = Schema({
 
     workingCapital: Numeric,
     freeCashFlow: Numeric
+});
+
+
+
+
+let result = Schema({
+    seminarId: String,
+    period: Number,
+
+    p_Companies: [],
+    p_Number: Number,
+    p_Brands: [],
+    p_Type: Number,
+    p_SKUs: [],
+    p_Market: {},
+
+    environnement: {
+
+        economies: [economyRes],
+        currencies: [{
+            exchangeRatePerCent: Number
+        }],
+
+        materialMarkets: [materialMarketRes],
+        buildingContractors: [buildingContractorRes],
+
+        businessReport: [String],
+
+        BI: {
+            corporates: [corporateRes],
+            marketResearchs: [marketResearchRes]
+        }
+
+    },
+
+
+    companies: [companyResult]
  });
 
 

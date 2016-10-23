@@ -25,8 +25,8 @@ export default class Land extends Space.Space {
         super(params);
     }
 
-    init(initialSize: number, peripherySpace: Space.Space, lastLandNetValue: number, economy: Economy, contractor: BuildingContractor = null, factories?: Factory[]) {
-        super.init(initialSize, peripherySpace, lastLandNetValue, economy, contractor);
+    init(initialSize: number, peripherySpace: Space.Space, lastLandNetValue: number, economy: Economy, contractor: BuildingContractor = null, creditWorthiness: number = Infinity, factories?: Factory[]) {
+        super.init(initialSize, peripherySpace, lastLandNetValue, economy, contractor, creditWorthiness);
 
 
         if (isNaN(lastLandNetValue)) {

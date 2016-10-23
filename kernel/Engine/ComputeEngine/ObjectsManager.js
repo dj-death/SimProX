@@ -206,6 +206,23 @@ var ObjectsManager = (function () {
         });
         return deferred.promise;
     };
+    ObjectsManager.getPersistedObjectsEndState = function () {
+        var that = this;
+        var self = that.getInstance();
+        var deferred = Q.defer();
+        Q(null).then(function () {
+            if (!that.persistentsEndState && that.persistents) {
+                return _getEndState(that.persistents);
+            }
+            return {};
+        }).done(function (result) {
+            deferred.resolve(result);
+        }, function (err) {
+            console.error(err);
+            deferred.reject(err);
+        });
+        return deferred.promise;
+    };
     ObjectsManager._instance = null;
     ObjectsManager.persistents = {};
     return ObjectsManager;

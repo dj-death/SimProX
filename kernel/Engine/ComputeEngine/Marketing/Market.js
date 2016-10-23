@@ -56,6 +56,10 @@ var SubMarket = (function (_super) {
     function SubMarket(market, params) {
         _super.call(this, params);
         this.departmentName = "marketing";
+        // decision
+        this.advertisingBudget = 0;
+        this.price = Infinity;
+        this.customerCredit = ENUMS.CREDIT.CASH;
         this.market = market;
         this.economy = this.market.economy;
     }

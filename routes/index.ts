@@ -31,9 +31,6 @@ import * as questionnaireController from '../api/controllers/questionnaire';
 import * as faqController from '../api/controllers/faq';
 
 
-
-
-import * as runSeminar from '../api/runSeminar';
 import * as initSeminar from '../api/initSeminar';
 
 import * as Auth from '../api/auth';
@@ -270,9 +267,13 @@ export function get(io) {
     apiRouter.get('/stratege/api/student/seminar', iAuth.authRole(strategeRight.seminarListOfStudentGet), seminarController.getSeminarList);
     apiRouter.get('/stratege/api/choose_seminar', iAuth.authRole(strategeRight.seminarListOfStudentGet), seminarController.chooseSeminarForStudent);
 
+
     
     //report
     apiRouter.get('/stratege/api/report/:report_name', iAuth.authRole(strategeRight.seminarSingleDecisionGet), reportController.getReport);
+
+    // excel report
+    apiRouter.get('/stratege/api/downloadReport', iAuth.authRole(strategeRight.seminarSingleDecisionGet), reportController.exportToExcel);
 
     //chart
     apiRouter.get('/stratege/api/chart/:chart_name', iAuth.authRole(strategeRight.seminarSingleDecisionGet), chartController.getChart);
@@ -314,8 +315,6 @@ export function get(io) {
 
     //get Glossary
     apiRouter.post('/stratege/api/glossaries', iAuth.authRole(strategeRight.glossaryInfoListGet), glossaryController.searchGlossaryWithWord);
-
-
 
 
 
@@ -381,7 +380,7 @@ export function get(io) {
 
     apiRouter.post('/stratege/api/admin/seminar/:seminar_id/init', iAuth.authRole(strategeRight.seminarInit), initController.init(io));
 
-    //apiRouter.post('/stratege/api/admin/seminar/:seminar_id/runsimulation', iAuth.authRole(strategeRight.seminarRunRound), initController.runSimulation());
+    apiRouter.post('/stratege/api/admin/seminar/:seminar_id/runsimulation', iAuth.authRole(strategeRight.seminarRunRound), initController.runSimulation());
     apiRouter.post('/stratege/api/admin/seminar/:seminar_id/unlockDecision', iAuth.authRole(strategeRight.seminarRunRound), seminarController.updateSeminarUnlockDecision);
 
     //apiRouter.get('/stratege/api/admin/delphi_cgi', iAuth.authRole(strategeRight.seminarInit), initController.getCgiStatus);

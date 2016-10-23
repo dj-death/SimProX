@@ -281,7 +281,7 @@ export function findOne (seminarId, period, companyId) {
 
 
 
-export function updateCompanyDecision (seminarId, period, companyId, companyDecision) {
+export function updateCompanyDecision (seminarId, period, companyId, decision) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
@@ -294,9 +294,10 @@ export function updateCompanyDecision (seminarId, period, companyId, companyDeci
         deferred.reject(new Error("Invalid argument period."));
     } else if (!companyId) {
         deferred.reject(new Error("Invalid argument companyId."));
-    } else if (!companyDecision) {
+    } else if (!decision) {
         deferred.reject(new Error("Invalid argument companyDecision."))
     } else {
+
         CompanyDecision.findOne({
             seminarId: seminarId,
             period: period,
@@ -309,7 +310,7 @@ export function updateCompanyDecision (seminarId, period, companyId, companyDeci
                 return deferred.reject(validateErr);
             }
 
-            let fields = ['d_RequestedAdditionalBudget',
+            /*let fields = ['d_RequestedAdditionalBudget',
                 'd_InvestmentInEfficiency',
                 'd_InvestmentInTechnology',
                 'd_InvestmentInServicing'];
@@ -319,7 +320,12 @@ export function updateCompanyDecision (seminarId, period, companyId, companyDeci
                     doc.modifiedField = field;
                     doc[field] = companyDecision[field];
                 }
-            });
+            });*/
+
+            console.warn(decision);
+
+            doc.decision = decision;
+            doc.markModified('decision');
 
             doc.save(function (err, doc) {
                 if (err) { deferred.reject(err); }
@@ -352,6 +358,58 @@ export function findAllInPeriod (seminarId, period) {
     return deferred.promise;
 }
 
+
+export function findAllBeforePeriod(seminarId, period) {
+    if (!mongoose.connection.readyState) {
+        throw new Error("mongoose is not connected.");
+    }
+
+    let deferred = Q.defer();
+
+    CompanyDecision.aggregate([{
+        $match: {
+            period: {
+                $lte: period
+            },
+
+            seminarId: seminarId
+        }
+    },
+
+    {
+        $group: {
+            _id: '$d_CID',
+
+            decisions: {
+                $push: "$$ROOT"
+            }
+        }
+    },
+
+    {
+        $sort: {
+            period: 1 // asc
+        }
+
+    }], function (err, docs) {
+        if (err) {
+            deferred.reject(err);
+        }
+
+        if (!docs) {
+            deferred.reject({
+                msg: 'Export to json, cannot find matched doc.' + '/seminar:' + seminarId + '/period:' + period
+            });
+
+        } else {
+            deferred.resolve(docs);
+        }
+
+    });
+
+    return deferred.promise;
+
+}
 /**
  * Insert empty company decisions for all companies in the next period
  */

@@ -13,9 +13,10 @@ var Land = (function (_super) {
         _super.call(this, params);
         this.departmentName = "production";
     }
-    Land.prototype.init = function (initialSize, peripherySpace, lastLandNetValue, economy, contractor, factories) {
+    Land.prototype.init = function (initialSize, peripherySpace, lastLandNetValue, economy, contractor, creditWorthiness, factories) {
         if (contractor === void 0) { contractor = null; }
-        _super.prototype.init.call(this, initialSize, peripherySpace, lastLandNetValue, economy, contractor);
+        if (creditWorthiness === void 0) { creditWorthiness = Infinity; }
+        _super.prototype.init.call(this, initialSize, peripherySpace, lastLandNetValue, economy, contractor, creditWorthiness);
         if (isNaN(lastLandNetValue)) {
             console.warn("lastLandNetValue NaN");
             lastLandNetValue = 0;

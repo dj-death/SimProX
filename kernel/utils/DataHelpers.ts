@@ -8,15 +8,17 @@ function isObject(val) {
     return ((typeof val === 'object') && !(val instanceof Date));
 }
 
-export default function processStates(states: Scenario.Scenario[]): any {
-    if (!states.length || ! (states[0].decision)) {
+export default function processStates(decisions: Scenario.Decision[], results: Scenario.Results[]): any {
+    if (!decisions.length || !results.length) {
         return {};
     }
+
 
     let newStates = {};
 
     // c' mieux que results as it so flat
-    let obj = states[0].decision;
+    let obj = decisions[0];
+
 
     // iterate over object: machines ...
     for (var prop in obj) {
@@ -27,7 +29,7 @@ export default function processStates(states: Scenario.Scenario[]): any {
 
         let coll: Array<any> = obj[prop];
 
-        if (!isObject(coll)) {
+        if (!coll || !isObject(coll)) {
             continue;
         }
 
@@ -37,19 +39,24 @@ export default function processStates(states: Scenario.Scenario[]): any {
             let itemResults = [];
             let itemDecs = [];
 
-            states.forEach(function (state: Scenario.Scenario) {
-                let res = state.results[prop];
-                let dec = state.decision[prop];
-
+            results.forEach(function (result: Scenario.Results) {
+                let res = result[prop];
 
                 res && itemResults.push(res[idx]);
+            });
+
+            decisions.forEach(function (decision: Scenario.Decision) {
+                let dec = decision[prop];
+
                 dec && itemDecs.push(dec[idx]);
             });
+
 
             newStates[prop].push({
                 results: itemResults,
                 decisions: itemDecs
             });
+
         });
 
         
