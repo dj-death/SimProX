@@ -234,7 +234,7 @@
             runButtonDisabled: false,
             showConfirm : false,
             currentRunSeminarId : 0,
-
+            currentDeleteSeminarId: 0,
             showCreateSeminarTimeInput : false
         };
 
@@ -1156,6 +1156,8 @@
             }
         };
 
+
+        
         /********************  Remove Team To Seminar  ********************/
         $scope.removeTeamFromSeminar = function(seminarid, teamid) {
 
@@ -1182,6 +1184,37 @@
         };
 
 
+
+        /********************  remove Seminar  ********************/
+        $scope.deleteSeminar = function(seminarId) {
+
+            Admin.deleteSeminar(seminarId).success(function(data, status, headers, config) {
+                app.getSeminarInit();
+				$notification.success('Save success', 'Remove Seminar success');
+
+                $scope.css.showConfirm = false;
+                $scope.css.currentDeleteSeminarId = 0;
+
+			}).error(function(data, status, headers, config) {
+				console.log(data);
+                $notification.error('Failed', Admin.errorHandler(data.message));
+
+                $scope.css.showConfirm = false;
+                $scope.css.currentDeleteSeminarId = 0;
+			});
+        };
+
+
+        $scope.showDeleteSeminarConfirm = function(seminarId){
+            $scope.css.currentDeleteSeminarId = seminarId;
+            $scope.css.showConfirm = true;
+        };
+
+        $scope.showDeleteSeminarConfirmNo = function(seminarId){
+            $scope.css.currentDeleteSeminarId = 0;
+            $scope.css.showConfirm = false;
+        };
+
         /********************  Init Seminar  ********************/
         $scope.initSeminar = function(seminarId) {
             $scope.css.runButtonDisabled = true;
@@ -1203,7 +1236,9 @@
 
             Admin.runSeminar(seminarId, true, []).success(function(data, status, headers, config) {
                 app.getSeminarInit();
+
                 $notification.success('Save success', 'Run Seminar success');
+
                 $scope.css.runButtonDisabled = false;
                 $scope.css.showConfirm = false;
                 $scope.css.currentRunSeminarId = 0;
@@ -1217,14 +1252,17 @@
 
             });
         };
+
         $scope.showRunSeminarConfirm = function(seminarId){
             $scope.css.currentRunSeminarId = seminarId;
             $scope.css.showConfirm = true;
         };
+
         $scope.showRunSeminarConfirmNo = function(seminarId){
             $scope.css.currentRunSeminarId = 0;
             $scope.css.showConfirm = false;
         };
+
 
         /********************  Show Final Score  ********************/
         $scope.showFinalScore = function(seminar){

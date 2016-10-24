@@ -693,6 +693,7 @@
                                         <!--<th>Temps total</th>-->
                                         <th>Ajouter des étudiants</th>
 										<th style="width:100px">Action</th>
+										<th style="width:100px">Editer</th>
                                     </tr>
                                     <tr ng-repeat="seminar in data.seminars" >
                                         <td ><span data-highlight-key="data.searchSeminar.filterKey">{{seminar.seminarCode}}</span>
@@ -745,11 +746,22 @@
 										<td style="width:100px">
                                             <button type="button" class="btn btn-danger" ng-hide="seminar.isInitialized" ng-click="initSeminar(seminar.seminarId)" ng-disabled="css.runButtonDisabled">Init</button>
 
-                                            <button type="button" class="btn btn-danger" ng-show="seminar.isInitialized&&!seminar.isSimulationFinished&&!css.showConfirm" ng-click="showRunSeminarConfirm(seminar.seminarId)" >Run Period{{seminar.currentPeriod}}</button>
+                                            <button type="button" class="btn btn-danger" ng-show="seminar.isInitialized&&!seminar.isSimulationFinished&&!css.showConfirm" ng-click="showRunSeminarConfirm(seminar.seminarId)" >Run Periode {{seminar.currentPeriod}}</button>
 
                                             <button type="button" class="btn btn-info btn-sm" ng-show="seminar.seminarId==css.currentRunSeminarId" ng-click="runSeminar(seminar.seminarId, seminar.companyMember)" ng-disabled="css.runButtonDisabled">Confirm Yes</button>
                                             <button type="button" class="btn btn-primary btn-sm" ng-show="seminar.seminarId==css.currentRunSeminarId" ng-click="showRunSeminarConfirmNo()" >No</button>
-                                        </td>
+											
+										</td>
+										
+										<td style="width:100px">
+											<button type="button" class="btn btn-danger" ng-show="!css.showConfirm" ng-click="showDeleteSeminarConfirm(seminar.seminarId)">Delete</button>
+
+                                            <button type="button" class="btn btn-info btn-sm" ng-show="seminar.seminarId==css.currentDeleteSeminarId" ng-click="deleteSeminar(seminar.seminarId)">Confirm Yes</button>
+                                            <button type="button" class="btn btn-primary btn-sm" ng-show="seminar.seminarId==css.currentDeleteSeminarId" ng-click="showDeleteSeminarConfirmNo()" >No</button>
+											
+										</td>
+
+									
                                     </tr>
                                     </tbody>
                                 </table>

@@ -123,7 +123,7 @@
             <div class="row">
 			
 				<div class="col-md-3 ">
-                    <div class="panel panel-primary user_chart_list user_chart_list_bg2">
+                    <div class="panel panel-primary user_chart_list user_chart_list_bg2 user_chart_list_reports">
 					
                         <div class="panel-heading">
                             <h3 class="panel-title">Rapports de Gestion</h3>
@@ -131,7 +131,7 @@
 
                         <!-- List group -->
                         <ul class="list-group">
-                            <li class="list-group-item"  ng-repeat="period in css.reportsPeriods" id="hist{{$index}}" ng-class="{'last':$last, 'spotlight_overlay': period <= 0}">
+                            <li class="list-group-item list-report-item"  ng-repeat="period in css.reportsPeriods" id="hist{{$index}}" ng-class="{'last':$last, 'historic-report': period <= 0, 'new-report': $last}">
 								<a href="" ng-click="downloadReport(period)">Periode T{{period}} .xlsx</a>
 							</li>
                         </ul>

@@ -89,7 +89,7 @@ seminarSchema.statics.updateValidations = function (req) {
     return req.validationErrors();
 };
 seminarSchema.statics.removeValidations = function (req) {
-    req.assert('id', 'Seminar mongoose ID should be 24 characters').notEmpty().len(24, 24);
+    req.assert('seminar_id', 'Seminar id should not be empty').notEmpty();
     return req.validationErrors();
 };
 seminarSchema.statics.studentEmailValidations = function (req) {

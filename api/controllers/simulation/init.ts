@@ -20,6 +20,8 @@ import decisionCleaner = require('../../convertors/decisionCleaner');
 
 import allResultsCleaner = require('../../convertors/allResultsCleaner');
 
+import chartAssembler = require('../../assemblers/chart');
+
 
 import SimMain = require('../../../kernel/app');
 
@@ -112,8 +114,8 @@ export function init(io) {
                 return Q.all([
                     simulationResultModel.removeAll(seminarId),
                     dbutility.removeExistedDecisions(seminarId),
-                    /*chartModel.remove(seminarId),
-                    reportModel.remove(seminarId)*/
+                    chartModel.remove(seminarId),
+                    reportModel.remove(seminarId)
                 ])
                     .then(function () {
                         return loadScenario(simulationScenarioID);
@@ -126,13 +128,13 @@ export function init(io) {
 
                         ]);
                     })
-                    /*.then(function () {
+                    .then(function () {
                         return Q.all([
                             simulationResultModel.findAll(seminarId)
                         ])
                             .spread(function (allResults) {
                                 return Q.all([
-                                    initChartData(seminarId, allResults),
+                                    initChartData(seminarId, allResults)/*,
     
                                     initCompanyStatusReport(seminarId, allResults, 0),
                                     initFinancialReport(seminarId, allResults),
@@ -140,10 +142,10 @@ export function init(io) {
                                     initSegmentDistributionReport(seminarId, allResults),
                                     initCompetitorIntelligenceReport(seminarId, allResults),
                                     initMarketTrendsReport(seminarId, allResults, 0),
-                                    initMarketIndicatorReport(seminarId, currentPeriod)
+                                    initMarketIndicatorReport(seminarId, currentPeriod)*/
                                 ]);
                             });
-                    })*/
+                    })
                     .then(function () {
 
                         //copy decision of period (currentPeriod - 1 = 0)
@@ -279,6 +281,8 @@ export function runSimulation(){
 
                     let envLastStates = [];
                     let lastCompaniesResults = [];
+                    let currPeriodDecisions = [];
+
 
                     lastResults.forEach(function (result) {
                         let envState = result.environnement;
@@ -293,6 +297,9 @@ export function runSimulation(){
                     global.debug_data.envLastStates = envLastStates;
                     global.debug_data.lastCompaniesResults = lastCompaniesResults;
 
+                    /*
+                     *  init simulation and simulate environnement
+                     */
                     SimMain.launchSim();
                     console.silly("launch sim success !");
 
@@ -301,25 +308,19 @@ export function runSimulation(){
 
                     SimMain.simulateEnv(selectedPeriod);
                     console.silly("sim env success !");
+               
 
-
-                    // export all decisions grouped by period desc
                     return companyDecisionModel.findAllBeforePeriod(seminarId, selectedPeriod).then(function (allCompaniesDecision) {
                         global.debug_data.allCompaniesDecision = allCompaniesDecision;
 
                         allCompaniesDecision.forEach(function (data) {
                             let d_CID = data._id;
 
-                            console.warn("sim begin with ", d_CID);
-
                             let decisions = [];
                             let lastResults = [];
 
                             lastCompaniesResults.forEach(function (data) {
                                 let res = data[d_CID - 1];
-
-                                console.warn(d_CID - 1);
-                                global.debug_data.dataBBB = data;
 
                                 lastResults.push(res);
                             });
@@ -330,6 +331,8 @@ export function runSimulation(){
 
                             let currPDecision = decisions.pop();
 
+                            currPeriodDecisions.push(currPDecision);
+
                             global.debug_data.d_CID = d_CID;
                             global.debug_data.selectedPeriod = selectedPeriod;
                             global.debug_data.decisions = decisions;
@@ -338,6 +341,9 @@ export function runSimulation(){
                             global.debug_data.currPDecision = currPDecision;
 
 
+                            /*
+                             *  restore last state and set companies decisions
+                             */
                             SimMain.initialize(d_CID, selectedPeriod, decisions, lastResults, envLastStates);
                             console.silly("sim init success !");
 
@@ -346,20 +352,26 @@ export function runSimulation(){
 
                         });
 
-                        console.silly("sim market begin !");
+
+                        /*
+                        *  simulate the market to get sells
+                        */
                         SimMain.simulateMarketplace();
                         console.silly("sim market sim success !");
 
-                    }).then(function () {
+                        return currPeriodDecisions;
 
+                    }).then(function (currPeriodDecisions) {
+
+
+                        /*
+                        *  get simulation environnement result
+                        */
                         return SimMain.getEnvironnementState().then(convertEndState).then(function (envSimResult) {
 
                             if (!envSimResult) {
                                 throw new Error('process envSimResult failed nothing got');
                             }
-
-                            global.debug_data.envSimResult = envSimResult;
-
 
                             let p = Q();
 
@@ -369,6 +381,9 @@ export function runSimulation(){
                             };
 
 
+                            /*
+                            *  get simulation companies results and generate flat report
+                            */
                             companies.forEach(function (d_CID) {
                                 p = p.then(function (result) {
 
@@ -394,7 +409,22 @@ export function runSimulation(){
                             });
 
 
-                            return p;
+                            /*
+                            *  generate BI report
+                            */
+                            return p.then(function (simulationResult) {
+                                let deferred = Q.defer();
+
+                                prepareBI(simulationResult, currPeriodDecisions).then(function (finalisedCompanyResults) {
+                                    if (!finalisedCompanyResults) {
+                                        throw new Error('finalisedCompanyResults failed nothing got');
+                                    }
+
+                                    deferred.resolve(finalisedCompanyResults);
+                                });
+
+                                return deferred.promise;
+                            });
 
                         });
 
@@ -670,33 +700,7 @@ function cleanDecisions(allDecisions){
     })
 }
 
-/**
- * @param {Object} allResults allResults of all periods
- */
 
-/*
-function initChartData(seminarId, allResults){
-    let period = allResults[allResults.length-1].period + 1;
-
-    return Q.all([
-        seminarModel.findOneQ({seminarId: seminarId}),
-        //get exogenous of period:0, FMCG and GENERIC market
-        cgiapi.getExogenous(period)
-    ])
-    .spread(function(seminar, exogenous){
-        //generate charts from allResults
-        let chartData = chartAssembler.extractChartData(allResults, {
-            simulation_span: seminar.simulation_span,
-            exogenous: exogenous
-        });
-
-        return chartModel.insert({
-            seminarId: seminarId,
-            charts: chartData
-        })
-    });
-}
-*/
 
 function initSimulationResult(seminarId, companies, initData) {
 
@@ -734,8 +738,8 @@ function initSimulationResult(seminarId, companies, initData) {
             companies.forEach(function (comp) {
                 let refCompResults = clone(data.results)
 
-                results.d_CID = comp.companyId;
-                results.d_CompanyName = comp.companyName;
+                results.c_CID = comp.companyId;
+                results.c_CompanyName = comp.companyName;
                 
                 results.companies.push(refCompResults);
             });
@@ -845,6 +849,33 @@ function initMarketIndicatorReport(seminarId, currentPeriod){
 }
 
 */
+
+/**
+ * @param {Object} allResults allResults of all periods
+ */
+
+
+function initChartData(seminarId, allResults) {
+    let period = allResults[allResults.length - 1].period + 1;
+
+    return Q.all([
+        seminarModel.findOneQ({ seminarId: seminarId }),
+        //get exogenous of period:0, FMCG and GENERIC market
+        //cgiapi.getExogenous(period)
+    ])
+    .spread(function (seminar, exogenous) {
+        //generate charts from allResults
+        let chartData = chartAssembler.extractChartData(allResults, {
+            simulation_span: seminar.simulation_span,
+            exogenous: exogenous
+        });
+
+        return chartModel.insert({
+            seminarId: seminarId,
+            charts: chartData
+        })
+    });
+}
 
 
 function reset(variable) {
@@ -1072,26 +1103,28 @@ function processEndState(playerID: number, currPeriod: number) {
 }
 
 
-/*
-function prepareBI(finalResults: any[]) {
+
+function prepareBI(simulationResult: any,  allCompaniesDecs: any[]) {
 
     let deferred = Q.defer();
 
 
     setImmediate(function () {
+        let companiesResults = simulationResult.companies;
+
         // BI
-        let BI_free: any = getBIInfos(finalResults, startFromPlayerID, 0);
-        let BI_corporateActivity = getBIInfos(finalResults, startFromPlayerID, 1);
-        let BI_marketShares = getBIInfos(finalResults, startFromPlayerID, 2);
+        let BI_free: any = getBIInfos(companiesResults, 0);
+        let BI_corporateActivity = getBIInfos(companiesResults, 1);
+        let BI_marketShares = getBIInfos(companiesResults, 2);
 
 
         let i = 0;
-        let len = finalResults.length;
+        let len = companiesResults.length;
 
         for (; i < len; i++) {
-            let playerEndState: any = finalResults[i];
+            let playerEndState: any = companiesResults[i];
 
-            let decision = currPData[i].decision;
+            let decision = allCompaniesDecs[i];
             let isCorporateActivityOrdered = decision.orderCorporateActivityInfo;
             let areMarketSharesOrdered = decision.orderMarketSharesInfo;
 
@@ -1106,10 +1139,13 @@ function prepareBI(finalResults: any[]) {
                 playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_marketShares);
             }
 
-            finalResults[i] = playerEndState;
+            companiesResults[i] = playerEndState;
         }
 
-        deferred.resolve(finalResults);
+        simulationResult.companies = companiesResults;
+
+
+        deferred.resolve(simulationResult);
 
     });
 
@@ -1117,17 +1153,17 @@ function prepareBI(finalResults: any[]) {
 }
 
 
-function getBIInfos(results, startFromPlayerID, includeInfoType) {
+function getBIInfos(results, includeInfoType) {
     var BI = {};
-    var playerID = startFromPlayerID;
 
     var corporateActivityInfo = SimMain.getList_corporateActivityInfo();
     var freeInfo = SimMain.getList_freeInfo();
 
     results.forEach(function (res, idx) {
-        var prefix = "res_BI_corporate" + playerID + "_";
+        let CID = idx + 1;
+        let prefix = "res_BI_corporate" + CID + "_";
 
-        BI[prefix + "playerID"] = playerID;
+        BI[prefix + "playerID"] = CID;
 
 
         var report = res.report;
@@ -1174,9 +1210,7 @@ function getBIInfos(results, startFromPlayerID, includeInfoType) {
             BI[newKey] = report[key];
         }
 
-        ++playerID;
     });
 
     return BI;
 }
-*/

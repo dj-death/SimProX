@@ -11,8 +11,10 @@ var SKUDecisionModel = require('../../../models/marksimos/SKUDecision.js');
 var dbutility = require('../../models/dbUtility');
 var decisionCleaner = require('../../convertors/decisionCleaner');
 var allResultsCleaner = require('../../convertors/allResultsCleaner');
+var chartAssembler = require('../../assemblers/chart');
 var SimMain = require('../../../kernel/app');
 var Flat = require('../../utils/Flat');
+var Utils = require('../../../kernel/utils/Utils');
 var console = require('../../../kernel/utils/logger');
 var utility = require('../../utils/utility');
 var _ = require('underscore');
@@ -72,6 +74,8 @@ function init(io) {
                 return Q.all([
                     simulationResultModel.removeAll(seminarId_1),
                     dbutility.removeExistedDecisions(seminarId_1),
+                    chartModel.remove(seminarId_1),
+                    reportModel.remove(seminarId_1)
                 ])
                     .then(function () {
                     return loadScenario(simulationScenarioID_1);
@@ -81,6 +85,24 @@ function init(io) {
                         initSimulationResult(seminarId_1, companies_1, hists),
                         initDecision(seminarId_1, companies_1, hists),
                     ]);
+                })
+                    .then(function () {
+                    return Q.all([
+                        simulationResultModel.findAll(seminarId_1)
+                    ])
+                        .spread(function (allResults) {
+                        return Q.all([
+                            initChartData(seminarId_1, allResults) /*,
+
+                            initCompanyStatusReport(seminarId, allResults, 0),
+                            initFinancialReport(seminarId, allResults),
+                            initProfitabilityEvolutionReport(seminarId, allResults, 0),
+                            initSegmentDistributionReport(seminarId, allResults),
+                            initCompetitorIntelligenceReport(seminarId, allResults),
+                            initMarketTrendsReport(seminarId, allResults, 0),
+                            initMarketIndicatorReport(seminarId, currentPeriod)*/
+                        ]);
+                    });
                 })
                     .then(function () {
                     //copy decision of period (currentPeriod - 1 = 0)
@@ -181,6 +203,7 @@ function runSimulation() {
                     }
                     var envLastStates = [];
                     var lastCompaniesResults = [];
+                    var currPeriodDecisions = [];
                     lastResults.forEach(function (result) {
                         var envState = result.environnement;
                         var compsStates = result.companies;
@@ -190,55 +213,66 @@ function runSimulation() {
                     });
                     global.debug_data.envLastStates = envLastStates;
                     global.debug_data.lastCompaniesResults = lastCompaniesResults;
+                    /*
+                     *  init simulation and simulate environnement
+                     */
                     SimMain.launchSim();
                     console.silly("launch sim success !");
                     SimMain.initEnvironnemet(selectedPeriod_1, envLastStates);
                     console.silly("init env success !");
                     SimMain.simulateEnv(selectedPeriod_1);
                     console.silly("sim env success !");
-                    // export all decisions grouped by period desc
                     return companyDecisionModel.findAllBeforePeriod(seminarId_2, selectedPeriod_1).then(function (allCompaniesDecision) {
                         global.debug_data.allCompaniesDecision = allCompaniesDecision;
                         allCompaniesDecision.forEach(function (data) {
                             var d_CID = data._id;
-                            console.warn("sim begin with ", d_CID);
                             var decisions = [];
                             var lastResults = [];
                             lastCompaniesResults.forEach(function (data) {
                                 var res = data[d_CID - 1];
-                                console.warn(d_CID - 1);
-                                global.debug_data.dataBBB = data;
                                 lastResults.push(res);
                             });
                             data.decisions.forEach(function (obj) {
                                 decisions.push(obj.decision);
                             });
                             var currPDecision = decisions.pop();
+                            currPeriodDecisions.push(currPDecision);
                             global.debug_data.d_CID = d_CID;
                             global.debug_data.selectedPeriod = selectedPeriod_1;
                             global.debug_data.decisions = decisions;
                             global.debug_data.lastResults = lastResults;
                             global.debug_data.envLastStates = envLastStates;
                             global.debug_data.currPDecision = currPDecision;
+                            /*
+                             *  restore last state and set companies decisions
+                             */
                             SimMain.initialize(d_CID, selectedPeriod_1, decisions, lastResults, envLastStates);
                             console.silly("sim init success !");
                             SimMain.setDecisions(d_CID, selectedPeriod_1, currPDecision);
                             console.warn("sim set decision success !", d_CID);
                         });
-                        console.silly("sim market begin !");
+                        /*
+                        *  simulate the market to get sells
+                        */
                         SimMain.simulateMarketplace();
                         console.silly("sim market sim success !");
-                    }).then(function () {
+                        return currPeriodDecisions;
+                    }).then(function (currPeriodDecisions) {
+                        /*
+                        *  get simulation environnement result
+                        */
                         return SimMain.getEnvironnementState().then(convertEndState).then(function (envSimResult) {
                             if (!envSimResult) {
                                 throw new Error('process envSimResult failed nothing got');
                             }
-                            global.debug_data.envSimResult = envSimResult;
                             var p = Q();
                             var currPeriodResult = {
                                 environnement: envSimResult,
                                 companies: []
                             };
+                            /*
+                            *  get simulation companies results and generate flat report
+                            */
                             companies.forEach(function (d_CID) {
                                 p = p.then(function (result) {
                                     var deferred = Q.defer();
@@ -252,7 +286,19 @@ function runSimulation() {
                                     return deferred.promise;
                                 });
                             });
-                            return p;
+                            /*
+                            *  generate BI report
+                            */
+                            return p.then(function (simulationResult) {
+                                var deferred = Q.defer();
+                                prepareBI(simulationResult, currPeriodDecisions).then(function (finalisedCompanyResults) {
+                                    if (!finalisedCompanyResults) {
+                                        throw new Error('finalisedCompanyResults failed nothing got');
+                                    }
+                                    deferred.resolve(finalisedCompanyResults);
+                                });
+                                return deferred.promise;
+                            });
                         });
                     });
                 }).then(function (simulationResult) {
@@ -442,32 +488,6 @@ function cleanDecisions(allDecisions) {
         decisionCleaner.clean(decision);
     });
 }
-/**
- * @param {Object} allResults allResults of all periods
- */
-/*
-function initChartData(seminarId, allResults){
-    let period = allResults[allResults.length-1].period + 1;
-
-    return Q.all([
-        seminarModel.findOneQ({seminarId: seminarId}),
-        //get exogenous of period:0, FMCG and GENERIC market
-        cgiapi.getExogenous(period)
-    ])
-    .spread(function(seminar, exogenous){
-        //generate charts from allResults
-        let chartData = chartAssembler.extractChartData(allResults, {
-            simulation_span: seminar.simulation_span,
-            exogenous: exogenous
-        });
-
-        return chartModel.insert({
-            seminarId: seminarId,
-            charts: chartData
-        })
-    });
-}
-*/
 function initSimulationResult(seminarId, companies, initData) {
     var hists = initData.historiques;
     var allResults = [];
@@ -492,8 +512,8 @@ function initSimulationResult(seminarId, companies, initData) {
             results.companies = [];
             companies.forEach(function (comp) {
                 var refCompResults = clone(data.results);
-                results.d_CID = comp.companyId;
-                results.d_CompanyName = comp.companyName;
+                results.c_CID = comp.companyId;
+                results.c_CompanyName = comp.companyName;
                 results.companies.push(refCompResults);
             });
             allResults.push(results);
@@ -591,6 +611,26 @@ function initMarketIndicatorReport(seminarId, currentPeriod){
 }
 
 */
+/**
+ * @param {Object} allResults allResults of all periods
+ */
+function initChartData(seminarId, allResults) {
+    var period = allResults[allResults.length - 1].period + 1;
+    return Q.all([
+        seminarModel.findOneQ({ seminarId: seminarId }),
+    ])
+        .spread(function (seminar, exogenous) {
+        //generate charts from allResults
+        var chartData = chartAssembler.extractChartData(allResults, {
+            simulation_span: seminar.simulation_span,
+            exogenous: exogenous
+        });
+        return chartModel.insert({
+            seminarId: seminarId,
+            charts: chartData
+        });
+    });
+}
 function reset(variable) {
     switch (typeof variable) {
         case "object":
@@ -743,112 +783,77 @@ function processEndState(playerID, currPeriod) {
     }
     return deferred.promise;
 }
-/*
-function prepareBI(finalResults: any[]) {
-
-    let deferred = Q.defer();
-
-
+function prepareBI(simulationResult, allCompaniesDecs) {
+    var deferred = Q.defer();
     setImmediate(function () {
+        var companiesResults = simulationResult.companies;
         // BI
-        let BI_free: any = getBIInfos(finalResults, startFromPlayerID, 0);
-        let BI_corporateActivity = getBIInfos(finalResults, startFromPlayerID, 1);
-        let BI_marketShares = getBIInfos(finalResults, startFromPlayerID, 2);
-
-
-        let i = 0;
-        let len = finalResults.length;
-
+        var BI_free = getBIInfos(companiesResults, 0);
+        var BI_corporateActivity = getBIInfos(companiesResults, 1);
+        var BI_marketShares = getBIInfos(companiesResults, 2);
+        var i = 0;
+        var len = companiesResults.length;
         for (; i < len; i++) {
-            let playerEndState: any = finalResults[i];
-
-            let decision = currPData[i].decision;
-            let isCorporateActivityOrdered = decision.orderCorporateActivityInfo;
-            let areMarketSharesOrdered = decision.orderMarketSharesInfo;
-
-
+            var playerEndState = companiesResults[i];
+            var decision = allCompaniesDecs[i];
+            var isCorporateActivityOrdered = decision.orderCorporateActivityInfo;
+            var areMarketSharesOrdered = decision.orderMarketSharesInfo;
             playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_free);
-
             if (isCorporateActivityOrdered) {
                 playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_corporateActivity);
             }
-
             if (areMarketSharesOrdered) {
                 playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_marketShares);
             }
-
-            finalResults[i] = playerEndState;
+            companiesResults[i] = playerEndState;
         }
-
-        deferred.resolve(finalResults);
-
+        simulationResult.companies = companiesResults;
+        deferred.resolve(simulationResult);
     });
-
     return deferred.promise;
 }
-
-
-function getBIInfos(results, startFromPlayerID, includeInfoType) {
+function getBIInfos(results, includeInfoType) {
     var BI = {};
-    var playerID = startFromPlayerID;
-
     var corporateActivityInfo = SimMain.getList_corporateActivityInfo();
     var freeInfo = SimMain.getList_freeInfo();
-
     results.forEach(function (res, idx) {
-        var prefix = "res_BI_corporate" + playerID + "_";
-
-        BI[prefix + "playerID"] = playerID;
-
-
+        var CID = idx + 1;
+        var prefix = "res_BI_corporate" + CID + "_";
+        BI[prefix + "playerID"] = CID;
         var report = res.report;
-
         for (var key in report) {
             if (!report.hasOwnProperty(key)) {
                 continue;
             }
-
             var splits = key.split("_");
-
             if (!splits) {
                 continue;
             }
-
             // remove res or dec
             splits.shift();
-
             var property = splits[splits.length - 1];
-
             if (property === "marketVolumeShareOfSales") {
-
                 if (includeInfoType !== 2) {
                     continue;
                 }
-
-            } else if (corporateActivityInfo.indexOf(property) !== -1) {
+            }
+            else if (corporateActivityInfo.indexOf(property) !== -1) {
                 if (includeInfoType !== 1) {
                     continue;
                 }
-
-            } else if (freeInfo.indexOf(property) !== -1 || property.indexOf("price") !== -1) {
+            }
+            else if (freeInfo.indexOf(property) !== -1 || property.indexOf("price") !== -1) {
                 if (includeInfoType !== 0) {
                     continue;
                 }
-
-            } else {
+            }
+            else {
                 continue;
             }
-
-
             var newKey = prefix + splits.join("_");
-
             BI[newKey] = report[key];
         }
-
-        ++playerID;
     });
-
     return BI;
 }
-*/ 
 //# sourceMappingURL=init.js.map

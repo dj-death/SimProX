@@ -372,7 +372,7 @@ export function get(io) {
     apiRouter.get('/stratege/api/admin/facilitator/seminar', iAuth.authRole(strategeRight.seminarListOfFacilitatorGet), seminarController.getSeminarOfFacilitator);
     apiRouter.post('/stratege/api/admin/seminar', iAuth.authRole(strategeRight.seminarSingleCUD), seminarController.addSeminar);
     apiRouter.put('/stratege/api/admin/seminar', iAuth.authRole(strategeRight.seminarSingleCUD), seminarController.updateSeminar);
-    apiRouter.delete('/stratege/api/admin/seminar', iAuth.authRole(strategeRight.seminarSingleCUD), seminarController.removeSeminar);
+    apiRouter.delete('/stratege/api/admin/seminar/:seminar_id', iAuth.authRole(strategeRight.seminarSingleCUD), seminarController.removeSeminar);
 
 
     apiRouter.post('/stratege/api/admin/assign_student_to_seminar', iAuth.authRole(strategeRight.seminarAssignStudentCUD), seminarController.assignStudentToSeminar);

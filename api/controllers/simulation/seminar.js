@@ -125,8 +125,8 @@ function removeSeminar(req, res, next) {
             message: validationErrors, success: false
         });
     }
-    var seminarId = req.body._id;
-    seminarModel.findOneQ({ _id: seminarId }).then(function (resultSeminar) {
+    var seminarId = req.params.seminar_id;
+    seminarModel.findOneQ({ seminarId: seminarId }).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error('Cancel promise chains. Because Seminar not found !');
         }

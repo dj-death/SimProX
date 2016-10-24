@@ -177,9 +177,9 @@ export function removeSeminar(req, res, next) {
         });
     }
 
-    let seminarId = req.body._id;
+    let seminarId = req.params.seminar_id;
 
-    seminarModel.findOneQ({ _id: seminarId }).then(function (resultSeminar) {
+    seminarModel.findOneQ({ seminarId: seminarId }).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error('Cancel promise chains. Because Seminar not found !');
         }

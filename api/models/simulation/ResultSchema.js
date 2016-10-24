@@ -249,6 +249,8 @@ var marketResearchRes = Schema({
         }]
 });
 var companyResult = Schema({
+    c_CID: Number,
+    c_CompanyName: String,
     report: mongoose.Schema.Types.Mixed,
     markets: [marketRes],
     products: [productRes],
@@ -269,6 +271,9 @@ var companyResult = Schema({
         sharesIssued: Numeric,
         dividendPaid: Numeric,
         sharesNbAtStartOfYear: Numeric
+    },
+    BI: {
+        BusinessIntelligenceCost: Numeric
     },
     advertisingCost: Numeric,
     internetDistributionCost: Numeric,
@@ -367,10 +372,7 @@ var result = Schema({
         materialMarkets: [materialMarketRes],
         buildingContractors: [buildingContractorRes],
         businessReport: [String],
-        BI: {
-            corporates: [corporateRes],
-            marketResearchs: [marketResearchRes]
-        }
+        BI: mongoose.Schema.Types.Mixed
     },
     companies: [companyResult]
 });

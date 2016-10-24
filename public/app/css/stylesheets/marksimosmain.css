@@ -1255,16 +1255,42 @@ body a, body button {
   border-color: #cfd3e0;
   height: 396px;
 }
+
+
 .mainbody .user_chart_list .panel-heading {
   background-color: #dbe3f6;
   border-color: #cfd3e0;
 }
+
 .mainbody .user_chart_list h3 {
   font-size: 16px;
   color: #2f4e9b;
   padding: 10px 10px 10px 20px;
   text-align: center;
 }
+
+
+.mainbody .user_chart_list_reports .panel-heading {
+  background-color: #8CD867;
+  border-color: #09BC8A;
+}
+
+
+.mainbody .user_chart_list_reports h3 {
+  color: #FFFFFF;
+}
+
+
+.mainbody .user_chart_list .historic-report a {
+  color: #817F82  !important;
+}
+
+.mainbody .user_chart_list .new-report a {
+  color: #EF2D56 !important;
+}
+
+
+
 .mainbody .user_chart_list .list-group-item {
   background-color: #ffffff;
   background-image: url('../images/icon-s4f5830f977.png');
@@ -1281,6 +1307,16 @@ body a, body button {
 .mainbody .user_chart_list .list-group-item-active {
   background-color: #fbfbfb;
 }
+
+
+
+.mainbody .user_chart_list .list-report-item {
+  background-image: url('../images/icon/excel.png');
+  background-repeat: no-repeat;
+  background-position: 72px 18px;
+}
+
+
 .mainbody .user_chart_list .spotlight_overlay {
   z-index: 1;
   /* show it on top of the other images (they have z-index 0) */

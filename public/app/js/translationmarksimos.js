@@ -993,56 +993,56 @@
         $translateProvider.translations('fr_FR', {
 
              //Labels for Login
-            "LoginPageLabelWelcome"           : "Welcome !",
-            "LoginPageLabelSignIn"            : "Sign In",
-            "LoginPageLabelEmail"             : "Username / Email :",
+            "LoginPageLabelWelcome"           : "Bienvenue !",
+            "LoginPageLabelSignIn"            : "Se Connecter",
+            "LoginPageLabelEmail"             : "Identifiant / E-mail :",
             "LoginPageLabelPassword"          : "Password :",
             "LoginPageLabelPasswordErrorInfo" : "Password Incorrect !",
-            "LoginPageButtonSignIn"           : "Sign In",
+            "LoginPageButtonSignIn"           : "Se Connecter",
 
 
             //Labels for Introduction
-            "IntroPageSeminarListTitle" : "List of the Game Enrolled :",
-            "IntroPageSeminarListLabelSeminarID" : "Seminar ID",
-            "IntroPageSeminarListLabelSeminarDescription" : "Seminar Description",
-            "IntroPageSeminarListLabelTotalRound" : "Total Round",
+            "IntroPageSeminarListTitle" : "Liste de Vos Séminaires :",
+            "IntroPageSeminarListLabelSeminarID" : "ID Séminaire",
+            "IntroPageSeminarListLabelSeminarDescription" : "Description",
+            "IntroPageSeminarListLabelTotalRound" : "Nb. de Tours",
             "IntroPageSeminarListLabelCompetitor" : "Competitor",
-            "IntroPageSeminarListLabelDateOfCommencement" : "Date of Commencement",
-            "IntroPageSeminarListLabelSeminarStatus" : "Seminar Status",
-            "IntroPageSeminarListLabelCountry" : "Country",
-            "IntroPageSeminarListLabelProvince" : "Province(State)",
-            "IntroPageSeminarListLabelCity" : "City",
-            "IntroPageSeminarListLabelVenue" : "Venue",
+            "IntroPageSeminarListLabelDateOfCommencement" : "Date de Début",
+            "IntroPageSeminarListLabelSeminarStatus" : "Statut",
+            "IntroPageSeminarListLabelCountry" : "Pays",
+            "IntroPageSeminarListLabelProvince" : "Région",
+            "IntroPageSeminarListLabelCity" : "Ville",
+            "IntroPageSeminarListLabelVenue" : "Lieu",
 
 
-            "IntroPageSentence1" : "Who am I?",
-            "IntroPageSentence2" : "I am leading company",
-            "IntroPageSentence3" : "I manage",
-            "IntroPageSentence4" : "products",
-            "IntroPageSentence5" : "under",
-            "IntroPageSentence6" : "brands",
-            "IntroPageSentence7" : "I compete with",
-            "IntroPageSentence8" : "other companies",
+            "IntroPageSentence1" : "Qui suis-je ?",
+            "IntroPageSentence2" : "Je suis une Entreprise Leader",
+            "IntroPageSentence3" : "Je gère",
+            "IntroPageSentence4" : "produits",
+            "IntroPageSentence5" : "sous",
+            "IntroPageSentence6" : "marques",
+            "IntroPageSentence7" : "Je suis en compétition avec",
+            "IntroPageSentence8" : "autres entreprises",
 
-            "IntroPageSentence21" : "My company’s mission is to get the",
-            "IntroPageSentence22" : "highest Market Share",
-            "IntroPageSentence23" : "and",
-            "IntroPageSentence24" : "Profit",
+            "IntroPageSentence21" : "La Mission de mon Entreprise",
+            "IntroPageSentence22" : "gagner une grande part de marché",
+            "IntroPageSentence23" : "et",
+            "IntroPageSentence24" : "avoir une rentabilité élevée",
 
 
 
             //Labels for Items on Home page - Top Menu Bar
-            "HomePageMenuBarLabelsHome"     : "Home",
-            "HomePageMenuBarLabelsReport"     : "Reports",
-            "HomePageMenuBarLabelsDecision"   : "Decision",
+            "HomePageMenuBarLabelsHome"     : "Accueil",
+            "HomePageMenuBarLabelsReport"     : "Rapport",
+            "HomePageMenuBarLabelsDecision"   : "Décision",
             "HomePageMenuBarLabelsScore"      : "Score",
-            "HomePageMenuBarLabelsLanguage"   : "Language",
-            "HomePageMenuBarLabelsHelp"       : "Help",
+            "HomePageMenuBarLabelsLanguage"   : "Langue",
+            "HomePageMenuBarLabelsHelp"       : "Aide",
             "HomePageMenuBarLabelsHelpFAQ"    : "FAQ",
-            "HomePageMenuBarLabelsHelpVideo"  : "Video",
-            "HomePageMenuBarLabelsHelpManual" : "Manual",
-            "HomePageMenuBarLabelsAbout"      : "About MarkSimos",
-            "HomePageMenuBarLabelsLogout"     : "Log Out",
+            "HomePageMenuBarLabelsHelpVideo"  : "Vidéo",
+            "HomePageMenuBarLabelsHelpManual" : "Guide d'utilisation",
+            "HomePageMenuBarLabelsAbout"      : "A Propos de Stratège",
+            "HomePageMenuBarLabelsLogout"     : "Se Déconnecter",
 
 
             //Labels for Segment
@@ -1058,52 +1058,52 @@
 
 
             //Labels for Items on Home page - Second Menu Bar
-            "HomePageSecondMenuBarLabelsCompany"           : "Company",
-            "HomePageSecondMenuBarLabelsCompanies"         : "Companies",
-            "HomePageSecondMenuBarLabelsMemberTotal"         : "Now",
-            "HomePageSecondMenuBarLabelsMember"         : "members in the company to make decision",
+            "HomePageSecondMenuBarLabelsCompany"           : "Entreprise",
+            "HomePageSecondMenuBarLabelsCompanies"         : "Entreprises",
+            "HomePageSecondMenuBarLabelsMemberTotal"         : "Actuellement",
+            "HomePageSecondMenuBarLabelsMember"         : "Membre(s) de l'équipe pour prendre les décisions",
 
-            "HomePageSecondMenuBarLabelsTimeLeft"          : "left",
-            "HomePageSecondMenuBarLabelsTimeLeftForSubmit" : "for submitting decision",
-            "HomePageSecondMenuBarLabelsMission"           : "Mission: Market Share + Profit",
-            "HomePageSecondMenuBarLabelsMakeDecision"      : "Make Decision",
-            "HomePageSecondMenuBarCurrentPeriod"           : "Period",
+            "HomePageSecondMenuBarLabelsTimeLeft"          : "Temps restant",
+            "HomePageSecondMenuBarLabelsTimeLeftForSubmit" : "pour soumettre la décision",
+            "HomePageSecondMenuBarLabelsMission"           : "Mission : Part de marché + Rentabilité",
+            "HomePageSecondMenuBarLabelsMakeDecision"      : "Faire une décision",
+            "HomePageSecondMenuBarCurrentPeriod"           : "Période",
 
-            "HomePageSecondMenuBarCompareData"     : "Compare Data",
-            "HomePageSecondMenuBarCompareDataBack" : "Back to Report",
+            "HomePageSecondMenuBarCompareData"     : "Comparer les Données",
+            "HomePageSecondMenuBarCompareDataBack" : "Revenir au Rapport",
 
             //Labels for Items on Home page - Three Boxes
-            "HomePageYourCompanyTableLabel"                 : "Your Company",
-            "HomePageYourCompanyCompanyStatus"              : "Company Status",
-            "HomePageYourCompanyFinancialReport"            : "Financial Report",
-            "HomePageYourCompanyInventoryReport"            : "Inventory Report",
-            "HomePageYourCompanyProfitabilityEvolution"     : "Profitability Evolution",
-            "HomePageYourCompetitorTableLabel"              : "Your Competitor",
-            "HomePageYourCompetitorMarketShare"             : "Market Share",
-            "HomePageYourCompetitorCompetitorIntelligence"  : "Competitor Intelligence",
-            "HomePageYourCompetitorInvestmentsandProfits"   : "Investments and Profits",
-            "HomePageYourCompetitorMarketSalesandInventory" : "Market Sales and Inventory",
+            "HomePageYourCompanyTableLabel"                 : "Votre Entreprise",
+            "HomePageYourCompanyCompanyStatus"              : "Situation de l'Entreprise",
+            "HomePageYourCompanyFinancialReport"            : "Rapport Financier",
+            "HomePageYourCompanyInventoryReport"            : "Inventaire",
+            "HomePageYourCompanyProfitabilityEvolution"     : "Evolution de la Rentabilité",
+            "HomePageYourCompetitorTableLabel"              : "La Concurrence",
+            "HomePageYourCompetitorMarketShare"             : "Parts de Marchés",
+            "HomePageYourCompetitorCompetitorIntelligence"  : "Intelligence économique",
+            "HomePageYourCompetitorInvestmentsandProfits"   : "Investissements",
+            "HomePageYourCompetitorMarketSalesandInventory" : "Ventes et Inventaire",
             "HomePageMarketLandscapeTableLabel"             : "Market Landscape",
             "HomePageMarketLandscapeSegmentLeaderTop5"      : "Segment Leader Top 5",
             "HomePageMarketLandscapePerceptionMap"          : "Perception Map",
             "HomePageMarketLandscapeSegmentDistributions"   : "Segment Distributions",
-            "HomePageMarketLandscapeMarketEvolution"        : "Market Evolution",
-            "HomePageMarketLandscapeMarketTrends"           : "Market Trends",
-            "HomePageMarketLandscapeMarketIndicators"       : "Market Indicators",
+            "HomePageMarketLandscapeMarketEvolution"        : "Evolution des Marchés",
+            "HomePageMarketLandscapeMarketTrends"           : "Tendances",
+            "HomePageMarketLandscapeMarketIndicators"       : "Indicateurs",
 
 
             //Labels for Items on Reports page - reports menu
-            "ReportYourCompany"                : "Your Company",
-            "ReportMenuCompanyStatus"          : "Company Status",
-            "ReportMenuFinancialReport"        : "Financial Report",
-            "ReportMenuInventoryReport"        : "Inventory Report",
-            "ReportMenuProfitabilityEvolution" : "Profitability Evolution",
+            "ReportYourCompany"                : "Votre Entreprise",
+            "ReportMenuCompanyStatus"          : "Situation de l'Entreprise",
+            "ReportMenuFinancialReport"        : "Rapport Financier",
+            "ReportMenuInventoryReport"        : "Inventaire",
+            "ReportMenuProfitabilityEvolution" : "Evolution de la Rentabilité",
 
-            "ReportYourCompetitors"            : "Your Competitors",
-            "ReportMenuMarketShare"            : "Market Share",
-            "ReportMenuCompetitorIntelligence" : "Competitor Intelligence",
-            "ReportMenuInvestmentProfits"      : "Investment & Profits",
-            "ReportMenuMarketSalesInventory"   : "Market Sales & Inventory",
+            "ReportYourCompetitors"            : "Vos Concurrents",
+            "ReportMenuMarketShare"            : "Parts de Marché",
+            "ReportMenuCompetitorIntelligence" : "Veille",
+            "ReportMenuInvestmentProfits"      : "Investissements",
+            "ReportMenuMarketSalesInventory"   : "Ventes et Inventaires",
 
             "ReportMarketLandscape"            : "Market Landscape",
             "ReportMenuSegmentLeaderTop5"      : "Segment Leader Top5",
@@ -1127,7 +1127,7 @@
             "ReportTabLabelTableChartDisplayPie"   : "Pie Chart",
 
             //Labels for Company Status Report - SKU Level
-            "ReportCompanyStatusSKUQuarter" : "Quarter",
+            "ReportCompanyStatusSKUQuarter" : "Trimestre",
 
             "ReportCompanyStatusSKUMarketShareValue"                             : "Market Share (value %)",
             "ReportCompanyStatusSKUMarketShareVolume"                            : "Market Share (volume %)",
@@ -1707,14 +1707,14 @@
 
             //Labels for Items on Decision Page - Second Menu Bar
 
-            "DecisionPageSecondMenuBarLabelsTotalAvailableBudget" : "Total Available Budget",
+            "DecisionPageSecondMenuBarLabelsTotalAvailableBudget" : "Budget Disponible",
             "DecisionPageSecondMenuBarLabelsNormalCapacity"       : "Normal Capacity Left",
             "DecisionPageSecondMenuBarLabelsOvertimeCapacity"     : "Overtime Capacity Left",
-            "DecisionPageSecondMenuBarLabelsAdditionalBudget"     : "Additional Budget",
+            "DecisionPageSecondMenuBarLabelsAdditionalBudget"     : "Budget Supplémentaire",
 
 
             //Labels for Items on Decision Page - DecisionTab
-            "DecisionPageDecisionTabMAKEDECISIONS"     : "MAKE DECISIONS",
+            "DecisionPageDecisionTabMAKEDECISIONS"     : "Prendre des Décisions",
             "DecisionPageDecisionTabMission"           : "Market Share + Profit",
             "DecisionPageDecisionTabAddNewBrand"       : "Add New Brand",
             "DecisionPageDecisionTabSalesForce"        : "Sales Force ($ mln)",
