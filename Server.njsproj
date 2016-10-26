@@ -39,6 +39,7 @@
     <Content Include="views\feedbackENG.ejs" />
     <TypeScriptCompile Include="api\assemblers\decision.ts" />
     <TypeScriptCompile Include="api\assemblers\chart.ts" />
+    <TypeScriptCompile Include="api\consts.ts" />
     <TypeScriptCompile Include="api\controllers\b2c\glossary.ts" />
     <TypeScriptCompile Include="api\controllers\b2c\tag.ts" />
     <TypeScriptCompile Include="api\controllers\user\admin.ts" />

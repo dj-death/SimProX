@@ -2,7 +2,7 @@
 /*
  所有chart
  */
-var consts = require('../consts.js');
+var consts = require('../consts');
 //Market Share
 function marketShareInValue(allResults) {
     return generateChartData(allResults, function (company) {

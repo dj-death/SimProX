@@ -1,7 +1,7 @@
 ﻿/*
  所有chart
  */
-let consts = require('../consts.js');
+let consts = require('../consts');
 
 import config = require('../../config');
 
