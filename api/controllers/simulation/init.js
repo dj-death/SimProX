@@ -91,17 +91,7 @@ function init(io) {
                         simulationResultModel.findAll(seminarId_1)
                     ])
                         .spread(function (allResults) {
-                        return Q.all([
-                            initChartData(seminarId_1, allResults) /*,
-
-                            initCompanyStatusReport(seminarId, allResults, 0),
-                            initFinancialReport(seminarId, allResults),
-                            initProfitabilityEvolutionReport(seminarId, allResults, 0),
-                            initSegmentDistributionReport(seminarId, allResults),
-                            initCompetitorIntelligenceReport(seminarId, allResults),
-                            initMarketTrendsReport(seminarId, allResults, 0),
-                            initMarketIndicatorReport(seminarId, currentPeriod)*/
-                        ]);
+                        return Q.all([]);
                     });
                 })
                     .then(function () {

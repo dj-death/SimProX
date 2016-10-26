@@ -131,7 +131,7 @@
 
                         <!-- List group -->
                         <ul class="list-group">
-                            <li class="list-group-item list-report-item"  ng-repeat="period in css.reportsPeriods" id="hist{{$index}}" ng-class="{'last':$last, 'historic-report': period <= 0, 'new-report': $last}">
+                            <li class="list-group-item list-report-item"  ng-repeat="period in css.reportsPeriods" id="hist{{$index}}" ng-class="{'last':$last, 'historic-report': period <= 0, 'new-report': $last && period > 0}">
 								<a href="" ng-click="downloadReport(period)">Periode T{{period}} .xlsx</a>
 							</li>
                         </ul>

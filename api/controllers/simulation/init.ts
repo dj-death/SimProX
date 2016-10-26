@@ -134,7 +134,7 @@ export function init(io) {
                         ])
                             .spread(function (allResults) {
                                 return Q.all([
-                                    initChartData(seminarId, allResults)/*,
+                                    /*initChartData(seminarId, allResults),
     
                                     initCompanyStatusReport(seminarId, allResults, 0),
                                     initFinancialReport(seminarId, allResults),
