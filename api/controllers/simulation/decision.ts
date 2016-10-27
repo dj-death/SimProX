@@ -17,6 +17,8 @@ let spendingDetailsAssembler = require('../../../dataAssemblers/spendingDetails.
 let SKUInfoAssembler = require('../../../dataAssemblers/SKUInfo.js');
 */
 
+import spendingDetailsAssembler = require('../../assemblers/spendingDetails');
+
 
 import request = require('../../promises/request');
 import config = require('../../../config');
@@ -603,6 +605,7 @@ export function getProductPortfolio (req, res, next) {
         })
         .done();
 }
+*/
 
 export function getSpendingDetails (req, res, next) {
     let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
@@ -625,6 +628,7 @@ export function getSpendingDetails (req, res, next) {
         .done();
 }
 
+/*
 
 export function getSKUInfoFutureProjection (req, res, next) {
     let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
@@ -652,7 +656,7 @@ export function getSKUInfoFutureProjection (req, res, next) {
         })
         .done();
 }
-
+*/
 
 export function getOtherinfo (req, res, next) {
     let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
@@ -668,46 +672,48 @@ export function getOtherinfo (req, res, next) {
         spendingDetailsAssembler.getSpendingDetails(seminarId, period, companyId),
         simulationResultModel.findOne(seminarId, period - 1)
     ])
-        .spread(function (spendingDetails, lastPeriodResult) {
-            let totalInvestment = spendingDetails.companyData.totalInvestment;
-            let companyResult = utility.findCompany(lastPeriodResult, companyId);
+    .spread(function (spendingDetails, lastPeriodResult) {
+        /*
+        let totalInvestment = spendingDetails.companyData.totalInvestment;
+        let companyResult = utility.findCompany(lastPeriodResult, companyId);
 
-            let totalAvailableBudget = parseFloat(
-                (
-                    (companyResult.c_TotalInvestmentBudget - companyResult.c_CumulatedInvestments - totalInvestment
-                    ) / (companyResult.c_TotalInvestmentBudget)
-                ).toFixed(2)
-            );
-            let totalAvailableBudgetValue = companyResult.c_TotalInvestmentBudget - companyResult.c_CumulatedInvestments - totalInvestment;
+        let totalAvailableBudget = parseFloat(
+            (
+                (companyResult.c_TotalInvestmentBudget - companyResult.c_CumulatedInvestments - totalInvestment
+                ) / (companyResult.c_TotalInvestmentBudget)
+            ).toFixed(2)
+        );
+        let totalAvailableBudgetValue = companyResult.c_TotalInvestmentBudget - companyResult.c_CumulatedInvestments - totalInvestment;
 
-            let normalCapacity = parseFloat((spendingDetails.companyData.normalCapacity / companyResult.c_Capacity).toFixed(2));
-            let normalCapacityValue = spendingDetails.companyData.normalCapacity;
+        let normalCapacity = parseFloat((spendingDetails.companyData.normalCapacity / companyResult.c_Capacity).toFixed(2));
+        let normalCapacityValue = spendingDetails.companyData.normalCapacity;
 
-            let overtimeCapacity = parseFloat(((spendingDetails.companyData.availableOvertimeCapacityExtension
-            ) / (companyResult.c_Capacity * gameParameters.pgen.firm_OvertimeCapacity)).toFixed(2));
+        let overtimeCapacity = parseFloat(((spendingDetails.companyData.availableOvertimeCapacityExtension
+        ) / (companyResult.c_Capacity * gameParameters.pgen.firm_OvertimeCapacity)).toFixed(2));
 
-            let overtimeCapacityValue = spendingDetails.companyData.availableOvertimeCapacityExtension;
+        let overtimeCapacityValue = spendingDetails.companyData.availableOvertimeCapacityExtension;
 
-            //if normal capacity is not totally used, set overtime capacity to 1
-            if (normalCapacityValue > 0) {
-                overtimeCapacity = 1;
-                overtimeCapacityValue = companyResult.c_Capacity * gameParameters.pgen.firm_OvertimeCapacity;
-                //overtimeCapacityValue = companyResult.c_Capacity;
-            }
+        //if normal capacity is not totally used, set overtime capacity to 1
+        if (normalCapacityValue > 0) {
+            overtimeCapacity = 1;
+            overtimeCapacityValue = companyResult.c_Capacity * gameParameters.pgen.firm_OvertimeCapacity;
+            //overtimeCapacityValue = companyResult.c_Capacity;
+        }
+        */
 
-            res.send({
-                totalAvailableBudget: totalAvailableBudget,
-                normalCapacity: normalCapacity,
-                overtimeCapacity: overtimeCapacity,
-                totalAvailableBudgetValue: totalAvailableBudgetValue,
-                normalCapacityValue: normalCapacityValue,
-                overtimeCapacityValue: overtimeCapacityValue
-            });
-        })
-        .fail(function (err) {
-            logger.error(err);
-            res.send(500, { message: "get otherInfo failed." })
-        })
-        .done();
+        res.send({
+            totalAvailableBudget: 100000, //totalAvailableBudget,
+            normalCapacity: 100000, //normalCapacity,
+            overtimeCapacity: 100000, //overtimeCapacity,
+            totalAvailableBudgetValue: 100000, //totalAvailableBudgetValue,
+            normalCapacityValue: 100000, //normalCapacityValue,
+            overtimeCapacityValue: 100000 //overtimeCapacityValue
+        });
+    })
+    .fail(function (err) {
+        logger.error(err);
+
+        res.send(500, { message: "get otherInfo failed." })
+    })
+    .done();
 }
-*/

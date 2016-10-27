@@ -1075,9 +1075,11 @@
         /********************  Select Company/Team for StudentB2B  ********************/
         $scope.chooseCompany = function(seminar, company) {
             seminar.currentCompanyName = company.companyName;
+            
             $scope.data.addStudentToSeminar.seminar_id = seminar.seminarId;
             $scope.data.addStudentToSeminar.company_id = company.companyId;
         };
+
         /********************  Add Student To Seminar  ********************/
         $scope.addStudentToSeminar = function(seminarid, studentemail) {
 

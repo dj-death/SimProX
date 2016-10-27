@@ -1022,6 +1022,7 @@
                     $scope.data.currentCompanySpendingDetails = data;
                 });
             },
+            
             loadingFeedBackData : function(){
                 /********************  获取 Questionnaire  ********************/
                 Company.getQuestionnaire().success(function(data, status, headers, config) {

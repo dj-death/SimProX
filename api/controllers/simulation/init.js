@@ -12,6 +12,7 @@ var dbutility = require('../../models/dbUtility');
 var decisionCleaner = require('../../convertors/decisionCleaner');
 var allResultsCleaner = require('../../convertors/allResultsCleaner');
 var chartAssembler = require('../../assemblers/chart');
+var financialReportAssembler = require('../../assemblers/financialReport');
 var SimMain = require('../../../kernel/app');
 var Flat = require('../../utils/Flat');
 var Utils = require('../../../kernel/utils/Utils');
@@ -91,7 +92,11 @@ function init(io) {
                         simulationResultModel.findAll(seminarId_1)
                     ])
                         .spread(function (allResults) {
-                        return Q.all([]);
+                        return Q.all([
+                            initChartData(seminarId_1, allResults),
+                            //initCompanyStatusReport(seminarId, allResults, 0),
+                            initFinancialReport(seminarId_1, allResults),
+                        ]);
                     });
                 })
                     .then(function () {
@@ -311,7 +316,11 @@ function runSimulation() {
                     return Q.all([
                         simulationResultModel.findAll(seminarId_2)
                     ]).spread(function (allResults) {
-                        return Q.all([]);
+                        return Q.all([
+                            initChartData(seminarId_2, allResults),
+                            //initCompanyStatusReport(seminarId, allResults, selectedPeriod),
+                            initFinancialReport(seminarId_2, allResults),
+                        ]);
                     });
                 }).then(function () {
                     console.log('generate report/chart finished.');
@@ -502,8 +511,8 @@ function initSimulationResult(seminarId, companies, initData) {
             results.companies = [];
             companies.forEach(function (comp) {
                 var refCompResults = clone(data.results);
-                results.c_CID = comp.companyId;
-                results.c_CompanyName = comp.companyName;
+                refCompResults.c_CID = comp.companyId;
+                refCompResults.c_CompanyName = comp.companyName;
                 results.companies.push(refCompResults);
             });
             allResults.push(results);
@@ -537,15 +546,15 @@ function initCompanyStatusReport(seminarId, allResults, period){
         })
     });
 };
-
-function initFinancialReport(seminarId, allResults){
+*/
+function initFinancialReport(seminarId, allResults) {
     return reportModel.insert({
         seminarId: seminarId,
         reportName: "financial_report",
         reportData: financialReportAssembler.getFinancialReport(allResults)
-    })
+    });
 }
-
+/*
 function initProfitabilityEvolutionReport(seminarId, allResults, period){
     return reportModel.insert({
         seminarId: seminarId,
@@ -608,8 +617,7 @@ function initChartData(seminarId, allResults) {
     var period = allResults[allResults.length - 1].period + 1;
     return Q.all([
         seminarModel.findOneQ({ seminarId: seminarId }),
-    ])
-        .spread(function (seminar, exogenous) {
+    ]).spread(function (seminar, exogenous) {
         //generate charts from allResults
         var chartData = chartAssembler.extractChartData(allResults, {
             simulation_span: seminar.simulation_span,

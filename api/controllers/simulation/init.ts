@@ -1,5 +1,4 @@
 import seminarModel = require('../../models/Seminar');
-import PlayerDecision = require('../../models/decision/Decision');
 import Scenario = require('../../models/scenario/Scenario');
 import reportModel = require('../../models/simulation/Report');
 import chartModel = require('../../models/simulation/Chart');
@@ -21,6 +20,7 @@ import decisionCleaner = require('../../convertors/decisionCleaner');
 import allResultsCleaner = require('../../convertors/allResultsCleaner');
 
 import chartAssembler = require('../../assemblers/chart');
+import financialReportAssembler = require('../../assemblers/financialReport');
 
 
 import SimMain = require('../../../kernel/app');
@@ -134,11 +134,11 @@ export function init(io) {
                         ])
                             .spread(function (allResults) {
                                 return Q.all([
-                                    /*initChartData(seminarId, allResults),
+                                    initChartData(seminarId, allResults),
     
-                                    initCompanyStatusReport(seminarId, allResults, 0),
+                                    //initCompanyStatusReport(seminarId, allResults, 0),
                                     initFinancialReport(seminarId, allResults),
-                                    initProfitabilityEvolutionReport(seminarId, allResults, 0),
+                                    /*initProfitabilityEvolutionReport(seminarId, allResults, 0),
                                     initSegmentDistributionReport(seminarId, allResults),
                                     initCompetitorIntelligenceReport(seminarId, allResults),
                                     initMarketTrendsReport(seminarId, allResults, 0),
@@ -456,10 +456,10 @@ export function runSimulation(){
                         simulationResultModel.findAll(seminarId)
                     ]).spread(function(allResults){
                         return Q.all([
-                            /*initChartData(seminarId, allResults),
-                            initCompanyStatusReport(seminarId, allResults, selectedPeriod),
+                            initChartData(seminarId, allResults),
+                            //initCompanyStatusReport(seminarId, allResults, selectedPeriod),
                             initFinancialReport(seminarId, allResults),
-                            initProfitabilityEvolutionReport(seminarId, allResults, selectedPeriod),
+                            /*initProfitabilityEvolutionReport(seminarId, allResults, selectedPeriod),
                             initSegmentDistributionReport(seminarId, allResults),
                             initCompetitorIntelligenceReport(seminarId, allResults),
                             initMarketTrendsReport(seminarId, allResults, selectedPeriod),
@@ -738,8 +738,8 @@ function initSimulationResult(seminarId, companies, initData) {
             companies.forEach(function (comp) {
                 let refCompResults = clone(data.results)
 
-                results.c_CID = comp.companyId;
-                results.c_CompanyName = comp.companyName;
+                refCompResults.c_CID = comp.companyId;
+                refCompResults.c_CompanyName = comp.companyName;
                 
                 results.companies.push(refCompResults);
             });
@@ -785,6 +785,7 @@ function initCompanyStatusReport(seminarId, allResults, period){
         })
     });
 };
+*/
 
 function initFinancialReport(seminarId, allResults){
     return reportModel.insert({
@@ -794,6 +795,9 @@ function initFinancialReport(seminarId, allResults){
     })
 }
 
+
+
+/*
 function initProfitabilityEvolutionReport(seminarId, allResults, period){
     return reportModel.insert({
         seminarId: seminarId,
@@ -862,13 +866,14 @@ function initChartData(seminarId, allResults) {
         seminarModel.findOneQ({ seminarId: seminarId }),
         //get exogenous of period:0, FMCG and GENERIC market
         //cgiapi.getExogenous(period)
-    ])
-    .spread(function (seminar, exogenous) {
+    ]).spread(function (seminar, exogenous) {
+
         //generate charts from allResults
         let chartData = chartAssembler.extractChartData(allResults, {
             simulation_span: seminar.simulation_span,
             exogenous: exogenous
         });
+
 
         return chartModel.insert({
             seminarId: seminarId,

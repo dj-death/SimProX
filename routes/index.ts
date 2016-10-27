@@ -5,8 +5,6 @@ let apiRouter = express.Router();
 
 
 import * as User from '../api/models/user/User';
-import * as Seminar from  '../api/models/seminar/Seminar';
-import * as  PlayerDecision from '../api/models/decision/Decision';
 import * as Scenario from '../api/models/scenario/Scenario';
 import * as fileUploadModel from '../api/models/user/fileupload';
 
@@ -285,9 +283,9 @@ export function get(io) {
     //company info
     apiRouter.get('/stratege/api/company', iAuth.authRole(strategeRight.seminarSingleDecisionGet), decisionController.getDecision);
     //apiRouter.get('/stratege/api/product_portfolio', iAuth.authRole(strategeRight.seminarSingleDecisionGet), decisionController.getProductPortfolio);
-    //apiRouter.get('/stratege/api/spending_details', iAuth.authRole(strategeRight.seminarSingleDecisionGet), decisionController.getSpendingDetails);
+    apiRouter.get('/stratege/api/spending_details', iAuth.authRole(strategeRight.seminarSingleDecisionGet), decisionController.getSpendingDetails);
     //apiRouter.get('/stratege/api/future_projection_calculator/:sku_id', iAuth.authRole(strategeRight.seminarSingleDecisionGet), decisionController.getSKUInfoFutureProjection);
-    //apiRouter.get('/stratege/api/company/otherinfo', iAuth.authRole(strategeRight.seminarSingleDecisionGet), decisionController.getOtherinfo);
+    apiRouter.get('/stratege/api/company/otherinfo', iAuth.authRole(strategeRight.seminarSingleDecisionGet), decisionController.getOtherinfo);
 
     //make decision page
     //apiRouter.put('/stratege/api/sku/decision', iAuth.authRole(strategeRight.seminarSingleDecisionCUD), decisionController.updateSKUDecision);

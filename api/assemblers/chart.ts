@@ -15,15 +15,15 @@ import utility = require('../utils/utility');
 //Market Share
 export function marketShareInValue(allResults) {
     return generateChartData(allResults, function (company) {
-        return company.c_ValueSegmentShare[consts.ConsumerSegmentsMaxTotal - 1];
+        return company.report["res_BI_corporate1_market1_product1_marketVolumeShareOfSales"];
     })
 }
 
 
 export function marketShareInVolume(allResults) {
     return generateChartData(allResults, function (company) {
-        return company.c_VolumeSegmentShare[consts.ConsumerSegmentsMaxTotal - 1];
-    })
+        return 1; //company.c_VolumeSegmentShare[consts.ConsumerSegmentsMaxTotal - 1];
+    });
 }
 
 export function mindSpaceShare(allResults) {
@@ -65,6 +65,7 @@ export function investmentsVersusBudget(allResults, simulationSpan) {
         chartData: [],
         periods: []
     };
+
     for (let i = 4; i < allResults.length; i++) {
         let onePeriodResult = allResults[i];
         result.chartData.push([]);
@@ -94,7 +95,7 @@ export function investmentsVersusBudget(allResults, simulationSpan) {
 //Market Sales and Inventory
 export function marketSalesValue(allResults) {
     return generateChartData(allResults, function (company) {
-        return company.c_MarketSalesValue[consts.ConsumerSegmentsMaxTotal - 1];
+        return company.salesRevenue;
     })
 }
 
@@ -199,7 +200,11 @@ export function segmentValueShareTotalMarket(allResults) {
  * @param {Object} exogenous parameters of the game
  */
 
-export function perceptionMap(allResults, exogenous) {
+interface Exogenous {
+    exo_SegmentsIdealPoints: number[];
+}
+
+export function perceptionMap(allResults, exogenous: Exogenous) {
     let result = {
         periods: [],
         exogenous: []
@@ -508,7 +513,8 @@ function generateChartData(allResults, dataExtractor) {
 
     for (let i = 0; i < allResults.length; i++) {
         let onePeriodResult = allResults[i];
-        let periodId = allResults[i].period;
+        let periodId = onePeriodResult.period;
+        let environnement = onePeriodResult.environnement;
 
         result.periods.push(periodId);
 
@@ -517,6 +523,7 @@ function generateChartData(allResults, dataExtractor) {
         for (let j = 0; j < companyNum; j++) {
             let company = onePeriodResult.companies[j];
             let companyName = company.c_CompanyName;
+
 
             if (result.companyNames.indexOf(companyName) === -1) {
                 result.companyNames.push(companyName);
@@ -595,11 +602,16 @@ function extractMarketEvolutionChartData(allResults, dataExtractor) {
 }
 
 
+interface Seminar_Settings {
+    simulation_span: number;
+    exogenous: any;
+}
 
-export function extractChartData (results, settings) {
+
+export function extractChartData(results, settings: Seminar_Settings) {
     //生成chart数据
     let _marketShareInValue = marketShareInValue(results);
-    let _marketShareInVolume = marketShareInVolume(results);
+   /* let _marketShareInVolume = marketShareInVolume(results);
     let _mindSpaceShare = mindSpaceShare(results);
     let _shelfSpaceShare = shelfSpaceShare(results);
 
@@ -607,7 +619,7 @@ export function extractChartData (results, settings) {
     let _totalInvestment = totalInvestment(results);
     let _netProfitByCompanies = netProfitByCompanies(results);
     let _returnOnInvestment = returnOnInvestment(results);
-    let _investmentsVersusBudget = investmentsVersusBudget(results, settings.simulationSpan);
+    let _investmentsVersusBudget = investmentsVersusBudget(results, settings.simulation_span);
 
     //market sales and inventory
     let _marketSalesValue = marketSalesValue(results);
@@ -631,13 +643,13 @@ export function extractChartData (results, settings) {
 
     let _perceptionMap = perceptionMap(results, settings.exogenous);
 
-    let _inventoryReport = inventoryReport(results);
+    let _inventoryReport = inventoryReport(results);*/
 
     return [
         {
             chartName: 'marketShareInValue',
             chartData: _marketShareInValue
-        },
+        }/*,
         {
             chartName: 'marketShareInVolume',
             chartData: _marketShareInVolume
@@ -729,6 +741,6 @@ export function extractChartData (results, settings) {
         {
             chartName: 'inventoryReport',
             chartData: _inventoryReport
-        }
+        }*/
     ];
 }

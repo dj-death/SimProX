@@ -6,13 +6,13 @@ var consts = require('../consts');
 //Market Share
 function marketShareInValue(allResults) {
     return generateChartData(allResults, function (company) {
-        return company.c_ValueSegmentShare[consts.ConsumerSegmentsMaxTotal - 1];
+        return company.report["res_BI_corporate1_market1_product1_marketVolumeShareOfSales"];
     });
 }
 exports.marketShareInValue = marketShareInValue;
 function marketShareInVolume(allResults) {
     return generateChartData(allResults, function (company) {
-        return company.c_VolumeSegmentShare[consts.ConsumerSegmentsMaxTotal - 1];
+        return 1; //company.c_VolumeSegmentShare[consts.ConsumerSegmentsMaxTotal - 1];
     });
 }
 exports.marketShareInVolume = marketShareInVolume;
@@ -82,7 +82,7 @@ exports.investmentsVersusBudget = investmentsVersusBudget;
 //Market Sales and Inventory
 function marketSalesValue(allResults) {
     return generateChartData(allResults, function (company) {
-        return company.c_MarketSalesValue[consts.ConsumerSegmentsMaxTotal - 1];
+        return company.salesRevenue;
     });
 }
 exports.marketSalesValue = marketSalesValue;
@@ -178,12 +178,6 @@ function segmentValueShareTotalMarket(allResults) {
 }
 exports.segmentValueShareTotalMarket = segmentValueShareTotalMarket;
 ;
-/**
- * Generate perception map chart
- *
- * @method perceptionMap
- * @param {Object} exogenous parameters of the game
- */
 function perceptionMap(allResults, exogenous) {
     var result = {
         periods: [],
@@ -457,7 +451,8 @@ function generateChartData(allResults, dataExtractor) {
     };
     for (var i = 0; i < allResults.length; i++) {
         var onePeriodResult = allResults[i];
-        var periodId = allResults[i].period;
+        var periodId = onePeriodResult.period;
+        var environnement = onePeriodResult.environnement;
         result.periods.push(periodId);
         var periodChartData = [];
         for (var j = 0; j < companyNum; j++) {
@@ -535,38 +530,44 @@ function extractMarketEvolutionChartData(allResults, dataExtractor) {
 function extractChartData(results, settings) {
     //生成chart数据
     var _marketShareInValue = marketShareInValue(results);
-    var _marketShareInVolume = marketShareInVolume(results);
-    var _mindSpaceShare = mindSpaceShare(results);
-    var _shelfSpaceShare = shelfSpaceShare(results);
-    //investment and profit
-    var _totalInvestment = totalInvestment(results);
-    var _netProfitByCompanies = netProfitByCompanies(results);
-    var _returnOnInvestment = returnOnInvestment(results);
-    var _investmentsVersusBudget = investmentsVersusBudget(results, settings.simulationSpan);
-    //market sales and inventory
-    var _marketSalesValue = marketSalesValue(results);
-    var _marketSalesVolume = marketSalesVolume(results);
-    var _totalInventoryAtFactory = totalInventoryAtFactory(results);
-    var _totalInventoryAtTrade = totalInventoryAtTrade(results);
-    //segment leaders top 5
-    var segmentsLeadersByValuePriceSensitive = segmentsLeadersByValue(results, 'priceSensitive');
-    var segmentsLeadersByValuePretenders = segmentsLeadersByValue(results, 'pretenders');
-    var segmentsLeadersByValueModerate = segmentsLeadersByValue(results, 'moderate');
-    var segmentsLeadersByValueGoodLife = segmentsLeadersByValue(results, 'goodLife');
-    var segmentsLeadersByValueUltimate = segmentsLeadersByValue(results, 'ultimate');
-    var segmentsLeadersByValuePragmatic = segmentsLeadersByValue(results, 'pragmatic');
-    //Market evolution
-    var _growthRateInVolume = growthRateInVolume(results);
-    var _growthRateInValue = growthRateInValue(results);
-    var _netMarketPrice = netMarketPrice(results);
-    var _segmentValueShareTotalMarket = segmentValueShareTotalMarket(results);
-    var _perceptionMap = perceptionMap(results, settings.exogenous);
-    var _inventoryReport = inventoryReport(results);
+    /* let _marketShareInVolume = marketShareInVolume(results);
+     let _mindSpaceShare = mindSpaceShare(results);
+     let _shelfSpaceShare = shelfSpaceShare(results);
+ 
+     //investment and profit
+     let _totalInvestment = totalInvestment(results);
+     let _netProfitByCompanies = netProfitByCompanies(results);
+     let _returnOnInvestment = returnOnInvestment(results);
+     let _investmentsVersusBudget = investmentsVersusBudget(results, settings.simulation_span);
+ 
+     //market sales and inventory
+     let _marketSalesValue = marketSalesValue(results);
+     let _marketSalesVolume = marketSalesVolume(results);
+     let _totalInventoryAtFactory = totalInventoryAtFactory(results);
+     let _totalInventoryAtTrade = totalInventoryAtTrade(results);
+ 
+     //segment leaders top 5
+     let segmentsLeadersByValuePriceSensitive = segmentsLeadersByValue(results, 'priceSensitive');
+     let segmentsLeadersByValuePretenders = segmentsLeadersByValue(results, 'pretenders');
+     let segmentsLeadersByValueModerate = segmentsLeadersByValue(results, 'moderate');
+     let segmentsLeadersByValueGoodLife = segmentsLeadersByValue(results, 'goodLife');
+     let segmentsLeadersByValueUltimate = segmentsLeadersByValue(results, 'ultimate');
+     let segmentsLeadersByValuePragmatic = segmentsLeadersByValue(results, 'pragmatic');
+ 
+     //Market evolution
+     let _growthRateInVolume = growthRateInVolume(results);
+     let _growthRateInValue = growthRateInValue(results);
+     let _netMarketPrice = netMarketPrice(results);
+     let _segmentValueShareTotalMarket = segmentValueShareTotalMarket(results);
+ 
+     let _perceptionMap = perceptionMap(results, settings.exogenous);
+ 
+     let _inventoryReport = inventoryReport(results);*/
     return [
         {
             chartName: 'marketShareInValue',
             chartData: _marketShareInValue
-        },
+        } /*,
         {
             chartName: 'marketShareInVolume',
             chartData: _marketShareInVolume
@@ -658,7 +659,7 @@ function extractChartData(results, settings) {
         {
             chartName: 'inventoryReport',
             chartData: _inventoryReport
-        }
+        }*/
     ];
 }
 exports.extractChartData = extractChartData;

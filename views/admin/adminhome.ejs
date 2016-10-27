@@ -689,11 +689,13 @@
 										<th>Terminé</th>
                                         <!--<th>Lieu</th>-->
                                         <!--<th>Adresse</th>-->
-                                        <th>Période en cours</th>
+										
+                                        <th>Ajouter des étudiants</th>
+										<th>Période en cours</th>
                                         <!--<th>Company Member</th>-->
                                         <th>Deadline de la période</th>
                                         <!--<th>Temps total</th>-->
-                                        <th>Ajouter des étudiants</th>
+										
 										<th style="width:100px">Action</th>
 										<th style="width:100px">Editer</th>
                                     </tr>
@@ -706,43 +708,54 @@
 										<td><i class="fa fa-check" aria-hidden="true" ng-show="seminar.isSimulationFinished"></i></td>
                                         <!--<td>{{seminar.country}} / {{seminar.city}} </td>-->
                                         <!--<td data-highlight-key="data.searchSeminar.filterKey">{{seminar.address}}</td>-->
-                                        <td>{{seminar.currentPeriod}} / {{seminar.simulation_span}}
-                                            <button type="button" class="btn btn-info" ng-hide="seminar.showLastPeriodScore" ng-click="showFinalScore(seminar)" >Afficher Score</button>
-                                            <button type="button" class="btn btn-info" ng-show="seminar.showLastPeriodScore" ng-click="hideFinalScore(seminar)" >Cacher Score</button>
-                                        </td>
-                                        <!--<td>
-                                            <p ng-repeat="company in seminar.companies">Company{{company.companyId | companyname }} :
-                                                <span ng-repeat="team in company.teamListData">Team: {{team.name}} / Creator: {{team.creator.username}} <a href="" ng-hide="seminar.isSimulationFinished" ng-click="removeTeamFromSeminar(seminar.seminarId, team._id)">remove</a>, </span>
-                                                <br>
-                                                Members: <span ng-repeat="student in company.studentList">{{student}} <a href="" ng-hide="seminar.isSimulationFinished" ng-click="removeStudentFromSeminar(seminar.seminarId, student)">remove</a>, </span>
-                                            </p>
-                                        </td>-->
-                                        <td>
-                                            {{seminar.roundTime[seminar.currentPeriod - 1].endTime | date : "yyyy-MM-dd,HH:mm"}}
-                                        </td>
-                                        <!--<td>
-                                            <p ng-repeat="company in seminar.companies">
-                                                Company{{company.companyId | companyname }}: {{company.totalRoundTime | timecost}}
-                                            </p>
-                                        </td>-->
 
-                                        <td >
+                                        <td style="text-align: left">
+											
+											<ul class="collapse" id="students-list-{{seminar.seminarCode}}">
+                                                <li ng-repeat="company in seminar.companies" ng-if="company.studentList.length || company.teamList.length">
+													<b>Entreprise {{company.companyId || company.companyName}} :</b>
+													
+													<ul>
+														<li ng-repeat="student in company.studentList" style="list-style-type: none">{{student}}  <a href="" ng-hide="seminar.isSimulationFinished" ng-click="removeStudentFromSeminar(seminar.seminarId, student)">Supprimer</a></li>
+														<li ng-repeat="team in company.teamList" style="list-style-type: none">{{team}}</li>
+													</ul>
+													
+													<br/>
+												</li>
+											</ul>
+											
+											<a href="#students-list-{{seminar.seminarCode}}" data-toggle="collapse"><span class="fa fa-caret-up"></span> Détails</a>
+											
+											<hr/>
+											
                                             <div class="input-group margin">
                                                 <div class="input-group-btn">
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{seminar.currentCompanyName}} <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
                                                         <li ng-repeat="company in seminar.companies"><a href="" ng-click="chooseCompany(seminar, company)">Company {{company.companyName}}</a></li>
                                                     </ul>
-                                                </div><!-- /btn-group -->
-                                                <input type="text" class="form-control" placeholder="Student / Team creator Email or Username" ng-model="seminar.inputemail">
+                                                </div>
+												
+                                                <input type="text" class="form-control" style="width: 160px" placeholder="Identifiant / Email" ng-model="seminar.inputemail">
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-info" type="button" ng-click="addStudentToSeminar(seminar.seminarId, seminar.inputemail)">Add Student</button>
-                                                    <button class="btn btn-primary" type="button" ng-click="addTeamToSeminar(seminar.seminarId, seminar.inputemail)">Add Team</button>
+                                                    <button class="btn btn-info" type="button" ng-click="addStudentToSeminar(seminar.seminarId, seminar.inputemail)"><b>+</b> Etudiant</button>
+                                                    <button class="btn btn-primary" type="button" ng-click="addTeamToSeminar(seminar.seminarId, seminar.inputemail)"><b>+</b> Equipe</button>
                                                 </span>
-                                            </div><!-- /input-group -->
+												
+                                            </div>
+											
                                             <div class="callout callout-danger" ng-show="seminar.seminarId == css.seminarId">
                                                 <p>Veuillez choisir une entreprise et saisir l'identifiant ou l'e-mail de son capitain  !</p>
                                             </div>
+                                        </td>
+										
+										<td>{{seminar.currentPeriod}} / {{seminar.simulation_span}}
+                                            <button type="button" class="btn btn-info" ng-hide="seminar.showLastPeriodScore" ng-click="showFinalScore(seminar)" >Afficher Score</button>
+                                            <button type="button" class="btn btn-info" ng-show="seminar.showLastPeriodScore" ng-click="hideFinalScore(seminar)" >Cacher Score</button>
+                                        </td>
+										
+                                        <td>
+                                            {{seminar.roundTime[seminar.currentPeriod - 1].endTime | date : "yyyy-MM-dd,HH:mm"}}
                                         </td>
 										
 										<td style="width:100px">

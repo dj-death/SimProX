@@ -39,6 +39,8 @@
     <Content Include="views\feedbackENG.ejs" />
     <TypeScriptCompile Include="api\assemblers\decision.ts" />
     <TypeScriptCompile Include="api\assemblers\chart.ts" />
+    <TypeScriptCompile Include="api\assemblers\financialReport.ts" />
+    <TypeScriptCompile Include="api\assemblers\spendingDetails.ts" />
     <TypeScriptCompile Include="api\consts.ts" />
     <TypeScriptCompile Include="api\controllers\b2c\glossary.ts" />
     <TypeScriptCompile Include="api\controllers\b2c\tag.ts" />
@@ -65,7 +67,6 @@
     <TypeScriptCompile Include="api\models\b2c\ChatMessage.ts" />
     <TypeScriptCompile Include="api\models\b2c\TeamScore.ts" />
     <TypeScriptCompile Include="api\models\decision\CompanyDecision.ts" />
-    <TypeScriptCompile Include="api\models\decision\Decision.ts" />
     <TypeScriptCompile Include="api\models\decision\CompanyDecSchema.ts" />
     <TypeScriptCompile Include="api\models\Faq.ts" />
     <TypeScriptCompile Include="api\models\Manual.ts" />
@@ -233,7 +234,6 @@
     <Folder Include="api\models\b2c\" />
     <Folder Include="api\models\decision\" />
     <Folder Include="api\models\simulation\" />
-    <Folder Include="api\models\seminar\" />
     <Folder Include="api\models\scenario\" />
     <Folder Include="api\models\user\" />
     <Folder Include="api\assemblers\" />

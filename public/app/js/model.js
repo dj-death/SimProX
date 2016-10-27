@@ -202,6 +202,7 @@
                     return result.data;
                 });
             },
+
             getCompanyOtherInfo : function(companyId){
                 return $http.get(apiPath + 'company/otherinfo', {params : {companyId : companyId }}).then(function(result){
 //                console.log(result.data);
@@ -209,6 +210,7 @@
                     return result.data;
                 });
             },
+
             getCompanyFutureProjectionCalculator : function(skuId, companyId){
                 return $http.get(apiPath + 'future_projection_calculator/' + skuId, {params : {companyId : companyId }}).then(function(result){
 //                console.log(result.data);
@@ -216,6 +218,7 @@
                     return result.data;
                 });
             },
+
             getCompanyProductPortfolio : function(companyId){
                 return $http.get(apiPath + 'product_portfolio', {params : {companyId : companyId }}).then(function(result){
 //                console.log(result.data);
@@ -223,6 +226,7 @@
                     return result.data;
                 });
             },
+            
             getCompanySpendingDetails : function(companyId){
                 return $http.get(apiPath + 'spending_details', {params : {companyId : companyId }}).then(function(result){
 //                console.log(result.data);
