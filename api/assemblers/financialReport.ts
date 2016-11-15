@@ -104,9 +104,6 @@ export function getFinancialReport (allResults) {
         })
     });
 
-
-    global.debug_data.allCompanyReport = allCompanyReport;
-
     return allCompanyReport;
 }
 

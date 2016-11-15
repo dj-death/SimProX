@@ -225,3 +225,7 @@ utils/~*.map
 
 log/
 
+public1/
+
+public/bower_components
+

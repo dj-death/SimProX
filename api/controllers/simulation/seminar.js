@@ -445,7 +445,7 @@ function getSeminarOfFacilitator(req, res, next) {
 exports.getSeminarOfFacilitator = getSeminarOfFacilitator;
 ;
 function seminarInfoForFacilitator(req, res, next) {
-    var seminarId = req.params.seminarId;
+    var seminarId = req.params.seminar_id;
     if (!seminarId) {
         return res.send(400, { message: "Invalid seminarId" });
     }
@@ -453,7 +453,7 @@ function seminarInfoForFacilitator(req, res, next) {
         if (!dbSeminar) {
             return res.send(400, { message: "seminar " + seminarId + " doesn't exist." });
         }
-        return res.render('admin/adminmarksimosreport.ejs', {
+        return res.render('admin/adminreport.ejs', {
             title: 'Admin | Report',
             seminarId: seminarId
         });

@@ -3,12 +3,12 @@
 
 
 
-What is MarkSimos?
+What is Stratege?
 ----------
 
 ### Overview
 
-MarkSimos is Business Simulation Game that allows you to run a company in a realistic, yet risk-free virtual environment with an intensive time frame.
+Stratege is Business Simulation Game that allows you to run a company in a realistic, yet risk-free virtual environment with an intensive time frame.
 
 Through stimulating team sharing and experiential learning encourages participants to create a CEO perspective and to get a well-rounded view of the firm and its functions. 
 
@@ -490,7 +490,7 @@ Final Remarks
 ### Final Remarks
  
 
-Although this manual tends to give a lot of information, for clarity and readability reasons, it does not cover all details. If you have any questions make a note of them so that you can ask the administrator during the introductory sessions at the beginning of your exercise. Hopefully, you have now some idea of how MarkSimos simulation works, and that you are ready to face its challenges. 
+Although this manual tends to give a lot of information, for clarity and readability reasons, it does not cover all details. If you have any questions make a note of them so that you can ask the administrator during the introductory sessions at the beginning of your exercise. Hopefully, you have now some idea of how Stratege simulation works, and that you are ready to face its challenges. 
 
 Good luck!
 

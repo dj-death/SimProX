@@ -270,22 +270,24 @@ export function getReport(req, res, next) {
 
 
     reportModel.findOne(seminarId, reportName)
-        .then(function (report) {
-            if (report === null || report === undefined) {
-                return res.status(400).send({ message: "Report doesn't exist." })
-            }
+    .then(function (report) {
 
-            if (req.user.role === userRoleModel.roleList.student.id && isReportNeedFilter(reportName)) {
-                return res.send(extractReportOfOneCompany(report, companyId));
-            }
+        if (report === null || report === undefined) {
+            return res.status(400).send({ message: "Report doesn't exist." })
+        }
 
-            res.send(report.reportData);
-        })
-        .fail(function (err) {
-            logger.error(err);
-            res.status(500).send({ message: "fail to get report." });
-        })
-        .done();
+        if (req.user.role === userRoleModel.roleList.student.id && isReportNeedFilter(reportName)) {
+
+            return res.send(extractReportOfOneCompany(report, companyId));
+        }
+
+        res.send(report.reportData);
+    })
+    .fail(function (err) {
+        logger.error(err);
+        res.status(500).send({ message: "fail to get report." });
+    })
+    .done();
 
 };
 
@@ -417,10 +419,12 @@ function isReportNeedFilter(report_name) {
 function extractReportOfOneCompany(report, companyId) {
     if (!report || !report.reportData) return;
 
+    let reportData = report.reportData;
     let tempReportData = [];
-    for (let i = 0; i < report.reportData.length; i++) {
-        if (report.reportData[i].companyId === companyId) {
-            tempReportData.push(report.reportData[i]);
+
+    for (let i = 0; i < reportData.length; i++) {
+        if (reportData[i].companyId === companyId) {
+            tempReportData.push(reportData[i]);
         }
     }
 

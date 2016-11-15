@@ -10,14 +10,13 @@
     <div class="row login" ng-if="css.showBox=='seminar'" ng-cloak>
         <div class="col-md-10 col-md-offset-1 panelbox ">
 
-
             <div class="row">
                 <div class="col-md-12"><h2 class="text-center game_list">{{'IntroPageSeminarListTitle' | translate}} </h2></div>
             </div>
 
 
-            <table class="table table-hover table-striped table-bordered table_seminar_list">
-                <thead>
+            <table class="table table-hover table-bordered table_seminar_list">
+                <thead class="table_header">
                     <tr>
                         <th>{{'IntroPageSeminarListLabelSeminarID' | translate}}</th>
                         <th>{{'IntroPageSeminarListLabelSeminarDescription' | translate}}</th>
@@ -25,8 +24,6 @@
                         <th>{{'IntroPageSeminarListLabelCompetitor' | translate}} </th>
                         <th>{{'IntroPageSeminarListLabelDateOfCommencement' | translate}}</th>
                         <th>{{'IntroPageSeminarListLabelSeminarStatus' | translate}}</th>
-                        <!--<th>Facilitator</th>-->
-                        <th>{{'IntroPageSeminarListLabelCountry' | translate}} / {{'IntroPageSeminarListLabelProvince' | translate}} / {{'IntroPageSeminarListLabelCity' | translate}}</th>
                         <th>{{'IntroPageSeminarListLabelVenue' | translate}}</th>
                     </tr>
                 </thead>
@@ -35,16 +32,14 @@
                     <tr ng-repeat="seminar in data.seminars">
                         <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.seminarCode}}   </a></td>
                         <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.description}} </a></td>
-                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.simulationSpan}}</a></td>
-                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.companyNum}} </a></td>
-                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">no info  </a></td>
-                        <td>
-                            <a href="" ng-click="chooseSeminar(seminar.seminarId )" ng-if="seminar.isSimulationFinished">Finished </a>
-                            <a href="" ng-click="chooseSeminar(seminar.seminarId )" ng-if="seminar.isInitialized&&!seminar.isSimulationFinished">Initialized, Current Round:{{seminar.currentPeriod}} </a>
-                            <a href="" ng-click="chooseSeminar(seminar.seminarId )" ng-if="!seminar.isInitialized">Not Initialized </a>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.simulation_span}}</a></td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.company_num}} </a></td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{'IntroPageSeminarListLabelNoInfo' | translate}}</a></td>
+                        <td>											
+                            <a href="" ng-click="chooseSeminar(seminar.seminarId )" ng-if="seminar.isSimulationFinished">{{'IntroPageSeminarListLabelIsFinished' | translate}}</a>
+                            <a href="" ng-click="chooseSeminar(seminar.seminarId )" ng-if="seminar.isInitialized&&!seminar.isSimulationFinished">{{'IntroPageSeminarListLabelCurrentRound' | translate}} : {{seminar.currentPeriod}} </a>
                         </td>
-                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.country}} / {{seminar.state}} / {{seminar.city}}  </a></td>
-                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.venue}} </a></td>
+                        <td><a href="" ng-click="chooseSeminar(seminar.seminarId )">{{seminar.venue}} {{seminar.city}} {{seminar.state}} {{seminar.country}}</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -112,7 +107,7 @@
 
                 <div class="row">
                     <div class="col-md-2 col-md-offset-9">
-                        <button type="submit" class="btn btn-default start_button" ng-click="whoamiNext()">Start</button>
+                        <button type="submit" class="btn btn-default start_button" ng-click="whoamiNext()">{{'IntroPageStart' | translate}}</button>
                     </div>
                 </div>
 

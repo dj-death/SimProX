@@ -1,0 +1,133 @@
+<div class="col-md-12">
+	<form class="form-horizontal marketing_form" role="form" name="updateCompanyForm" novalidate>
+		<div class="panel panel-default product_portfolio">
+				<div class="panel-heading text-center">Livraisons pour</div>
+					<table class="table  table-bordered table-hover">
+						<thead>
+							<tr>
+								<th><strong>Marché</strong></th>
+								<th></th>
+								<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr ng-repeat="market in data.currentCompany.decision.markets">
+								<td>{{data.currentCompany.marketsRefs[$index]}}</td>
+								<td></td>
+								<td ng-repeat="subMarket in market.products">
+									<input type="number" class="form-control required   pristine" ng-model="subMarket.deliveredQ" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			
+			
+		
+		<div class="panel panel-default product_portfolio">	
+			<div class="panel-heading text-center">Prix</div>
+			<table class="table  table-bordered table-hover">
+				<thead>
+					<tr>
+						<th><strong>Marché</strong></th>
+						<th></th>
+						<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr ng-repeat="market in data.currentCompany.decision.markets">
+						<td>{{data.currentCompany.marketsRefs[$index]}}</td>
+						<td></td>
+						<td ng-repeat="subMarket in market.products">
+							<input type="number" class="form-control required   pristine" ng-model="subMarket.price" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+				
+			<div class="panel-heading text-center">Publicité</div>
+			<table class="table  table-bordered table-hover">
+				<thead>
+					<tr>
+						<th><strong>Marché</strong></th>
+						<th>Communication</th>
+						<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr ng-repeat="market in data.currentCompany.decision.markets">
+						<td>{{data.currentCompany.marketsRefs[$index]}}</td>
+						<td>
+							<input type="number" class="form-control required   pristine" ng-model="market.corporateComBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+
+						<td ng-repeat="subMarket in market.products">
+							<input type="number" class="form-control required   pristine" ng-model="subMarket.advertisingBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+
+		<div class="panel panel-default product_portfolio">
+						
+			<div class="panel-heading text-center">Agents et Distributeurs</div>		
+			<table class="table  table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>&nbsp;</th>
+						<th>Objectif prochain trimestre</th>
+						<th>Soutien Financier (' 000 Dh)</th>
+						<th>Commission (%)</th>
+						<th>&nbsp;</th>
+					</tr>
+					
+				</thead>
+				
+				<tbody>
+					<tr ng-repeat="agent in data.currentCompany.decision.agents">
+						<td>Agents {{data.currentCompany.marketsRefs[$index]}}</td>
+						<td>
+							<input type="number" class="form-control required   pristine" ng-model="agent.appointedNb" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+
+						<td>
+							<input type="number" class="form-control required   pristine" ng-model="agent.support" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+
+						<td>
+							<input type="number" class="form-control required   pristine" ng-model="agent.commissionRate" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+
+		<div class="panel panel-default product_portfolio">
+		
+		<div class="panel-heading text-center">Intelligence économique et Veille</div>		
+		<table class="table  table-bordered table-hover">
+			
+			<tbody>
+				<tr>
+					<td>Parts de Marché</td>
+					<td>
+						<input type="checkbox" class="form-control required   pristine" ng-model="data.currentCompany.decision.orderMarketSharesInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+					</td>
+					
+					<td>Autres Infos</td>
+					<td>
+						<input type="checkbox" class="form-control required   pristine" ng-model="data.currentCompany.decision.orderCorporateActivityInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+	</form>	
+</div>

@@ -1,0 +1,47 @@
+<table class="table">
+	<thead>
+	</thead>
+	<tbody>
+		<tr>
+			<th>
+				<p>{{Label.getContent('Technology Level')}}</p>
+			</th>
+			<td>
+				<p class="text-right">{{product.composition[1]}}</p>
+			</td>
+		</tr>	
+		<tr>
+			<th>
+				<p>{{Label.getContent('Design Level')}}</p>
+			</th>
+			<td>
+				<p class="text-right">{{product.composition[0]}}</p>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				<p>{{Label.getContent('Quality-of-Raw-Materials')}}</p>
+			</th>
+			<td>
+				<p class="text-right">{{product.composition[2]}}</p>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				<p>{{Label.getContent('Pack Format')}}</p>
+			</th>
+			<td>
+				<p class="text-right">{{Label.getContent(product.packFormat)}}</p>
+			</td>
+		</tr>				
+		<tr>
+			<th>
+				<p>{{Label.getContent('B&M List Prices')}}</p>
+			</th>
+			<td>
+				<p class="text-right">{{product.currentPriceBM.toFixed(2)}}</p>
+			</td>
+		</tr>
+
+	</tbody>
+</table>

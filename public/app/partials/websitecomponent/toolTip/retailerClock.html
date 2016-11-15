@@ -1,0 +1,20 @@
+<div ng-show='clock.contractDeal>0'>
+	<p><B><span class="glyphicon glyphicon-chevron-right"></span> {{Label.getContent('Make negotiation decisions with Suppliers')}} {{Label.getContent('in next')}} <span class="span-underline">{{clock.portfolio+clock.contractDeal}}</span> {{Label.getContent('mins')}}</B></p>
+	<p class="text-muted"><span class="glyphicon glyphicon-minus"></span> {{Label.getContent('Finalise negotiation decisions with Suppliers')}}</p>
+	<p class="text-muted"><span class="glyphicon glyphicon-minus"></span> {{Label.getContent('Complete all the rest decisions')}}</p>
+</div>
+<div ng-show='clock.contractDeal==0&&clock.contractFinalized>0'>
+	<p class="text-muted"><span class="glyphicon glyphicon-ok"></span> {{Label.getContent('Negotiation decisions had been made with Suppliers')}}</p>
+	<p><B><span class="glyphicon glyphicon-chevron-right"></span> {{Label.getContent('System will')}} <span class="span-danger">{{Label.getContent('Lock')}}</span> <span class="span-underline">{{Label.getContent('negotiation decisions')}}</span> {{Label.getContent('in next')}} <span class="span-underline">{{clock.contractFinalized}}</span> {{Label.getContent('mins')}}</B></p>
+	<p class="text-muted"><span class="glyphicon glyphicon-minus"></span> {{Label.getContent('Complete all the rest decisions')}}</p>
+</div>
+<div ng-show='clock.contractFinalized==0&&clock.contractDecisionCommitted>0'>
+	<p class="text-muted"><span class="glyphicon glyphicon-ok"></span> {{Label.getContent('Negotiation decisions had been made with Suppliers')}}</p>
+	<p class="text-muted"><span class="glyphicon glyphicon-ok"></span> {{Label.getContent('Negotiation decisions had been Locked')}}</p>
+	<p><B><span class="glyphicon glyphicon-chevron-right"></span> {{Label.getContent('System will')}} <span class="span-danger">{{Label.getContent('Lock')}}</span> {{Label.getContent('all the rest decisions')}} {{Label.getContent('in next')}} <span class="span-underline">{{clock.contractDecisionCommitted}}</span> {{Label.getContent('mins')}}</B></p>
+</div>
+<div ng-show='clock.contractDecisionCommitted==0'>
+	<p class="text-muted"><span class="glyphicon glyphicon-ok"></span> {{Label.getContent('Negotiation decisions had been made with Suppliers')}}</p>
+	<p class="text-muted"><span class="glyphicon glyphicon-ok"></span> {{Label.getContent('Negotiation decisions had been Locked')}}</p>
+	<p class="text-muted"><span class="glyphicon glyphicon-ok"></span> {{Label.getContent('all the rest decisions Locked')}}</p>
+</div>

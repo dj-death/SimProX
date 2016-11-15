@@ -7,12 +7,12 @@
 
 
     /********************  Create New Module For Controllers ********************/
-    angular.module('marksimos', ['pascalprecht.translate', 'angularCharts', 'nvd3ChartDirectives', 'cgNotify', 'marksimos.config', 'marksimos.commoncomponent', 'marksimos.websitecomponent', 'marksimos.model', 'marksimos.socketmodel', 'marksimos.filter', 'marksimos.translation', 'ngAnimate', 'mgo-angular-wizard']);
+    angular.module('marksimos', ['ui.bootstrap', 'pascalprecht.translate', 'angularCharts', 'nvd3ChartDirectives', 'cgNotify', 'marksimos.services', 'marksimos.config', 'marksimos.commoncomponent', 'marksimos.websitecomponent', 'marksimos.model', 'marksimos.socketmodel', 'marksimos.filter', 'marksimos.translation', 'ngAnimate']);
 
 
 
     /********************  Use This Module To Set New Controllers  ********************/
-    angular.module('marksimos').controller('chartController', ['$translate', '$scope', '$rootScope', '$document', '$timeout', '$interval', '$http', 'notify', 'chartReport', 'tableReport', 'Student', 'Company', 'Socket', function($translate, $scope, $rootScope, $document, $timeout, $interval, $http, notify, chartReport, tableReport, Student, Company, Socket) {
+    angular.module('marksimos').controller('chartController', ['$translate', '$scope', '$rootScope', '$document', '$timeout', '$interval', '$http', 'notify', 'chartReport', 'tableReport', 'Student', 'Company', 'Socket', 'Label', function($translate, $scope, $rootScope, $document, $timeout, $interval, $http, notify, chartReport, tableReport, Student, Company, Socket, Label) {
 
         window.chartController = $scope;
 
@@ -98,6 +98,8 @@
                 second : 0
             },
             currentCompanyDecisionLock : null,
+            isDecisionLocked: false,
+
             currentStudent : null,
             currentSeminar : null,
             currentCompany : null,
@@ -508,6 +510,9 @@
             initOnce : function(){
                 this.loadingStudentData();
 
+                //config default language
+ 			    Label.initialiseLanguage('ENG');
+
                 Socket.setup();
 
                 Socket.socket.on('marksimosDecisionUpdate', function(message){
@@ -541,10 +546,13 @@
                     if(data.currentMarksimosSeminar.roundTime.length > 0){
                         $scope.data.currentTime.time = data.currentMarksimosSeminar.roundTime[$scope.data.currentSeminar.currentPeriod - 1];
                         $scope.data.currentCompanyDecisionLock = $scope.data.currentTime.time.lockDecisionTime[$scope.data.currentSeminar.currentCompany.companyId - 1];
+                        
+                        $scope.data.isDecisionLocked = $scope.data.currentCompanyDecisionLock.lockStatus;
                     }
 
                 });
             },
+
             loadingTableData : function(){
                 /********************  Table Report A1  ********************/
                 tableReport.companyStatus($scope.data.currentSeminar.currentCompany.companyId).then(function(data, status, headers, config){
@@ -819,6 +827,8 @@
 
                         $scope.data.currentTime.time = data.currentMarksimosSeminar.roundTime[$scope.data.currentSeminar.currentPeriod - 1];
                         $scope.data.currentCompanyDecisionLock = $scope.data.currentTime.time.lockDecisionTime[$scope.data.currentSeminar.currentCompany.companyId - 1];
+
+                        $scope.data.isDecisionLocked = $scope.data.currentCompanyDecisionLock.lockStatus;
 
                         var roundEndDate = new Date($scope.data.currentTime.time.endTime);
                         var targetDate = 0;
@@ -1555,6 +1565,47 @@
                 $scope.isFeedbackSumbit = false;
 
             });
+        };
+
+
+        var switching = function(type) {
+            // reset
+            $scope.ProductPortfolioManagement = $scope.BMListPrices = $scope.NegotiationAgreements = $scope.ProductionVolume = $scope.GeneralMarketing = $scope.OnlineStoreManagement = $scope.AssetInvestments = $scope.MarketResearchOrders = $scope.isNegotiation = false;
+            
+            switch (type) {
+                case 'showProductPortfolioManagement':
+                    $scope.ProductPortfolioManagement = true;
+                    break;
+                case 'showBMListPrices':
+                    $scope.BMListPrices = true;
+                    break;
+                case 'showNegotiationAgreements':
+                    $scope.NegotiationAgreements = true;
+                    $scope.isNegotiation = true;
+                    break;
+                case 'showProductionVolume':
+                    $scope.ProductionVolume = true;
+                    break;
+                case 'showGeneralMarketing':
+                    $scope.GeneralMarketing = true;
+                    break;
+                case 'showOnlineStoreManagement':
+                    $scope.OnlineStoreManagement = true;
+                    break;
+                case 'showAssetInvestments':
+                    $scope.AssetInvestments = true;
+                    break;
+                case 'showMarketResearchOrders':
+                    $scope.MarketResearchOrders = true;
+                    break;
+            }
+        };
+
+        
+        $scope.showDecisionPage = function(pageID, type) {
+
+            switching(type);
+
         };
 
 

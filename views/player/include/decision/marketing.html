@@ -1,133 +1,172 @@
-<div class="col-md-12">
-	<form class="form-horizontal marketing_form" role="form" name="updateCompanyForm" novalidate>
-		<div class="panel panel-default product_portfolio">
-				<div class="panel-heading text-center">Livraisons pour</div>
-					<table class="table  table-bordered table-hover">
-						<thead>
-							<tr>
-								<th><strong>Marché</strong></th>
-								<th></th>
-								<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
-							</tr>
-						</thead>
-						
-						<tbody>
-							<tr ng-repeat="market in data.currentCompany.decision.markets">
-								<td>{{data.currentCompany.marketsRefs[$index]}}</td>
-								<td></td>
-								<td ng-repeat="subMarket in market.products">
-									<input type="number" class="form-control required   pristine" ng-model="subMarket.deliveredQ" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			
-			
-		
-		<div class="panel panel-default product_portfolio">	
-			<div class="panel-heading text-center">Prix</div>
-			<table class="table  table-bordered table-hover">
-				<thead>
-					<tr>
-						<th><strong>Marché</strong></th>
-						<th></th>
-						<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr ng-repeat="market in data.currentCompany.decision.markets">
-						<td>{{data.currentCompany.marketsRefs[$index]}}</td>
-						<td></td>
-						<td ng-repeat="subMarket in market.products">
-							<input type="number" class="form-control required   pristine" ng-model="subMarket.price" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-				
-			<div class="panel-heading text-center">Publicité</div>
-			<table class="table  table-bordered table-hover">
-				<thead>
-					<tr>
-						<th><strong>Marché</strong></th>
-						<th>Communication</th>
-						<th ng-repeat="product in data.currentCompany.decision.products">{{data.currentCompany.productsRefs[$index]}}</th>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr ng-repeat="market in data.currentCompany.decision.markets">
-						<td>{{data.currentCompany.marketsRefs[$index]}}</td>
-						<td>
-							<input type="number" class="form-control required   pristine" ng-model="market.corporateComBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-						</td>
+<div class='panel panel-success my-success-panel'>
+	<div class="panel-heading">
+        <h3 class="panel-title text-center" popover="{{Label.getContent('General Marketing Info')}}" popover-trigger="mouseenter" popover-placement="bottom">
+            {{Label.getContent('General Marketing')}}
+        </h3>
+    </div>
+    <table class="table table-condensed table-bordered table-success">
+    	<thead>
+    		<tr>
+                <th></th>
+    			<th colspan="3">
+                    <p class="text-center">{{Label.getContent('Advertising')}}({{Label.getContent('$mln')}})</p>
+                </th>
+                <th colspan="2">
+                    <p class="text-center">{{Label.getContent('Traditional Trade Support')}}({{Label.getContent('$mln')}})</p>
+                </th>
+    		</tr>
+            <tr>
+                <th></th>
+                <th>
+                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Advertising Online Info')}}" popover-title="{{Label.getContent('Advertising Online')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Advertising Online')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
+                </th>
+                <th colspan="2">
+                    <p class="text-center">{{Label.getContent('Offline')}}</p>
+                </th>
+                
+                <th>
+                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Traditional Trade Support Urban Info')}}" popover-title="{{Label.getContent('Traditional Trade Support Urban')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Urban')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
+                </th>
+                <th>
+                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Traditional Trade Support Rural Info')}}" popover-title="{{Label.getContent('Traditional Trade Support Rural')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Rural')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
+                </th>
+            </tr> 
+            <tr>
+                <th></th>
+                <th></th>
+                <th>
+                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Advertising Offline Urban Info')}}" popover-title="{{Label.getContent('Advertising Offline Urban')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Urban')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
+                </th>
+                <th>
+                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Advertising Offline Rural Info')}}" popover-title="{{Label.getContent('Advertising Offline Rural')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Rural')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
+                </th>
+                
+                <th></th>
+                <th></th>
+            </tr>  
+    	</thead>
+        <tbody>
+            <tr class="success">
+                <th colspan="6">
+                    <p>{{Label.getContent('Elecssories')}}-{{Label.getContent('Brand')}}</p>
+                </th>
+            </tr>
+            <tr class="success" ng-repeat='brande in brandes'>
+                <td>
+                    <p class="padding-20">{{brande.brandName}}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brande.advertisingOnLine" onbeforesave="checkData('Elecssories',brande.brandName,'advertisingOnLine','1',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',brande.brandName,'advertisingOnLine','1',$index)">
+                        <p class="text-right">{{ brande.advertisingOnLine || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brande.advertisingOnLine || 0 }}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brande.advertisingOffLine[0]" onbeforesave="checkData('Elecssories',brande.brandName,'advertisingOffLine','0',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',brande.brandName,'advertisingOffLine','0',$index)">
+                        <p class="text-right">{{ brande.advertisingOffLine[0] || 0 }}
+                        </p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brande.advertisingOffLine[0] || 0 }}
+                    </p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brande.advertisingOffLine[1]" onbeforesave="checkData('Elecssories',brande.brandName,'advertisingOffLine','1',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',brande.brandName,'advertisingOffLine','1',$index)">
+                        <p class="text-right">{{ brande.advertisingOffLine[1] || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brande.advertisingOffLine[1] || 0 }}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brande.supportTraditionalTrade[0]" onbeforesave="checkData('Elecssories',brande.brandName,'supportTraditionalTrade','0',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',brande.brandName,'supportTraditionalTrade','0',$index)">
+                        <p class="text-right">{{ brande.supportTraditionalTrade[0] || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brande.supportTraditionalTrade[0] || 0 }}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brande.supportTraditionalTrade[1]" onbeforesave="checkData('Elecssories',brande.brandName,'supportTraditionalTrade','1',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',brande.brandName,'supportTraditionalTrade','1',$index)">
+                        <p class="text-right">{{ brande.supportTraditionalTrade[1] || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brande.supportTraditionalTrade[1] || 0 }}</p>
+                </td>
+                
+            </tr>
 
-						<td ng-repeat="subMarket in market.products">
-							<input type="number" class="form-control required   pristine" ng-model="subMarket.advertisingBudget" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-		</div>
-
-		<div class="panel panel-default product_portfolio">
-						
-			<div class="panel-heading text-center">Agents et Distributeurs</div>		
-			<table class="table  table-bordered table-hover">
-				<thead>
-					<tr>
-						<th>&nbsp;</th>
-						<th>Objectif prochain trimestre</th>
-						<th>Soutien Financier (' 000 Dh)</th>
-						<th>Commission (%)</th>
-						<th>&nbsp;</th>
-					</tr>
-					
-				</thead>
-				
-				<tbody>
-					<tr ng-repeat="agent in data.currentCompany.decision.agents">
-						<td>Agents {{data.currentCompany.marketsRefs[$index]}}</td>
-						<td>
-							<input type="number" class="form-control required   pristine" ng-model="agent.appointedNb" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-						</td>
-
-						<td>
-							<input type="number" class="form-control required   pristine" ng-model="agent.support" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-						</td>
-
-						<td>
-							<input type="number" class="form-control required   pristine" ng-model="agent.commissionRate" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-						</td>
-					</tr>
-
-				</tbody>
-			</table>
-		</div>
-
-		<div class="panel panel-default product_portfolio">
-		
-		<div class="panel-heading text-center">Intelligence économique et Veille</div>		
-		<table class="table  table-bordered table-hover">
-			
-			<tbody>
-				<tr>
-					<td>Parts de Marché</td>
-					<td>
-						<input type="checkbox" class="form-control required   pristine" ng-model="data.currentCompany.decision.orderMarketSharesInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-					</td>
-					
-					<td>Autres Infos</td>
-					<td>
-						<input type="checkbox" class="form-control required   pristine" ng-model="data.currentCompany.decision.orderCorporateActivityInfo" ng-disabled="data.currentCompanyDecisionLock.lockStatus" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		
-	</div>
-	</form>	
+            <!-- <tr>
+                <th>{{Label.getContent('HealthBeauties')}}</th>
+                <th colspan="3">
+                    <p class="text-center">{{Label.getContent('Advertising')}}({{Label.getContent('$mln')}})</p>
+                </th>
+                <th colspan="2">
+                    <p class="text-center">{{Label.getContent('Traditional Trade Support')}}({{Label.getContent('$mln')}})</p>
+                </th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <p class="text-center">{{Label.getContent('Online')}}</p>
+                </th>
+                <th colspan="2">
+                    <p class="text-center">{{Label.getContent('Offline')}}</p>
+                </th>
+                <th>
+                    <p class="text-center">{{Label.getContent('Rural')}}</p>
+                </th>
+                <th>
+                    <p class="text-center">{{Label.getContent('Urban')}}</p>
+                </th>
+            </tr> 
+            <tr>
+                <th></th>
+                <th></th>
+                <th>
+                    <p class="text-center">{{Label.getContent('Rural')}}</p>
+                </th>
+                <th>
+                    <p class="text-center">{{Label.getContent('Urban')}}</p>
+                </th>
+                <th></th>
+                <th></th>
+            </tr>  -->
+            <tr class="danger">
+                <th colspan="6">
+                    <p>{{Label.getContent('HealthBeauties')}}-{{Label.getContent('Brand')}}</p>
+                </th>
+            </tr>
+            <tr class="danger" ng-repeat='brandh in brandhs'>
+                <td>
+                    <p class="padding-20">{{brandh.brandName}}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brandh.advertisingOnLine" onbeforesave="checkData('HealthBeauty',brandh.brandName,'advertisingOnLine','1',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',brandh.brandName,'advertisingOnLine','1',$index)">
+                        <p class="text-right">{{ brandh.advertisingOnLine || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brandh.advertisingOnLine || 0 }}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brandh.advertisingOffLine[0]" onbeforesave="checkData('HealthBeauty',brandh.brandName,'advertisingOffLine','0',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',brandh.brandName,'advertisingOffLine','0',$index)">
+                        <p class="text-right">{{ brandh.advertisingOffLine[0] || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brandh.advertisingOffLine[0] || 0 }}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brandh.advertisingOffLine[1]" onbeforesave="checkData('HealthBeauty',brandh.brandName,'advertisingOffLine','1',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',brandh.brandName,'advertisingOffLine','1',$index)">
+                        <p class="text-right">{{ brandh.advertisingOffLine[1] || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brandh.advertisingOffLine[1] || 0 }}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brandh.supportTraditionalTrade[0]" onbeforesave="checkData('HealthBeauty',brandh.brandName,'supportTraditionalTrade','0',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',brandh.brandName,'supportTraditionalTrade','0',$index)">
+                        <p class="text-right">{{ brandh.supportTraditionalTrade[0] || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brandh.supportTraditionalTrade[0] || 0 }}</p>
+                </td>
+                <td>
+                    <a href="#" editable-text="brandh.supportTraditionalTrade[1]" onbeforesave="checkData('HealthBeauty',brandh.brandName,'supportTraditionalTrade','1',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',brandh.brandName,'supportTraditionalTrade','1',$index)">
+                        <p class="text-right">{{ brandh.supportTraditionalTrade[1] || 0 }}</p>
+                    </a>
+                    <p ng-show='isDecisionCommitted' class="text-right text-muted">{{ brandh.supportTraditionalTrade[1] || 0 }}</p>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
 </div>

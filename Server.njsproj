@@ -233,6 +233,7 @@
     <Folder Include="api\models\" />
     <Folder Include="api\models\b2c\" />
     <Folder Include="api\models\decision\" />
+    <Folder Include="api\models\seminar\" />
     <Folder Include="api\models\simulation\" />
     <Folder Include="api\models\scenario\" />
     <Folder Include="api\models\user\" />

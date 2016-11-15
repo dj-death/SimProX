@@ -637,7 +637,7 @@ export function  getSeminarOfFacilitator (req, res, next){
 
 
 export function  seminarInfoForFacilitator (req, res, next){
-    let seminarId = req.params.seminarId;
+    let seminarId = req.params.seminar_id;
 
     if(!seminarId){
         return res.send(400, {message: "Invalid seminarId"});
@@ -648,7 +648,7 @@ export function  seminarInfoForFacilitator (req, res, next){
             return res.send(400, {message: "seminar " + seminarId + " doesn't exist."});
         }
 
-        return res.render('admin/adminmarksimosreport.ejs',{
+        return res.render('admin/adminreport.ejs',{
             title : 'Admin | Report',
             seminarId: seminarId
         });

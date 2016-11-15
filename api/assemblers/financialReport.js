@@ -90,7 +90,6 @@ function getFinancialReport(allResults) {
             companyReport.periods.push(periodReport);
         });
     });
-    global.debug_data.allCompanyReport = allCompanyReport;
     return allCompanyReport;
 }
 exports.getFinancialReport = getFinancialReport;

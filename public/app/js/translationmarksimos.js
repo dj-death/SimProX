@@ -22,6 +22,9 @@
     // Adding a translation table for the English language
         $translateProvider.translations('en_US', {
 
+            "YES"     : "Yes",
+            "NO"     : "No",
+
             //Labels for Login
             "LoginPageLabelWelcome"           : "Welcome !",
             "LoginPageLabelSignIn"            : "Sign In",
@@ -58,6 +61,8 @@
             "IntroPageSentence22" : "highest Market Share",
             "IntroPageSentence23" : "and",
             "IntroPageSentence24" : "Profit",
+
+            "IntroPageStart" : "Start",
 
 
 
@@ -856,6 +861,15 @@
             "DecisionPageProductPortfolioTable2TotalInventoryVolumeAtFactory" : "Total Inventory Volume at Factory",
 
 
+            //Labels for Items on Decision Page - DecisionTab
+            "DecisionPageDecisionTabFinance"     : "Finances",
+            "DecisionPageDecisionTabProduction"     : "Production",
+            "DecisionPageDecisionTabForecast"     : "Prévisions de Ventes",
+            "DecisionPageDecisionTabCheckList"     : "Check List",
+            "DecisionPageDecisionTabMarketing"     : "Marketing",
+            "DecisionPageDecisionTabBI"     : "Intelligence économique",
+
+
             //Labels for Items on Decision Page - Spending Details
             "DecisionPageSpendingDetailsLabel" : "Spending Details",
 
@@ -992,27 +1006,37 @@
         // Adding a translation table for the Chinese language
         $translateProvider.translations('fr_FR', {
 
+            "YES"     : "Oui",
+            "NO"     : "Non",
+            "ALL"     : "Tout",
+
+            "BUY"     : "Acheter",
+
              //Labels for Login
             "LoginPageLabelWelcome"           : "Bienvenue !",
             "LoginPageLabelSignIn"            : "Se Connecter",
             "LoginPageLabelEmail"             : "Identifiant / E-mail :",
-            "LoginPageLabelPassword"          : "Password :",
+            "LoginPageLabelPassword"          : "Mot de Passe :",
             "LoginPageLabelPasswordErrorInfo" : "Password Incorrect !",
             "LoginPageButtonSignIn"           : "Se Connecter",
 
 
             //Labels for Introduction
-            "IntroPageSeminarListTitle" : "Liste de Vos Séminaires :",
-            "IntroPageSeminarListLabelSeminarID" : "ID Séminaire",
+            "IntroPageSeminarListTitle" : "Mes Séminaires",
+            "IntroPageSeminarListLabelSeminarID" : "Code de Séminaire",
             "IntroPageSeminarListLabelSeminarDescription" : "Description",
             "IntroPageSeminarListLabelTotalRound" : "Nb. de Tours",
-            "IntroPageSeminarListLabelCompetitor" : "Competitor",
+            "IntroPageSeminarListLabelCompetitor" : "Nb. de Concurrents",
             "IntroPageSeminarListLabelDateOfCommencement" : "Date de Début",
             "IntroPageSeminarListLabelSeminarStatus" : "Statut",
             "IntroPageSeminarListLabelCountry" : "Pays",
             "IntroPageSeminarListLabelProvince" : "Région",
             "IntroPageSeminarListLabelCity" : "Ville",
             "IntroPageSeminarListLabelVenue" : "Lieu",
+
+            "IntroPageSeminarListLabelIsFinished": "Terminé",
+            "IntroPageSeminarListLabelCurrentRound": "Période en cours",
+            "IntroPageSeminarListLabelNoInfo": "Aucune Info",
 
 
             "IntroPageSentence1" : "Qui suis-je ?",
@@ -1029,6 +1053,8 @@
             "IntroPageSentence23" : "et",
             "IntroPageSentence24" : "avoir une rentabilité élevée",
 
+            "IntroPageStart" : "Commencer",
+
 
 
             //Labels for Items on Home page - Top Menu Bar
@@ -1041,7 +1067,7 @@
             "HomePageMenuBarLabelsHelpFAQ"    : "FAQ",
             "HomePageMenuBarLabelsHelpVideo"  : "Vidéo",
             "HomePageMenuBarLabelsHelpManual" : "Guide d'utilisation",
-            "HomePageMenuBarLabelsAbout"      : "A Propos de Stratège",
+            "HomePageMenuBarLabelsAbout"      : "à Propos de Stratège",
             "HomePageMenuBarLabelsLogout"     : "Se Déconnecter",
 
 
@@ -1059,13 +1085,13 @@
 
             //Labels for Items on Home page - Second Menu Bar
             "HomePageSecondMenuBarLabelsCompany"           : "Entreprise",
-            "HomePageSecondMenuBarLabelsCompanies"         : "Entreprises",
+            "HomePageSecondMenuBarLabelsCompanies"         : "Concurrents",
             "HomePageSecondMenuBarLabelsMemberTotal"         : "Actuellement",
             "HomePageSecondMenuBarLabelsMember"         : "Membre(s) de l'équipe pour prendre les décisions",
 
-            "HomePageSecondMenuBarLabelsTimeLeft"          : "Temps restant",
+            "HomePageSecondMenuBarLabelsTimeLeft"          : "Il vous reste",
             "HomePageSecondMenuBarLabelsTimeLeftForSubmit" : "pour soumettre la décision",
-            "HomePageSecondMenuBarLabelsMission"           : "Mission : Part de marché + Rentabilité",
+            "HomePageSecondMenuBarLabelsMission"           : "Mes Objectifs",
             "HomePageSecondMenuBarLabelsMakeDecision"      : "Faire une décision",
             "HomePageSecondMenuBarCurrentPeriod"           : "Période",
 
@@ -1724,6 +1750,19 @@
             "DecisionPageDecisionTabLabelFirstSKUName" : "First SKU Name :",
             "DecisionPageDecisionTabLabelSKUName"      : "SKU Name :",
 
+            //Labels for Items on Decision Page - DecisionTab
+            "DecisionPageDecisionTabFinance"     : "Finances",
+            "DecisionPageDecisionTabProduction"     : "Production",
+            "DecisionPageDecisionTabForecast"     : "Prévisions de Ventes",
+            "DecisionPageDecisionTabCheckList"     : "Check List",
+            "DecisionPageDecisionTabMarketing"     : "Marketing",
+            "DecisionPageDecisionTabBI"     : "Intelligence économique",
+
+            //Labels for Items on BI Decision Page
+            "DecisionPageDecisionBIOrders"     : "Commander des études",
+            "DecisionPageDecisionBIReport"     : "Etudes",
+            "DecisionPageDecisionBICost"     : "Prix",
+
             "DecisionPageDecisionTabDiscontinue"           : "Discontinue?",
             "DecisionPageDecisionTabProcessingTechnology"  : "Processing Technology",
             "DecisionPageDecisionTabIngredientsQuality"    : "Ingredients Quality",
@@ -1944,8 +1983,8 @@
         });
 
         // Tell the module what language to use by default
-//        $translateProvider.preferredLanguage('en_US');
         $translateProvider.preferredLanguage('fr_FR');
+        $translateProvider.use('fr_FR');
 
         $translateProvider.useCookieStorage();
     }]);

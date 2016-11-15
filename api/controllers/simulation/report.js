@@ -321,10 +321,11 @@ function isReportNeedFilter(report_name) {
 function extractReportOfOneCompany(report, companyId) {
     if (!report || !report.reportData)
         return;
+    var reportData = report.reportData;
     var tempReportData = [];
-    for (var i = 0; i < report.reportData.length; i++) {
-        if (report.reportData[i].companyId === companyId) {
-            tempReportData.push(report.reportData[i]);
+    for (var i = 0; i < reportData.length; i++) {
+        if (reportData[i].companyId === companyId) {
+            tempReportData.push(reportData[i]);
         }
     }
     return tempReportData;

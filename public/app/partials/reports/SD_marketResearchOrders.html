@@ -1,0 +1,45 @@
+<div class='panel panel-success my-success-panel'>
+    <div class="panel-heading">
+        <h3 class="panel-title text-center" popover="{{Label.getContent('Market Research Orders Info')}}" popover-trigger="mouseenter" popover-placement="bottom">
+            {{Label.getContent('Market Research Orders')}}
+        </h3>
+    </div>
+
+
+    <table class="table table-condensed table-bordered table-success">
+        <thead>
+            <tr>
+                <th>
+                    <p>{{Label.getContent('Report')}}</p>
+                </th>
+                <th>
+                    <p class="text-center">{{Label.getContent('Cost')}}({{Label.getContent('$mln')}})</p>
+                </th>
+                <th>
+                    <p class="text-right" ng-show="!isDecisionCommitted">{{Label.getContent('All')}}?
+                        <a href="#" editable-checkbox="buyAll" onbeforesave='checkAll($data)' onaftersave="buyAllReports($data)">
+                            {{ buyAll && Label.getContent('All') || Label.getContent('No') }}
+                        </a>
+                    </p>
+                    <p ng-show="isDecisionCommitted" class="text-right text-muted">{{Label.getContent('All')}}?{{ buyAll && Label.getContent('All') || Label.getContent('No') }}</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='playData in playDatas'>
+                <td>
+                    <p class="padding-20">{{Label.getContent(playData.name)}}</p>
+                </td>
+                <td>
+                    <p class="text-right">{{playData.reportPrice.toFixed(2)}}</p>
+                </td>
+                <td>
+                    <a href="#" editable-checkbox="playData.playerStatus" e-title="{{Label.getContent('Buy this Report')}}?" ng-show="!isDecisionCommitted" onbeforesave='checkBudget(playData.reportPrice,$data)' onaftersave="submitOrder($index,$data)">
+                        <p class="text-right"><span class="glyphicon glyphicon-shopping-cart" ng-show='playData.playerStatus'></span>{{ playData.playerStatus && Label.getContent('Buy') || Label.getContent('No') }}</p>
+                    </a>
+                    <p ng-show="isDecisionCommitted" class="text-right text-muted">{{ playData.playerStatus && Label.getContent('Buy') || Label.getContent('No') }}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
