@@ -15,13 +15,13 @@
                         <a href="" ng-click="showDecisionPage(0, '')">{{'DecisionPageDecisionTabForecast' | translate}}</a>
                     </li>
                     <li class="done">
-                        <a href="" ng-click="showDecisionPage(1,'')">{{'DecisionPageDecisionTabMarketing' | translate}}</a>
+                        <a href="" ng-click="showDecisionPage(1,'showGeneralMarketing')">{{'DecisionPageDecisionTabMarketing' | translate}}</a>
                     </li>
                     <li class="done">
                         <a href="" ng-click="showDecisionPage(2, 'showProductionVolume')">{{'DecisionPageDecisionTabProduction' | translate}}</a>
                     </li>
                     <li class="done">
-                        <a href="" ng-click="showDecisionPage(3, '')">{{'DecisionPageDecisionTabFinance' | translate}}</a>
+                        <a href="" ng-click="showDecisionPage(3, 'showAssetInvestments')">{{'DecisionPageDecisionTabFinance' | translate}}</a>
                     </li>
                     <li class="done">
                         <a href="" ng-click="showDecisionPage(4, 'showMarketResearchOrders')">{{'DecisionPageDecisionTabBI' | translate}}</a>
@@ -35,8 +35,11 @@
 		
 		<div class="col-md-12">
 			<div class="bs-docs-section" style="padding:40px 0 0">
+				<production-management ng-show='ProductionManagement' is-page-shown='ProductionManagement' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' is-decision-committed='isDecisionCommitted'></production-management>
+				<general-marketing ng-show='GeneralMarketing' is-page-shown='GeneralMarketing' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' products='data.currentCompany.decision.products' products-refs='data.currentCompany.productsRefs' markets='data.currentCompany.decision.markets' markets-refs='data.currentCompany.marketsRefs' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></general-marketing>
 				<production-volume ng-show='ProductionVolume' is-page-shown='ProductionVolume' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' products='data.currentCompany.decision.products' products-refs='data.currentCompany.productsRefs' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='data.isDecisionLocked'></production-volume>
 				<market-research-orders ng-show='MarketResearchOrders' is-page-shown='MarketResearchOrders' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='data.isDecisionLocked'></market-research-orders>                 
+				<asset-investments ng-show='AssetInvestments' is-page-shown='AssetInvestments' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></asset-investments>
 			</div>
 		</div>
 		

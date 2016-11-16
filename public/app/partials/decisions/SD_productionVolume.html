@@ -9,7 +9,8 @@
     	<thead>
     		<tr>
     			<th>{{Label.getContent('Elecssories')}}</th>
-    			<th>
+    			<!--
+				<th>
     				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Pack Format Info')}}" popover-title="{{Label.getContent('Pack Format')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Pack Format')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
     			</th>
     			<th>
@@ -18,6 +19,8 @@
     			<th>
     				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Design Level Info')}}" popover-title="{{Label.getContent('Design Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Design Level')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
     			</th>
+				-->
+
     			<th>
     				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Raw materials Quality Info')}}" popover-title="{{Label.getContent('Raw materials Quality')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Raw materials Quality')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
     			</th>
@@ -27,6 +30,10 @@
                 <th>
                     <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Channel Preference Info')}}" popover-title="{{Label.getContent('Channel Preference')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Channel Preference')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
                 </th>
+				<th>
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Technology Level Info')}}" popover-title="{{Label.getContent('Technology Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Technology Level')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
+    			</th>
+
     		</tr>
     	</thead>
 
@@ -69,6 +76,7 @@
                         {{ product.channelPreference || 0 }}
                     </p>
                 </td>
+				
     		</tr>
 
     		

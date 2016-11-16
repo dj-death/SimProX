@@ -12,12 +12,15 @@
                 <th>{{'DecisionPageDecisionBIReport' | translate}}</th>
                 <th>{{'DecisionPageDecisionBICost' | translate}}</th>
                 <th>
-                    <p class="text-right" ng-show="!isDecisionLocked" >{{'YES' | translate}} ?
+                    <p class="text-right" ng-show="!isDecisionLocked" >
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        {{'YES' | translate}} ?
                         <a href="#" editable-checkbox="buyAll" onbeforesave='checkAll($data)' onaftersave="buyAllReports($data)">
                             {{ buyAll && ('ALL' | translate) || ('NO' | translate) }}
                         </a>
                     </p>
                     <p ng-show="isDecisionLocked" class="text-right text-muted">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
                         {{'ALL' | translate}} ? {{ buyAll && ('ALL' | translate) || ('NO' | translate) }}
                     </p>
                 </th>
@@ -29,15 +32,7 @@
                 <td>{{playData.name}}</td>
                 <td>{{playData.reportPrice.toFixed(2)}}</td>
                 <td>
-                    <a href="#" editable-checkbox="playData.playerStatus" e-title="{{'BUY' | translate}} ?" ng-show="!isDecisionLocked" onbeforesave='checkBudget(playData.reportPrice,$data)' onaftersave="submitOrder($index,$data)">
-                        <p class="text-right">
-                            <span class="glyphicon glyphicon-shopping-cart" ng-show='playData.playerStatus'></span>
-                            {{ playData.playerStatus && ('BUY' | translate) || ('NO' | translate) }}
-                        </p>
-                    </a>
-                    <p ng-show="isDecisionLocked" class="text-right text-muted">
-                        {{ playData.playerStatus && ('BUY' | translate) || ('NO' | translate) }}
-                   </p>
+                    <input type="checkbox" class="editable-has-buttons editable-input ng-pristine ng-valid" ng-model="playData.playerStatus" ng-disabled="isDecisionLocked" onbeforesave='checkBudget(playData.reportPrice,$data)' onaftersave="submitOrder($index,$data)" />
                 </td>
             </tr>
         </tbody>
