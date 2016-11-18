@@ -7,7 +7,7 @@
                 currentuser : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/websitecomponent/adminheader.html',
+            templateUrl: '/app/partials/website/adminheader.html',
             link: function (scope, element, attrs) {
                 scope.changeLanguage = function (langKey) {
                     $translate.use(langKey);

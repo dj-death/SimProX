@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-	angular.module('marksimos.websitecomponent').directive('userHeader', ['$window', '$translate', 'Student', function ($window, $translate, Student){
+	angular.module('marksimos.websitecomponent').directive('userHeader', ['$window', '$translate', 'Student', 'Label', function ($window, $translate, Student, Label){
         return {
             scope: {
                 showmenu     : '=',
@@ -15,9 +15,11 @@
                 currentRound : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/websitecomponent/userheader.html',
+            templateUrl: '/app/partials/website/userheader.html',
             link: function (scope, element, attrs) {
 
+                scope.Label = Label;
+                
                 scope.clickMenu = function(currentmenu){
                     scope.currentMenu = currentmenu;
                 };

@@ -1721,6 +1721,7 @@ body{
             font-family: $font_main_header2;
             margin:25px 0 5px 0;
         }
+
         h6{
             color: $color_main_body_decision_subtitle;
             font-family: $font_main_header2;
@@ -1745,26 +1746,38 @@ body{
             }
         }
 
-        .table > thead > tr > th {
+        .table th {
             font-weight: bold;
             color: $color_main_body_user_chart_leftmenu_title;
 			background-color: $color_table_header_background;
             vertical-align: middle;
+            
             a {
                 font-weight: bold;
                 color: $color_main_body_user_chart_leftmenu_title;
             }
         }
 
-        .table > thead > tr > td,
-        .table > tbody > tr > td,
-        .table > tfoot > tr > td {
+        .table td {
             vertical-align: middle;
             /*border-top: 0px none $color_white;*/
             font-family: $font_main_header2;
             font-size: 12px;
             color:$color_main_body_company;
             position: relative;
+
+            input.form-control {
+                border: none;
+                text-align: center;
+            }
+
+            input[type=checkbox], input[type=radio] {
+                height: 20px;
+            }
+
+            p {
+                margin: 0px;
+            }
         }
 
         .table .tdgroup{

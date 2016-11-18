@@ -3,7 +3,7 @@
 
 
 
-    angular.module('marksimos.b2ccomponent', ['marksimos.templates', 'pascalprecht.translate', 'b2c.translation', 'mgcrea.ngStrap']);
+    angular.module('marksimos.b2ccomponent', ['marksimos.services', 'pascalprecht.translate', 'b2c.translation', 'mgcrea.ngStrap']);
 
     // base decorator required for other decorators(except `watchItemsDecorator`).
     angular.module('marksimos.b2ccomponent').provider('profileFormScopeBaseDecorator', function() {
@@ -153,7 +153,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofilebasicinfoform.html',
+            templateUrl: '/app/partials/b2c/b2cprofilebasicinfoform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope, ['firstName', 'gender', 'birthday', 'currentLocation', 'qq']);
             }
@@ -167,7 +167,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofileeducationform.html',
+            templateUrl: '/app/partials/b2c/b2cprofileeducationform.html',
             link: function(scope, elem, attrs, ctrl) {
                 var key = 'eductionBackgrounds';
 
@@ -209,7 +209,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofileneweducationform.html',
+            templateUrl: '/app/partials/b2c/b2cprofileneweducationform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope);
 
@@ -245,7 +245,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofilelanguageform.html',
+            templateUrl: '/app/partials/b2c/b2cprofilelanguageform.html',
             link: function(scope, elem, attrs, ctrl) {
                 var itemsKey = 'LanguageSkills';
 
@@ -265,7 +265,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofilenewlanguageform.html',
+            templateUrl: '/app/partials/b2c/b2cprofilenewlanguageform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope);
 
@@ -285,7 +285,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofileworkexperienceform.html',
+            templateUrl: '/app/partials/b2c/b2cprofileworkexperienceform.html',
             link: function(scope, elem, attrs, ctrl) {
                 var itemsKey = 'workExperiences';
 
@@ -314,7 +314,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofilenewworkexperienceform.html',
+            templateUrl: '/app/partials/b2c/b2cprofilenewworkexperienceform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope);
 
@@ -339,7 +339,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofilesocietyexperienceform.html',
+            templateUrl: '/app/partials/b2c/b2cprofilesocietyexperienceform.html',
             link: function(scope, elem, attrs, ctrl) {
                 var key = 'societyExperiences';
 
@@ -361,7 +361,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofilenewsocietyexperienceform.html',
+            templateUrl: '/app/partials/b2c/b2cprofilenewsocietyexperienceform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope);
 
@@ -379,7 +379,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofilechangepasswordform.html',
+            templateUrl: '/app/partials/b2c/b2cprofilechangepasswordform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope);
             }
@@ -395,7 +395,7 @@
                 getPhoneVerifyCode: '&',
                 sendPhoneVerifyCode: '&'
             },
-            templateUrl: 'b2cprofilemobilephoneform.html',
+            templateUrl: '/app/partials/b2c/b2cprofilemobilephoneform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope, ['mobilePhone'], updateErrorHandler);
 
@@ -473,7 +473,7 @@
                 removeStudentToTeam: '&',
                 addStudentToTeam: '&'
             },
-            templateUrl: 'b2cprofileteamform.html',
+            templateUrl: '/app/partials/b2c/b2cprofileteamform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope, ['team.name']);
 
@@ -520,7 +520,7 @@
                 currentUser: '=',
                 update: '&'
             },
-            templateUrl: 'b2cprofiletitleform.html',
+            templateUrl: '/app/partials/b2c/b2cprofiletitleform.html',
             link: function(scope, elem, attrs, ctrl) {
                 profileFormScopeBaseDecorator(scope, ['gameMarksimosPosition']);
             }

@@ -8,7 +8,7 @@
                 currentuser   : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/websitecomponent/b2cheader.html',
+            templateUrl: '/app/partials/website/b2cheader.html',
 
             link: function (scope, element, attrs) {
 

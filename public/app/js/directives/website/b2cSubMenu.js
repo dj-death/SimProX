@@ -4,7 +4,7 @@
 	angular.module('marksimos.websitecomponent').directive('b2cSubMenu', ['$location' , function ($location){
         return {
             restrict   : 'AE',
-            templateUrl: '/app/partials/websitecomponent/b2csubmenu.html',
+            templateUrl: '/app/partials/website/b2csubmenu.html',
             link       : function (scope, element, attrs) {
                 scope.menu = [
                     {

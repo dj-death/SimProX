@@ -39,29 +39,23 @@
 						    	return '**NotFound**';
 						    }
 							
-						case 'CHN':
+						case 'FR':
 						    item = _.find(self.labelBase, function(singleItem){ return singleItem.id == value})
 						    if(item){ 
-								return item.CHN;
+								return item.FR;
 							}else {
 								return '**NotFound**'
 							};
 							
-						case 'RUS':
-						    item = _.find(self.labelBase, function(singleItem){ return singleItem.id == value})
-						    if(item){ 
-								return item.RUS;
-							}else{
-								return '**NotFound**'
-							};	
-							
 						default:
-							return '**NotFound**'		
+							return value;		
 					}
 				},
+
 				changeLanguage : function(value){
 					self.currentLanguage = value;
 				},
+
 				getCurrentLanguage : function() {
 					return self.currentLanguage;
 				}			

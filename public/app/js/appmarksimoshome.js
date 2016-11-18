@@ -9,6 +9,16 @@
     /********************  Create New Module For Controllers ********************/
     angular.module('marksimos', ['ui.bootstrap', 'pascalprecht.translate', 'angularCharts', 'nvd3ChartDirectives', 'cgNotify', 'marksimos.services', 'marksimos.config', 'marksimos.commoncomponent', 'marksimos.websitecomponent', 'marksimos.model', 'marksimos.socketmodel', 'marksimos.filter', 'marksimos.translation', 'ngAnimate']);
 
+    var $html = angular.element(document.getElementsByTagName('html')[0]);
+
+    // hey Angular, we're bootstrapping manually!
+
+    angular.element().ready(function() {
+        $html.addClass('ng-app');
+
+        angular.bootstrap($html, ['marksimos']);
+    });
+
 
 
     /********************  Use This Module To Set New Controllers  ********************/
@@ -318,6 +328,9 @@
         };
 
 
+        // decision page
+        $scope.ProductionManagement = true;
+
 
 
 
@@ -531,9 +544,16 @@
                 Socket.socket.on('marksimosChatMessageSeminarUpdate', function(data){
                     $scope.data.seminarMessages.push(data);
                 });
+
                 Socket.socket.on('marksimosChatMessageCompanyUpdate', function(data){
                     $scope.data.companyMessages.push(data);
                 });
+
+                var $body = angular.element(document.getElementsByTagName('body')[0]);
+                var $loader = angular.element(document.getElementById('pageloader'));
+
+                $body.removeClass('loading-home');
+                $loader.remove();
 
             },
 
@@ -962,6 +982,7 @@
                     data.marketsRefs = ["Euro", "Nafta", "Internet"];
                     data.productsRefs = ["Produit 1", "Produit 2", "Produit 3"];
                     data.futuresRefs = ['Spot', '3 Mois', '6 Mois'];
+                    data.machinesRefs = ["Machine Type 1", "Machine Type 2", "Machine Type 3"];
 
                     $scope.data.currentCompany = data;
 
@@ -1570,31 +1591,25 @@
 
         var switching = function(type) {
             // reset
-            $scope.ProductPortfolioManagement = $scope.BMListPrices = $scope.NegotiationAgreements = $scope.ProductionVolume = $scope.GeneralMarketing = $scope.OnlineStoreManagement = $scope.AssetInvestments = $scope.MarketResearchOrders = $scope.isNegotiation = false;
+            $scope.ProductionManagement = $scope.ProductionVolume = $scope.GeneralMarketing = $scope.AssetInvestments = $scope.MarketResearchOrders = false;
             
             switch (type) {
-                case 'showProductPortfolioManagement':
-                    $scope.ProductPortfolioManagement = true;
-                    break;
-                case 'showBMListPrices':
-                    $scope.BMListPrices = true;
-                    break;
-                case 'showNegotiationAgreements':
-                    $scope.NegotiationAgreements = true;
-                    $scope.isNegotiation = true;
-                    break;
                 case 'showProductionVolume':
                     $scope.ProductionVolume = true;
                     break;
+
+                case 'showProductionManagement':
+                    $scope.ProductionManagement = true;
+                    break;
+
                 case 'showGeneralMarketing':
                     $scope.GeneralMarketing = true;
                     break;
-                case 'showOnlineStoreManagement':
-                    $scope.OnlineStoreManagement = true;
-                    break;
+
                 case 'showAssetInvestments':
                     $scope.AssetInvestments = true;
                     break;
+
                 case 'showMarketResearchOrders':
                     $scope.MarketResearchOrders = true;
                     break;

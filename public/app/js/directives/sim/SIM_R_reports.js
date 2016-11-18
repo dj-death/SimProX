@@ -7,7 +7,7 @@
                 data : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportcompanystatussku.html'
+            templateUrl: '/app/partials/sim/reports/tablereportcompanystatussku.html'
         };
     });
 
@@ -18,7 +18,7 @@
                 data : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportcompanystatusbrand.html'
+            templateUrl: '/app/partials/sim/reports/tablereportcompanystatusbrand.html'
         };
     });
 
@@ -29,7 +29,7 @@
                 data : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportcompanystatusglobal.html'
+            templateUrl: '/app/partials/sim/reports/tablereportcompanystatusglobal.html'
         };
     });
 
@@ -40,7 +40,7 @@
                 data : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportfinancialreportbrand.html'
+            templateUrl: '/app/partials/sim/reports/tablereportfinancialreportbrand.html'
         };
     });
 
@@ -51,7 +51,7 @@
                 data : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportfinancialreportallbrand.html'
+            templateUrl: '/app/partials/sim/reports/tablereportfinancialreportallbrand.html'
         };
     });
 
@@ -62,7 +62,7 @@
                 data : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportprofitabilityevolutionsku.html'
+            templateUrl: '/app/partials/sim/reports/tablereportprofitabilityevolutionsku.html'
         };
     });
 
@@ -73,7 +73,7 @@
                 data : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportprofitabilityevolutionbrand.html'
+            templateUrl: '/app/partials/sim/reports/tablereportprofitabilityevolutionbrand.html'
         };
     });
 
@@ -84,7 +84,7 @@
                 data : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportprofitabilityevolutionglobal.html'
+            templateUrl: '/app/partials/sim/reports/tablereportprofitabilityevolutionglobal.html'
         };
     });
 
@@ -98,7 +98,7 @@
                 chartconfig : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportcompetitorintelligence.html',
+            templateUrl: '/app/partials/sim/reports/tablereportcompetitorintelligence.html',
             link: function (scope, element, attrs) {
 
                 scope.plus = 1;
@@ -127,7 +127,7 @@
                 showAllSegments : '=allsegments'
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportsegmentdistribution.html',
+            templateUrl: '/app/partials/sim/reports/tablereportsegmentdistribution.html',
             link: function (scope, element, attrs) {
 
                 scope.plus = 1;
@@ -159,7 +159,7 @@
                 chartconfig : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportmarkettrendssku.html',
+            templateUrl: '/app/partials/sim/reports/tablereportmarkettrendssku.html',
             link: function (scope, element, attrs) {
 
                 scope.plus = 1;
@@ -183,7 +183,7 @@
                 chartconfig : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportmarkettrendsbrand.html',
+            templateUrl: '/app/partials/sim/reports/tablereportmarkettrendsbrand.html',
             link: function (scope, element, attrs) {
 
                 scope.plus = 1;
@@ -206,7 +206,7 @@
                 chartconfig : '='
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportmarkettrendsglobal.html',
+            templateUrl: '/app/partials/sim/reports/tablereportmarkettrendsglobal.html',
             link: function (scope, element, attrs) {
 
                 scope.plus = 1;
@@ -228,7 +228,7 @@
                 unit : '@'
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/reports/tablereportmarketindicator.html',
+            templateUrl: '/app/partials/sim/reports/tablereportmarketindicator.html',
             link: function (scope, element, attrs) {
 
                 if(angular.isUndefined(scope.unit)) {
@@ -248,7 +248,7 @@
             },
 
             restrict: 'AEC',
-            templateUrl: '/app/partials/reports/tablereportfinalscore.html',
+            templateUrl: '/app/partials/sim/reports/tablereportfinalscore.html',
             link: function(scope, element, attrs) {
 
                 if (scope.data && scope.data.length) {

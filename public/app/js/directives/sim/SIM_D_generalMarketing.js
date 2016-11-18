@@ -21,7 +21,7 @@
                 },
 
                 restrict: 'E',
-                templateUrl: '/app/partials/decisions/SD_generalMarketing.html',
+                templateUrl: '/app/partials/sim/decisions/SD_generalMarketing.html',
                 link: function(scope, element, attrs) {
 
                     var initializePage = function() {

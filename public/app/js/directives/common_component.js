@@ -14,7 +14,7 @@
 
 
     /********************  Create New Module For Directive ********************/
-    angular.module('marksimos.commoncomponent', ['marksimos.templates', 'pascalprecht.translate']);
+    angular.module('marksimos.commoncomponent', ['pascalprecht.translate', 'marksimos.services']);
 
 
     /********************  Use This Module To Set New Controllers  ********************/
@@ -377,29 +377,6 @@
         };
     }]);
 	
-	/*angular.module('marksimos.commoncomponent').directive('playerProductionManagement', function() {
-            return {
-                scope: {
-                    isPageShown: '=',
-                    isPageLoading: '=',
-                    selectedPlayer: '=',
-                    selectedPeriod: '=',
-
-                    //isPortfolioDecisionCommitted: '=',
-                    //isContractDeal: '=',
-                    //isContractFinalized: '=',
-                    isDecisionCommitted: '='
-                },
-
-                restrict: 'E',
-                templateUrl: '/app/js/commoncomponent/PD_productionManagement.html',
-
-                link: function(scope, element, attrs) {
-					
-                }
-            }
-        }
-    );*/
 
 
 

@@ -6,22 +6,25 @@
             scope : {
                 isPageShown : '=',
                 isPageLoading : '=',
+                
                 selectedPlayer: '=',
                 selectedPeriod: '=',
-                isPortfolioDecisionCommitted:'=',
-                isContractDeal:'=',
-                isContractFinalized:'=',
-                isDecisionCommitted:'='
+                decision: '=',
+                machinesRefs: '=',
+
+                isDecisionLocked:'='
             },
 
             restrict : 'E',
-            templateUrl : '/app/partials/decisions/SD_assetInvestments.html',            
+            templateUrl : '/app/partials/sim/decisions/SD_assetInvestments.html',
+
             link : function(scope, element, attrs){                   
 
                 var initializePage = function(){
                     console.log('initializePage some small...');                    
                     scope.isPageLoading = true;
-                    scope.isResultShown = false;                    
+                    scope.isResultShown = false;
+
                     scope.Label = Label;
 
                     scope.currentPeriod = scope.selectedPeriod;

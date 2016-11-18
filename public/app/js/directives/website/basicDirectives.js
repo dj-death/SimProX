@@ -310,7 +310,7 @@
                 selectfitler : '@'
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/websitecomponent/mutiselect.html',
+            templateUrl: '/app/partials/website/mutiselect.html',
             link: function (scope, element, attrs) {
 
                 scope.selectLevel2 = function (level2) {

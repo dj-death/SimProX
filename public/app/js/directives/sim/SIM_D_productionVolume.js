@@ -18,7 +18,7 @@
 				isDecisionLocked:'='
             },
             restrict : 'E',
-            templateUrl : '/app/partials/decisions/SD_productionVolume.html',
+            templateUrl : '/app/partials/sim/decisions/SD_productionVolume.html',
 
             link : function(scope, element, attrs){                   
 

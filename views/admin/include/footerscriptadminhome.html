@@ -52,19 +52,33 @@
 <% if(settings.env == "production"){ %>
 <script src="/app/dist/app.min.js"></script>
 <% } else{ %>
+<script src="/app/js/utils/labelBase.js"></script>
+
 <script src="/app/js/directivetemplates.js"></script>
 <script src="/app/js/translationb2c.js"></script>
 <script src="/app/js/translationmarksimos.js"></script>
 <script src="/app/js/model.js"></script>
+<script src="/app/js/services.js"></script>
 <script src="/app/js/socketmodel.js"></script>
 <script src="/app/js/filter.js"></script>
 <script src="/app/js/config.js"></script>
-<script src="/app/js/commoncomponent.js"></script>
-<script src="/app/js/websitecomponent.js"></script>
-<script src="/app/js/b2ccomponent/b2ccomponent.js"></script>
-<script src="/app/js/appadmin.js"></script>
-<% } %>
 
+<script src="/app/js/directives/common_component.js"></script>
+
+<script src="/app/js/directives/b2c_component.js"></script>
+
+
+<script src="/app/js/directives/website_component.js"></script>
+<script src="/app/js/directives/website/basicDirectives.js"></script>
+<script src="/app/js/directives/website/chatWindow.js"></script>
+<script src="/app/js/directives/website/b2cSubMenu.js"></script>
+<script src="/app/js/directives/website/b2cHeader.js"></script>
+<script src="/app/js/directives/website/menuAdmin.js"></script>
+<script src="/app/js/directives/website/headerAdmin.js"></script>
+
+<script src="/app/js/appadmin.js"></script>
+
+<% } %>
 
 </body>
 </html>

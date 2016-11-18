@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-	angular.module('marksimos.websitecomponent').directive('productPortfolioManagement', ['Label', '$http', '$location', '$filter', '$q',
+	angular.module('marksimos.websitecomponent').directive('productionManagement', ['Label', '$http', '$location', '$filter', '$q',
         function(Label, $http, $location, $filter, $q) {
             return {
                 scope: {
@@ -12,10 +12,11 @@
                     isPortfolioDecisionCommitted: '=',
                     isContractDeal: '=',
                     isContractFinalized: '=',
-                    isDecisionCommitted: '='
+                    isDecisionCommitted: '=',
+                    isDecisionLocked: '='
                 },
                 restrict: 'E',
-                templateUrl: '/app/partials/decisions/SD_productPortfolioManagement.html',
+                templateUrl: '/app/partials/sim/decisions/SD_productionManagement.html',
 
                 link: function(scope, element, attrs) {
 

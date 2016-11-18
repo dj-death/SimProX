@@ -1,11 +1,7 @@
 <% include ./include/headcssuser.html %>
 
 
-<body ng-app="marksimos">
-
-
-
-
+<body class="loading-home">
 
 <div class="container-fluid width_big_screen" prevent-backspace-navigate-back ng-class="{'dragging':css.dragReportFlag}" ng-controller="chartController">
 
@@ -2239,6 +2235,36 @@
 
 </div>
 
+<div class="watpl-container" id="pageloader" ng-class="pageLoader">	    	
+	<div class="container-fluid">
+		<div class='loader' style="margin:150px auto;">
+			<p id="loading-module-name" class="loading-module-name text-center">
+				<span id="loading-percentage" style="color:white;font-size:20px"></span>
+			</p>
+			
+		</div>
+		<!--<p id="loading-module-name" class="loading-module-name"></p>-->
+	</div>
+</div>
 
+<script>
+	var percent = 0,
+		count = 0;
+		
+	var loadingPercentage = document.getElementById('loading-percentage');
+	
+	updateModuleProgress = function() {
+		percent += 10;
+		
+		if (percent >= 100) {
+			percent = 100;
+		}
+		
+		loadingPercentage.innerHTML = percent.toFixed(0)+'%';
+	};
+	
+	setInterval(updateModuleProgress, 500);
 
+</script>
+		
 <% include ./include/footerscriptuser.html %>

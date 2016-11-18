@@ -10,7 +10,7 @@
                 changemenu : '&'
             },
             restrict: 'AE',
-            templateUrl: '/app/partials/websitecomponent/adminmenu.html',
+            templateUrl: '/app/partials/website/adminmenu.html',
             link : function(scope, element){
 
                 scope.css = {

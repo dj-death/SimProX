@@ -16,7 +16,7 @@
 			},
 			
 			restrict: 'E',
-			templateUrl: '/app/partials/decisions/SD_marketResearchOrders.html',
+			templateUrl: '/app/partials/sim/decisions/SD_marketResearchOrders.html',
 			
 			link: function(scope, element, attrs) {
 

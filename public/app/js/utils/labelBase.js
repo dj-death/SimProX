@@ -1311,6 +1311,12 @@ var getLabelBase = function(){
 		{id:'Market Evolution',  ENG:'Market Evolution', FR: 'Market Evolution'},	
 		{id:'KPIs',  ENG:'KPIs', FR: 'KPIs'},	
 		{id:'Modem Retailers',  ENG:'Modem Retailers', FR: 'Modem Retailers'},	
-		{id:'Impact of eMall on Retailers',  ENG:'Impact of eMall on Retailers', FR: 'Impact of eMall on Retailers'}
+		{id:'Impact of eMall on Retailers',  ENG:'Impact of eMall on Retailers', FR: 'Impact of eMall on Retailers'},
+
+		{id:'Machines',  ENG:'Machines', FR: 'Machines'},
+		{id:'Machine Type',  ENG:'Machine Type', FR: 'Type de Machine'},
+		{id:'Buy Machines',  ENG:'Buy Machines', FR: 'Aquisitions de Machines'},
+		{id:'Sell Machines',  ENG:'Sell Machines', FR: 'Cessions de Machines'}
+
 	]
 }

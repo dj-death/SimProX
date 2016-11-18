@@ -15,7 +15,7 @@
                 sendDictionaryMessage: '&',
                 hideChatHeader: '='
             },
-            templateUrl: '/app/partials/websitecomponent/chatwindow.html',
+            templateUrl: '/app/partials/website/chatwindow.html',
             link: function(scope, elem, attrs, ctrl) {
                 scope.data = {
                     seminarInput: null,
