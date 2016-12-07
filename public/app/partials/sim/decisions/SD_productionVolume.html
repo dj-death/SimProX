@@ -5,81 +5,26 @@
         </h3>
     </div>
 
-    <table class="table table-condensed table-bordered table-success">
+	<table class="table table-condensed table-bordered table-success">
     	<thead>
-    		<tr>
-    			<th>{{Label.getContent('Elecssories')}}</th>
-    			<!--
-				<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Pack Format Info')}}" popover-title="{{Label.getContent('Pack Format')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Pack Format')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-    			</th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Technology Level Info')}}" popover-title="{{Label.getContent('Technology Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Technology Level')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-    			</th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Design Level Info')}}" popover-title="{{Label.getContent('Design Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Design Level')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-    			</th>
-				-->
-
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Raw materials Quality Info')}}" popover-title="{{Label.getContent('Raw materials Quality')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Raw materials Quality')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-    			</th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Production Volume Info')}}" popover-title="{{Label.getContent('Production Volume')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Production Volume')}} ({{Label.getContent('units mln')}})<span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-    			</th>
-                <th>
-                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Channel Preference Info')}}" popover-title="{{Label.getContent('Channel Preference')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Channel Preference')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-                </th>
-				<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Technology Level Info')}}" popover-title="{{Label.getContent('Technology Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Technology Level')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-    			</th>
-
-    		</tr>
+            <tr>
+                <th class="category-header">{{Label.getContent('Markets')}}</th>
+                <th ng-repeat="product in products" class="text-center" width="200">{{productsRefs[$index]}}</th>
+            </tr>
     	</thead>
 
-    	<tbody>
-    		<tr ng-repeat='product in products'>
-    			<td>
-    				{{productsRefs[$index]}}
-				</td>
+        <tbody>
+            <tr ng-repeat="market in markets">
+                <th>{{marketsRefs[$index]}}</th>
 
-    			<td>
-    				<p class="text-right text-muted">{{selectPacks('Elecssories',product.parentBrandName,product.varName)}}</p>
-    			</td>
-
-    			<td>
-    				<p class="text-right text-muted">{{ product.composition[1] || 0 }}</p>
-    			</td>
-
-    			<td>
-					<p class="text-right text-muted">{{ product.composition[0] || 0 }}</p>
-    			</td>
-
-    			<td>
-    				<p class="text-right text-muted">{{ product.composition[2] || 0 }}</p>
-    			</td>
-
-    			<td>
-    				<a href="#" editable-text="product.production" onbeforesave="checkProduction('Elecssories',product.parentBrandName,product.varName,'production','0',$index,$data)" ng-show='!isDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',product.parentBrandName,product.varName,'production','0',$index,$data)">
-    					<p class="text-right">{{ product.production || 0 }}</p>
-    				</a>
-                    <p ng-show='isDecisionCommitted' class="text-right text-muted">
-                        {{ product.production || 0 }}
-                    </p>
-    			</td>
-
-                <td>
-                    <a href="#" editable-text="product.channelPreference" onbeforesave="checkchannelPreference($data)" ng-show='!isDecisionCommitted&&!product.isMadeForOnlineBeforeNego' onaftersave="updateProducerDecision('Elecssories',product.parentBrandName,product.varName,'channelPreference','0',$index,$data)">
-                        <p class="text-right">{{ product.channelPreference || 0 }}</p>
-                    </a>
-                    <p ng-show='isDecisionCommitted||product.isMadeForOnlineBeforeNego' class="text-right text-muted">
-                        {{ product.channelPreference || 0 }}
-                    </p>
+                <td ng-repeat="subMarket in market.products">
+                    <input type="number" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" ng-model="subMarket.deliveredQ" onbeforesave="checkData('Elecssories',brande.brandName,'advertisingOffLine','0',$index,$data)" onaftersave="updateProducerDecision('Elecssories',brande.brandName,'advertisingOffLine','0',$index)"/>
                 </td>
-				
-    		</tr>
-
-    		
-    	</tbody>
+            </tr>
+            
+        </tbody>
     </table>
+
 </div>
+
+<div style="clear:both"></div>

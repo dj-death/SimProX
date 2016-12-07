@@ -1,205 +1,127 @@
 <div class='panel panel-success my-success-panel'>
 	<div class="panel-heading">
-        <h3 class="panel-title text-center" popover="{{Label.getContent('Product Portfolio Management Info')}}" popover-trigger="mouseenter" popover-placement="bottom">
-            {{Label.getContent('Product Portfolio Management')}} <a ng-show='isResultShown' ng-click="openProductModal()" ng-disabled="isPortfolioDecisionCommitted" class="btn btn-default">{{Label.getContent('New Product')}}</a>
+        <h3 class="panel-title text-center" popover="{{Label.getContent('Quality Info')}}" popover-trigger="mouseenter" popover-placement="bottom">
+            {{Label.getContent('Quality')}}
         </h3>
     </div>
 
     <table class="table table-condensed table-bordered table-success">
     	<thead>
     		<tr>
-    			<th style="width:125px">
-                    <p>{{Label.getContent('Elecssories')}}</p>
-                </th>
+    			<th class="category-header" style="width:125px">{{Label.getContent('Products')}}</th>
+
     			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Pack Format Info')}}" popover-title="{{Label.getContent('Pack Format')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Pack Format')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Assembly Time Info')}}" popover-title="{{Label.getContent('Assembly Time')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Assembly Time')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
     			</th>
+
     			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Technology Level Info')}}" popover-title="{{Label.getContent('Technology Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Technology Level')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Premium Material Prop Info')}}" popover-title="{{Label.getContent('Premium Material Prop')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Premium Material Prop')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
     			</th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Design Level Info')}}" popover-title="{{Label.getContent('Design Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Design Level')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
+
+				<th>
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Development Budget Info')}}" popover-title="{{Label.getContent('Development Budget')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Development Budget')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
     			</th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Raw materials Quality Info')}}" popover-title="{{Label.getContent('Raw materials Quality')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Raw materials Quality')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
+				
+				<th>
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Implement Improvements Info')}}" popover-title="{{Label.getContent('Implement Improvements')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Implement Improvements')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
     			</th>
-                <th>
-                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('B&M List Prices Pop Info')}}" popover-title="{{Label.getContent('B&M List Prices')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('B&M List Prices')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-                </th>
-                <th>
-                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Discontinue this product Info')}}" popover-title="{{Label.getContent('Discontinue this product')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Discontinue this product')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
-                </th>
-                <th>
-                    <p class="text-primary text-center">{{Label.getContent('Unit Cost')}} ({{Label.getContent('$')}})</p>
-                </th>
-                <th>
-                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Channel Preference Info')}}" popover-title="{{Label.getContent('Channel Preference')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Channel Preference')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-                </th>
+    			
     		</tr>
-    		<tr class="success">
-    			<td colspan="9">
-    				<p>{{Label.getContent('Brand')}}</p>
-    			</td>
-    		</tr>
+
     	</thead>
+
     	<tbody>
-    		<tr class="success" ng-repeat='producte in productes'>
+    		<tr ng-repeat='product in products'>
+    			<th>{{productsRefs[$index]}}</th>
+
     			<td>
-    				<div style="clear:both"></div>
-    				<button type="button" class="btn btn-danger btn-xs pull-right" ng-show="(producte.dateOfBirth==currentPeriod&&(!isPortfolioDecisionCommitted))" ng-click="deleteProduct('Elecssories',producte.parentBrandName,producte.varName)">&times;</button>
-    				<p>{{producte.parentBrandName}}{{producte.varName}}</p>
-                    <div style="clear:both"></div>
-    			</td>
+					<input type="number" ng-model="product.assemblyTime" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+
     			<td>
-    				<a href="#" editable-select="producte.packFormat" e-ng-options="p.value as Label.getContent(p.text) for p in packs" ng-show='(producte.dateOfBirth==currentPeriod&&(!isPortfolioDecisionCommitted))' onaftersave="updateProducerDecision('Elecssories',producte.parentBrandName,producte.varName,'packFormat','0',$index)">
-    					<p class="text-right">{{selectPacks('Elecssories',producte.parentBrandName,producte.varName)}}</p>
-    				</a>
-                    <p class="text-right text-muted" ng-show="producte.dateOfBirth<currentPeriod||isPortfolioDecisionCommitted">{{ selectPacks('Elecssories',producte.parentBrandName,producte.varName) }}</p>
-    			</td>
+    				<input type="number" ng-model="product.premiumMaterialPropertion" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+
+				<td>
+    				<input type="number" ng-model="product.developmentBudget" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+
     			<td>
-    				<a href="#" editable-text="producte.composition[1]" onbeforesave="checkTechnology('Elecssories',producte.parentBrandName,producte.varName,'composition','1',$index,$data)" ng-show='!isPortfolioDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',producte.parentBrandName,producte.varName,'composition','1',$index)">
-    					<p class="text-right">{{ producte.composition[1] || 0 }}</p>
-    				</a>
-                    <p ng-show="isPortfolioDecisionCommitted" class="text-right text-muted">{{ producte.composition[1] || 0 }}</p>
-    			</td>
-    			<td>
-    				<a href="#" editable-text="producte.composition[0]" onbeforesave="checkDesign('Elecssories',producte.parentBrandName,producte.varName,'composition','0',$index,$data)" ng-show='!isPortfolioDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',producte.parentBrandName,producte.varName,'composition','0',$index)">
-    					<p class="text-right">{{ producte.composition[0] || 0 }}</p>
-    				</a>
-                    <p ng-show="isPortfolioDecisionCommitted" class="text-right text-muted">{{ producte.composition[0] || 0 }}</p>
-    			</td>
-    			<td>
-    				<a href="#" editable-text="producte.composition[2]" onbeforesave="checkValue('Elecssories',producte.parentBrandName,producte.varName,'composition','2',$index,$data)" ng-show='!isPortfolioDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',producte.parentBrandName,producte.varName,'composition','2',$index)">
-    					<p class="text-right">{{ producte.composition[2] || 0 }}</p>
-    				</a>
-                    <p ng-show="isPortfolioDecisionCommitted" class="text-right text-muted">{{ producte.composition[2] || 0 }}</p>
-    			</td>
-                <td>
-                    <a href="#" editable-text="producte.currentPriceBM" onbeforesave="checkCurrentBM('Elecssories',producte.parentBrandName,producte.varName,'currentPriceBM','0',$index,$data)" onaftersave="updateProducerDecision('Elecssories',producte.parentBrandName,producte.varName,'currentPriceBM','0',$index)" ng-show='!isPortfolioDecisionCommitted&&producte.channelPreference!=100'>
-                        <p class="text-right">{{ producte.currentPriceBM || 0 }}</p>
-                    </a>
-                    <p class="text-right text-muted" ng-show='isPortfolioDecisionCommitted&&producte.channelPreference!=100'>{{ producte.currentPriceBM || 0 }}</p>
-                    <p class="text-right text-muted" ng-show='producte.channelPreference==100'>-</p>
-                </td>
-                <td>
-                    <a href="#" editable-checkbox="producte.discontinue" e-title="{{Label.getContent('Discontinue this product')}}" ng-show="!isPortfolioDecisionCommitted" onaftersave="updateProducerDecision('Elecssories',producte.parentBrandName,producte.varName,'discontinue','0',$index)">
-                        <p class="text-right">{{ producte.discontinue && Label.getContent('DisContinue') || Label.getContent('Continue') }}</p>
-                    </a>
-                    <p ng-show="isPortfolioDecisionCommitted" class="text-right text-muted">{{ producte.discontinue && Label.getContent('DisContinue') || Label.getContent('Continue') }}</p>
-                </td>
-                <td>
-                    <p class="text-right">{{producte.unitCost}}<p>
-                </td>
-                <td>
-                    <a href="#" editable-text="producte.channelPreference" onbeforesave="checkchannelPreference($data)" ng-show='!isPortfolioDecisionCommitted' onaftersave="updateProducerDecision('Elecssories',producte.parentBrandName,producte.varName,'channelPreference','0',$index)">
-                        <p class="text-right">{{ producte.channelPreference || 0 }}</p>
-                    </a>
-                    <p ng-show='isPortfolioDecisionCommitted' class="text-right text-muted">
-                        {{ producte.channelPreference || 0 }}
-                    </p>
-                </td>
+					<input type="checkbox" ng-model="product.improvementsTakeup" class="form-control input-sm editable-has-buttons editable-input ng-valid" ng-disabled="isDecisionLocked" />
+				</td>
+
     		</tr>
-    		<tr>
-    			<th style="width:125px">
-                    <p>{{Label.getContent('HealthBeauties')}}</p>
-                </th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Pack Format Info')}}" popover-title="{{Label.getContent('Pack Format')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Pack Format')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
-    			</th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Technology Level Info')}}" popover-title="{{Label.getContent('Technology Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Technology Level')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
-    			</th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Active agent Info')}}" popover-title="{{Label.getContent('Active agent')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Active agent')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
-    			</th>
-    			<th>
-    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Smoothener Level Info')}}" popover-title="{{Label.getContent('Smoothener Level')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Smoothener Level')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
-    			</th>
-                <th>
-                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('B&M List Prices Pop Info')}}" popover-title="{{Label.getContent('B&M List Prices')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('B&M List Prices')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-                </th>
-                <th>
-                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Discontinue this product Info')}}" popover-title="{{Label.getContent('Discontinue this product')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Discontinue this product')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
-                </th>
-                <th>
-                    <p class="text-primary text-center">{{Label.getContent('Unit Cost')}} ({{Label.getContent('$')}})</p>
-                </th> 
-                <th>
-                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Channel Preference Info')}}" popover-title="{{Label.getContent('Channel Preference')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Channel Preference')}} <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span></p>
-                </th>               
-    		</tr>
-    		<tr class="danger">
-    			<td colspan="9">
-    				<p>{{Label.getContent('Brand')}}</p>
-    			</td>
-    		</tr>
-    		<tr class="danger" ng-repeat='producth in producths'>
-    			<td>
-    				<div style="clear:both"></div>
-    				<button type="button" class="btn btn-danger btn-xs pull-right" ng-show="(producth.dateOfBirth==currentPeriod&&(!isPortfolioDecisionCommitted))" ng-click="deleteProduct('HealthBeauty',producth.parentBrandName,producth.varName)">&times;</button>
-    				<p>{{producth.parentBrandName}}{{producth.varName}}</p>
-    				<div style="clear:both"></div>
-    			</td>
-    			<td>
-    				<a href="#" editable-select="producth.packFormat" e-ng-options="p.value as Label.getContent(p.text) for p in packs" ng-show='(producth.dateOfBirth==currentPeriod&&(!isPortfolioDecisionCommitted))' onaftersave="updateProducerDecision('HealthBeauty',producth.parentBrandName,producth.varName,'packFormat','0',$index)">
-    					<p class="text-right">{{selectPacks('HealthBeauty',producth.parentBrandName,producth.varName)}}</p>
-    				</a>
-                    <p class="text-right text-muted" ng-show="producth.dateOfBirth<currentPeriod||isPortfolioDecisionCommitted">{{ selectPacks('HealthBeauty',producth.parentBrandName,producth.varName) }}</p>
-    			</td>
-    			<td>
-    				<a href="#" editable-text="producth.composition[1]" onbeforesave="checkTechnology('HealthBeauty',producth.parentBrandName,producth.varName,'composition','1',$index,$data)" ng-show='!isPortfolioDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',producth.parentBrandName,producth.varName,'composition','1',$index)">
-    					<p class="text-right">{{ producth.composition[1] || 0 }}</p>
-    				</a>
-                    <p ng-show="isPortfolioDecisionCommitted" class="text-right text-muted">{{ producth.composition[1] || 0 }}</p>
-    			</td>
-    			<td>
-    				<a href="#" editable-text="producth.composition[0]" onbeforesave="checkValue('HealthBeauty',producth.parentBrandName,producth.varName,'composition','0',$index,$data)" ng-show='!isPortfolioDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',producth.parentBrandName,producth.varName,'composition','0',$index)">
-    					<p class="text-right">{{ producth.composition[0] || 0 }}</p>
-    				</a>
-                    <p ng-show="isPortfolioDecisionCommitted" class="text-right text-muted">{{ producth.composition[0] || 0 }}</p>
-    			</td>
-    			<td>
-    				<a href="#" editable-text="producth.composition[2]" onbeforesave="checkValue('HealthBeauty',producth.parentBrandName,producth.varName,'composition','2',$index,$data)" ng-show='!isPortfolioDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',producth.parentBrandName,producth.varName,'composition','2',$index)">
-    					<p class="text-right">{{ producth.composition[2] || 0 }}</p>
-    				</a>
-                    <p ng-show="isPortfolioDecisionCommitted" class="text-right text-muted">{{ producth.composition[2] || 0 }}</p>
-    			</td>
-                <td>
-                    <a href="#" editable-text="producth.currentPriceBM" onbeforesave="checkCurrentBM('HealthBeauty',producth.parentBrandName,producth.varName,'currentPriceBM','0',$index,$data)" onaftersave="updateProducerDecision('HealthBeauty',producth.parentBrandName,producth.varName,'currentPriceBM','0',$index)" ng-show='!isPortfolioDecisionCommitted&&producth.channelPreference!=100'>
-                        <p class="text-right">{{ producth.currentPriceBM || 0 }}</p>         
-                    </a>
-                    <p class="text-right text-muted" ng-show='isPortfolioDecisionCommitted&&producth.channelPreference!=100'>{{ producth.currentPriceBM || 0 }}</p>
-                    <p class="text-right text-muted" ng-show='producth.channelPreference==100'>-</p>
-                </td>
-                <td>
-                    <a href="#" editable-checkbox="producth.discontinue" e-title="{{Label.getContent('Discontinue this product')}}" ng-show="!isPortfolioDecisionCommitted" onaftersave="updateProducerDecision('HealthBeauty',producth.parentBrandName,producth.varName,'discontinue','0',$index)">
-                        <p class="text-right">{{ producth.discontinue && Label.getContent('DisContinue') || Label.getContent('Continue') }}</p>
-                    </a>
-                    <p ng-show="isPortfolioDecisionCommitted" class="text-right text-muted">{{ producth.discontinue && Label.getContent('DisContinue') || Label.getContent('Continue') }}</p>
-                </td>
-                <td>
-                    <p class="text-right">{{producth.unitCost}}<p>
-                </td>
-                <td>
-                    <a href="#" editable-text="producth.channelPreference" onbeforesave="checkchannelPreference($data)" ng-show='!isPortfolioDecisionCommitted' onaftersave="updateProducerDecision('HealthBeauty',producth.parentBrandName,producth.varName,'channelPreference','0',$index)">
-                        <p class="text-right">{{ producth.channelPreference || 0 }}</p>
-                    </a>
-                    <p class="text-right text-muted" ng-show='isPortfolioDecisionCommitted'>{{ producth.channelPreference || 0 }}</p>
-                </td>                
-    		</tr>
+
     	</tbody>
     </table>
 </div>
-<div ng-show='isResultShown'>
-    <a href="" class="btn btn-primary" ng-disabled="isPortfolioDecisionCommitted" ng-click="isCommitConfirmInfoShown=true;errorInfo=false;" class="btn btn-primary">{{Label.getContent('Commit Portfolio & List Price decision')}}</a>
+
+
+
+
+<div class='panel panel-success my-success-panel'>
+	<div class="panel-heading">
+        <h3 class="panel-title text-center" popover="{{Label.getContent('Subcontracting Info')}}" popover-trigger="mouseenter" popover-placement="bottom">
+            {{Label.getContent('Subcontracting')}}
+        </h3>
+    </div>
+
+    <table class="table table-condensed table-bordered table-success">
+    	<thead>
+    		<tr>
+    			<th></th>
+                <th ng-repeat="product in products" class="text-center" width="200">{{productsRefs[$index]}}</th>
+    		</tr>
+
+    	</thead>
+
+    	<tbody>
+			<tr>
+                <th>
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Subcontracting Units Info')}}" popover-title="{{Label.getContent('Subcontracting Units')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Subcontracting Units')}} <span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span></p>
+    			</th>
+
+                <td ng-repeat="subProduct in subProducts">
+					<input type="number" ng-model="subProduct.subcontractQ" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+                </td>
+
+            </tr>
+    	</tbody>
+    </table>
 </div>
-<div class="alert alert-danger fade in" ng-show="isCommitConfirmInfoShown">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-    <h4 ng-show='!errorInfo'>{{Label.getContent("Warning! Commit confirmation")}}</h4>
-    <h4 ng-show='errorInfo'>{{Label.getContent("Error! set your BM List Price please")}}</h4>
-    <p ng-show='!errorInfo'>{{Label.getContent("Producer portfolio confirm info")}}</p>
-    <p>
-        <button type="button" class="btn btn-danger" ng-click='submitDecision()' ng-disabled='isPortfolioDecisionCommitted'>{{Label.getContent("Take this action")}}</button>
-        <button type="button" ng-click="isCommitConfirmInfoShown=false" class="btn btn-default">{{Label.getContent("Cancel")}}</button>
-    </p>
+
+
+
+
+<div class='panel panel-success my-success-panel'>
+	<div class="panel-heading">
+        <h3 class="panel-title text-center" popover="{{Label.getContent('Purchases Info')}}" popover-trigger="mouseenter" popover-placement="bottom">
+            {{Label.getContent('Purchases')}}
+        </h3>
+    </div>
+
+    <table class="table table-condensed table-bordered table-success">
+		<thead>
+			<tr>
+				<th></th>				
+				<th ng-repeat="future in materials[0].purchases" class="text-center" width="200">{{futuresRefs[$index]}}</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr ng-repeat="material in materials">
+				<th>
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Purchases Units Info')}}" popover-title="{{Label.getContent('Purchases Units')}}" popover-trigger="mouseenter" popover-placement="bottom">{{Label.getContent('Purchases Units')}}
+						<span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span>
+					</p>
+    			</th>
+
+				<td ng-repeat="purchase in material.purchases">
+					<input type="number" ng-model="purchase.quantity" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+			</tr>				
+		</tbody>
+    </table>
 </div>
+
+<div style="clear:both"></div>

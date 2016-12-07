@@ -7,7 +7,6 @@ var Dir = require('node-dir');
 var console = require('../../../kernel/utils/logger');
 var Flat = require('../../utils/Flat');
 var Excel = require('../../utils/ExcelUtils');
-var PlayerDecision = require('../decision/Decision');
 var config = require('../../../config');
 var EngineConfig = config.engine;
 var scenarioSchema = require('./Schema');
@@ -60,35 +59,46 @@ function loadScenario(scenarioID) {
 }
 exports.loadScenario = loadScenario;
 ;
-function loadEmptyScenario() {
+/*
+export function  loadEmptyScenario () {
+
     var deferred = q.defer();
-    scenariosDb.loadDatabase(function (err) {
+
+    scenariosDb.loadDatabase(function  (err) {
         // Now commands will be executed
         if (err) {
             deferred.reject({
                 msg: err
             });
         }
-        scenariosDb.findOne({ ref: "14C2" }, function (err, doc) {
+
+        scenariosDb.findOne({ ref: "14C2" }, function  (err, doc) {
             if (err || !doc || !doc.historiques) {
                 deferred.reject({
                     err: err,
                     msg: 'cannot find matched scenario'
                 });
+
                 return false;
             }
+
             var hist = doc.historiques[doc.historiques.length - 1];
             var decision = PlayerDecision.resetRawDecision(hist);
+
             decision.period = 0;
+
             deferred.resolve({
                 msg: 'success opening empty scenario',
                 historiques: [decision]
             });
+
         });
+
     });
+
     return deferred.promise;
 }
-exports.loadEmptyScenario = loadEmptyScenario;
+*/
 function getScenario(options, res) {
     scenariosDb.loadDatabase(function (err, next) {
         // Now commands will be executed

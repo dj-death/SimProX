@@ -2,6 +2,13 @@
 process.env.JWT_SECRET = 'didi';
 
 
+Number.isInteger = Number.isInteger || function (value) {
+    return typeof value === "number" &&
+        isFinite(value) &&
+        Math.floor(value) === value;
+};
+
+
 import http = require('http');
 import path = require('path');
 
@@ -44,14 +51,10 @@ import logger = require('./utils/logger');
 import config = require('./config');
 
 import routes = require('./routes/index');
-
-import SeminarModel = require('./api/models/seminar/Seminar');
-
 import iSocketio = require('./api/utils/socketio');
 
 let expressValidator = require('express-validator');
 import customValidator = require('./api/utils/express-custom-validator');
-
 
 
 // settings

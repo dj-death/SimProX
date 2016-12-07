@@ -19,6 +19,7 @@
 		this.$get = function(){
 			var self = this, item;
 			var items=new Array();
+
 			return {
 				//configure default languge during angular bootstraping
 				initialiseLanguage: function(value){
@@ -32,11 +33,11 @@
 						    item = _.find(self.labelBase, function(singleItem){ return singleItem.id == value});
 						    if(item){ 
 								return item.ENG;
-							}else{
+							} else {
 						    	//items.push(value);
 						    	//add this for debug
 						    	console.log(value);
-						    	return '**NotFound**';
+						    	return value; //'**NotFound**';
 						    }
 							
 						case 'FR':
@@ -44,7 +45,7 @@
 						    if(item){ 
 								return item.FR;
 							}else {
-								return '**NotFound**'
+								return '**Traduction manquante**'
 							};
 							
 						default:

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-	angular.module('marksimos.websitecomponent').directive('productionManagement', ['Label', '$http', '$location', '$filter', '$q',
+	angular.module('marksimos.websitecomponent').directive('humanResourcesManagement', ['Label', '$http', '$location', '$filter', '$q',
         function(Label, $http, $location, $filter, $q) {
             return {
                 scope: {
@@ -10,14 +10,8 @@
                     selectedPlayer: '=',
                     selectedPeriod: '=',
 
-                    products: '=',
-                    productsRefs: '=',
-
-                    subProducts: '=',
-                    subProductsRefs: '=',
-
-                    materials: '=',
-                    futuresRefs: '=',
+                    decision: '=',
+                    workersRefs: '=',
 
                     isPortfolioDecisionCommitted: '=',
                     isContractDeal: '=',
@@ -27,7 +21,7 @@
                 },
                 
                 restrict: 'E',
-                templateUrl: '/app/partials/sim/decisions/SD_productionManagement.html',
+                templateUrl: '/app/partials/sim/decisions/SD_humanResourcesManagement.html',
 
                 link: function(scope, element, attrs) {
 

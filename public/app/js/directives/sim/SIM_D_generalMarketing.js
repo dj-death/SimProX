@@ -9,10 +9,14 @@
                     isPageLoading: '=',
                     selectedPlayer: '=',
                     selectedPeriod: '=',
+                    
                     products: '=',
                     productsRefs: '=',
                     markets: '=',
                     marketsRefs: '=',
+                    agents: '=',
+                    eCommerces: '=',
+
                     isPortfolioDecisionCommitted:'=',
                     isContractDeal:'=',
                     isContractFinalized:'=',

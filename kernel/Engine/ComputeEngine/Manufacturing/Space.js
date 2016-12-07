@@ -209,6 +209,9 @@ var Space = (function (_super) {
             console.warn("Not valid extension: %d", extension);
             return false;
         }
+        if (!Number.isInteger(extension)) {
+            extension = Math.round(extension);
+        }
         if (!this.peripherySpace) {
             console.debug('unable to extend');
             return false;

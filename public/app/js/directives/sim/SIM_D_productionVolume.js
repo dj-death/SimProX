@@ -7,8 +7,12 @@
             scope : {
                 isPageShown : '=',
                 isPageLoading : '=',
+                
 				products: '=',
-				productsRefs: '=',
+                productsRefs: '=',
+                markets: '=',
+                marketsRefs: '=',
+
                 selectedPlayer: '=',
                 selectedPeriod: '=',
                 isPortfolioDecisionCommitted:'=',

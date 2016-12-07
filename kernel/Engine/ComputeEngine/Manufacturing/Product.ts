@@ -477,6 +477,10 @@ export default class Product extends IObject.IObject {
             return;
         }
 
+        if (!Number.isInteger(quantity)) {
+            quantity = Math.round(quantity);
+        }
+
         var manufacturedNb: number,
             rejectedNb: number,
             availableNb: number,
@@ -598,6 +602,10 @@ export default class Product extends IObject.IObject {
         if (!Utils.isNumericValid(quantity)) {
             console.warn('Delivery Pdt @ Quantity not reel : %d', quantity);
             return 0;
+        }
+
+        if (!Number.isInteger(quantity)) {
+            quantity = Math.round(quantity);
         }
 
         /*var availableQ = this.warehouse.availableQ,

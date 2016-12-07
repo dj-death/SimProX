@@ -141,6 +141,10 @@ export default class SalesForce extends Employee {
             return false;
         }
 
+        if (!Number.isInteger(appointedNb)) {
+            appointedNb = Math.round(appointedNb);
+        }
+
         this.appointedNb = appointedNb;
         this.commissionRate = commissionRate;
         this.supportPerAgent = supportPerAgent < this.params.costs.minSupportPerAgent ? this.params.costs.minSupportPerAgent : supportPerAgent;

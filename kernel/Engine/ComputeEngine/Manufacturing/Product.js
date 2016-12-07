@@ -333,6 +333,9 @@ var Product = (function (_super) {
             console.warn('produc Pdt @Quantity not reel', arguments);
             return;
         }
+        if (!Number.isInteger(quantity)) {
+            quantity = Math.round(quantity);
+        }
         var manufacturedNb, rejectedNb, availableNb, newArgs;
         this.wantedNb += quantity;
         manufacturedNb = this.manufacture.apply(this, arguments);
@@ -410,6 +413,9 @@ var Product = (function (_super) {
         if (!Utils.isNumericValid(quantity)) {
             console.warn('Delivery Pdt @ Quantity not reel : %d', quantity);
             return 0;
+        }
+        if (!Number.isInteger(quantity)) {
+            quantity = Math.round(quantity);
         }
         /*var availableQ = this.warehouse.availableQ,
             diff: number,

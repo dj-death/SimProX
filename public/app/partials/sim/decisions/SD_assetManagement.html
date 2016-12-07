@@ -1,0 +1,120 @@
+<div class='panel panel-success my-success-panel'>
+
+    <div class="panel-heading">
+        <h3 class="panel-title text-center">
+            {{Label.getContent('Asset Investments')}}
+        </h3>
+    </div>
+
+    <table class="table table-condensed table-bordered table-success">
+        <thead>
+            <tr>
+                <th class="col-md-3"></th>
+                <th class="col-md-2">
+                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Capacity Info')}}" popover-title="{{Label.getContent('Increased Capacity')}}" popover-trigger="mouseenter" popover-placement="bottom">
+                        {{Label.getContent('Buy Machines')}}
+                        <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span>
+                    </p>
+                </th>
+                <th class="col-md-2">
+                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Technology Info')}}" popover-title="{{Label.getContent('Technology')}}" popover-trigger="mouseenter" popover-placement="bottom">
+                        {{Label.getContent('Sell Machines')}}
+                        <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span>
+                    </p>
+                </th>
+
+                <th class="col-md-2">
+                    <p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Maintenance Info')}}" popover-title="{{Label.getContent('Maintenance')}}" popover-trigger="mouseenter" popover-placement="bottom">
+                        {{Label.getContent('Maintenance')}} (hr)
+                        <span class="glyphicon glyphicon-info-sign" style="font-size:12px"></span>
+                    </p>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody ng-repeat='machinery in machineries'>
+            <tr>
+    			<th colspan="3">{{machinesRefs[$index]}}</th>
+                <td rowspan="{{machinery.types.length + 1}}">
+                    <input type="number" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" ng-model="machinery.maintenanceHours" onbeforesave="checkCapacity(category.categoryID,$data)" onaftersave="updateProducerDecision(category.categoryID,'capacityChange',$index)" /> 
+                </td>
+    		</tr>
+
+            <tr ng-repeat='machine in machinery.types'>
+                <th style="text-align: center">Type {{$index + 1}}</th>
+                <td>
+                    <input type="number" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" ng-model="machine.boughtNb" onbeforesave="checkCapacity(category.categoryID,$data)" onaftersave="updateProducerDecision(category.categoryID,'capacityChange',$index)" />                  
+                </td>
+
+                <td>
+                    <input type="number" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" ng-model="machine.soldNb" onbeforesave="checkCapacity(category.categoryID,$data)" onaftersave="updateProducerDecision(category.categoryID,'capacityChange',$index)" /> 
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+<div class='panel panel-success my-success-panel' style="width:70%">
+    <div class="panel-heading">
+        <h3 class="panel-title text-center text-muted">
+            {{Label.getContent('Reference Information')}}
+        </h3>
+    </div>
+    <table class="table table-condensed table-bordered table-success">
+        <thead>
+            <tr>
+                <th style="width:50%"></th>
+                <th style="width:25%">
+                    <p class="text-center text-muted">{{Label.getContent('Elecssories')}}</p>
+                </th>
+                <th style="width:25%">
+                    <p class="text-center text-muted">{{Label.getContent('HealthBeauties')}}</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <p class="text-muted">{{Label.getContent('Increase in Technology by 1 level')}}</p>
+                </td>
+                <td>
+                    <p class="text-right text-muted">140 {{Label.getContent('mln$')}}</p>
+                </td>
+                <td>
+                    <p class="text-right text-muted">250 {{Label.getContent('mln$')}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="text-muted">{{Label.getContent('Increase in Production Flexibility by 1%')}}</p>
+                </td>
+                <td>
+                    <p class="text-right text-muted">3 {{Label.getContent('mln$')}}</p>
+                </td>
+                <td>
+                    <p class="text-right text-muted">5 {{Label.getContent('mln$')}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="text-muted">{{Label.getContent('Increase in Design by 1 level')}}</p>
+                </td>
+                <td>
+                    <p class="text-right text-muted">140 {{Label.getContent('mln$')}}</p>
+                </td>
+                <td>
+                    <p class="text-right text-muted">/</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <p class="text-muted">{{Label.getContent('Reference Information Info')}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div style="clear:both"></div>

@@ -310,6 +310,9 @@ var ECommerce = (function (_super) {
         if (!this.isInitialised()) {
             return false;
         }
+        if (!Number.isInteger(portsNb)) {
+            portsNb = Math.round(portsNb);
+        }
         this.wantedWebsitePortsNb = portsNb;
         this.isInitialJoining = this.activeWebsitePortsNb === 0 && portsNb > 0;
         this.isClosingDown = this.activeWebsitePortsNb > 0 && portsNb === 0;

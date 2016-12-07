@@ -400,6 +400,11 @@ export default class ECommerce extends IObject.IObject {
             return false;
         }
 
+        if (!Number.isInteger(portsNb)) {
+            portsNb = Math.round(portsNb);
+        }
+
+
         this.wantedWebsitePortsNb = portsNb;
 
         this.isInitialJoining = this.activeWebsitePortsNb === 0 && portsNb > 0;

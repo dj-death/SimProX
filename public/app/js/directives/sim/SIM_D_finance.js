@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-	angular.module('marksimos.websitecomponent').directive('assetInvestments', ['Label', '$http','$location','$filter', '$q', function(Label, $http,$location,$filter, $q){
+	angular.module('marksimos.websitecomponent').directive('finance', ['Label', '$http','$location','$filter', '$q', function(Label, $http,$location,$filter, $q){
         return {
             scope : {
                 isPageShown : '=',
@@ -10,13 +10,12 @@
                 selectedPlayer: '=',
                 selectedPeriod: '=',
                 decision: '=',
-                machinesRefs: '=',
 
                 isDecisionLocked:'='
             },
 
             restrict : 'E',
-            templateUrl : '/app/partials/sim/decisions/SD_assetInvestments.html',
+            templateUrl : '/app/partials/sim/decisions/SD_finance.html',
 
             link : function(scope, element, attrs){                   
 

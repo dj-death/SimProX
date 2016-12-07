@@ -23,7 +23,7 @@
 <script src="/bower_components/angular-charts/dist/angular-charts.js"></script>
 <script src="/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
 
-<script src="/bower_components/angular-notify/dist/angular-notify.min.js"></script>
+<script src="/bower_components/angular-notifications/notification.js"></script>
 
 <script src="/bower_components/angular-socket-io/socket.min.js"></script>
 
@@ -36,8 +36,6 @@
 
 <% if(settings.env == "production"){ %>
 <script src="/app/dist/app.min.js"></script>
-
-<% include ../../statistic/baidu.html %>
 
 <% } else{ %>
 
@@ -67,7 +65,10 @@
 <script src="/app/js/directives/sim/SIM_D_generalMarketing.js"></script>
 <script src="/app/js/directives/sim/SIM_D_marketResearchOrders.js"></script>
 <script src="/app/js/directives/sim/SIM_D_productionVolume.js"></script>
-<script src="/app/js/directives/sim/SIM_D_assetInvestments.js"></script>
+<script src="/app/js/directives/sim/SIM_D_assetManagement.js"></script>
+<script src="/app/js/directives/sim/SIM_D_finance.js"></script>
+<script src="/app/js/directives/sim/SIM_D_humanResourcesManagement.js"></script>
+
 
 
 

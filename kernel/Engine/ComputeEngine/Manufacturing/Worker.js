@@ -391,6 +391,9 @@ var Worker = (function (_super) {
         if (isNaN(shiftLevel) || shiftLevel <= 0) {
             shiftLevel = 1;
         }
+        if (!Number.isInteger(shiftLevel)) {
+            shiftLevel = Math.round(shiftLevel);
+        }
         this.shiftLevel = shiftLevel;
         this.shift = this.params.availablesShifts[shiftLevel - 1];
         this.getReady();

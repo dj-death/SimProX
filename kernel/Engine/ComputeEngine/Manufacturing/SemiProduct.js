@@ -276,6 +276,9 @@ var SemiProduct = (function (_super) {
             console.warn('Subcontract SP %d @ Quantity not reel :', this.params.subProductID, arguments);
             return false;
         }
+        if (!Number.isInteger(unitsNb)) {
+            unitsNb = Math.round(unitsNb);
+        }
         var qualityIdx;
         qualityIdx = ENUMS.QUALITY.HQ * premiumQualityProp + ENUMS.QUALITY.MQ;
         this.subContracter.order(unitsNb, qualityIdx);

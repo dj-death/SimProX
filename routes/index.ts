@@ -3,7 +3,6 @@
 let express = require('express');
 let apiRouter = express.Router();
 
-
 import * as User from '../api/models/user/User';
 import * as Scenario from '../api/models/scenario/Scenario';
 import * as fileUploadModel from '../api/models/user/fileupload';
@@ -27,9 +26,6 @@ import * as tagController from '../api/controllers/b2c/tag';
 
 import * as questionnaireController from '../api/controllers/questionnaire';
 import * as faqController from '../api/controllers/faq';
-
-
-import * as initSeminar from '../api/initSeminar';
 
 import * as Auth from '../api/auth';
 

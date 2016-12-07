@@ -2,32 +2,56 @@
 			
 	<div class="row">
 		<div class="col-md-12">
-			<h4 class="text-center">{{'DecisionPageFutureProjectionsTableTitleDATAREFERENCE' | translate}}</h4>
-			<h6 class="text-center">　</h6>
+			<h4 class="text-center">
+				{{'DecisionPageFutureProjectionsTableTitleDATAREFERENCE' | translate}}
+				
+				<span class="pull-right">
+					<button type="submit" class="btn" style="color:#4d4d4d" ng-hide="css.showConfirmLockDecision || data.currentCompanyDecisionLock.lockStatus" ng-click="confirmLockCompanyDecision()">
+						<span class="glyphicon fa" ng-class="{'glyphicon-lock': data.isDecisionLocked===true, 'fa-unlock': data.isDecisionLocked===false}" aria-hidden="true" Popover-animation="true" popover="{{'DecisionPageDecisionLockButtonInfo' | translate}}" popover-title="{{'DecisionPageDecisionLockButton' | translate}}" popover-trigger="mouseenter" popover-placement="bottom"></span>
+					</button>
+					
+					<button type="submit" class="btn btn-info " ng-if="css.showConfirmLockDecision" ng-click="updateCompany()"> {{'DecisionPageDecisionLockButtonConfirmYes' | translate}}</button>
+					<button type="submit" class="btn btn-primary " ng-if="css.showConfirmLockDecision" ng-click="hideLockCompanyDecision()"> {{'DecisionPageDecisionLockButtonConfirmNo' | translate}}</button>
+				</span>
+			</h4>
+			
 		</div>
 	</div>
 	
 	<div class="row">
 		<div class="col-md-12">
             <div style="padding:30px 0" angular-wizard>
-                <ul class="steps-indicator steps-6">
+                <ul class="steps-indicator steps-8">
                     <li class="done editing">
-                        <a href="" ng-click="showDecisionPage(0, 'showProductionVolume')">{{'DecisionPageDecisionTabForecast' | translate}}</a>
+                        <a href="" ng-click="showDecisionPage('showProductionVolume')">{{Label.getContent('Forecast')}}</a>
                     </li>
+					
                     <li class="done">
-                        <a href="" ng-click="showDecisionPage(1,'showGeneralMarketing')">{{'DecisionPageDecisionTabMarketing' | translate}}</a>
+                        <a href="" ng-click="showDecisionPage('showGeneralMarketing')">{{Label.getContent('Marketing')}}</a>
                     </li>
+					
                     <li class="done">
-                        <a href="" ng-click="showDecisionPage(2, 'showProductionManagement')">{{'DecisionPageDecisionTabProduction' | translate}}</a>
+                        <a href="" ng-click="showDecisionPage('showProductionManagement')">{{Label.getContent('Production')}}</a>
                     </li>
-                    <li class="done">
-                        <a href="" ng-click="showDecisionPage(3, 'showAssetInvestments')">{{'DecisionPageDecisionTabFinance' | translate}}</a>
-                    </li>
-                    <li class="done">
-                        <a href="" ng-click="showDecisionPage(4, 'showMarketResearchOrders')">{{'DecisionPageDecisionTabBI' | translate}}</a>
-                    </li>
+					
 					<li class="done">
-                        <a href="" ng-click="showDecisionPage(5, '')">{{'DecisionPageDecisionTabCheckList' | translate}}</a>
+                        <a href="" ng-click="showDecisionPage('showAssetManagement')">{{Label.getContent('AssetManagement')}}</a>
+                    </li>
+					
+					<li class="done">
+                        <a href="" ng-click="showDecisionPage('showHRManagement')">{{Label.getContent('HRManagement')}}</a>
+                    </li>
+					
+                    <li class="done">
+                        <a href="" ng-click="showDecisionPage('showFinance')">{{Label.getContent('Finance')}}</a>
+                    </li>
+					
+                    <li class="done">
+                        <a href="" ng-click="showDecisionPage('showMarketResearchOrders')">{{Label.getContent('BI')}}</a>
+                    </li>
+					
+					<li class="done">
+                        <a href="" ng-click="showDecisionPage('showCheckList')">{{Label.getContent('CheckList')}}</a>
                     </li>
                 </ul>
             </div>
@@ -35,22 +59,25 @@
 		
 		<div class="col-md-12">
 			<div class="bs-docs-section" style="padding:50px 0 0">
-				<production-volume ng-show='ProductionVolume' is-page-shown='ProductionVolume' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' products='data.currentCompany.decision.products' products-refs='data.currentCompany.productsRefs' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='data.isDecisionLocked'></production-volume>
-				<general-marketing ng-show='GeneralMarketing' is-page-shown='GeneralMarketing' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' products='data.currentCompany.decision.products' products-refs='data.currentCompany.productsRefs' markets='data.currentCompany.decision.markets' markets-refs='data.currentCompany.marketsRefs' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></general-marketing>
-				<production-management ng-show='ProductionManagement' is-page-shown='ProductionManagement' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' is-decision-locked='isDecisionLocked'></production-management>
+				<production-volume ng-show='ProductionVolume' is-page-shown='ProductionVolume' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' products='data.currentCompany.decision.products' products-refs='data.currentCompany.productsRefs' markets='data.currentCompany.decision.markets' markets-refs='data.currentCompany.marketsRefs'  is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></production-volume>
+				<general-marketing ng-show='GeneralMarketing' is-page-shown='GeneralMarketing' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' products='data.currentCompany.decision.products' products-refs='data.currentCompany.productsRefs' markets='data.currentCompany.decision.markets' markets-refs='data.currentCompany.marketsRefs' agents='data.currentCompany.decision.agents' e-commerces='data.currentCompany.decision.eCommerces'  is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></general-marketing>
+				<production-management ng-show='ProductionManagement' is-page-shown='ProductionManagement' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' products='data.currentCompany.decision.products' products-refs='data.currentCompany.productsRefs' sub-products='data.currentCompany.decision.subProducts' materials='data.currentCompany.decision.materials' futures-refs='data.currentCompany.futuresRefs' is-decision-locked='isDecisionLocked'></production-management>
+				<asset-management ng-show='AssetManagement' is-page-shown='AssetManagement' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' machines-refs='data.currentCompany.machinesRefs' machineries='data.currentCompany.decision.machineries' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></asset-management>
+				<human-resources-management ng-show='HRManagement' is-page-shown='HRManagement' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' workers-refs='data.currentCompany.workersRefs' decision='data.currentCompany.decision' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></human-resources-management>
+				<finance ng-show='Finance' is-page-shown='Finance' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' machines-refs='data.currentCompany.machinesRefs' decision='data.currentCompany.decision' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></finance>
 				<market-research-orders ng-show='MarketResearchOrders' is-page-shown='MarketResearchOrders' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='data.isDecisionLocked'></market-research-orders>                 
-				<asset-investments ng-show='AssetInvestments' is-page-shown='AssetInvestments' is-page-loading='isPageLoading' selected-player='selectedPlayer' selected-period='selectedPeriod' machines-refs='data.currentCompany.machinesRefs' decision='data.currentCompany.decision' is-portfolio-decision-committed='isPortfolioDecisionCommitted' is-contract-deal='isContractDeal' is-contract-finalized='isContractFinalized' is-decision-locked='isDecisionLocked'></asset-investments>
+				
+				<div class="col-md-12" ng-show='CheckList' is-page-shown='CheckList'>
+					<div class="col-md-offset-1 col-sm-10">
+						<button type="submit" class="btn btn-primary decision_button" ng-hide="css.showConfirmLockDecision || data.currentCompanyDecisionLock.lockStatus" ng-click="confirmLockCompanyDecision()"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> {{'DecisionPageDecisionLockButton' | translate}}</button>
+						<button type="submit" class="btn btn-info " ng-show="css.showConfirmLockDecision" ng-click="updateCompany()"> {{'DecisionPageDecisionLockButtonConfirmYes' | translate}}</button>
+						<button type="submit" class="btn btn-primary " ng-show="css.showConfirmLockDecision" ng-click="hideLockCompanyDecision()"> {{'DecisionPageDecisionLockButtonConfirmNo' | translate}}</button>
+						<p class="bg-danger decision_button_info" ng-hide="data.currentCompanyDecisionLock.lockStatus"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{'DecisionPageDecisionLockButtonInfo' | translate}}</p>
+						<p class="bg-info decision_button_info" ng-show="data.currentCompanyDecisionLock.lockStatus"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{'DecisionPageDecisionLockStatus' | translate}}</p>
+					</div>		
+				</div>
+				
 			</div>
-		</div>
-		
-		<div class="col-md-12">
-			<div class="col-md-offset-1 col-sm-10">
-				<button type="submit" class="btn btn-primary decision_button" ng-hide="css.showConfirmLockDecision || data.currentCompanyDecisionLock.lockStatus" ng-click="confirmLockCompanyDecision()"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> {{'DecisionPageDecisionLockButton' | translate}}</button>
-				<button type="submit" class="btn btn-info " ng-show="css.showConfirmLockDecision" ng-click="updateCompany()"> {{'DecisionPageDecisionLockButtonConfirmYes' | translate}}</button>
-				<button type="submit" class="btn btn-primary " ng-show="css.showConfirmLockDecision" ng-click="hideLockCompanyDecision()"> {{'DecisionPageDecisionLockButtonConfirmNo' | translate}}</button>
-				<p class="bg-danger decision_button_info" ng-hide="data.currentCompanyDecisionLock.lockStatus"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{'DecisionPageDecisionLockButtonInfo' | translate}}</p>
-				<p class="bg-info decision_button_info" ng-show="data.currentCompanyDecisionLock.lockStatus"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{'DecisionPageDecisionLockStatus' | translate}}</p>
-			</div>		
 		</div>
 	
 	</div>

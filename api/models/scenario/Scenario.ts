@@ -13,7 +13,7 @@ import console = require('../../../kernel/utils/logger');
 import Flat = require('../../utils/Flat');
 import Excel = require('../../utils/ExcelUtils');
 
-import PlayerDecision = require('../decision/Decision');
+import PlayerDecision = require('../decision/CompanyDecision');
 
 import config = require('../../../config');
 let EngineConfig = config.engine;
@@ -85,7 +85,7 @@ export function loadScenario(scenarioID) {
     return deferred.promise;
 };
 
-
+/*
 export function  loadEmptyScenario () {
 
     var deferred = q.defer();
@@ -124,6 +124,8 @@ export function  loadEmptyScenario () {
 
     return deferred.promise;
 }
+*/
+
 
 export function  getScenario (options, res) {
     scenariosDb.loadDatabase(function  (err, next) {

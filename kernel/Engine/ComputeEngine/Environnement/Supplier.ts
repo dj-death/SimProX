@@ -120,6 +120,7 @@ export class Supplier<T extends Material> extends IObject.IObject {
             return;
         }
 
+
         if (quantity === 0) {
             return;
         }

@@ -1,6 +1,11 @@
 "use strict";
 global.debug_data = global.debug_data || {};
 process.env.JWT_SECRET = 'didi';
+Number.isInteger = Number.isInteger || function (value) {
+    return typeof value === "number" &&
+        isFinite(value) &&
+        Math.floor(value) === value;
+};
 var http = require('http');
 var path = require('path');
 var express = require('express');

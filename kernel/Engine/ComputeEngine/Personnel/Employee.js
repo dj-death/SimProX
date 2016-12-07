@@ -210,6 +210,9 @@ var Employee = (function (_super) {
         if (!this.isInitialised()) {
             return false;
         }
+        if (!Number.isInteger(recruitedNb)) {
+            recruitedNb = Math.round(recruitedNb);
+        }
         // decision
         this.recruitedNb = recruitedNb;
         if (recruitedNb < this.minRecruitedNb) {
@@ -227,6 +230,9 @@ var Employee = (function (_super) {
         if (!this.isInitialised()) {
             return false;
         }
+        if (!Number.isInteger(trainedNb)) {
+            trainedNb = Math.round(trainedNb);
+        }
         this.trainedNb = trainedNb;
         if (trainedNb < this.minTrainedNb) {
             trainedNb = this.minTrainedNb;
@@ -243,6 +249,9 @@ var Employee = (function (_super) {
     Employee.prototype.dismiss = function (dismissedNb) {
         if (!this.isInitialised()) {
             return false;
+        }
+        if (!Number.isInteger(dismissedNb)) {
+            dismissedNb = Math.round(dismissedNb);
         }
         this.dismissedNb = dismissedNb;
         if (dismissedNb > this.maxDismissedNb) {

@@ -278,6 +278,11 @@ export class Employee extends IObject.IObject {
             return false;
         }
 
+        if (!Number.isInteger(recruitedNb)) {
+            recruitedNb = Math.round(recruitedNb);
+        }
+
+
         // decision
         this.recruitedNb = recruitedNb;
 
@@ -302,6 +307,11 @@ export class Employee extends IObject.IObject {
             return false;
         }
 
+        if (!Number.isInteger(trainedNb)) {
+            trainedNb = Math.round(trainedNb);
+        }
+
+
         this.trainedNb = trainedNb;
 
         if (trainedNb < this.minTrainedNb) {
@@ -323,6 +333,10 @@ export class Employee extends IObject.IObject {
     dismiss(dismissedNb: number) {
         if (!this.isInitialised()) {
             return false;
+        }
+
+        if (!Number.isInteger(dismissedNb)) {
+            dismissedNb = Math.round(dismissedNb);
         }
 
         this.dismissedNb = dismissedNb;

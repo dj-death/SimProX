@@ -546,6 +546,10 @@ export default class Worker extends Employee {
             shiftLevel = 1;
         }
 
+        if (!Number.isInteger(shiftLevel)) {
+            shiftLevel = Math.round(shiftLevel);
+        }
+
         this.shiftLevel = shiftLevel;
         this.shift = this.params.availablesShifts[shiftLevel - 1];
 

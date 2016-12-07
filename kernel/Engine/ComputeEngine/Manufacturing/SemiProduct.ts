@@ -400,6 +400,10 @@ export default class SemiProduct extends IObject.IObject {
             return false;
         }
 
+        if (!Number.isInteger(unitsNb)) {
+            unitsNb = Math.round(unitsNb);
+        }
+
         var qualityIdx: number;
 
         qualityIdx = ENUMS.QUALITY.HQ * premiumQualityProp + ENUMS.QUALITY.MQ;

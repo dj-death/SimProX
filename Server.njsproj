@@ -29,6 +29,17 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,7 +73,6 @@
     <TypeScriptCompile Include="api\models\b2c\Tag.ts" />
     <TypeScriptCompile Include="api\models\dbUtility.ts" />
     <TypeScriptCompile Include="api\errorHandlers.ts" />
-    <TypeScriptCompile Include="api\initSeminar.ts" />
     <TypeScriptCompile Include="api\models\b2c\Campaign.ts" />
     <TypeScriptCompile Include="api\models\b2c\ChatMessage.ts" />
     <TypeScriptCompile Include="api\models\b2c\TeamScore.ts" />
@@ -74,8 +84,6 @@
     <TypeScriptCompile Include="api\models\scenario\Scenario.ts" />
     <TypeScriptCompile Include="api\models\scenario\Schema.ts" />
     <TypeScriptCompile Include="api\models\Seminar.ts" />
-    <TypeScriptCompile Include="api\models\seminar\Seminar.ts" />
-    <TypeScriptCompile Include="api\models\seminar\Schema.ts" />
     <TypeScriptCompile Include="api\models\simulation\Chart.ts" />
     <TypeScriptCompile Include="api\models\simulation\Report.ts" />
     <TypeScriptCompile Include="api\models\simulation\Result.ts" />
@@ -87,7 +95,6 @@
     <TypeScriptCompile Include="api\models\user\GameAuthToken.ts" />
     <TypeScriptCompile Include="api\models\user\Team.ts" />
     <TypeScriptCompile Include="api\models\user\UserRole.ts" />
-    <TypeScriptCompile Include="api\passiveSeminar.ts" />
     <TypeScriptCompile Include="api\promises\request.ts" />
     <TypeScriptCompile Include="api\utils\error-code.ts" />
     <TypeScriptCompile Include="api\utils\ExcelUtils.ts" />
@@ -233,9 +240,9 @@
     <Folder Include="api\models\" />
     <Folder Include="api\models\b2c\" />
     <Folder Include="api\models\decision\" />
+    <Folder Include="api\models\scenario\" />
     <Folder Include="api\models\seminar\" />
     <Folder Include="api\models\simulation\" />
-    <Folder Include="api\models\scenario\" />
     <Folder Include="api\models\user\" />
     <Folder Include="api\assemblers\" />
     <Folder Include="api\convertors\" />

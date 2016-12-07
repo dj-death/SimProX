@@ -17,7 +17,7 @@ var config = {
     },
     server: {
         port: 80,
-        host: 'localhost',
+        host: "localhost",
         mongo_conn: 'mongodb://127.0.0.1:27017/iEtales'
     },
     domain: 'bridgeplus.cn',

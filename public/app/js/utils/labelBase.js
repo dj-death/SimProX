@@ -1316,7 +1316,19 @@ var getLabelBase = function(){
 		{id:'Machines',  ENG:'Machines', FR: 'Machines'},
 		{id:'Machine Type',  ENG:'Machine Type', FR: 'Type de Machine'},
 		{id:'Buy Machines',  ENG:'Buy Machines', FR: 'Aquisitions de Machines'},
-		{id:'Sell Machines',  ENG:'Sell Machines', FR: 'Cessions de Machines'}
+		{id:'Sell Machines',  ENG:'Sell Machines', FR: 'Cessions de Machines'},
+
+
+		//Labels for Items on Decision Page - DecisionTab
+        {id: "Finance", ENG: "Finance", FR: "Finances" },
+        {id: "Production", ENG: "Production", FR: "Production" },
+		{id: "AssetManagement", ENG: "Asset Management", FR: "Gestion des Immos." },
+		{id: "HRManagement", ENG: "Human Resources Management", FR: "GRH" },
+        {id: "Forecast", ENG: "Forecast",  FR: "Prévisions de Ventes" },
+    	{id: "CheckList", ENG: "CheckList", FR: "Check List" },
+        {id: "Marketing", ENG: "Marketing", FR: "Marketing" },
+        {id: "BI", ENG: "BI", FR: "Intelligence économique" },
+		{id: "CheckList", ENG: "CheckList", FR: "Vérification" }
 
 	]
 }

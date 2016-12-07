@@ -1,4 +1,4 @@
-﻿let mongoose = require('mongoose');
+﻿var mongoose = require('mongoose');
 
 let Scenario = mongoose.Schema({
     scenarioID: String,

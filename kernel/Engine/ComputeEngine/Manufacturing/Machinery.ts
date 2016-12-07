@@ -314,6 +314,10 @@ export default class Machinery extends IObject.IObject {
     setShiftLevel(shiftLevel: ENUMS.SHIFT_LEVEL) { 
         this.onBeforeReady(); // at this point we have machines nb sync so let install
 
+        if (!Number.isInteger(shiftLevel)) {
+            shiftLevel = Math.round(shiftLevel);
+        }
+
         this.shiftLevel = shiftLevel;
 
         this.machines.forEach(function  (machine) {
@@ -390,6 +394,16 @@ export default class Machinery extends IObject.IObject {
             return false;
         }
 
+        if (!Utils.isNumericValid(boughtNb)) {
+            console.warn("Not valid extension: %d", boughtNb);
+            return false;
+        }
+
+        if (!Number.isInteger(boughtNb)) {
+            boughtNb = Math.round(boughtNb);
+        }
+
+
         let machineParams = this.machinesParams[machineType];
 
         if (!machineParams) {
@@ -445,6 +459,16 @@ export default class Machinery extends IObject.IObject {
             return false;
         }
 
+        if (!Utils.isNumericValid(soldNb)) {
+            console.warn("Not valid extension: %d", soldNb);
+            return false;
+        }
+
+        if (!Number.isInteger(soldNb)) {
+            soldNb = Math.round(soldNb);
+        }
+
+
         let machineParams = this.machinesParams[machineType];
 
         if (!machineParams) {
@@ -493,6 +517,10 @@ export default class Machinery extends IObject.IObject {
         if (!Utils.isNumericValid(hoursByMachineNb)) {
             console.warn("Not valid hoursByMachineNb: %d", hoursByMachineNb);
             return false;
+        }
+
+        if (!Number.isInteger(hoursByMachineNb)) {
+            hoursByMachineNb = Math.round(hoursByMachineNb);
         }
 
         this.decidedMaintenanceHoursNbByUnit = hoursByMachineNb;

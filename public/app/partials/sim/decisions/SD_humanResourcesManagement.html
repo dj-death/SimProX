@@ -1,0 +1,109 @@
+<div class='panel panel-success my-success-panel'>
+	<div class="panel-heading">
+        <h3 class="panel-title text-center" popover="{{Label.getContent('Quality Info')}}" popover-trigger="mouseenter" popover-placement="bottom">
+            {{Label.getContent('Personnel')}}
+        </h3>
+    </div>
+
+    <table class="table table-condensed table-bordered table-success">
+		<thead>
+			<tr>
+    			<th class="category-header col-md-1">{{Label.getContent('Workers Category')}}</th>
+
+    			<th class="col-md-1">
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Hire Info')}}" popover-title="{{Label.getContent('Hire')}}" popover-trigger="mouseenter" popover-placement="bottom">
+						{{Label.getContent('Hire')}}
+						<span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span>
+					</p>
+    			</th>
+
+    			<th class="col-md-1">
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Training Info')}}" popover-title="{{Label.getContent('Training')}}" popover-trigger="mouseenter" popover-placement="bottom">
+						{{Label.getContent('Training')}}
+						<span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span>
+					</p>
+    			</th>
+
+				<th class="col-md-1">
+    				<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Wage Info')}}" popover-title="{{Label.getContent('Wage')}}" popover-trigger="mouseenter" popover-placement="bottom">
+						{{Label.getContent('Wage')}}
+						<span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span>
+					</p>
+    			</th>
+    			
+    		</tr>
+
+		</thead>
+
+		<tbody>
+
+			<tr ng-repeat="worker in decision.workers">
+				<th>{{workersRefs[$index]}}</th>
+
+				<td>
+					<input type="number" ng-model="worker.hire" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+				<td>
+					<input type="number" ng-model="worker.trainedNb" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+				<td>
+					<input type="number" ng-model="worker.hourlyWageRate" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+			</tr>
+
+		</tbody>
+    </table>
+</div>
+
+
+
+
+<div class='panel panel-success my-success-panel'>
+	<div class="panel-heading">
+        <h3 class="panel-title text-center" popover="{{Label.getContent('Subcontracting Info')}}" popover-trigger="mouseenter" popover-placement="bottom">
+            {{Label.getContent('Management')}}
+        </h3>
+    </div>
+
+    <table class="table table-condensed table-bordered table-success">
+    	<tbody>
+			<tr>
+				<th class="col-md-1">
+					<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Management Budget Info')}}" popover-title="{{Label.getContent('Management Budget')}}" popover-trigger="mouseenter" popover-placement="bottom">
+						{{Label.getContent('Management Budget')}}
+						<span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span>
+					</p>
+				</th>
+				<td class="col-md-1">
+					<input type="number" ng-model="decision.managementBudget" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+
+				<th class="col-md-1">
+					<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Training Info')}}" popover-title="{{Label.getContent('Training')}}" popover-trigger="mouseenter" popover-placement="bottom">
+						{{Label.getContent('Training')}}
+						<span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span>
+					</p>
+				</th>
+				<td class="col-md-1">
+					<input type="number" ng-model="decision.staffTrainingDays" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+			</tr>
+
+			<tr>
+				<th class="col-md-1">
+					<p class="text-primary text-center" Popover-animation="true" popover="{{Label.getContent('Shift Level Info')}}" popover-title="{{Label.getContent('Shift Level')}}" popover-trigger="mouseenter" popover-placement="bottom">
+						{{Label.getContent('Shift Level')}}
+						<span style="font-size:12px" class="glyphicon glyphicon-info-sign"></span>
+					</p>
+				</th>
+				<td class="col-md-1">
+					<input type="number" ng-model="decision.shiftLevel" ng-disabled="isDecisionLocked" class="editable-has-buttons editable-input form-control input-sm ng-pristine ng-valid" />
+				</td>
+				<th colspan="2"></th>
+			</tr>
+
+    	</tbody>
+    </table>
+</div>
+
+<div style="clear:both"></div>

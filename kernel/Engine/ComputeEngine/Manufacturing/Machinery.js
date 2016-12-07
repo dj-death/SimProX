@@ -264,6 +264,9 @@ var Machinery = (function (_super) {
     // Actions
     Machinery.prototype.setShiftLevel = function (shiftLevel) {
         this.onBeforeReady(); // at this point we have machines nb sync so let install
+        if (!Number.isInteger(shiftLevel)) {
+            shiftLevel = Math.round(shiftLevel);
+        }
         this.shiftLevel = shiftLevel;
         this.machines.forEach(function (machine) {
             machine.launch(shiftLevel);
@@ -322,6 +325,13 @@ var Machinery = (function (_super) {
         if (!this.isInitialised()) {
             return false;
         }
+        if (!Utils.isNumericValid(boughtNb)) {
+            console.warn("Not valid extension: %d", boughtNb);
+            return false;
+        }
+        if (!Number.isInteger(boughtNb)) {
+            boughtNb = Math.round(boughtNb);
+        }
         var machineParams = this.machinesParams[machineType];
         if (!machineParams) {
             console.warn("Trying to buy an unknown type of machine");
@@ -361,6 +371,13 @@ var Machinery = (function (_super) {
         if (!this.isInitialised()) {
             return false;
         }
+        if (!Utils.isNumericValid(soldNb)) {
+            console.warn("Not valid extension: %d", soldNb);
+            return false;
+        }
+        if (!Number.isInteger(soldNb)) {
+            soldNb = Math.round(soldNb);
+        }
         var machineParams = this.machinesParams[machineType];
         if (!machineParams) {
             console.warn("Trying to sel an unknown type of machine");
@@ -393,6 +410,9 @@ var Machinery = (function (_super) {
         if (!Utils.isNumericValid(hoursByMachineNb)) {
             console.warn("Not valid hoursByMachineNb: %d", hoursByMachineNb);
             return false;
+        }
+        if (!Number.isInteger(hoursByMachineNb)) {
+            hoursByMachineNb = Math.round(hoursByMachineNb);
         }
         this.decidedMaintenanceHoursNbByUnit = hoursByMachineNb;
         this.machines.forEach(function (machine) {

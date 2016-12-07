@@ -1,4 +1,4 @@
-﻿let config = {
+﻿let config: any = {
 
     fileUploadDirectory: __dirname + "/kernel/data/",
 
@@ -11,18 +11,18 @@
 
         defaultLang: "fr",
 
-        getReportModelPath: function (lang) {
+        getReportModelPath: function (lang: string) {
             if (!lang) {
-                lang = config.engine.defaultLang
+                lang = config.engine.defaultLang;
             }
+
             return config.engine.templatesDir + "/" + lang + "/report_model.xlsx";
         }
-
     }, 
 
     server: {
         port: 80,
-        host: 'localhost',
+        host: "localhost",
         mongo_conn: 'mongodb://127.0.0.1:27017/iEtales'
     },
 

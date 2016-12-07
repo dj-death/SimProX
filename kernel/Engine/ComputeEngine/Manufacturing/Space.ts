@@ -280,6 +280,11 @@ export class Space extends IObject.IObject {
             return false;
         }
 
+        if (!Number.isInteger(extension)) {
+            extension = Math.round(extension);
+        }
+
+
         if (!this.peripherySpace) {
             console.debug('unable to extend');
             return false;

@@ -7,11 +7,11 @@
 
 
     /********************  Create New Module For Controllers ********************/
-    angular.module('marksimos', ['ui.bootstrap', 'pascalprecht.translate', 'angularCharts', 'nvd3ChartDirectives', 'cgNotify', 'marksimos.services', 'marksimos.config', 'marksimos.commoncomponent', 'marksimos.websitecomponent', 'marksimos.model', 'marksimos.socketmodel', 'marksimos.filter', 'marksimos.translation', 'ngAnimate']);
+    angular.module('marksimos', ['ui.bootstrap', 'pascalprecht.translate', 'angularCharts', 'nvd3ChartDirectives', 'notifications', 'marksimos.services', 'marksimos.config', 'marksimos.commoncomponent', 'marksimos.websitecomponent', 'marksimos.model', 'marksimos.socketmodel', 'marksimos.filter', 'marksimos.translation', 'ngAnimate']);
 
     var $html = angular.element(document.getElementsByTagName('html')[0]);
 
-    // hey Angular, we're bootstrapping manually!
+    // we're bootstrapping manually!
 
     angular.element().ready(function() {
         $html.addClass('ng-app');
@@ -22,7 +22,7 @@
 
 
     /********************  Use This Module To Set New Controllers  ********************/
-    angular.module('marksimos').controller('chartController', ['$translate', '$scope', '$rootScope', '$document', '$timeout', '$interval', '$http', 'notify', 'chartReport', 'tableReport', 'Student', 'Company', 'Socket', 'Label', function($translate, $scope, $rootScope, $document, $timeout, $interval, $http, notify, chartReport, tableReport, Student, Company, Socket, Label) {
+    angular.module('marksimos').controller('chartController', ['$translate', '$scope', '$rootScope', '$document', '$timeout', '$interval', '$http', '$notification', 'chartReport', 'tableReport', 'Student', 'Company', 'Socket', 'Label', function($translate, $scope, $rootScope, $document, $timeout, $interval, $http, $notification, chartReport, tableReport, Student, Company, Socket, Label) {
 
         window.chartController = $scope;
 
@@ -31,18 +31,7 @@
         });
 
 
-        notify.config({
-            duration : 8000
-        });
-
-        var notifytemplate = {
-            success : 'notifysavesuccess.html',
-            failure : 'notifysavefailure.html'
-        };
-        $scope.closeAll = function(){
-            notify.closeAll();
-        };
-
+        $scope.Label = Label;
 
         $scope.css = {
             menu                     : 'Home',
@@ -329,7 +318,7 @@
 
 
         // decision page
-        $scope.ProductionManagement = true;
+        $scope.ProductionVolume = true;
 
 
 
@@ -532,11 +521,7 @@
                     app.reRun();
 
                     if(message.username !== $scope.data.currentStudent.username){
-                        notify({
-                            message  : 'Decisions updated by Team Member !',
-                            templateUrl : notifytemplate.success,
-                            position : 'center'
-                        });
+                        $notification.success('Update succes', 'Decisions updated by Team Member !');
                     }
 
                 });
@@ -982,7 +967,8 @@
                     data.marketsRefs = ["Euro", "Nafta", "Internet"];
                     data.productsRefs = ["Produit 1", "Produit 2", "Produit 3"];
                     data.futuresRefs = ['Spot', '3 Mois', '6 Mois'];
-                    data.machinesRefs = ["Machine Type 1", "Machine Type 2", "Machine Type 3"];
+                    data.machinesRefs = ["Machines A", "Machines B", "Machines C"];
+                    data.workersRefs = ["Monteurs", "Assembleurs"];
 
                     $scope.data.currentCompany = data;
 
@@ -1202,19 +1188,18 @@
 
                 Company.addBrand($scope.data.newBrand).then(function(data, status, headers, config){
 
-//                    app.reRun();
+                    //app.reRun();
 
-                    notify({
-                        message  : 'Save Success !',
-                        templateUrl : notifytemplate.success,
-                        position : 'center'
-                    });
+
+                    $notification.success('Save succes', 'Brand added!');
 
                     $scope.css.addNewBrand = false;
+
                 }, function(data){
                     form.brandName.$valid = false;
                     form.brandName.$invalid = true;
                     form.brandName.$error.required = false;
+
                     $scope.data.newBrand.othererrorinfo = data.data.message ;
 
                 });
@@ -1235,13 +1220,10 @@
                 form.brandSalesForce.$valid = true;
                 form.brandSalesForce.$invalid = false;
 
-//                app.reRun();
+                //app.reRun();
 
-                notify({
-                    message : 'Save Success !',
-                    templateUrl : notifytemplate.success,
-                    position : 'center'
-                });
+                $notification.success('Update succes', 'Brand updated !');
+
             }, function(data){
                 console.log(data);
 
@@ -1250,11 +1232,7 @@
 
                 $scope.css.brandErrorInfo = data.data;
 
-                notify({
-                    message : data.data.message,
-                    templateUrl : notifytemplate.failure,
-                    position : 'center'
-                });
+                $notification.error('Update Failure', 'Brand not updated !');
             });
         };
 
@@ -1274,15 +1252,12 @@
             if (form.$valid) {
                 Company.addSku($scope.data.newSku).then(function(data, status, headers, config){
 
-//                    app.reRun();
+                    //app.reRun();
 
-                    notify({
-                        message  : 'Save Success !',
-                        templateUrl : notifytemplate.success,
-                        position : 'center'
-                    });
+                    $notification.success('Save succes', 'SKU added !');
 
                     $scope.css.addNewSku = false;
+
                 }, function(data){
                     form.skuName.$valid = false;
                     form.skuName.$invalid = true;
@@ -1391,13 +1366,10 @@
 
                 Company.updateSku($scope.data.currentModifiedSku).then(function(data, status, headers, config){
 
-//                    app.reRun();
+                    //app.reRun();
 
-                    notify({
-                        message : 'Save Success !',
-                        templateUrl : notifytemplate.success,
-                        position : 'center'
-                    });
+                    $notification.success('Save succes', 'SKU updated !');
+
                 }, function(data){
 
                     $scope.css.skuErrorField = data.data.modifiedField;
@@ -1445,13 +1417,9 @@
 
                     $scope.css.skuErrorInfo = showSkuErrorInfo($scope.css.skuErrorField);
 
+                    $notification.error('Save failure', data.data.message);
 
-                    notify({
-                        message : data.data.message,
-                        templateUrl : notifytemplate.failure,
-                        position : 'center'
-                    });
-//                    app.reRun();
+                    //app.reRun();
                 });
             }
 
@@ -1462,19 +1430,13 @@
         $scope.delSku = function(sku){
             Company.delSku($scope.data.currentSeminar.currentCompany.companyId, sku.d_BrandID, sku.d_SKUID).then(function(data, status, headers, config){
 
-//                app.reRun();
+                //app.reRun();
 
-                notify({
-                    message  : 'Delete Sku Success !',
-                    templateUrl : notifytemplate.success,
-                    position : 'center'
-                });
+                $notification.success('Delete success', 'Delete Sku Success !');
+
             }, function(data){
-                notify({
-                    message  : data.data.message,
-                    templateUrl : notifytemplate.failure,
-                    position : 'center'
-                });
+
+                $notification.error('Delete failure', data.data.message);
             });
         };
 
@@ -1496,17 +1458,14 @@
 
             Company.updateCompany($scope.data.currentModifiedCompany).success(function(data, status, headers, config){
                 $scope.css.additionalBudget = true;
+                $scope.css.showConfirmLockDecision = false;
 
                 if (formfieldname) {
                     form[formfieldname].$valid = true;
                     form[formfieldname].$invalid = false;
                 }
 
-                notify({
-                    message : 'Save Success !',
-                    templateUrl : notifytemplate.success,
-                    position : 'center'
-                });
+                $notification.success('Save Success', 'Company data updated !');
 
                 app.reRun();
 
@@ -1518,12 +1477,9 @@
                 }
 
                 $scope.css.companyErrorInfo = data;
+                $scope.css.showConfirmLockDecision = false;
 
-                notify({
-                    message : data.message,
-                    templateUrl : notifytemplate.failure,
-                    position : 'center'
-                });
+                $notification.error('Update Failure', data.message);
             });
         };
 
@@ -1533,19 +1489,12 @@
             Company.lockCompanyDecision().success(function(data, status, headers, config){
                 $scope.css.showConfirmLockDecision = false;
 
-                notify({
-                    message : 'Save Success !',
-                    templateUrl : notifytemplate.success,
-                    position : 'center'
-                });
+                $notification.success('Save Success', 'Decision is saved !');
 
             }).error(function(data, status, headers, config){
                 $scope.css.showConfirmLockDecision = false;
-                notify({
-                    message : data.message,
-                    templateUrl : notifytemplate.failure,
-                    position : 'center'
-                });
+
+                $notification.error('Save Failure', data.message);
             });
         };
 
@@ -1569,20 +1518,16 @@
             };
 
             Company.submitQuestionnaire(currentData).success(function(data, status, headers, config) {
-                notify({
-                    message: 'Save Success !',
-                    templateUrl: notifytemplate.success,
-                    position: 'center'
-                });
+
+                $notification.success('Save success', 'Questionnaire is saved');
+
                 $scope.css.showFeedback = false;
                 $scope.isFeedbackSumbit = true;
 
             }, function(data, status, headers, config) {
-                notify({
-                    message: data.message,
-                    templateUrl: notifytemplate.failure,
-                    position: 'center'
-                });
+
+                $notification.error('Save failure', data.message);
+
                 $scope.isFeedbackSumbit = false;
 
             });
@@ -1591,7 +1536,7 @@
 
         var switching = function(type) {
             // reset
-            $scope.ProductionManagement = $scope.ProductionVolume = $scope.GeneralMarketing = $scope.AssetInvestments = $scope.MarketResearchOrders = false;
+            $scope.ProductionManagement = $scope.ProductionVolume = $scope.HRManagement = $scope.GeneralMarketing = $scope.AssetManagement = $scope.Finance = $scope.MarketResearchOrders = $scope.CheckList = false;
             
             switch (type) {
                 case 'showProductionVolume':
@@ -1606,21 +1551,31 @@
                     $scope.GeneralMarketing = true;
                     break;
 
-                case 'showAssetInvestments':
-                    $scope.AssetInvestments = true;
+                case 'showAssetManagement':
+                    $scope.AssetManagement = true;
+                    break;
+
+                case 'showHRManagement':
+                    $scope.HRManagement = true;
+                    break;
+                
+                case 'showFinance':
+                    $scope.Finance = true;
                     break;
 
                 case 'showMarketResearchOrders':
                     $scope.MarketResearchOrders = true;
                     break;
+                
+                case 'showCheckList':
+                    $scope.CheckList = true;
+                    break;
             }
         };
 
         
-        $scope.showDecisionPage = function(pageID, type) {
-
+        $scope.showDecisionPage = function(type) {
             switching(type);
-
         };
 
 
@@ -1826,17 +1781,9 @@
         $scope.sendSeminarMessage = function(messageInput){
             Student.sendSeminarChatMessage(messageInput).then(function(data, status, headers, config){
 
-                //notify({
-                //    message  : 'Message Send !',
-                //    templateUrl : notifytemplate.success,
-                //    position : 'center'
-                //});
             }, function(data){
-                notify({
-                    message  : Student.errorHandler(data.data.message) ,
-                    templateUrl : notifytemplate.failure,
-                    position : 'center'
-                });
+
+                $notification.error('Sending failure', Student.errorHandler(data.data.message));
             });
 
         };
@@ -1845,17 +1792,11 @@
 
         $scope.sendCompanyMessage = function(messageInput){
             Student.sendCompanyChatMessage(messageInput).then(function(data, status, headers, config){
-                //notify({
-                //    message  : 'Message Send !',
-                //    templateUrl : notifytemplate.success,
-                //    position : 'center'
-                //});
+
             }, function(data){
-                notify({
-                    message  : Student.errorHandler(data.data.message) ,
-                    templateUrl : notifytemplate.failure,
-                    position : 'center'
-                });
+
+                $notification.error('Sending failure', Student.errorHandler(data.data.message));
+
             });
 
         };
@@ -1869,14 +1810,15 @@
                 data.data.tags = data.data.tags.map(function(item) {
                     return item.name;
                 });
+
                 $scope.data.glossaries = data.data;
                 $scope.data.glossaries.noResult = !data.data.glossaries.length;
+
             }, function(data){
-                notify({
-                    message  : Student.errorHandler(data.data.message),
-                    templateUrl : notifytemplate.failure,
-                    position : 'center'
-                });
+
+
+                $notification.error('Failure to get glossary', Student.errorHandler(data.data.message));
+
             });
         };
 

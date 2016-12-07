@@ -9,9 +9,9 @@
     <table class="table table-condensed table-bordered table-success">
         <thead>
             <tr>
-                <th>{{'DecisionPageDecisionBIReport' | translate}}</th>
-                <th>{{'DecisionPageDecisionBICost' | translate}}</th>
-                <th>
+                <th class="col-md-4">{{'DecisionPageDecisionBIReport' | translate}}</th>
+                <th class="col-md-1">{{'DecisionPageDecisionBICost' | translate}}</th>
+                <th class="col-md-1">
                     <p class="text-right" ng-show="!isDecisionLocked" >
                         <span class="glyphicon glyphicon-shopping-cart"></span>
                         {{'YES' | translate}} ?
@@ -39,3 +39,5 @@
     </table>
 
 </div>
+
+<div style="clear:both"></div>
