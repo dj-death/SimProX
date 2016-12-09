@@ -4,7 +4,7 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 
 
-var cashPayments: ENUMS.PaymentArray = {
+let cashPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
@@ -13,7 +13,7 @@ var cashPayments: ENUMS.PaymentArray = {
 
 export default function create(): Factory[] {
 
-    var factory = new Factory({
+    let factory = new Factory({
         id: "factory1",
         factoryID: "0",
 

@@ -1,8 +1,8 @@
 "use strict";
-var Finance_1 = require('../../engine/ComputeEngine/Finance');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
+const Finance_1 = require('../../engine/ComputeEngine/Finance');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
 function create() {
-    var capital = new Finance_1.Capital({
+    let capital = new Finance_1.Capital({
         id: "capital",
         label: "capital",
         shareNominalValue: 100,

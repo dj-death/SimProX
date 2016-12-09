@@ -1,29 +1,25 @@
 "use strict";
-var Mkg = require('./');
-var console = require('../../../utils/logger');
-var Utils = require('../../../utils/Utils');
-var Q = require('q');
-var Marketing = (function () {
-    function Marketing() {
+const Mkg = require('./');
+const console = require('../../../utils/logger');
+const Utils = require('../../../utils/Utils');
+const Q = require('q');
+class Marketing {
+    constructor() {
         this.departmentName = "Marketing";
     }
-    Object.defineProperty(Marketing.prototype, "Proto", {
-        get: function () {
-            return Marketing.prototype;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Marketing.prototype.init = function () {
+    get Proto() {
+        return Marketing.prototype;
+    }
+    init() {
         this.markets = [];
         this.transports = [];
         this.salesForces = [];
         this.eCommerces = [];
         this.intelligence = null;
         this.salesOffice = null;
-    };
-    Marketing.prototype.register = function (objects) {
-        var i = 0, len = objects.length, object;
+    }
+    register(objects) {
+        let i = 0, len = objects.length, object;
         for (; i < len; i++) {
             object = objects[i];
             if (object instanceof Mkg.Market) {
@@ -45,122 +41,62 @@ var Marketing = (function () {
                 this.salesForces.push(object);
             }
         }
-    };
-    Object.defineProperty(Marketing.prototype, "advertisingCost", {
-        // results
-        get: function () {
-            return Utils.sums(this.markets, "advertisingCost");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "productsInventoriesValue", {
-        get: function () {
-            return Utils.sums(this.markets, "stockValue");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "hiredTransportCost", {
-        get: function () {
-            return Utils.sums(this.transports, "hiredTransportCost");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "salesForceCost", {
-        get: function () {
-            return Utils.sums(this.salesForces, "totalCost", "params.isECommerceDistributor", false);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "websiteDevelopmentCost", {
-        get: function () {
-            return Utils.sums(this.eCommerces, "websiteDevelopmentCost");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "internetDistributionCost", {
-        get: function () {
-            return Utils.sums(this.eCommerces, "internetDistributionCost");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "ISPCost", {
-        get: function () {
-            return Utils.sums(this.eCommerces, "ISPCost");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "salesForceNb", {
-        get: function () {
-            return Utils.sums(this.salesForces, "employeesNb");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "_globalIndustryTotalSoldQ", {
-        get: function () {
-            return Utils.sums(this.markets, "industryTotalSoldQ");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "_globalIndustryTotalSalesRevenue", {
-        get: function () {
-            return Utils.sums(this.markets, "industryTotalSalesRevenue");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "_globalFirmTotalSoldQ", {
-        get: function () {
-            return Utils.sums(this.markets, "firmTotalSoldQ");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "_marketVolumeShareOfSales", {
-        get: function () {
-            var share = this._globalFirmTotalSoldQ / this._globalIndustryTotalSoldQ;
-            return Utils.round(share, 4);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "_marketValueShareOfSales", {
-        get: function () {
-            var share = this.salesOffice.salesRevenue / this._globalIndustryTotalSalesRevenue;
-            return Utils.round(share, 4);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "_shortfallQ", {
-        get: function () {
-            return Utils.sums(this.markets, "shortfallQ");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Marketing.prototype, "_shortfallRate", {
-        get: function () {
-            return Utils.sums(this.markets, "shortfallRate");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Marketing.prototype.getEndState = function (prefix) {
-        var deferred = Q.defer();
-        var endState = {};
-        var that = this;
-        var deptName = this.departmentName;
+    }
+    // results
+    get advertisingCost() {
+        return Utils.sums(this.markets, "advertisingCost");
+    }
+    get productsInventoriesValue() {
+        return Utils.sums(this.markets, "stockValue");
+    }
+    get hiredTransportCost() {
+        return Utils.sums(this.transports, "hiredTransportCost");
+    }
+    get salesForceCost() {
+        return Utils.sums(this.salesForces, "totalCost", "params.isECommerceDistributor", false);
+    }
+    get websiteDevelopmentCost() {
+        return Utils.sums(this.eCommerces, "websiteDevelopmentCost");
+    }
+    get internetDistributionCost() {
+        return Utils.sums(this.eCommerces, "internetDistributionCost");
+    }
+    get ISPCost() {
+        return Utils.sums(this.eCommerces, "ISPCost");
+    }
+    get salesForceNb() {
+        return Utils.sums(this.salesForces, "employeesNb");
+    }
+    get _globalIndustryTotalSoldQ() {
+        return Utils.sums(this.markets, "industryTotalSoldQ");
+    }
+    get _globalIndustryTotalSalesRevenue() {
+        return Utils.sums(this.markets, "industryTotalSalesRevenue");
+    }
+    get _globalFirmTotalSoldQ() {
+        return Utils.sums(this.markets, "firmTotalSoldQ");
+    }
+    get _marketVolumeShareOfSales() {
+        let share = this._globalFirmTotalSoldQ / this._globalIndustryTotalSoldQ;
+        return Utils.round(share, 4);
+    }
+    get _marketValueShareOfSales() {
+        let share = this.salesOffice.salesRevenue / this._globalIndustryTotalSalesRevenue;
+        return Utils.round(share, 4);
+    }
+    get _shortfallQ() {
+        return Utils.sums(this.markets, "shortfallQ");
+    }
+    get _shortfallRate() {
+        return Utils.sums(this.markets, "shortfallRate");
+    }
+    getEndState(prefix) {
+        let deferred = Q.defer();
+        let endState = {};
+        let that = this;
+        let deptName = this.departmentName;
         setImmediate(function () {
-            for (var key in that) {
+            for (let key in that) {
                 if (!Marketing.prototype.hasOwnProperty(key)) {
                     continue;
                 }
@@ -169,7 +105,7 @@ var Marketing = (function () {
                 }
                 console.silly("mkg GES @ %s of %s", deptName, key);
                 try {
-                    var value = that[key];
+                    let value = that[key];
                     if (!Utils.isBasicType(value)) {
                         continue;
                     }
@@ -187,9 +123,8 @@ var Marketing = (function () {
             deferred.resolve(endState);
         });
         return deferred.promise;
-    };
-    return Marketing;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Marketing;
 //# sourceMappingURL=Marketing.js.map

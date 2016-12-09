@@ -207,7 +207,7 @@ let getRoleList = function  (): any {
 
 let authorizeRolePermission = function (resource, userRoleId){
     if (userRoleId > 0) {
-        var role = roleListResult[userRoleId];
+        let role = roleListResult[userRoleId];
 
         if(role.permissions.indexOf(resource) > -1){
             return true

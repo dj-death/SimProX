@@ -31,7 +31,7 @@ export default class Finance {
 
     register(objects: any[]) {
 
-        var i = 0,
+        let i = 0,
             len = objects.length,
             object;
 
@@ -53,7 +53,7 @@ export default class Finance {
     }
 
     calcOverdraftLimit(company_BankFile): number {
-        var sums = 0;
+        let sums = 0;
 
         this.bankAccounts.forEach(function  (account) {
             sums += account.calcOverdraftLimit(company_BankFile);
@@ -124,7 +124,7 @@ export default class Finance {
         let deferred = Q.defer();
 
 
-        var endState = {};
+        let endState = {};
 
         let that: Object = this;
 
@@ -132,7 +132,7 @@ export default class Finance {
 
         setImmediate(function  () {
 
-            for (var key in that) {
+            for (let key in that) {
                 console.silly("fin GES @ %s of %s", key);
 
                 if (!Finance.prototype.hasOwnProperty(key)) {

@@ -1,14 +1,14 @@
 "use strict";
-var Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var cashPayments = {
+const Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let cashPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 function create() {
-    var factory = new Manufacturing_1.Factory({
+    let factory = new Manufacturing_1.Factory({
         id: "factory1",
         factoryID: "0",
         landID: "0",

@@ -2,18 +2,18 @@
  * Module dependencies
  */
 "use strict";
-var mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
-var Schema = mongoose.Schema;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
-var uuid = require('node-uuid');
-var bcrypt = require('bcrypt-nodejs');
-var SALT_WORK_FACTOR = 10;
-var userRoleModel = require('./UserRole');
+let mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
+let Schema = mongoose.Schema;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
+let uuid = require('node-uuid');
+let bcrypt = require('bcrypt-nodejs');
+let SALT_WORK_FACTOR = 10;
+const userRoleModel = require('./UserRole');
 /**
  * Mongoose schema
  */
-var userSchema = new Schema({
+let userSchema = new Schema({
     firstName: String,
     lastName: String,
     // system field
@@ -114,7 +114,7 @@ userSchema.virtual('roleId').get(function () {
     return this.role;
 });
 userSchema.pre('save', function (next) {
-    var user = this;
+    let user = this;
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password'))
         return next();
@@ -136,8 +136,8 @@ userSchema.statics.register = function (newUser) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
-    var query = {
+    let deferred = Q.defer();
+    let query = {
         $and: [
             { $or: [{ username: newUser.username }, { 'email': newUser.email }] }
         ]
@@ -303,7 +303,7 @@ userSchema.statics.searchQueryValidations = function (req) {
  * Methods
  */
 function removeProperty(obj) {
-    for (var p in obj) {
+    for (let p in obj) {
         if (obj.hasOwnProperty(p)) {
             if (obj[p] === '' || obj[p] === null) {
                 delete obj[p];
@@ -315,6 +315,6 @@ function removeProperty(obj) {
 /**
  * Register Model
  */
-var User = mongoose.model("User", userSchema);
+let User = mongoose.model("User", userSchema);
 module.exports = User;
 //# sourceMappingURL=User.js.map

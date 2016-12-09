@@ -1,8 +1,8 @@
 "use strict";
-var Personnel_1 = require('../../engine/ComputeEngine/Personnel');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
+const Personnel_1 = require('../../engine/ComputeEngine/Personnel');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
 function create() {
-    var management = new Personnel_1.Management({
+    let management = new Personnel_1.Management({
         id: "management1",
         label: "management1",
         minDailyTrainedEmployeesNb: 5,

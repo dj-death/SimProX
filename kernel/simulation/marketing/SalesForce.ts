@@ -4,7 +4,7 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 
 
-var salesForceDefaultCostsParams = {
+let salesForceDefaultCostsParams = {
     minSupportPerAgent: 5000,
     
     dismissal: 5000,
@@ -12,7 +12,7 @@ var salesForceDefaultCostsParams = {
     training: 0
 };
 
-var defaultPayments: ENUMS.PaymentArray = {
+let defaultPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
@@ -21,7 +21,7 @@ var defaultPayments: ENUMS.PaymentArray = {
 
 export default function create(): SalesForce[] {
 
-    var euroAgents = new SalesForce({
+    let euroAgents = new SalesForce({
         id: "agent1",
         label: "agent1",
 
@@ -43,7 +43,7 @@ export default function create(): SalesForce[] {
         attritionBaseRate: 0
     });
 
-    var naftaDistributors = new SalesForce({
+    let naftaDistributors = new SalesForce({
         id: "agent2",
         label: "agent2",
 
@@ -65,7 +65,7 @@ export default function create(): SalesForce[] {
         attritionBaseRate: 0
     });
 
-    var internetDistributor = new SalesForce({
+    let internetDistributor = new SalesForce({
         id: "agent3",
         label: "agent3",
 

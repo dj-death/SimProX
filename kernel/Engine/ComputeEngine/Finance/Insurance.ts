@@ -99,7 +99,7 @@ export default class Insurance extends IObject.IObject {
     }
 
     cover(...collections: any[]) {
-        var self = this;
+        let self = this;
 
         collections.forEach(function  (objects) {
             if (objects.length) {
@@ -124,10 +124,10 @@ export default class Insurance extends IObject.IObject {
             return this._claimsForLosses;
         }
 
-        var risks = this.forceMajeure;
-        var risksAlphaFactors;
+        let risks = this.forceMajeure;
+        let risksAlphaFactors;
 
-        var managementBudget = this.management.budget;
+        let managementBudget = this.management.budget;
 
 
         if (managementBudget >= this.params.optimalManagementBudget) {
@@ -154,7 +154,7 @@ export default class Insurance extends IObject.IObject {
 
         let premiumRate = Utils.round(this.insurancePlanTakenout.premiumRate * inflationImpact, 4);
 
-        var insurancePremiums = premiumRate * this.premiumsBase;
+        let insurancePremiums = premiumRate * this.premiumsBase;
 
         return Utils.round(insurancePremiums);
     }
@@ -162,7 +162,7 @@ export default class Insurance extends IObject.IObject {
 
 
     get receipts(): number {
-        var diff = this.claimsForLosses - this.primaryNonInsuredRisk;
+        let diff = this.claimsForLosses - this.primaryNonInsuredRisk;
 
         if (diff > 0) {
             return diff;

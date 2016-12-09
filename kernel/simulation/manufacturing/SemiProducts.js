@@ -1,13 +1,13 @@
 "use strict";
-var Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var cashPayments = {
+const Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let cashPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
-var threeMonthsPayments = {
+let threeMonthsPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 0
@@ -18,7 +18,7 @@ var threeMonthsPayments = {
     }
 };
 function create() {
-    var alphaA = new Manufacturing_1.SemiProduct({
+    let alphaA = new Manufacturing_1.SemiProduct({
         id: "subProduct1",
         subProductID: "0",
         atelierID: "0",
@@ -40,7 +40,7 @@ function create() {
             externalStorageUnitCost: 3
         }
     });
-    var betaA = new Manufacturing_1.SemiProduct({
+    let betaA = new Manufacturing_1.SemiProduct({
         id: "subProduct2",
         subProductID: "1",
         atelierID: "1",
@@ -62,7 +62,7 @@ function create() {
             externalStorageUnitCost: 0
         }
     });
-    var alphaB = new Manufacturing_1.SemiProduct({
+    let alphaB = new Manufacturing_1.SemiProduct({
         id: "subProduct3",
         subProductID: "2",
         atelierID: "0",
@@ -84,7 +84,7 @@ function create() {
             externalStorageUnitCost: 3
         }
     });
-    var betaB = new Manufacturing_1.SemiProduct({
+    let betaB = new Manufacturing_1.SemiProduct({
         id: "subProduct4",
         subProductID: "3",
         atelierID: "1",
@@ -106,7 +106,7 @@ function create() {
             externalStorageUnitCost: 0
         }
     });
-    var alphaC = new Manufacturing_1.SemiProduct({
+    let alphaC = new Manufacturing_1.SemiProduct({
         id: "subProduct5",
         subProductID: "4",
         atelierID: "0",
@@ -128,7 +128,7 @@ function create() {
             externalStorageUnitCost: 3
         }
     });
-    var betaC = new Manufacturing_1.SemiProduct({
+    let betaC = new Manufacturing_1.SemiProduct({
         id: "subProduct6",
         subProductID: "5",
         atelierID: "1",

@@ -1,8 +1,8 @@
 "use strict";
-var Environnement_1 = require('../../engine/ComputeEngine/Environnement');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
+const Environnement_1 = require('../../engine/ComputeEngine/Environnement');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
 function create() {
-    var supplierA1 = new Environnement_1.Supplier({
+    let supplierA1 = new Environnement_1.Supplier({
         supplierID: "0",
         id: "Supplier1",
         label: "Supplier1",

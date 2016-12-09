@@ -5,7 +5,7 @@ import Utils = require('../../utils/Utils');
 
 
 
-var subContracterDefaultParams,
+let subContracterDefaultParams,
     alphaASubContracterParams,
     alphaBSubContracterParams,
     alphaCSubContracterParams;
@@ -37,14 +37,14 @@ alphaASubContracterParams = Utils.ObjectApply({}, subContracterDefaultParams, { 
 alphaBSubContracterParams = Utils.ObjectApply({}, subContracterDefaultParams, { manufacturingUnitCost: 75, offeredSubProductsIDs: ["2"] });
 alphaCSubContracterParams = Utils.ObjectApply({}, subContracterDefaultParams, { manufacturingUnitCost: 120, offeredSubProductsIDs: ["4"] });
 
-var cashPayments: ENUMS.PaymentArray = {
+let cashPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 
-var threeMonthsPayments: ENUMS.PaymentArray = {
+let threeMonthsPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 0
@@ -60,9 +60,9 @@ var threeMonthsPayments: ENUMS.PaymentArray = {
 
 export default function create(): SubContracter[] {
 
-    var alphaASubContracter = new SubContracter(alphaASubContracterParams);
-    var alphaBSubContracter = new SubContracter(alphaBSubContracterParams);
-    var alphaCSubContracter = new SubContracter(alphaCSubContracterParams);
+    let alphaASubContracter = new SubContracter(alphaASubContracterParams);
+    let alphaBSubContracter = new SubContracter(alphaBSubContracterParams);
+    let alphaCSubContracter = new SubContracter(alphaCSubContracterParams);
 
     return [alphaASubContracter, alphaBSubContracter, alphaCSubContracter];
 }

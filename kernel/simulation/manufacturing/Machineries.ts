@@ -3,21 +3,21 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 
 
-var cashPayments: ENUMS.PaymentArray = {
+let cashPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 
-var maintenancePayments: ENUMS.PaymentArray = {
+let maintenancePayments: ENUMS.PaymentArray = {
     "THREE_MONTH": {
         credit: ENUMS.CREDIT.THREE_MONTH,
         part: 1
     }
 };
 
-var machinesParams: MachineParams[] = [
+let machinesParams: MachineParams[] = [
     {
         id: "machine1",
         label: "Machine 1",
@@ -50,7 +50,7 @@ var machinesParams: MachineParams[] = [
 ];
 
 export function create(): Machinery[] {
-    var atelier1Machinery = new Machinery({
+    let atelier1Machinery = new Machinery({
         id: "machinery1",
         machineryID: "0",
 
@@ -84,7 +84,7 @@ export function create(): Machinery[] {
 }
 
 
-var atelier1MachineryStates: MachineStats[] = [
+let atelier1MachineryStates: MachineStats[] = [
     {
         type: 0,
         age: 19,
@@ -164,4 +164,4 @@ var atelier1MachineryStates: MachineStats[] = [
     }
 ];
 
-export var machinesStates = [atelier1MachineryStates];
+export let machinesStates = [atelier1MachineryStates];

@@ -1,7 +1,7 @@
 "use strict";
-var Environnement_1 = require('../../engine/ComputeEngine/Environnement');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var maroc_stats = {
+const Environnement_1 = require('../../engine/ComputeEngine/Environnement');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let maroc_stats = {
     population: [
         32.11, 32.53, 32.98, 33.45, 33.92, 34.38
     ],
@@ -18,7 +18,7 @@ var maroc_stats = {
         109, 107.6, 109.5, 108.6, 109.6, 108.3, 110.4, 109.6, 109.7, 110.4, 111.7, 112.4, 112.3, 112.9, 113.6, 112.9, 112.7, 112.8, 113.7, 114.7, 114.5, 115, 115.5, 115.4, 116.6, 117.6
     ]
 };
-var europe_stats = {
+let europe_stats = {
     population: [
         336.14, 336.94, 336.16, 338.76, 338.62, 339.43
     ],
@@ -43,7 +43,7 @@ var europe_stats = {
         167.90, 285.37, 470.46, 519.63, 523.32, 511.42
     ]
 };
-var usa_stats = {
+let usa_stats = {
     IPCInflationStats: [
         2.360525, 1.767765, 1.175609, 1.270248, 2.141127, 3.430395, 3.756174, 3.293777, 2.815192, 1.889765, 1.697784, 1.889365, 1.681829, 1.39285, 1.553359, 1.233471, 1.405456, 2.050846, 1.783154, 1.248028, -0.06269593, -0.03827201, 0.1095034, 0.4662646, 1.080267, 1.05085
     ],
@@ -57,7 +57,7 @@ var usa_stats = {
         -512657, -515164.59, -503147.06, -472697.47, -500225.20
     ]
 };
-var OECD_stats = {
+let OECD_stats = {
     population: [
         1241.45, 1249.55, 1256, 1265.80, 1272.99, 1281
     ],
@@ -79,7 +79,7 @@ var OECD_stats = {
         -191499.55, -126985, 82755.73, 165875.77, 185578.76
     ]
 };
-var reports = [
+let reports = [
     "The green policies promoted by the European Union are impacting on energy costs. initially the claim was that these policies would help to reduce costs. Now the subsidies required are being past on to consumers.",
     "There is a recovery in construction in the US.It is hoped this may will continue into the future.The dollar should rise in value if this happens.",
     "The International Monetary Fund is suggesting that advanced economies should borrow to spend on key infrastructure projects. The say that the Eurozone would benefit most.",
@@ -91,8 +91,8 @@ var reports = [
     "This is the traditional shopping season around the world. Countries expect to achieve increased sales. However increased interest rates can have a bigger impact in some countries than in others.",
     "The US dollar has gained against the Euro. This can be attributed to a growing confidence in the American economy."
 ];
-var economie1_stats = maroc_stats;
-var europe = new Environnement_1.Economy({
+let economie1_stats = maroc_stats;
+let europe = new Environnement_1.Economy({
     id: "economy1",
     label: "economy1",
     economyID: "0",
@@ -118,8 +118,8 @@ var europe = new Environnement_1.Economy({
     annualGDPBaseGrowthRate: economie1_stats.GDPbaseGrowthRate,
     businessReports: reports
 });
-var economie2_stats = europe_stats;
-var northAmerica = new Environnement_1.Economy({
+let economie2_stats = europe_stats;
+let northAmerica = new Environnement_1.Economy({
     id: "economy2",
     label: "economy2",
     economyID: "1",
@@ -145,8 +145,8 @@ var northAmerica = new Environnement_1.Economy({
     PPIInflationStats: europe_stats.PPIInflationStats,
     GDPGrowthRateStats: europe_stats.GDPGrowthRateStats
 });
-var economie3_stats = OECD_stats;
-var restOfDevelopedWorld = new Environnement_1.Economy({
+let economie3_stats = OECD_stats;
+let restOfDevelopedWorld = new Environnement_1.Economy({
     id: "economy3",
     label: "economy3",
     economyID: "2",
@@ -171,8 +171,8 @@ var restOfDevelopedWorld = new Environnement_1.Economy({
     IPCInflationStats: OECD_stats.IPCInflationStats,
     GDPGrowthRateStats: OECD_stats.GDPGrowthRateStats
 });
-var economies = [europe, northAmerica, restOfDevelopedWorld];
-var world = new Environnement_1.World({
+let economies = [europe, northAmerica, restOfDevelopedWorld];
+let world = new Environnement_1.World({
     id: "economy4",
     label: "economy4",
     economyID: "3",

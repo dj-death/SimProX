@@ -1,48 +1,43 @@
 "use strict";
 global.debug_data = global.debug_data || {};
 process.env.JWT_SECRET = 'didi';
-Number.isInteger = Number.isInteger || function (value) {
-    return typeof value === "number" &&
-        isFinite(value) &&
-        Math.floor(value) === value;
-};
-var http = require('http');
-var path = require('path');
-var express = require('express');
-var favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
-var compression = require('compression');
-var session = require('express-session');
-var multer = require('multer');
-var errorHandler = require('errorhandler');
-var cors = require('cors');
-var mongoose = require('mongoose');
+const http = require('http');
+const path = require('path');
+let express = require('express');
+let favicon = require('serve-favicon');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
+let methodOverride = require('method-override');
+let compression = require('compression');
+let session = require('express-session');
+let multer = require('multer');
+let errorHandler = require('errorhandler');
+let cors = require('cors');
+let mongoose = require('mongoose');
 mongoose.Promise = require('q').Promise;
-var sio = require('socket.io');
-var socketAsPromised = require('socket.io-as-promised');
-var passport = require('passport');
-var flash = require('connect-flash');
-var app = express();
-var server = http.createServer(app);
-var io = sio.listen(server);
-var socketioJwt = require("socketio-jwt");
+let sio = require('socket.io');
+let socketAsPromised = require('socket.io-as-promised');
+let passport = require('passport');
+let flash = require('connect-flash');
+let app = express();
+let server = http.createServer(app);
+let io = sio.listen(server);
+let socketioJwt = require("socketio-jwt");
 io.use(socketioJwt.authorize({
     secret: process.env.JWT_SECRET,
     handshake: true
 }));
 io.use(socketAsPromised());
-var logger = require('./utils/logger');
-var config = require('./config');
-var routes = require('./routes/index');
-var iSocketio = require('./api/utils/socketio');
-var expressValidator = require('express-validator');
-var customValidator = require('./api/utils/express-custom-validator');
+const logger = require('./utils/logger');
+const config = require('./config');
+const routes = require('./routes/index');
+const iSocketio = require('./api/utils/socketio');
+let expressValidator = require('express-validator');
+const customValidator = require('./api/utils/express-custom-validator');
 // settings
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || config.server.port || process.env.port;
-var server_host = process.env.OPENSHIFT_NODEJS_IP || config.server.host || '127.0.0.1';
-var mongo_conn = !process.env.OPENSHIFT_MONGODB_DB_URL ? config.server.mongo_conn : process.env.OPENSHIFT_MONGODB_DB_URL + "engine";
+const server_port = process.env.OPENSHIFT_NODEJS_PORT || config.server.port || process.env.port;
+const server_host = process.env.OPENSHIFT_NODEJS_IP || config.server.host || '127.0.0.1';
+const mongo_conn = !process.env.OPENSHIFT_MONGODB_DB_URL ? config.server.mongo_conn : process.env.OPENSHIFT_MONGODB_DB_URL + "engine";
 app.set('port', server_port);
 // set our default template engine to "jade"
 // which prevents the need for extensions
@@ -68,7 +63,7 @@ let whitelist = ['http://localhost:1841', 'http://localhost:1337'];
 
 let corsOptions = {
     origin: function (origin, callback) {
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        let originIsWhitelisted = whitelist.indexOf(origin) !== -1;
         callback(null, originIsWhitelisted);
     }
 };
@@ -97,7 +92,7 @@ app.use(expressValidator({
 // Routing
 app.use('/', routes.get(io));
 app.get('/status', function (req, res, next) {
-    var stats = {
+    let stats = {
         pid: process.pid,
         memory: process.memoryUsage(),
         uptime: process.uptime()
@@ -198,7 +193,7 @@ app.use(function (err, req, res, next) {
 });
 try {
     mongoose.connect(mongo_conn);
-    var db = mongoose.connection;
+    let db = mongoose.connection;
     db.on('error', console.log.bind(console, 'connection error:'));
     db.once('open', function (response, request) {
         console.log('Connection to DB successful :' + mongo_conn);
@@ -214,12 +209,12 @@ catch (e) {
 }
 // error handling middleware should be loaded after the loading the routes
 if (app.get('env') === 'development') {
-    var codein = require("node-codein");
+    let codein = require("node-codein");
     app.use(errorHandler());
 }
 server.on('error', function (err) {
     if (err.code === 'EADDRINUSE') {
-        var msg = 'Address ' + server.address() + ' already in use! You need to pick a different host and/or port.';
+        let msg = 'Address ' + server.address() + ' already in use! You need to pick a different host and/or port.';
         console.log(err);
         console.log(msg);
     }

@@ -1,13 +1,13 @@
 "use strict";
-var economies = require('./environnement/Economies');
-var centralBanks = require('./environnement/CentralBanks');
-var stockMarkets = require('./environnement/StockMarkets');
-var banks = require('./environnement/Banks');
-var materialsMarkets = require('./environnement/MaterialsMarkets');
-var currencies = require('./environnement/Currencies');
-var stakeholders = require('./environnement/Stakeholders');
-var labourPools = require('./environnement/LabourPools');
-var objects = {
+const economies = require('./environnement/Economies');
+const centralBanks = require('./environnement/CentralBanks');
+const stockMarkets = require('./environnement/StockMarkets');
+const banks = require('./environnement/Banks');
+const materialsMarkets = require('./environnement/MaterialsMarkets');
+const currencies = require('./environnement/Currencies');
+const stakeholders = require('./environnement/Stakeholders');
+const labourPools = require('./environnement/LabourPools');
+let objects = {
     world: economies.world,
     economies: economies.economies,
     currencies: currencies,

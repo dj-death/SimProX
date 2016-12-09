@@ -9,7 +9,7 @@ declare module "jstat" {
         /**
          * Returns the count of rows in a matrix.
          *
-         * var matrix = [[1,2,3],[4,5,6]];
+         * let matrix = [[1,2,3],[4,5,6]];
          * jStat.rows( matrix ) === 2;
          */
          rows(): number;
@@ -22,7 +22,7 @@ declare module "jstat" {
         /**
          * Returns an object with the dimensions of a matrix.
          *
-         * var matrix = [[1,2,3],[4,5,6]];
+         * let matrix = [[1,2,3],[4,5,6]];
          * jStat.dimensions( matrix ) === { cols: 3, rows: 2 };
          */
          dimensions(): { cols: number, rows: number };
@@ -30,7 +30,7 @@ declare module "jstat" {
         /**
          * Returns a specified row of a matrix.
          *
-         * var matrix = [[1,2,3],[4,5,6]];
+         * let matrix = [[1,2,3],[4,5,6]];
          * jStat.row( matrix, 0 ) === [1,2,3];
          */
          row( index: number): number[][];
@@ -39,7 +39,7 @@ declare module "jstat" {
         /**
          * Returns the specified column as a column vector.
          *
-         * var matrix = [[1,2],[3,4]];
+         * let matrix = [[1,2],[3,4]];
          * jStat.col( matrix, 0 ) === [[1],[3]];
          */
          col( index: number): number[][];
@@ -47,7 +47,7 @@ declare module "jstat" {
         /**
          * Returns the diagonal of a matrix.
          *
-         * var matrix = [[1,2,3],[4,5,6],[7,8,9]];
+         * let matrix = [[1,2,3],[4,5,6],[7,8,9]];
          * jStat.diag( matrix ) === [[1],[5],[9]];
          */
          diag(): number[][];
@@ -55,7 +55,7 @@ declare module "jstat" {
         /**
          * Returns the anti-diagonal of the matrix.
          *
-         * var matrix = [[1,2,3],[4,5,6],[7,8,9]];
+         * let matrix = [[1,2,3],[4,5,6],[7,8,9]];
          * jStat.antidiag( matrix ) === [[3],[5],[7]];
          */
          antidiag(): number[][];
@@ -63,7 +63,7 @@ declare module "jstat" {
         /**
          * Transpose a matrix.
          *
-         * var matrix = [[1,2],[3,4]];
+         * let matrix = [[1,2],[3,4]];
          * jStat.transpose( matrix ) === [[1,3],[2,4]];
          */
          transpose(): number[][];
@@ -114,7 +114,7 @@ declare module "jstat" {
         /**
          * Set all values in the vector or matrix to zero.
          *
-         * var tmp = [1,2,3];
+         * let tmp = [1,2,3];
          * jStat.clear( tmp ) // tmp === [0,0,0]
          */
          clear(): number[];

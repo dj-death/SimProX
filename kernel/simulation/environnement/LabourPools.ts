@@ -1,6 +1,6 @@
 ﻿import { LabourPool } from '../../engine/ComputeEngine/Environnement';
 
-var europeanLabourPool = new LabourPool();
-var americanLabourPool = new LabourPool();
+let europeanLabourPool = new LabourPool();
+let americanLabourPool = new LabourPool();
 
 export = [europeanLabourPool, americanLabourPool];

@@ -6,14 +6,14 @@ import Utils = require('../../utils/Utils');
 
 
 
-var cashPayments: ENUMS.PaymentArray = {
+let cashPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 
-var threeMonthsPayments: ENUMS.PaymentArray = {
+let threeMonthsPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 0
@@ -28,7 +28,7 @@ var threeMonthsPayments: ENUMS.PaymentArray = {
 
 export default function create(): Product[] {
 
-    var productA = new Product({
+    let productA = new Product({
         id: "product1",
         productID: "0",
 
@@ -65,7 +65,7 @@ export default function create(): Product[] {
         }
     });
 
-    var productB = new Product({
+    let productB = new Product({
         id: "product2",
         productID: "1",
 
@@ -101,7 +101,7 @@ export default function create(): Product[] {
         }
     });
 
-    var productC = new Product({
+    let productC = new Product({
         id: "product3",
         productID: "2",
 

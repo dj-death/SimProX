@@ -2,13 +2,6 @@
 process.env.JWT_SECRET = 'didi';
 
 
-Number.isInteger = Number.isInteger || function (value) {
-    return typeof value === "number" &&
-        isFinite(value) &&
-        Math.floor(value) === value;
-};
-
-
 import http = require('http');
 import path = require('path');
 
@@ -102,7 +95,7 @@ let whitelist = ['http://localhost:1841', 'http://localhost:1337'];
 
 let corsOptions = {
     origin: function (origin, callback) {
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        let originIsWhitelisted = whitelist.indexOf(origin) !== -1;
         callback(null, originIsWhitelisted);
     }
 };
@@ -145,7 +138,7 @@ app.use('/', routes.get(io));
 
 
 app.get('/status', function (req, res, next) {
-    var stats = {
+    let stats = {
         pid: process.pid,
         memory: process.memoryUsage(),
         uptime: process.uptime()
@@ -317,7 +310,7 @@ try {
 // error handling middleware should be loaded after the loading the routes
 if (app.get('env') === 'development') {
 
-    var codein = require("node-codein");
+    let codein = require("node-codein");
 
     app.use(errorHandler());
 }

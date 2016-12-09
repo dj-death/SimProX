@@ -37,7 +37,7 @@ export default class RawMaterial extends IObject.IObject {
         this.suppliers = suppliers;
 
         // attach suppliers to this rawMateriel
-        /*for (var i = 0, len = suppliers.length; i < len; i++) {
+        /*for (let i = 0, len = suppliers.length; i < len; i++) {
             this.suppliers[i].init(this);
         }*/
 
@@ -61,18 +61,18 @@ export default class RawMaterial extends IObject.IObject {
 
     // set valuation method
     get inventoryUnitValue(): number {
-        var spotPrice = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.IMMEDIATE);
-        var mth3Price = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.THREE_MONTH);
-        var mth6Price = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.SIX_MONTH);
+        let spotPrice = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.IMMEDIATE);
+        let mth3Price = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.THREE_MONTH);
+        let mth6Price = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.SIX_MONTH);
 
-        var unitValue = Math.min(spotPrice, mth3Price, mth6Price);
+        let unitValue = Math.min(spotPrice, mth3Price, mth6Price);
 
         return unitValue;
     }
 
     get inventoryUnitValueForPremiumQuality(): number {
-        var unitValue = this.inventoryUnitValue;
-        var qualityPremium = this.suppliers[0].params.unplannedPurchasesPremium;
+        let unitValue = this.inventoryUnitValue;
+        let qualityPremium = this.suppliers[0].params.unplannedPurchasesPremium;
 
         return unitValue * (1 + qualityPremium);
     }
@@ -80,10 +80,10 @@ export default class RawMaterial extends IObject.IObject {
     // 90% of the lowest of the spot, 3-month and 6- month prices quoted last quarter (converted into euros), 
     // times the number of units in stock and on order
     get closingValue(): number {
-        var quantity = this.warehouse.availableNextPeriodQ + this.warehouse.deliveryAfterNextPQ;
+        let quantity = this.warehouse.availableNextPeriodQ + this.warehouse.deliveryAfterNextPQ;
 
-        var calculatedValue = quantity * this.inventoryUnitValue;
-        var reelValue = calculatedValue * (1 - this.params.diffReelAndCalculatedValue);
+        let calculatedValue = quantity * this.inventoryUnitValue;
+        let reelValue = calculatedValue * (1 - this.params.diffReelAndCalculatedValue);
 
         return Math.ceil(reelValue);
     }
@@ -125,7 +125,7 @@ export default class RawMaterial extends IObject.IObject {
             return false;
         }
 
-        var deliveredQ: number,
+        let deliveredQ: number,
             standardMaterialQ: number,
             premiumMaterialQ: number,
             urgentOrderQ: number;

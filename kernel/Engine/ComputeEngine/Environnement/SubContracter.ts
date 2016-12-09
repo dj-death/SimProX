@@ -46,16 +46,16 @@ export default class SubContracter extends Supplier.Supplier<SemiProduct> {
 
     // helpers
     _getPrice(premiumQualityProp: number = 0): number {
-        var rawMaterial_spotPrice = this.rawMaterialSupplier._getPrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.IMMEDIATE);
-        var rawMaterial_spotHQPrice = this.rawMaterialSupplier._getPrice(ENUMS.QUALITY.HQ, ENUMS.FUTURES.IMMEDIATE);
+        let rawMaterial_spotPrice = this.rawMaterialSupplier._getPrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.IMMEDIATE);
+        let rawMaterial_spotHQPrice = this.rawMaterialSupplier._getPrice(ENUMS.QUALITY.HQ, ENUMS.FUTURES.IMMEDIATE);
 
-        var component_materialConsoUnit = this.material.params.rawMaterialConsoCfg.consoUnit;
+        let component_materialConsoUnit = this.material.params.rawMaterialConsoCfg.consoUnit;
 
-        var component_standardPrice = rawMaterial_spotPrice * component_materialConsoUnit + this.params.manufacturingUnitCost;
-        var component_HQPrice = rawMaterial_spotHQPrice * component_materialConsoUnit + this.params.manufacturingUnitCost;
+        let component_standardPrice = rawMaterial_spotPrice * component_materialConsoUnit + this.params.manufacturingUnitCost;
+        let component_HQPrice = rawMaterial_spotHQPrice * component_materialConsoUnit + this.params.manufacturingUnitCost;
         
         // linear interpolation
-        var price = component_standardPrice + ((premiumQualityProp - ENUMS.QUALITY.MQ) * (component_HQPrice - component_standardPrice)) / (ENUMS.QUALITY.HQ - ENUMS.QUALITY.MQ);
+        let price = component_standardPrice + ((premiumQualityProp - ENUMS.QUALITY.MQ) * (component_HQPrice - component_standardPrice)) / (ENUMS.QUALITY.HQ - ENUMS.QUALITY.MQ);
 
         // inflation
         price *= (this.economy.producerPriceBase100Index / 100);

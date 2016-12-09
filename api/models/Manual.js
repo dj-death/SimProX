@@ -1,25 +1,25 @@
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Q = require('q');
-var submenuSchema = mongoose.Schema({
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+let Q = require('q');
+let submenuSchema = mongoose.Schema({
     subMenuName: String
 });
-var menuSchema = mongoose.Schema({
+let menuSchema = mongoose.Schema({
     menuName: String,
     subMenu: [submenuSchema]
 });
-var manualSchema = new Schema({
+let manualSchema = new Schema({
     language: String,
     content: String,
     menu: [menuSchema]
 });
-var Manual = mongoose.model("Manual", manualSchema);
+let Manual = mongoose.model("Manual", manualSchema);
 function addOne(manual) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Manual.create(manual, function (err, result) {
         if (err) {
             return deferred.reject(err);
@@ -33,7 +33,7 @@ function findByLanguage(language) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Manual.findOne({
         language: language
     }, function (err, result) {

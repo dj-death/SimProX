@@ -1,8 +1,8 @@
 "use strict";
-var Marketing_1 = require('../../engine/ComputeEngine/Marketing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
+const Marketing_1 = require('../../engine/ComputeEngine/Marketing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
 function create() {
-    var BI = new Marketing_1.Intelligence({
+    let BI = new Marketing_1.Intelligence({
         id: "BI",
         label: "BI",
         costs: {

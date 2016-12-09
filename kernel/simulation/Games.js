@@ -1,6 +1,6 @@
 "use strict";
-var Game_1 = require('../engine/Game');
-var ENUMS = require('../engine/ComputeEngine/ENUMS');
+const Game_1 = require('../engine/Game');
+const ENUMS = require('../engine/ComputeEngine/ENUMS');
 var GMCGame = new Game_1.default({
     index100Value: 1000,
     stage: {

@@ -1,17 +1,17 @@
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Q = require('q');
-var chartSchema = new Schema({
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+let Q = require('q');
+let chartSchema = new Schema({
     seminarId: String,
     charts: []
 });
-var Chart = mongoose.model("Chart", chartSchema);
+let Chart = mongoose.model("Chart", chartSchema);
 function remove(seminarId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Chart.remove({ seminarId: seminarId }, function (err) {
         if (err) {
             deferred.reject(err);
@@ -27,7 +27,7 @@ function insert(chart) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Chart.create(chart, function (err) {
         if (err) {
             return deferred.reject(err);
@@ -43,7 +43,7 @@ function update(seminarId, chart) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Chart.update({
         seminarId: seminarId
     }, chart, function (err, numAffected) {
@@ -59,7 +59,7 @@ function findOne(seminarId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Chart.findOne({
         seminarId: seminarId
     }, function (err, result) {

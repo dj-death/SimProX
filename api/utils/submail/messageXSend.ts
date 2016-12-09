@@ -25,18 +25,18 @@ function  MessageXSend() {
         this.project = project;
     };
 
-    this.add_var = function (key, val) {
+    this.add_let = function (key, val) {
         this.vars[key] = val;
     };
 
     this.build_params = function () {
-        var params = {};
+        let params = {};
 
         if (this.to.length > 0) {
-            var toValue = '';
+            let toValue = '';
 
             for (let index in this.to) {
-                var name = ''
+                let name = ''
                 if (this.to_name[index] != undefined) {
                     name = this.to_name[index];
                 }
@@ -46,7 +46,7 @@ function  MessageXSend() {
         }
 
         if (this.addressbook.length > 0) {
-            var addressbookValue = '';
+            let addressbookValue = '';
 
             for (let index in this.addressbook) {
                 addressbookValue += this.addressbook[index] + ',';
@@ -67,7 +67,7 @@ function  MessageXSend() {
     };
 
     this.xsend = function (cb) {
-        var message = new Message();
+        let message = new Message();
         message.xsend(this.build_params(),cb);
     }
 };

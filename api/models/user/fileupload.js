@@ -2,27 +2,27 @@
 /*!
  * Module dependencies
  */
-var mongoose = require('mongoose-q')(require('mongoose'));
-var Schema = mongoose.Schema;
-var schemaObjectId = Schema.Types.ObjectId;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
-var config = require('../../../config');
-var logger = require('../../../utils/logger');
-var multer = require('multer');
-var mkdirp = require('mkdirp');
-var fs = require('fs');
-var basePath = config.fileUploadDirectory;
-var uploadPath = '/uploadimage/';
-var defaultPath = uploadPath + 'default_file_path';
-var tempPath = uploadPath + 'temp';
-var targetPath = defaultPath;
+let mongoose = require('mongoose-q')(require('mongoose'));
+let Schema = mongoose.Schema;
+let schemaObjectId = Schema.Types.ObjectId;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
+const config = require('../../../config');
+const logger = require('../../../utils/logger');
+let multer = require('multer');
+let mkdirp = require('mkdirp');
+let fs = require('fs');
+let basePath = config.fileUploadDirectory;
+let uploadPath = '/uploadimage/';
+let defaultPath = uploadPath + 'default_file_path';
+let tempPath = uploadPath + 'temp';
+let targetPath = defaultPath;
 mkdirp.sync(basePath + defaultPath);
 mkdirp.sync(basePath + tempPath);
 /**
  * Mongoose schema
  */
-var fileStorageSchema = new Schema({
+let fileStorageSchema = new Schema({
     name: { type: String },
     path: { type: String },
     physicalAbsolutePath: { type: String },
@@ -77,15 +77,15 @@ fileStorageSchema.statics.updateValidations = function (req) {
 /**
  * Register Model
  */
-var FileStorage = mongoose.model("FileStorage", fileStorageSchema);
-var mimeTypeLimit = [
+let FileStorage = mongoose.model("FileStorage", fileStorageSchema);
+let mimeTypeLimit = [
     'image/png',
     'image/jpg',
     'image/jpeg',
     'image/bmp',
     'image/gif',
 ];
-var uploadFeatureList = [
+let uploadFeatureList = [
     {
         name: 'studentProfile',
         prefix: 'student_profile',
@@ -131,7 +131,7 @@ var uploadFeatureList = [
         ]
     }
 ];
-var uploadFieldsLimit = [];
+let uploadFieldsLimit = [];
 uploadFeatureList.forEach(function (feature) {
     feature.postBodyField.forEach(function (field) {
         uploadFieldsLimit.push(field.name);
@@ -150,8 +150,8 @@ FileStorage.multerUpload = function (fieldname) {
             fileSize: 1 * 1024 * 1024
         },
         rename: function (fieldname, filename, req, res) {
-            var datenow = new Date();
-            var datenowString = datenow.getFullYear() + '_' + datenow.getMonth() + '_' + datenow.getDate() + '_' + datenow.getHours() + '_' + datenow.getMinutes() + '_' + datenow.getSeconds() + '_';
+            let datenow = new Date();
+            let datenowString = datenow.getFullYear() + '_' + datenow.getMonth() + '_' + datenow.getDate() + '_' + datenow.getHours() + '_' + datenow.getMinutes() + '_' + datenow.getSeconds() + '_';
             return datenowString + filename.replace(/\W+/g, '_').toLowerCase() + '_' + datenow.getTime();
         },
         onFileUploadStart: function (file, req, res) {

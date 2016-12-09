@@ -1,71 +1,52 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var IObject = require('../IObject');
-var ENUMS = require('../ENUMS');
-var console = require('../../../utils/logger');
-var Utils = require('../../../utils/Utils');
-var RawMaterial = (function (_super) {
-    __extends(RawMaterial, _super);
-    function RawMaterial(params) {
-        _super.call(this, params);
+const IObject = require('../IObject');
+const ENUMS = require('../ENUMS');
+const console = require('../../../utils/logger');
+const Utils = require('../../../utils/Utils');
+class RawMaterial extends IObject.IObject {
+    constructor(params) {
+        super(params);
         this.departmentName = "production";
     }
-    RawMaterial.prototype.init = function (suppliers, warehouse) {
-        _super.prototype.init.call(this);
+    init(suppliers, warehouse) {
+        super.init();
         this.suppliers = suppliers;
         // attach suppliers to this rawMateriel
-        /*for (var i = 0, len = suppliers.length; i < len; i++) {
+        /*for (let i = 0, len = suppliers.length; i < len; i++) {
             this.suppliers[i].init(this);
         }*/
         this.warehouse = warehouse;
         this.warehouse.stockedItem = this;
-    };
-    RawMaterial.prototype.reset = function () {
+    }
+    reset() {
         this.purchasesValue = 0;
         this.purchasesQ = 0;
         this.unplannedPurchasesQ = 0;
         this.initialised = false;
-    };
-    Object.defineProperty(RawMaterial.prototype, "inventoryUnitValue", {
-        // set valuation method
-        get: function () {
-            var spotPrice = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.IMMEDIATE);
-            var mth3Price = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.THREE_MONTH);
-            var mth6Price = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.SIX_MONTH);
-            var unitValue = Math.min(spotPrice, mth3Price, mth6Price);
-            return unitValue;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RawMaterial.prototype, "inventoryUnitValueForPremiumQuality", {
-        get: function () {
-            var unitValue = this.inventoryUnitValue;
-            var qualityPremium = this.suppliers[0].params.unplannedPurchasesPremium;
-            return unitValue * (1 + qualityPremium);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RawMaterial.prototype, "closingValue", {
-        // 90% of the lowest of the spot, 3-month and 6- month prices quoted last quarter (converted into euros), 
-        // times the number of units in stock and on order
-        get: function () {
-            var quantity = this.warehouse.availableNextPeriodQ + this.warehouse.deliveryAfterNextPQ;
-            var calculatedValue = quantity * this.inventoryUnitValue;
-            var reelValue = calculatedValue * (1 - this.params.diffReelAndCalculatedValue);
-            return Math.ceil(reelValue);
-        },
-        enumerable: true,
-        configurable: true
-    });
+    }
+    // set valuation method
+    get inventoryUnitValue() {
+        let spotPrice = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.IMMEDIATE);
+        let mth3Price = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.THREE_MONTH);
+        let mth6Price = this.suppliers[0]._getReelTimePrice(ENUMS.QUALITY.MQ, ENUMS.FUTURES.SIX_MONTH);
+        let unitValue = Math.min(spotPrice, mth3Price, mth6Price);
+        return unitValue;
+    }
+    get inventoryUnitValueForPremiumQuality() {
+        let unitValue = this.inventoryUnitValue;
+        let qualityPremium = this.suppliers[0].params.unplannedPurchasesPremium;
+        return unitValue * (1 + qualityPremium);
+    }
+    // 90% of the lowest of the spot, 3-month and 6- month prices quoted last quarter (converted into euros), 
+    // times the number of units in stock and on order
+    get closingValue() {
+        let quantity = this.warehouse.availableNextPeriodQ + this.warehouse.deliveryAfterNextPQ;
+        let calculatedValue = quantity * this.inventoryUnitValue;
+        let reelValue = calculatedValue * (1 - this.params.diffReelAndCalculatedValue);
+        return Math.ceil(reelValue);
+    }
     // actions
-    RawMaterial.prototype.supply = function (quantity, value, term, isUnplanned) {
-        if (isUnplanned === void 0) { isUnplanned = false; }
+    supply(quantity, value, term, isUnplanned = false) {
         if (!this.isInitialised()) {
             return false;
         }
@@ -79,8 +60,8 @@ var RawMaterial = (function (_super) {
             this.unplannedPurchasesQ += quantity;
         }
         return this.warehouse.moveIn(quantity, value, term) > 0;
-    };
-    RawMaterial.prototype.consume = function (quantity, premiumQualityProp) {
+    }
+    consume(quantity, premiumQualityProp) {
         if (!this.isInitialised()) {
             return false;
         }
@@ -92,7 +73,7 @@ var RawMaterial = (function (_super) {
             console.warn('Material @ premium Quality not reel :', premiumQualityProp);
             return false;
         }
-        var deliveredQ, standardMaterialQ, premiumMaterialQ, urgentOrderQ;
+        let deliveredQ, standardMaterialQ, premiumMaterialQ, urgentOrderQ;
         standardMaterialQ = Utils.ceil(quantity * (1 - premiumQualityProp), 2);
         premiumMaterialQ = Utils.ceil(quantity - standardMaterialQ, 2);
         // premium materiel work in JIT
@@ -106,28 +87,23 @@ var RawMaterial = (function (_super) {
             this.suppliers[0].order(standardMaterialQ - deliveredQ, ENUMS.QUALITY.MQ, ENUMS.FUTURES.IMMEDIATE, true);
         }
         return true;
-    };
-    RawMaterial.prototype.onFinish = function () {
+    }
+    onFinish() {
         this.CashFlow.addPayment(this.purchasesValue, this.suppliers[0].params.payments, 'purchasesValue');
-    };
-    Object.defineProperty(RawMaterial.prototype, "state", {
-        get: function () {
-            return {
-                "openingQ": this.warehouse.openingQ,
-                //"premiumMaterialPurchasesQ": this.suppliers[0].premiumMaterialPurchasesQ,
-                "unplannedPurchasesQ": this.unplannedPurchasesQ,
-                "spoiledQ": this.warehouse.spoiledQ,
-                "lostQ": this.warehouse.lostQ,
-                "outQ": this.warehouse.outQ,
-                "closingQ": this.warehouse.closingQ,
-                "deliveryNextPBoughtBeforeLastPQ": this.warehouse.deliveryNextPBoughtBeforeLastPQ
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return RawMaterial;
-}(IObject.IObject));
+    }
+    get state() {
+        return {
+            "openingQ": this.warehouse.openingQ,
+            //"premiumMaterialPurchasesQ": this.suppliers[0].premiumMaterialPurchasesQ,
+            "unplannedPurchasesQ": this.unplannedPurchasesQ,
+            "spoiledQ": this.warehouse.spoiledQ,
+            "lostQ": this.warehouse.lostQ,
+            "outQ": this.warehouse.outQ,
+            "closingQ": this.warehouse.closingQ,
+            "deliveryNextPBoughtBeforeLastPQ": this.warehouse.deliveryNextPBoughtBeforeLastPQ
+        };
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = RawMaterial;
 //# sourceMappingURL=RawMaterial.js.map

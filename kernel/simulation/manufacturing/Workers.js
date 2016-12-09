@@ -1,15 +1,15 @@
 "use strict";
-var Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var game = require('../Games');
-var weeksNbByPeriod = game.weeksNbByPeriod;
-var cashPayments = {
+const Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+const game = require('../Games');
+let weeksNbByPeriod = game.weeksNbByPeriod;
+let cashPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
-var single, double, treble, noShift;
+let single, double, treble, noShift;
 noShift = {
     level: ENUMS.SHIFT_LEVEL.SINGLE,
     workersNeededNb: 1,
@@ -51,7 +51,7 @@ treble = {
     weeksWorkedByPeriod: weeksNbByPeriod
 };
 function create() {
-    var machinist = new Manufacturing_1.Worker({
+    let machinist = new Manufacturing_1.Worker({
         id: "worker2",
         workerID: "1",
         machineryID: "0",
@@ -99,7 +99,7 @@ function create() {
         availablesShifts: [single, double, treble],
         attritionBaseRate: 0
     });
-    var assemblyWorker = new Manufacturing_1.Worker({
+    let assemblyWorker = new Manufacturing_1.Worker({
         id: "worker1",
         workerID: "0",
         machineryID: "",

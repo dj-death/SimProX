@@ -1,13 +1,13 @@
 "use strict";
-var Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var cashPayments = {
+const Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let cashPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
-var threeMonthsPayments = {
+let threeMonthsPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 0
@@ -18,7 +18,7 @@ var threeMonthsPayments = {
     }
 };
 function create() {
-    var productA = new Manufacturing_1.Product({
+    let productA = new Manufacturing_1.Product({
         id: "product1",
         productID: "0",
         subProductsIDs: ["0", "1"],
@@ -49,7 +49,7 @@ function create() {
             prodPlanning: cashPayments
         }
     });
-    var productB = new Manufacturing_1.Product({
+    let productB = new Manufacturing_1.Product({
         id: "product2",
         productID: "1",
         subProductsIDs: ["2", "3"],
@@ -80,7 +80,7 @@ function create() {
             prodPlanning: cashPayments
         }
     });
-    var productC = new Manufacturing_1.Product({
+    let productC = new Manufacturing_1.Product({
         id: "product3",
         productID: "2",
         subProductsIDs: ["4", "5"],

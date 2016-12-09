@@ -1,8 +1,8 @@
 "use strict";
-var Q = require('q');
-var request = require('request');
+let Q = require('q');
+let request = require('request');
 function get(reqUrl) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     request(reqUrl, function (err, response, body) {
         if (err) {
             return deferred.reject(err);
@@ -10,7 +10,7 @@ function get(reqUrl) {
         if (response.statusCode !== 200) {
             return deferred.reject(new Error(response.statusCode.toString()));
         }
-        var jsonData;
+        let jsonData;
         try {
             jsonData = JSON.parse(body);
         }
@@ -23,8 +23,8 @@ function get(reqUrl) {
 }
 exports.get = get;
 function post(reqUrl, data) {
-    var deferred = Q.defer();
-    var jsonData;
+    let deferred = Q.defer();
+    let jsonData;
     request.post(reqUrl, { form: data }, function (err, response, body) {
         if (err) {
             return deferred.reject(err);
@@ -37,7 +37,7 @@ function post(reqUrl, data) {
             return deferred.reject(parseError);
         }
         if (response.statusCode !== 200) {
-            var errMsg = '';
+            let errMsg = '';
             if (jsonData.message) {
                 errMsg = jsonData.message;
             }

@@ -1,25 +1,25 @@
 "use strict";
-var path = require('path');
-var mongoose = require('mongoose');
-var request = require('request');
-var q = require('q');
-var Dir = require('node-dir');
-var console = require('../../../kernel/utils/logger');
-var Flat = require('../../utils/Flat');
-var Excel = require('../../utils/ExcelUtils');
-var config = require('../../../config');
-var EngineConfig = config.engine;
-var scenarioSchema = require('./Schema');
-var Scenario = mongoose.model('scenario', scenarioSchema);
+const path = require('path');
+let mongoose = require('mongoose');
+let request = require('request');
+let q = require('q');
+let Dir = require('node-dir');
+const console = require('../../../kernel/utils/logger');
+const Flat = require('../../utils/Flat');
+const Excel = require('../../utils/ExcelUtils');
+const config = require('../../../config');
+let EngineConfig = config.engine;
+const scenarioSchema = require('./Schema');
+let Scenario = mongoose.model('scenario', scenarioSchema);
 // Persistent datastore with automatic loading 
-var Datastore = require('nedb');
-var scenariosDb = new Datastore({
+let Datastore = require('nedb');
+let scenariosDb = new Datastore({
     filename: EngineConfig.scenariosDbPath + '/scenarios.nosql',
     autoload: false,
     corruptAlertThreshold: 0
 });
 function loadScenario(scenarioID) {
-    var deferred = q.defer();
+    let deferred = q.defer();
     scenariosDb.loadDatabase(function (err) {
         // Now commands will be executed
         if (err) {
@@ -36,7 +36,7 @@ function loadScenario(scenarioID) {
                 });
                 return false;
             }
-            var historiques = doc.historiques.sort(function (v, w) {
+            let historiques = doc.historiques.sort(function (v, w) {
                 /*if (typeof v.periodYear === "undefined" || typeof  v.periodQuarter === "undefined") {
                     return v.period - w.period;
                 }
@@ -62,7 +62,7 @@ exports.loadScenario = loadScenario;
 /*
 export function  loadEmptyScenario () {
 
-    var deferred = q.defer();
+    let deferred = q.defer();
 
     scenariosDb.loadDatabase(function  (err) {
         // Now commands will be executed
@@ -82,8 +82,8 @@ export function  loadEmptyScenario () {
                 return false;
             }
 
-            var hist = doc.historiques[doc.historiques.length - 1];
-            var decision = PlayerDecision.resetRawDecision(hist);
+            let hist = doc.historiques[doc.historiques.length - 1];
+            let decision = PlayerDecision.resetRawDecision(hist);
 
             decision.period = 0;
 
@@ -120,45 +120,45 @@ function getScenario(options, res) {
 }
 exports.getScenario = getScenario;
 function createScenario(options) {
-    var deferred = q.defer();
-    var scenariosDbPath = EngineConfig.scenariosDbPath;
+    let deferred = q.defer();
+    let scenariosDbPath = EngineConfig.scenariosDbPath;
     Dir.subdirs(scenariosDbPath, function (err, subdirs) {
         if (err) {
             deferred.reject({
                 msg: err
             });
         }
-        var counter = subdirs.length;
+        let counter = subdirs.length;
         subdirs.forEach(function (subdir, idx) {
             console.log(subdir);
-            var scenario;
-            var historiques = [];
+            let scenario;
+            let historiques = [];
             Dir.files(subdir, function (err, files) {
                 if (err) {
                     deferred.reject({
                         msg: err
                     });
                 }
-                var periodsNb = files.length;
+                let periodsNb = files.length;
                 // sort ascending
                 files.sort();
                 files.forEach(function (file, idx) {
                     // add automoaticay period
-                    var period = idx + 1 - periodsNb;
-                    var flatHist = Excel.excelImport(file);
-                    var data = Flat.unflatten(flatHist, { delimiter: '_' });
+                    let period = idx + 1 - periodsNb;
+                    let flatHist = Excel.excelImport(file);
+                    let data = Flat.unflatten(flatHist, { delimiter: '_' });
                     data["period"] = isNaN(data["period"]) ? period : data["period"];
                     data["res"]["report"] = flatHist;
                     if (!data) {
                         console.debug(path.basename(file), ' failed');
                         return false;
                     }
-                    var histRecord = {
+                    let histRecord = {
                         period: data["period"],
                         decision: data["dec"],
                         results: data["res"]
                     };
-                    for (var key in data) {
+                    for (let key in data) {
                         if (!data.hasOwnProperty(key)) {
                             continue;
                         }
@@ -169,7 +169,7 @@ function createScenario(options) {
                     historiques.push(histRecord);
                 });
                 if (historiques[0] !== undefined) {
-                    var scenarioID = historiques[0].scenarioID;
+                    let scenarioID = historiques[0].scenarioID;
                     scenarioID = scenarioID ? scenarioID.trim() : "14C";
                     scenario = {
                         ref: scenarioID,

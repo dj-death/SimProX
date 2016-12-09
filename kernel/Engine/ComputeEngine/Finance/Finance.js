@@ -1,26 +1,22 @@
 "use strict";
-var Fin = require('./');
-var console = require('../../../utils/logger');
-var Utils = require('../../../utils/Utils');
-var Q = require('q');
-var Finance = (function () {
-    function Finance() {
+const Fin = require('./');
+const console = require('../../../utils/logger');
+const Utils = require('../../../utils/Utils');
+const Q = require('q');
+class Finance {
+    constructor() {
         this.departmentName = "Finance";
     }
-    Object.defineProperty(Finance.prototype, "Proto", {
-        get: function () {
-            return Finance.prototype;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Finance.prototype.init = function () {
+    get Proto() {
+        return Finance.prototype;
+    }
+    init() {
         this.insurances = [];
         this.bankAccounts = [];
         this.capital = null;
-    };
-    Finance.prototype.register = function (objects) {
-        var i = 0, len = objects.length, object;
+    }
+    register(objects) {
+        let i = 0, len = objects.length, object;
         for (; i < len; i++) {
             object = objects[i];
             if (object instanceof Fin.Insurance) {
@@ -33,125 +29,69 @@ var Finance = (function () {
                 this.capital = object;
             }
         }
-    };
-    Finance.prototype.calcOverdraftLimit = function (company_BankFile) {
-        var sums = 0;
+    }
+    calcOverdraftLimit(company_BankFile) {
+        let sums = 0;
         this.bankAccounts.forEach(function (account) {
             sums += account.calcOverdraftLimit(company_BankFile);
         });
         return sums;
-    };
-    Object.defineProperty(Finance.prototype, "insurancesPremiumsCost", {
-        get: function () {
-            return Utils.sums(this.insurances, "premiumsCost");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "insurancesClaimsForLosses", {
-        get: function () {
-            return Utils.sums(this.insurances, "claimsForLosses");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "insurancesReceipts", {
-        get: function () {
-            return Utils.sums(this.insurances, "receipts");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "insurancesPrimaryNonInsuredRisk", {
-        get: function () {
-            return Utils.sums(this.insurances, "primaryNonInsuredRisk");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "interestPaid", {
-        get: function () {
-            return Utils.sums(this.bankAccounts, "interestPaid");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "interestReceived", {
-        get: function () {
-            return Utils.sums(this.bankAccounts, "interestReceived");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "banksOverdraft", {
-        get: function () {
-            return Utils.sums(this.bankAccounts, "overdraft");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "termDeposit", {
-        get: function () {
-            return Utils.sums(this.bankAccounts, "termDeposit");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "termLoansValue", {
-        get: function () {
-            return Utils.sums(this.bankAccounts, "termLoans");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "additionalLoans", {
-        get: function () {
-            return Utils.sums(this.bankAccounts, "additionalLoans");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "balance", {
-        get: function () {
-            return Utils.sums(this.bankAccounts, "balance");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "cashValue", {
-        get: function () {
-            return Utils.sums(this.bankAccounts, "cash");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "interestBearingDebts", {
-        get: function () {
-            return this.termLoansValue + this.banksOverdraft;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Finance.prototype, "dividendRate", {
-        get: function () {
-            return this.capital.dividendRate;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Finance.prototype.getEndState = function (prefix) {
-        var deferred = Q.defer();
-        var endState = {};
-        var that = this;
-        var deptName = this.departmentName;
+    }
+    get insurancesPremiumsCost() {
+        return Utils.sums(this.insurances, "premiumsCost");
+    }
+    get insurancesClaimsForLosses() {
+        return Utils.sums(this.insurances, "claimsForLosses");
+    }
+    get insurancesReceipts() {
+        return Utils.sums(this.insurances, "receipts");
+    }
+    get insurancesPrimaryNonInsuredRisk() {
+        return Utils.sums(this.insurances, "primaryNonInsuredRisk");
+    }
+    get interestPaid() {
+        return Utils.sums(this.bankAccounts, "interestPaid");
+    }
+    get interestReceived() {
+        return Utils.sums(this.bankAccounts, "interestReceived");
+    }
+    get banksOverdraft() {
+        return Utils.sums(this.bankAccounts, "overdraft");
+    }
+    get termDeposit() {
+        return Utils.sums(this.bankAccounts, "termDeposit");
+    }
+    get termLoansValue() {
+        return Utils.sums(this.bankAccounts, "termLoans");
+    }
+    get additionalLoans() {
+        return Utils.sums(this.bankAccounts, "additionalLoans");
+    }
+    get balance() {
+        return Utils.sums(this.bankAccounts, "balance");
+    }
+    get cashValue() {
+        return Utils.sums(this.bankAccounts, "cash");
+    }
+    get interestBearingDebts() {
+        return this.termLoansValue + this.banksOverdraft;
+    }
+    get dividendRate() {
+        return this.capital.dividendRate;
+    }
+    getEndState(prefix) {
+        let deferred = Q.defer();
+        let endState = {};
+        let that = this;
+        let deptName = this.departmentName;
         setImmediate(function () {
-            for (var key in that) {
+            for (let key in that) {
                 console.silly("fin GES @ %s of %s", key);
                 if (!Finance.prototype.hasOwnProperty(key)) {
                     continue;
                 }
                 try {
-                    var value = that[key];
+                    let value = that[key];
                     if (!Utils.isBasicType(value)) {
                         continue;
                     }
@@ -169,9 +109,8 @@ var Finance = (function () {
             deferred.resolve(endState);
         });
         return deferred.promise;
-    };
-    return Finance;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Finance;
 //# sourceMappingURL=Finance.js.map

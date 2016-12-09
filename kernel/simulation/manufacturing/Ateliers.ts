@@ -3,7 +3,7 @@
 
 export default function create(): Atelier[] {
 
-    var atelierMoulage = new Atelier({
+    let atelierMoulage = new Atelier({
         id: "atelier1",
         atelierID: "0",
 
@@ -20,7 +20,7 @@ export default function create(): Atelier[] {
         }
     });
 
-    var atelierFinition = new Atelier({
+    let atelierFinition = new Atelier({
         id: "atelier2",
         atelierID: "1",
 

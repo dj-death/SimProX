@@ -46,8 +46,8 @@ export class IObject {
     }
 
     get className(): string {
-        var funcNameRegex = /function (.{1,})\(/;
-        var results = (funcNameRegex).exec((<any>this).constructor.toString());
+        let funcNameRegex = /function (.{1,})\(/;
+        let results = (funcNameRegex).exec((<any>this).constructor.toString());
         return (results && results.length > 1) ? results[1] : "";
     }
 
@@ -72,8 +72,8 @@ export class IObject {
         }
 
 
-        var self = this;
-        var previousListeners = typeof this["on" + eventName] === "function" ? this["on" + eventName] : function () { };
+        let self = this;
+        let previousListeners = typeof this["on" + eventName] === "function" ? this["on" + eventName] : function () { };
         // cumumative
         this["on" + eventName] = function () {
             previousListeners();
@@ -91,15 +91,15 @@ export class IObject {
     }
 
     getEndState(): any {
-        var result = {};
+        let result = {};
 
         let me = this.params.label || this.params.id;
 
         try {
 
-            var state = this.state;
+            let state = this.state;
 
-            for (var key in state) {
+            for (let key in state) {
                 console.silly("GES @ %s of %s", key, me);
 
                 if (!state.hasOwnProperty(key)) {
@@ -116,7 +116,7 @@ export class IObject {
                     console.warn("GES @ %s : %s is NaN", me, key);
                 }
 
-                var prop = this.params.id + "_" + key;
+                let prop = this.params.id + "_" + key;
                 result[prop] = value;
             }
 

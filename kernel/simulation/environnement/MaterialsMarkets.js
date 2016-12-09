@@ -1,6 +1,6 @@
 "use strict";
-var Environnement_1 = require('../../engine/ComputeEngine/Environnement');
-var materialAMarket1 = new Environnement_1.MaterialMarket({
+const Environnement_1 = require('../../engine/ComputeEngine/Environnement');
+let materialAMarket1 = new Environnement_1.MaterialMarket({
     id: "materialMarket1",
     label: "materialMarket",
     materialMarketID: "0",

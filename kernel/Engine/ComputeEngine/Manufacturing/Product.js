@@ -1,18 +1,13 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var IObject = require('../IObject');
-var Warehouse = require('./Warehouse');
-var ENUMS = require('../ENUMS');
-var console = require('../../../utils/logger');
-var Utils = require('../../../utils/Utils');
-var Collections = require('../../../utils/Collections');
-var $jStat = require("jstat");
-var jStat = $jStat.jStat;
-var extraString = require('string');
+const IObject = require('../IObject');
+const Warehouse = require('./Warehouse');
+const ENUMS = require('../ENUMS');
+const console = require('../../../utils/logger');
+const Utils = require('../../../utils/Utils');
+const Collections = require('../../../utils/Collections');
+const $jStat = require("jstat");
+let jStat = $jStat.jStat;
+let extraString = require('string');
 function fixImprovementResult(value) {
     if (typeof value === "string") {
         value = value.toUpperCase();
@@ -20,17 +15,16 @@ function fixImprovementResult(value) {
     }
     return ENUMS.IMPROVEMENT_TYPE.NONE;
 }
-var Product = (function (_super) {
-    __extends(Product, _super);
-    function Product(params) {
-        _super.call(this, params);
+class Product extends IObject.IObject {
+    constructor(params) {
+        super(params);
         this.departmentName = "production";
         this.insurance = null;
         this.devStats = new Collections.Stack();
         this.notImplementedRnd = new Collections.Queue();
     }
-    Product.prototype._calcRejectedUnitsNbOf = function (quantity) {
-        var landa, probability, value = 0, result;
+    _calcRejectedUnitsNbOf(quantity) {
+        let landa, probability, value = 0, result;
         probability = this.params.rejectedProbability;
         landa = probability * quantity;
         // variable X poisson variates with mean/variance of landa 
@@ -50,18 +44,18 @@ var Product = (function (_super) {
             }
         }
         return value;
-    };
-    Product.prototype.restoreLastState = function (lastResults, lastDecs) {
-        var i = 0;
-        var len = Math.max(lastResults.length, lastDecs.length);
+    }
+    restoreLastState(lastResults, lastDecs) {
+        let i = 0;
+        let len = Math.max(lastResults.length, lastDecs.length);
         this.lastQualityScores = [];
-        var res;
-        var dec;
+        let res;
+        let dec;
         for (; i < len; i++) {
             res = lastResults[i];
             dec = lastDecs[i];
-            var qualityScore = res.qualityScore;
-            var improvementsResult = res.improvementsResult;
+            let qualityScore = res.qualityScore;
+            let improvementsResult = res.improvementsResult;
             if (isNaN(qualityScore)) {
                 console.warn("qualityScore NaN");
                 qualityScore = 0;
@@ -75,8 +69,8 @@ var Product = (function (_super) {
                 dec.developmentBudget = 0;
             }
             this.lastQualityScores.push(qualityScore);
-            var improvementResult = fixImprovementResult(improvementsResult);
-            var devBudget = dec.developmentBudget * 1000;
+            let improvementResult = fixImprovementResult(improvementsResult);
+            let devBudget = dec.developmentBudget * 1000;
             this.lastImprovementResults.push(improvementResult);
             this.lastDevBudgets.push(devBudget);
             if (dec.improvementsTakeup) {
@@ -111,14 +105,14 @@ var Product = (function (_super) {
         this.lastQualityScore = res.qualityScore;
         this.lastRnDQuality = res.RnDQuality;
         this.lastRnDImplementDecision = dec.improvementsTakeup;
-    };
-    Product.prototype.init = function (semiProducts, economy, lastResults, lastDecs) {
-        _super.prototype.init.call(this);
+    }
+    init(semiProducts, economy, lastResults, lastDecs) {
+        super.init();
         this.semiProducts = semiProducts;
         this.economy = economy;
         this.restoreLastState(lastResults, lastDecs);
-        var warehouseID = "warehouse" + this.params.id;
-        var externalStorageUnitCost = this.params.costs.externalStorageUnitCost;
+        let warehouseID = "warehouse" + this.params.id;
+        let externalStorageUnitCost = this.params.costs.externalStorageUnitCost;
         // external storage and lost probability just for local stocks this is just a global temporary container for each submarket stock
         this.warehouse = new Warehouse.Warehouse({
             id: warehouseID,
@@ -132,9 +126,9 @@ var Product = (function (_super) {
         }, this);
         this.warehouse.stockedItem = this;
         this.warehouse.init(0);
-    };
-    Product.prototype.reset = function () {
-        _super.prototype.reset.call(this);
+    }
+    reset() {
+        super.reset();
         this.wantedNb = 0;
         this.manufacturedNb = 0;
         this.rejectedNb = 0;
@@ -150,155 +144,95 @@ var Product = (function (_super) {
         // dec to 0
         this.developmentBudget = 0;
         this.isImprovementsImplemented = false;
-    };
-    Product.prototype.registerLocalStock = function (stock) {
+    }
+    registerLocalStock(stock) {
         this.localStocks.push(stock);
-    };
-    Object.defineProperty(Product.prototype, "materialUnitCost", {
-        get: function () {
-            return Utils.sums(this.semiProducts, "materialUnitCost", null, null, null, ">", 2);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "manufacturingUnitCost", {
-        get: function () {
-            return Utils.sums(this.semiProducts, "manufacturingUnitCost", null, null, null, ">", 2);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "inventoryUnitValue", {
-        // set valuation method
-        get: function () {
-            var totalCost = this.materialUnitCost + this.manufacturingUnitCost;
-            var unitValue = totalCost * 1.1;
-            return Utils.ceil(unitValue, 2);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "producedNb", {
-        // this is just manufactured - rejected - lost
-        get: function () {
-            return this.manufacturedNb - this.rejectedNb - this.lostNb;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "scheduledNb", {
-        get: function () {
-            var wantedNb = this.wantedNb;
-            var producedNb = this.producedNb;
-            if (producedNb > wantedNb) {
-                return wantedNb;
-            }
-            return producedNb;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "openingValue", {
-        get: function () {
-            var openingValue = Utils.sums(this.localStocks, "openingValue", null, null, null, ">", 2);
-            return openingValue;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "closingValue", {
-        get: function () {
-            var closingQ = Utils.sums(this.localStocks, "closingQ", null, null, null, ">", 2);
-            var closingValue = closingQ * this.inventoryUnitValue;
-            return closingValue;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "availableNb", {
-        get: function () {
-            return this.warehouse.availableQ;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "lostNb", {
-        get: function () {
-            return Utils.sums(this.localStocks, "lostQ") + Utils.sums(this.localStocks, "spoiledQ");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "scrapRevenue", {
-        get: function () {
-            var inflationImpact = this.economy.PPIOverheads;
-            var scrapValue = Math.round(this.params.costs.scrapValue * inflationImpact);
-            return this.rejectedNb * scrapValue;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "guaranteeServicingCost", {
-        /*
-         * The servicing of products returned under guarantee is carried out in those areas by local service agents,
-         * who charge you (at fixed rates) for the work carried out.
-         * Products returned to your internet distributor are repaired locally by a sub-contractor at the same rates (including delivery).
-         */
-        // considered not so influenced by inflation as it fixed in contrat
-        get: function () {
-            var inflationImpact = this.economy.PPIServices;
-            var guaranteeServicingCharge = Math.round(this.params.costs.guaranteeServicingCharge * inflationImpact);
-            return this.servicedQ * guaranteeServicingCharge;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "productDevelopmentCost", {
-        get: function () {
-            return this.developmentBudget;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "qualityControlCost", {
-        // not considered influenced by inflation
-        get: function () {
-            var inflationImpact = this.economy.PPIOverheads;
-            var inspectionUnit = Math.round(this.params.costs.inspectionUnit * inflationImpact);
-            return this.manufacturedNb * inspectionUnit;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "prodPlanningCost", {
-        // not considered influenced by inflation
-        get: function () {
-            var inflationImpact = this.economy.PPIOverheads;
-            var planningUnit = Math.round(this.params.costs.planningUnit * inflationImpact);
-            return this.scheduledNb * planningUnit;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Product.prototype.getNeededResForProd = function (quantity) {
-        var semiProductsDecisions = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            semiProductsDecisions[_i - 1] = arguments[_i];
+    }
+    get materialUnitCost() {
+        return Utils.sums(this.semiProducts, "materialUnitCost", null, null, null, ">", 2);
+    }
+    get manufacturingUnitCost() {
+        return Utils.sums(this.semiProducts, "manufacturingUnitCost", null, null, null, ">", 2);
+    }
+    // set valuation method
+    get inventoryUnitValue() {
+        let totalCost = this.materialUnitCost + this.manufacturingUnitCost;
+        let unitValue = totalCost * 1.1;
+        return Utils.ceil(unitValue, 2);
+    }
+    // this is just manufactured - rejected - lost
+    get producedNb() {
+        return this.manufacturedNb - this.rejectedNb - this.lostNb;
+    }
+    get scheduledNb() {
+        let wantedNb = this.wantedNb;
+        let producedNb = this.producedNb;
+        if (producedNb > wantedNb) {
+            return wantedNb;
         }
-        var rejectedNb = this._calcRejectedUnitsNbOf(quantity);
+        return producedNb;
+    }
+    get openingValue() {
+        let openingValue = Utils.sums(this.localStocks, "openingValue", null, null, null, ">", 2);
+        return openingValue;
+    }
+    get closingValue() {
+        let closingQ = Utils.sums(this.localStocks, "closingQ", null, null, null, ">", 2);
+        let closingValue = closingQ * this.inventoryUnitValue;
+        return closingValue;
+    }
+    get availableNb() {
+        return this.warehouse.availableQ;
+    }
+    get lostNb() {
+        return Utils.sums(this.localStocks, "lostQ") + Utils.sums(this.localStocks, "spoiledQ");
+    }
+    get scrapRevenue() {
+        let inflationImpact = this.economy.PPIOverheads;
+        let scrapValue = Math.round(this.params.costs.scrapValue * inflationImpact);
+        return this.rejectedNb * scrapValue;
+    }
+    /*
+     * The servicing of products returned under guarantee is carried out in those areas by local service agents,
+     * who charge you (at fixed rates) for the work carried out.
+     * Products returned to your internet distributor are repaired locally by a sub-contractor at the same rates (including delivery).
+     */
+    // considered not so influenced by inflation as it fixed in contrat
+    get guaranteeServicingCost() {
+        let inflationImpact = this.economy.PPIServices;
+        let guaranteeServicingCharge = Math.round(this.params.costs.guaranteeServicingCharge * inflationImpact);
+        return this.servicedQ * guaranteeServicingCharge;
+    }
+    get productDevelopmentCost() {
+        return this.developmentBudget;
+    }
+    // not considered influenced by inflation
+    get qualityControlCost() {
+        let inflationImpact = this.economy.PPIOverheads;
+        let inspectionUnit = Math.round(this.params.costs.inspectionUnit * inflationImpact);
+        return this.manufacturedNb * inspectionUnit;
+    }
+    // not considered influenced by inflation
+    get prodPlanningCost() {
+        let inflationImpact = this.economy.PPIOverheads;
+        let planningUnit = Math.round(this.params.costs.planningUnit * inflationImpact);
+        return this.scheduledNb * planningUnit;
+    }
+    getNeededResForProd(quantity, ...semiProductsDecisions) {
+        let rejectedNb = this._calcRejectedUnitsNbOf(quantity);
         quantity += rejectedNb;
-        var i = 0, len = this.semiProducts.length, manufacturingUnitTime, premiumQualityProp, result = [];
-        var resources;
-        var lastParams = [].concat(this.lastManufacturingParams);
-        var needed = {};
+        let i = 0, len = this.semiProducts.length, manufacturingUnitTime, premiumQualityProp, result = [];
+        let resources;
+        let lastParams = [].concat(this.lastManufacturingParams);
+        let needed = {};
         for (; i < len; i++) {
             manufacturingUnitTime = semiProductsDecisions[2 * i] || lastParams[2 * i] || 0;
             premiumQualityProp = semiProductsDecisions[2 * i + 1] || lastParams[2 * i] || 0;
             resources = this.semiProducts[i].getNeededResForProd(quantity, manufacturingUnitTime, premiumQualityProp);
             result.push(resources);
         }
-        for (var j = 0, len = result.length; j < len; j++) {
-            for (var key in result[j]) {
+        for (let j = 0, len = result.length; j < len; j++) {
+            for (let key in result[j]) {
                 if (!result[j].hasOwnProperty(key)) {
                     continue;
                 }
@@ -311,20 +245,12 @@ var Product = (function (_super) {
             }
         }
         return needed;
-    };
-    Object.defineProperty(Product.prototype, "spaceUsed", {
-        get: function () {
-            return Utils.sums(this.localStocks, "spaceUsed", null, null, null, ">", 2);
-        },
-        enumerable: true,
-        configurable: true
-    });
+    }
+    get spaceUsed() {
+        return Utils.sums(this.localStocks, "spaceUsed", null, null, null, ">", 2);
+    }
     // actions
-    Product.prototype.produce = function (quantity) {
-        var semiProductsDecisions = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            semiProductsDecisions[_i - 1] = arguments[_i];
-        }
+    produce(quantity, ...semiProductsDecisions) {
         if (!this.isInitialised()) {
             console.warn('Product not initialised to Manufacture');
             return 0;
@@ -333,10 +259,10 @@ var Product = (function (_super) {
             console.warn('produc Pdt @Quantity not reel', arguments);
             return;
         }
-        if (!Number.isInteger(quantity)) {
+        if (!Utils.isInteger(quantity)) {
             quantity = Math.round(quantity);
         }
-        var manufacturedNb, rejectedNb, availableNb, newArgs;
+        let manufacturedNb, rejectedNb, availableNb, newArgs;
         this.wantedNb += quantity;
         manufacturedNb = this.manufacture.apply(this, arguments);
         // we do control and reject
@@ -347,12 +273,8 @@ var Product = (function (_super) {
         // now supply the stock
         this.warehouse.moveIn(availableNb);
         return availableNb;
-    };
-    Product.prototype.manufacture = function (quantity) {
-        var semiProductsDecisions = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            semiProductsDecisions[_i - 1] = arguments[_i];
-        }
+    }
+    manufacture(quantity, ...semiProductsDecisions) {
         if (!this.isInitialised()) {
             return 0;
         }
@@ -360,13 +282,13 @@ var Product = (function (_super) {
             console.warn('Manufacture Pdt@ Quantity not reel', arguments);
             return 0;
         }
-        var wantedNb = quantity;
-        var diff = (this.semiProducts.length * 2) - (semiProductsDecisions.length - 1);
+        let wantedNb = quantity;
+        let diff = (this.semiProducts.length * 2) - (semiProductsDecisions.length - 1);
         if (diff < 0) {
             console.warn("you didn't give us enough params to manufacture", diff);
         }
-        var semiPTypesNb = this.semiProducts.length, manufacturingUnitTime, premiumQualityProp, unitsNb, result = [], finalisedNb;
-        var paramsNb = semiProductsDecisions.length;
+        let semiPTypesNb = this.semiProducts.length, manufacturingUnitTime, premiumQualityProp, unitsNb, result = [], finalisedNb;
+        let paramsNb = semiProductsDecisions.length;
         // something wrong with params
         if (paramsNb !== (semiPTypesNb * 2) || !Utils.testIfAllParamsIsNumeric(semiProductsDecisions)) {
             console.warn("manufacturing product @ error at params number");
@@ -379,8 +301,8 @@ var Product = (function (_super) {
         else {
             this.lastManufacturingParams = semiProductsDecisions;
         }
-        for (var i = 0; i < semiPTypesNb; i++) {
-            var prodQ;
+        for (let i = 0; i < semiPTypesNb; i++) {
+            let prodQ;
             manufacturingUnitTime = semiProductsDecisions[2 * i] || 0;
             premiumQualityProp = semiProductsDecisions[2 * i + 1] || 0;
             unitsNb = this.semiProducts[i].deliverTo(quantity, manufacturingUnitTime, premiumQualityProp); // 3la 7ssab lost la tkon f Stock w bghit li sna3t lost 3la 7sabkom
@@ -396,17 +318,17 @@ var Product = (function (_super) {
         }
         this.manufacturedNb += finalisedNb;
         return finalisedNb;
-    };
-    Product.prototype.inspect = function (quantity) {
+    }
+    inspect(quantity) {
         if (!Utils.isNumericValid(quantity)) {
             console.warn('Inspect product @ Quantity not reel :', quantity);
             return 0;
         }
-        var rejectedNb = this._calcRejectedUnitsNbOf(quantity);
+        let rejectedNb = this._calcRejectedUnitsNbOf(quantity);
         this.rejectedNb += rejectedNb;
         return rejectedNb;
-    };
-    Product.prototype.deliverTo = function (quantity, market, price, advertisingBudget, customerCredit) {
+    }
+    deliverTo(quantity, market, price, advertisingBudget, customerCredit) {
         if (!this.isInitialised()) {
             return 0;
         }
@@ -414,10 +336,10 @@ var Product = (function (_super) {
             console.warn('Delivery Pdt @ Quantity not reel : %d', quantity);
             return 0;
         }
-        if (!Number.isInteger(quantity)) {
+        if (!Utils.isInteger(quantity)) {
             quantity = Math.round(quantity);
         }
-        /*var availableQ = this.warehouse.availableQ,
+        /*let availableQ = this.warehouse.availableQ,
             diff: number,
             args,
             deliveredQ: number;
@@ -435,104 +357,84 @@ var Product = (function (_super) {
             this.manufacture.apply(this, args);
             
         }*/
-        var deliveredQ = this.warehouse.moveOut(quantity);
+        let deliveredQ = this.warehouse.moveOut(quantity);
         market.receiveFrom(deliveredQ, this, price, advertisingBudget, customerCredit);
         return quantity;
-    };
-    Object.defineProperty(Product.prototype, "investmentEffort", {
-        get: function () {
-            var effort;
-            // A steady effort is most likely to be effective.
-            var devBudgets = [], devVariations = [], devResults = [];
-            this.devStats.forEach(function (elm) {
-                devBudgets.push(elm.devBudget);
-                devResults.push(elm.improvementResult);
-            });
-            var cumulativeBudget = jStat(devBudgets).sum() + this.developmentBudget;
-            var lastStat = this.devStats.peek();
-            var lastDevBudget = lastStat && lastStat.devBudget || 1;
-            var lastVariation = this.developmentBudget / lastDevBudget;
-            var projectMaturity = this.devStats.size() + 1;
-            // le cout total criitique augmente evec l'inflation
-            var minEffectiveDevBudget = Math.round(this.params.minEffectiveDevBudget * this.economy.producerPriceBase100Index / 100);
-            // TODO: develop effect of not steady effort
-            if (lastVariation < 1) {
-                cumulativeBudget *= (1 - lastVariation / projectMaturity);
-            }
-            // La production ne sera possible que si l’effort total nécessaire a été produit. 
-            effort = cumulativeBudget / minEffectiveDevBudget;
-            return effort;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "RnDProjectProgress", {
-        get: function () {
-            var progress;
-            var investmentEffort = this.investmentEffort;
-            var projectMaturity = this.devStats.size() + 1; // current period
-            progress = 1 - Math.exp(-projectMaturity * investmentEffort);
-            return progress;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "improvementResult", {
-        // le degré de réussite de votre département Recherche et Développement
-        get: function () {
-            var result;
-            var RnDProjectProgress = this.RnDProjectProgress;
-            var MINOR_STEP = 0.1;
-            if (RnDProjectProgress === 1) {
-                result = ENUMS.IMPROVEMENT_TYPE.MAJOR;
-            }
-            else if (RnDProjectProgress - this.lastDevProgress > MINOR_STEP && this.developmentBudget > 0) {
-                result = ENUMS.IMPROVEMENT_TYPE.MINOR;
-            }
-            else {
-                result = ENUMS.IMPROVEMENT_TYPE.NONE;
-            }
-            return ENUMS.IMPROVEMENT_TYPE[result];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Product.prototype.developWithBudget = function (developmentBudget) {
+    }
+    get investmentEffort() {
+        let effort;
+        // A steady effort is most likely to be effective.
+        let devBudgets = [], devVariations = [], devResults = [];
+        this.devStats.forEach(function (elm) {
+            devBudgets.push(elm.devBudget);
+            devResults.push(elm.improvementResult);
+        });
+        let cumulativeBudget = jStat(devBudgets).sum() + this.developmentBudget;
+        let lastStat = this.devStats.peek();
+        let lastDevBudget = lastStat && lastStat.devBudget || 1;
+        let lastVariation = this.developmentBudget / lastDevBudget;
+        let projectMaturity = this.devStats.size() + 1;
+        // le cout total criitique augmente evec l'inflation
+        let minEffectiveDevBudget = Math.round(this.params.minEffectiveDevBudget * this.economy.producerPriceBase100Index / 100);
+        // TODO: develop effect of not steady effort
+        if (lastVariation < 1) {
+            cumulativeBudget *= (1 - lastVariation / projectMaturity);
+        }
+        // La production ne sera possible que si l’effort total nécessaire a été produit. 
+        effort = cumulativeBudget / minEffectiveDevBudget;
+        return effort;
+    }
+    get RnDProjectProgress() {
+        let progress;
+        let investmentEffort = this.investmentEffort;
+        let projectMaturity = this.devStats.size() + 1; // current period
+        progress = 1 - Math.exp(-projectMaturity * investmentEffort);
+        return progress;
+    }
+    // le degré de réussite de votre département Recherche et Développement
+    get improvementResult() {
+        let result;
+        let RnDProjectProgress = this.RnDProjectProgress;
+        const MINOR_STEP = 0.1;
+        if (RnDProjectProgress === 1) {
+            result = ENUMS.IMPROVEMENT_TYPE.MAJOR;
+        }
+        else if (RnDProjectProgress - this.lastDevProgress > MINOR_STEP && this.developmentBudget > 0) {
+            result = ENUMS.IMPROVEMENT_TYPE.MINOR;
+        }
+        else {
+            result = ENUMS.IMPROVEMENT_TYPE.NONE;
+        }
+        return ENUMS.IMPROVEMENT_TYPE[result];
+    }
+    developWithBudget(developmentBudget) {
         if (!Utils.isNumericValid(developmentBudget)) {
             console.warn('Dev Product @ Budget not reel : %d', developmentBudget);
             return false;
         }
         this.developmentBudget = developmentBudget;
         return true;
-    };
-    Product.prototype.onMajorImprovementImplemented = function () { };
-    Product.prototype.onMinorImprovementImplemented = function () { };
-    Product.prototype.soldOff = function () {
-        var soldOffQ = 0;
+    }
+    onMajorImprovementImplemented() { }
+    onMinorImprovementImplemented() { }
+    soldOff() {
+        let soldOffQ = 0;
         this.localStocks.forEach(function (stock) {
             soldOffQ += stock.openingQ;
             stock.init(0);
         });
         return soldOffQ;
-    };
-    Object.defineProperty(Product.prototype, "majorNotYetImplementedNb", {
-        get: function () {
-            return this.notImplementedRnd.size();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "isMajorImplementedLastPeriod", {
-        get: function () {
-            var lastRes = this.lastImprovementResults[this.lastImprovementResults.length - 1];
-            return this.lastRnDImplementDecision && lastRes === ENUMS.IMPROVEMENT_TYPE.MAJOR;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Product.prototype.takeUpImprovements = function (toImplement) {
-        var lastRes = this.lastImprovementResults[this.lastImprovementResults.length - 1];
-        var isThereAnyMajorNotYetImplemented = this.majorNotYetImplementedNb > 0;
+    }
+    get majorNotYetImplementedNb() {
+        return this.notImplementedRnd.size();
+    }
+    get isMajorImplementedLastPeriod() {
+        let lastRes = this.lastImprovementResults[this.lastImprovementResults.length - 1];
+        return this.lastRnDImplementDecision && lastRes === ENUMS.IMPROVEMENT_TYPE.MAJOR;
+    }
+    takeUpImprovements(toImplement) {
+        let lastRes = this.lastImprovementResults[this.lastImprovementResults.length - 1];
+        let isThereAnyMajorNotYetImplemented = this.majorNotYetImplementedNb > 0;
         // It is possible to leave a major improvement for so long that a second one is reported. 
         // In this case when you do take one up, you automatically take both with an increased marketing effect.
         if (isThereAnyMajorNotYetImplemented && toImplement) {
@@ -550,169 +452,144 @@ var Product = (function (_super) {
             // it goes ahead anyway and existing stocks are sold off, but there is no corresponding marketing advantage.
             this.soldOff();
         }
-    };
-    Object.defineProperty(Product.prototype, "assemblyQuality", {
-        get: function () {
-            var quality;
-            var coefficient;
-            var assembledSubPdt = this.semiProducts.filter(function (subPdt) {
-                return !subPdt.isMachined;
-            })[0];
-            // Assembly time should be transformed from absolute time in minutes to percentage. 
-            var ratio = Utils.ceil(assembledSubPdt.lastManufacturingParams[0] / assembledSubPdt.params.manufacturingCfg.minManufacturingUnitTime, 2);
-            // Each additional percentage increases quality estimate of the product, 
-            // but the effect is decreasing and each additional percentage has lighter weight than the previous one.
-            // The resulting score should be added to the overall quality estimate of the product.
-            // Estimate is rounded according to the rule of rounding.
-            if (ratio < 1) {
-                coefficient = 0;
-            }
-            else if (ratio <= 1.2) {
-                coefficient = 0.315;
-            }
-            else if (ratio <= 1.4) {
-                coefficient = 0.310;
-            }
-            else if (ratio <= 1.6) {
-                coefficient = 0.305;
-            }
-            else if (ratio <= 1.8) {
-                coefficient = 0.300;
-            }
-            else {
-                coefficient = 0.295;
-            }
-            quality = ratio <= 1 ? 0 : (ratio - 1) * coefficient;
-            return quality;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "materialsQuality", {
-        get: function () {
-            var quality;
-            var coefficient;
-            var premiumQualityProp = this.lastManufacturingParams[1];
-            // Also, as for the assembly, each additional percent increase quality estimate of the product, 
-            // but the effect is decreasing and each additional percentage has lighter weight than the previous one.
-            // The resulting score should be added to the overall quality estimate of the product.Estimate is rounded according to the rule of rounding.
-            if (premiumQualityProp < 0.01) {
-                coefficient = 0;
-            }
-            else if (premiumQualityProp <= 0.2) {
-                coefficient = 0.165;
-            }
-            else if (premiumQualityProp <= 0.4) {
-                coefficient = 0.160;
-            }
-            else if (premiumQualityProp <= 0.6) {
-                coefficient = 0.155;
-            }
-            else if (premiumQualityProp <= 0.8) {
-                coefficient = 0.150;
-            }
-            else {
-                coefficient = 0.145;
-            }
-            quality = premiumQualityProp < 1 ? 0 : premiumQualityProp * coefficient;
-            return quality;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "RnDQuality", {
-        /*
-         * Quality estimate in R&D depends on:
-         * - Getting R&D
-         * - Implementation of R&D
-         * - Aging of product
-        */
-        get: function () {
-            var quality = 0;
-            var scoreBeforeAging;
-            var agingImpact;
-            // Getting R&D
-            // Getting Major gives +6 points, getting Major is equal to getting Minor.
-            switch (this.improvementResult) {
-                case ENUMS.IMPROVEMENT_TYPE[ENUMS.IMPROVEMENT_TYPE.MINOR]:
-                case ENUMS.IMPROVEMENT_TYPE[ENUMS.IMPROVEMENT_TYPE.MAJOR]:
-                    quality += 6;
-                    break;
-            }
-            // Implementation of R&D
-            if (this.isImprovementsImplemented) {
-                // Implementation of Major gives + 20 points
-                // It is possible to leave a major improvement for so long that a second one is reported.
-                // In this case when you do take one up, you automatically take both with an increased marketing effect.
-                quality += (20 * this.notImplementedRnd.size());
-            }
-            // Aging process reduces quality estimate
-            // depending on the absolute value, estimate is reduced each period.
-            // The higher quality estimate of the product, the faster it becomes old.
-            scoreBeforeAging = (this.lastRnDQuality + quality - 60) / 20;
-            agingImpact = scoreBeforeAging > 0 ? Math.floor(scoreBeforeAging) + 4 : 0;
-            quality -= agingImpact;
-            quality += this.lastRnDQuality;
-            return quality;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "qualityScore", {
-        // Estimation value sum from R&D, assembly time and hign quality raw materials. 
-        // Than it is rounded to the nearest hundredth according to the rule.
-        // Actual error of such estimation is + /- 0.01 compared with fact.
-        /*get customerQualityEstimate(): number {
-            var quality = this.RnDQuality + this.assemblyQuality + this.materialsQuality;
-    
-            return Utils.round(quality, 2);
-        }*/
-        get: function () {
-            var score = (this.RnDQuality * 0.05 - 3) + this.materialsQuality + this.assemblyQuality;
-            return Utils.round(score, 2);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Product.prototype, "consumerStarRatings", {
-        get: function () {
-            var starsNb = Math.round(this.qualityScore);
-            return extraString('').padLeft(starsNb, '*').s;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Product.prototype.returnForRepair = function (quantity) {
+    }
+    get assemblyQuality() {
+        let quality;
+        let coefficient;
+        let assembledSubPdt = this.semiProducts.filter(function (subPdt) {
+            return !subPdt.isMachined;
+        })[0];
+        // Assembly time should be transformed from absolute time in minutes to percentage. 
+        let ratio = Utils.ceil(assembledSubPdt.lastManufacturingParams[0] / assembledSubPdt.params.manufacturingCfg.minManufacturingUnitTime, 2);
+        // Each additional percentage increases quality estimate of the product, 
+        // but the effect is decreasing and each additional percentage has lighter weight than the previous one.
+        // The resulting score should be added to the overall quality estimate of the product.
+        // Estimate is rounded according to the rule of rounding.
+        if (ratio < 1) {
+            coefficient = 0;
+        }
+        else if (ratio <= 1.2) {
+            coefficient = 0.315;
+        }
+        else if (ratio <= 1.4) {
+            coefficient = 0.310;
+        }
+        else if (ratio <= 1.6) {
+            coefficient = 0.305;
+        }
+        else if (ratio <= 1.8) {
+            coefficient = 0.300;
+        }
+        else {
+            coefficient = 0.295;
+        }
+        quality = ratio <= 1 ? 0 : (ratio - 1) * coefficient;
+        return quality;
+    }
+    get materialsQuality() {
+        let quality;
+        let coefficient;
+        let premiumQualityProp = this.lastManufacturingParams[1];
+        // Also, as for the assembly, each additional percent increase quality estimate of the product, 
+        // but the effect is decreasing and each additional percentage has lighter weight than the previous one.
+        // The resulting score should be added to the overall quality estimate of the product.Estimate is rounded according to the rule of rounding.
+        if (premiumQualityProp < 0.01) {
+            coefficient = 0;
+        }
+        else if (premiumQualityProp <= 0.2) {
+            coefficient = 0.165;
+        }
+        else if (premiumQualityProp <= 0.4) {
+            coefficient = 0.160;
+        }
+        else if (premiumQualityProp <= 0.6) {
+            coefficient = 0.155;
+        }
+        else if (premiumQualityProp <= 0.8) {
+            coefficient = 0.150;
+        }
+        else {
+            coefficient = 0.145;
+        }
+        quality = premiumQualityProp < 1 ? 0 : premiumQualityProp * coefficient;
+        return quality;
+    }
+    /*
+     * Quality estimate in R&D depends on:
+     * - Getting R&D
+     * - Implementation of R&D
+     * - Aging of product
+    */
+    get RnDQuality() {
+        let quality = 0;
+        let scoreBeforeAging;
+        let agingImpact;
+        // Getting R&D
+        // Getting Major gives +6 points, getting Major is equal to getting Minor.
+        switch (this.improvementResult) {
+            case ENUMS.IMPROVEMENT_TYPE[ENUMS.IMPROVEMENT_TYPE.MINOR]:
+            case ENUMS.IMPROVEMENT_TYPE[ENUMS.IMPROVEMENT_TYPE.MAJOR]:
+                quality += 6;
+                break;
+        }
+        // Implementation of R&D
+        if (this.isImprovementsImplemented) {
+            // Implementation of Major gives + 20 points
+            // It is possible to leave a major improvement for so long that a second one is reported.
+            // In this case when you do take one up, you automatically take both with an increased marketing effect.
+            quality += (20 * this.notImplementedRnd.size());
+        }
+        // Aging process reduces quality estimate
+        // depending on the absolute value, estimate is reduced each period.
+        // The higher quality estimate of the product, the faster it becomes old.
+        scoreBeforeAging = (this.lastRnDQuality + quality - 60) / 20;
+        agingImpact = scoreBeforeAging > 0 ? Math.floor(scoreBeforeAging) + 4 : 0;
+        quality -= agingImpact;
+        quality += this.lastRnDQuality;
+        return quality;
+    }
+    // Estimation value sum from R&D, assembly time and hign quality raw materials. 
+    // Than it is rounded to the nearest hundredth according to the rule.
+    // Actual error of such estimation is + /- 0.01 compared with fact.
+    /*get customerQualityEstimate(): number {
+        let quality = this.RnDQuality + this.assemblyQuality + this.materialsQuality;
+
+        return Utils.round(quality, 2);
+    }*/
+    get qualityScore() {
+        let score = (this.RnDQuality * 0.05 - 3) + this.materialsQuality + this.assemblyQuality;
+        return Utils.round(score, 2);
+    }
+    get consumerStarRatings() {
+        let starsNb = Math.round(this.qualityScore);
+        return extraString('').padLeft(starsNb, '*').s;
+    }
+    returnForRepair(quantity) {
         this.servicedQ += quantity;
-    };
-    Product.prototype.onFinish = function () {
+    }
+    onFinish() {
         this.CashFlow.addPayment(this.guaranteeServicingCost, this.params.payments.guaranteeServicing, 'guaranteeServicing');
         this.CashFlow.addPayment(this.qualityControlCost, this.params.payments.qualityControl, 'qualityControl');
         this.CashFlow.addPayment(this.productDevelopmentCost, this.params.payments.development, 'development');
         this.CashFlow.addPayment(this.prodPlanningCost, this.params.payments.prodPlanning, 'prodPlanning');
         // TODO: add Dangerous or ecologically unsound products are included in guarantee servicing, and are usually large quantities.
-        var losses = this.lostNb * this.inventoryUnitValue;
+        let losses = this.lostNb * this.inventoryUnitValue;
         this.insurance && this.insurance.claims(losses);
-    };
-    Object.defineProperty(Product.prototype, "state", {
-        get: function () {
-            return {
-                "scheduledQ": this.scheduledNb,
-                "producedQ": this.manufacturedNb,
-                "rejectedQ": this.rejectedNb,
-                "servicedQ": this.servicedQ,
-                "lostQ": this.lostNb,
-                "improvementsResult": this.improvementResult,
-                "qualityScore": this.qualityScore,
-                "RnDQuality": this.RnDQuality,
-                "consumerStarRatings": this.consumerStarRatings
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Product;
-}(IObject.IObject));
+    }
+    get state() {
+        return {
+            "scheduledQ": this.scheduledNb,
+            "producedQ": this.manufacturedNb,
+            "rejectedQ": this.rejectedNb,
+            "servicedQ": this.servicedQ,
+            "lostQ": this.lostNb,
+            "improvementsResult": this.improvementResult,
+            "qualityScore": this.qualityScore,
+            "RnDQuality": this.RnDQuality,
+            "consumerStarRatings": this.consumerStarRatings
+        };
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Product;
 //# sourceMappingURL=Product.js.map

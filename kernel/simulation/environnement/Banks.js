@@ -1,7 +1,7 @@
 "use strict";
-var Environnement_1 = require('../../engine/ComputeEngine/Environnement');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var eurobank = new Environnement_1.Bank({
+const Environnement_1 = require('../../engine/ComputeEngine/Environnement');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let eurobank = new Environnement_1.Bank({
     id: "bank1",
     label: "bank1",
     bankID: "0",

@@ -63,7 +63,7 @@ export default class Management extends IObject.IObject {
 
         this.economy = economy;
 
-        var self = this;
+        let self = this;
 
         this.employees.forEach(function (emp) {
             emp.on("Pay", self.controlRemunerations, self);
@@ -83,16 +83,16 @@ export default class Management extends IObject.IObject {
 
         this.controlAlreadyDone = true;
 
-        var machinist: Employee.Employee;
-        var machinistAvgEarnings;
+        let machinist: Employee.Employee;
+        let machinistAvgEarnings;
 
-        var assemblyWorkerAvgEarnings;
-        var assemblyWorker: Employee.Employee;
+        let assemblyWorkerAvgEarnings;
+        let assemblyWorker: Employee.Employee;
 
-        var adjustedAvgEarnings;
+        let adjustedAvgEarnings;
 
         this.employees.forEach(function (emp) {
-            var empParams = emp.params;
+            let empParams = emp.params;
             if (empParams.isUnskilled && empParams.category === "machinist") {
                 machinist = emp;
                 machinistAvgEarnings = emp.avgEarnings;
@@ -229,16 +229,16 @@ export default class Management extends IObject.IObject {
     }
 
     getEndState(prefix?: string): any {
-        var result = {};
+        let result = {};
 
         try {
-            var state = {
+            let state = {
                 "managementCost": this.managementCost,
                 "personnelCost": this.personnelCost,
                 "employeesNb": this.employeesNb
             };
 
-            for (var key in state) {
+            for (let key in state) {
 
                 let value = state[key];
 

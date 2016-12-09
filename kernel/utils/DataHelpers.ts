@@ -21,7 +21,7 @@ export default function processStates(decisions: Scenario.Decision[], results: S
 
 
     // iterate over object: machines ...
-    for (var prop in obj) {
+    for (let prop in obj) {
 
         if (!obj.hasOwnProperty(prop)) {
             continue;

@@ -72,8 +72,8 @@ export default class SemiProduct extends IObject.IObject {
         this.params.manufacturingCfg.atelier = atelier;
         this.params.rawMaterialConsoCfg.rawMaterial = rawMaterial;
 
-        var warehouseID = "warehouse" + this.params.id;
-        var externalStorageUnitCost = this.params.costs.externalStorageUnitCost;
+        let warehouseID = "warehouse" + this.params.id;
+        let externalStorageUnitCost = this.params.costs.externalStorageUnitCost;
 
 
         this.warehouse = new Warehouse.Warehouse({
@@ -97,7 +97,7 @@ export default class SemiProduct extends IObject.IObject {
 
 
         // outsourced subproducts
-        var componentsWarehouseID = "componentsWarehouse" + this.params.id;
+        let componentsWarehouseID = "componentsWarehouse" + this.params.id;
 
         this.componentsWarehouse = new Warehouse.Warehouse({
             id: componentsWarehouseID,
@@ -140,51 +140,51 @@ export default class SemiProduct extends IObject.IObject {
     purchasesQ: number;
 
     get materialUnitCost(): number {
-        var rmCfg = this.params.rawMaterialConsoCfg;
+        let rmCfg = this.params.rawMaterialConsoCfg;
 
-        var rawMaterialCfg = rmCfg.rawMaterial;
+        let rawMaterialCfg = rmCfg.rawMaterial;
 
         if (! rawMaterialCfg) {
             return 0;
         }
 
-        var standardMaterialPrice = rawMaterialCfg.inventoryUnitValue;
-        var premiumMaterialPrice = rawMaterialCfg.inventoryUnitValueForPremiumQuality;
+        let standardMaterialPrice = rawMaterialCfg.inventoryUnitValue;
+        let premiumMaterialPrice = rawMaterialCfg.inventoryUnitValueForPremiumQuality;
 
-        var premiumQualityProp = this.lastManufacturingParams && this.lastManufacturingParams[2] || 0;
-        var consoUnit = rmCfg.consoUnit;
+        let premiumQualityProp = this.lastManufacturingParams && this.lastManufacturingParams[2] || 0;
+        let consoUnit = rmCfg.consoUnit;
 
-        var premiumMaterialQ = consoUnit * premiumQualityProp;
-        var standardMaterialQ = consoUnit - premiumMaterialQ;
+        let premiumMaterialQ = consoUnit * premiumQualityProp;
+        let standardMaterialQ = consoUnit - premiumMaterialQ;
 
-        var cost = (standardMaterialQ * standardMaterialPrice) + (premiumMaterialQ * premiumMaterialPrice);
+        let cost = (standardMaterialQ * standardMaterialPrice) + (premiumMaterialQ * premiumMaterialPrice);
 
         return cost;
     }
 
     get manufacturingUnitCost(): number {
-        var mCfg = this.params.manufacturingCfg;
-        var atelier = mCfg.atelier;
-        var worker = atelier.worker;
+        let mCfg = this.params.manufacturingCfg;
+        let atelier = mCfg.atelier;
+        let worker = atelier.worker;
 
         if (!worker) {
             return 0;
         }
 
-        var manufacturingUnitTime = this.lastManufacturingParams && this.lastManufacturingParams[0];
+        let manufacturingUnitTime = this.lastManufacturingParams && this.lastManufacturingParams[0];
 
         if (!manufacturingUnitTime || (manufacturingUnitTime < mCfg.minManufacturingUnitTime)) {
             manufacturingUnitTime = mCfg.minManufacturingUnitTime;
         }
 
-        var cost = worker.timeUnitCost * (manufacturingUnitTime / 60);
+        let cost = worker.timeUnitCost * (manufacturingUnitTime / 60);
 
         return cost;
     }
 
 
     get spaceUsed(): number {
-        var space = Utils.sums(this.warehouse, "spaceUsed", null, null, null, ">", 2);
+        let space = Utils.sums(this.warehouse, "spaceUsed", null, null, null, ">", 2);
         space += Utils.sums(this.componentsWarehouse, "spaceUsed", null, null, null, ">", 2);
 
         return Utils.correctFloat(space);
@@ -196,21 +196,21 @@ export default class SemiProduct extends IObject.IObject {
             return 0;
         }
 
-        var quality = this.lastManufacturingParams && this.lastManufacturingParams[1] || 0;
-        var unitValue = this.subContracter._getPrice(quality);
+        let quality = this.lastManufacturingParams && this.lastManufacturingParams[1] || 0;
+        let unitValue = this.subContracter._getPrice(quality);
 
         return unitValue;
     }
 
     get closingValue(): number {
-        var closingValue = (this.warehouse.closingQ + this.componentsWarehouse.closingQ) * this.inventoryUnitValue;
+        let closingValue = (this.warehouse.closingQ + this.componentsWarehouse.closingQ) * this.inventoryUnitValue;
 
         return closingValue;
     }
 
     // helpers
     _calcRejectedUnitsNbOf(quantity: number): number {
-        var landa: number,
+        let landa: number,
             probability: number,
             value = 0,
             i = 0;
@@ -241,13 +241,13 @@ export default class SemiProduct extends IObject.IObject {
     }
 
     get rawMaterialTotalConsoQ(): number {
-        var value = this.producedNb * this.params.rawMaterialConsoCfg.consoUnit;
+        let value = this.producedNb * this.params.rawMaterialConsoCfg.consoUnit;
 
         return Utils.round(value, 2);
     }
 
     get manufacturingTotalHoursNb(): number {
-        var value = this.producedNb * this.manufacturingUnitTime / 60;
+        let value = this.producedNb * this.manufacturingUnitTime / 60;
 
         return Utils.round(value, 2);
     }
@@ -260,21 +260,21 @@ export default class SemiProduct extends IObject.IObject {
 
         // TODO test if the quality available is ok
         // first of all let diminish outsourced components as they dont need ressources
-        var outsourcedQ = this.componentsWarehouse.availableQ;
+        let outsourcedQ = this.componentsWarehouse.availableQ;
 
         if (outsourcedQ > 0) {
             quantity -= outsourcedQ;
         }
 
-        var mCfg = this.params.manufacturingCfg,
+        let mCfg = this.params.manufacturingCfg,
             rmCfg = this.params.rawMaterialConsoCfg,
             consoUnit = rmCfg.consoUnit;
 
-        var atelierRes;
+        let atelierRes;
 
         manufacturingUnitTime = manufacturingUnitTime < mCfg.minManufacturingUnitTime ? mCfg.minManufacturingUnitTime : manufacturingUnitTime;
 
-        var needed = {};
+        let needed = {};
 
         if (rmCfg.rawMaterial) {
             needed[rmCfg.rawMaterial.params.id] = quantity * consoUnit * (1 - premiumQualityProp);
@@ -312,7 +312,7 @@ export default class SemiProduct extends IObject.IObject {
 
         this.lastManufacturingParams = [manufacturingUnitTime, premiumQualityProp];
 
-        var mCfg = this.params.manufacturingCfg,
+        let mCfg = this.params.manufacturingCfg,
             rmCfg = this.params.rawMaterialConsoCfg,
             consoUnit = rmCfg.consoUnit,
 
@@ -321,7 +321,7 @@ export default class SemiProduct extends IObject.IObject {
 
             producedQ = 0;
 
-        var effectiveQ;
+        let effectiveQ;
 
         this.scheduledNb += quantity;
 
@@ -367,10 +367,10 @@ export default class SemiProduct extends IObject.IObject {
         }
 
         // first serve with outsource
-        var outSourcedQ = this.componentsWarehouse.moveOut(quantity);
+        let outSourcedQ = this.componentsWarehouse.moveOut(quantity);
         quantity -= outSourcedQ;
 
-        var reliquatQ = quantity - this.warehouse.availableQ;
+        let reliquatQ = quantity - this.warehouse.availableQ;
 
         if (reliquatQ > 0) {
             this.manufacture(reliquatQ, manufacturingUnitTime, premiumQualityProp);
@@ -400,11 +400,11 @@ export default class SemiProduct extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(unitsNb)) {
+        if (!Utils.isInteger(unitsNb)) {
             unitsNb = Math.round(unitsNb);
         }
 
-        var qualityIdx: number;
+        let qualityIdx: number;
 
         qualityIdx = ENUMS.QUALITY.HQ * premiumQualityProp + ENUMS.QUALITY.MQ;
 

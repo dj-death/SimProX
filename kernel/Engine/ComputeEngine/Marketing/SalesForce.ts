@@ -120,7 +120,7 @@ export default class SalesForce extends Employee {
     }
 
     get commissionsCost(): number {
-        var commissionsBase: number,
+        let commissionsBase: number,
             salesRevenue: number,
             ordersValue: number,
             commissions: number;
@@ -141,7 +141,7 @@ export default class SalesForce extends Employee {
             return false;
         }
 
-        if (!Number.isInteger(appointedNb)) {
+        if (!Utils.isInteger(appointedNb)) {
             appointedNb = Math.round(appointedNb);
         }
 

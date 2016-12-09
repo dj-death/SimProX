@@ -1,14 +1,14 @@
 "use strict";
-var Marketing_1 = require('../../engine/ComputeEngine/Marketing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var defaultPayments = {
+const Marketing_1 = require('../../engine/ComputeEngine/Marketing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let defaultPayments = {
     "THREE_MONTH": {
         credit: ENUMS.CREDIT.THREE_MONTH,
         part: 1
     }
 };
 function create() {
-    var europeTrs = new Marketing_1.Transport({
+    let europeTrs = new Marketing_1.Transport({
         id: "market1_transport",
         label: "market1_transport",
         transportID: "0",
@@ -23,7 +23,7 @@ function create() {
         },
         payments: defaultPayments
     });
-    var naftaTrs = new Marketing_1.Transport({
+    let naftaTrs = new Marketing_1.Transport({
         id: "market2_transport",
         label: "market2_transport",
         transportID: "1",
@@ -38,7 +38,7 @@ function create() {
         },
         payments: defaultPayments
     });
-    var internetTrs = new Marketing_1.Transport({
+    let internetTrs = new Marketing_1.Transport({
         id: "market3_transport",
         label: "market3_transport",
         transportID: "2",

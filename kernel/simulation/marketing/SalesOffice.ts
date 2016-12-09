@@ -3,7 +3,7 @@
 import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 
-var cashPayments: ENUMS.PaymentArray = {
+let cashPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
@@ -13,7 +13,7 @@ var cashPayments: ENUMS.PaymentArray = {
 
 export default function create(): SalesOffice {
 
-    var salesOffice = new SalesOffice({
+    let salesOffice = new SalesOffice({
         id: "salesOffice1",
         label: "salesOffice1",
 

@@ -1,6 +1,6 @@
 "use strict";
-var request = require('request');
-var config = require('../../config');
+let request = require('request');
+const config = require('../../config');
 // newUserInfo: username, email, password
 function registerNodeBB(newUserInfo, cb) {
     request.post({
@@ -43,8 +43,8 @@ function resetNodeBBPassword(uid, passwordNew) {
 exports.resetNodeBBPassword = resetNodeBBPassword;
 ;
 function loginNodeBB(username, password, cb) {
-    var j = request.jar();
-    var requestWithCookie = request.defaults({ jar: j });
+    let j = request.jar();
+    let requestWithCookie = request.defaults({ jar: j });
     requestWithCookie(config.bbs.service + 'api/config', function (err, response) {
         if (err) {
             return cb(err);

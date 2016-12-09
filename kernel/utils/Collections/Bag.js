@@ -1,8 +1,8 @@
 "use strict";
-var util = require('./util');
-var Dictionary_1 = require('./Dictionary');
-var Set_1 = require('./Set');
-var Bag = (function () {
+const util = require('./util');
+const Dictionary_1 = require('./Dictionary');
+const Set_1 = require('./Set');
+class Bag {
     /**
      * Creates an empty bag.
      * @class <p>A bag is a special kind of set in which members are
@@ -22,7 +22,7 @@ var Bag = (function () {
      * is not appropriate, a custom function which receives an object and returns a
      * unique string must be provided.
      */
-    function Bag(toStrFunction) {
+    constructor(toStrFunction) {
         this.toStrF = toStrFunction || util.defaultToString;
         this.dictionary = new Dictionary_1.default(this.toStrF);
         this.nElements = 0;
@@ -34,13 +34,12 @@ var Bag = (function () {
     * undefined 1 copy is added.
     * @return {boolean} true unless element is undefined.
     */
-    Bag.prototype.add = function (element, nCopies) {
-        if (nCopies === void 0) { nCopies = 1; }
+    add(element, nCopies = 1) {
         if (util.isUndefined(element) || nCopies <= 0) {
             return false;
         }
         if (!this.contains(element)) {
-            var node = {
+            const node = {
                 value: element,
                 copies: nCopies
             };
@@ -51,29 +50,29 @@ var Bag = (function () {
         }
         this.nElements += nCopies;
         return true;
-    };
+    }
     /**
     * Counts the number of copies of the specified object in this bag.
     * @param {Object} element the object to search for..
     * @return {number} the number of copies of the object, 0 if not found
     */
-    Bag.prototype.count = function (element) {
+    count(element) {
         if (!this.contains(element)) {
             return 0;
         }
         else {
             return this.dictionary.getValue(element).copies;
         }
-    };
+    }
     /**
      * Returns true if this bag contains the specified element.
      * @param {Object} element element to search for.
      * @return {boolean} true if this bag contains the specified element,
      * false otherwise.
      */
-    Bag.prototype.contains = function (element) {
+    contains(element) {
         return this.dictionary.containsKey(element);
-    };
+    }
     /**
     * Removes nCopies of the specified object to this bag.
     * If the number of copies to remove is greater than the actual number
@@ -83,8 +82,7 @@ var Bag = (function () {
     * undefined 1 copy is removed.
     * @return {boolean} true if at least 1 element was removed.
     */
-    Bag.prototype.remove = function (element, nCopies) {
-        if (nCopies === void 0) { nCopies = 1; }
+    remove(element, nCopies = 1) {
         if (util.isUndefined(element) || nCopies <= 0) {
             return false;
         }
@@ -92,7 +90,7 @@ var Bag = (function () {
             return false;
         }
         else {
-            var node = this.dictionary.getValue(element);
+            const node = this.dictionary.getValue(element);
             if (nCopies > node.copies) {
                 this.nElements -= node.copies;
             }
@@ -105,39 +103,37 @@ var Bag = (function () {
             }
             return true;
         }
-    };
+    }
     /**
      * Returns an array containing all of the elements in this big in arbitrary order,
      * including multiple copies.
      * @return {Array} an array containing all of the elements in this bag.
      */
-    Bag.prototype.toArray = function () {
-        var a = [];
-        var values = this.dictionary.values();
-        for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
-            var node = values_1[_i];
-            var element = node.value;
-            var copies = node.copies;
-            for (var j = 0; j < copies; j++) {
+    toArray() {
+        const a = [];
+        const values = this.dictionary.values();
+        for (const node of values) {
+            const element = node.value;
+            const copies = node.copies;
+            for (let j = 0; j < copies; j++) {
                 a.push(element);
             }
         }
         return a;
-    };
+    }
     /**
      * Returns a set of unique elements in this bag.
      * @return {collections.Set<T>} a set of unique elements in this bag.
      */
-    Bag.prototype.toSet = function () {
-        var toret = new Set_1.default(this.toStrF);
-        var elements = this.dictionary.values();
-        for (var _i = 0, elements_1 = elements; _i < elements_1.length; _i++) {
-            var ele = elements_1[_i];
-            var value = ele.value;
+    toSet() {
+        const toret = new Set_1.default(this.toStrF);
+        const elements = this.dictionary.values();
+        for (const ele of elements) {
+            const value = ele.value;
             toret.add(value);
         }
         return toret;
-    };
+    }
     /**
      * Executes the provided function once for each element
      * present in this bag, including multiple copies.
@@ -145,41 +141,40 @@ var Bag = (function () {
      * invoked with one argument: the element. To break the iteration you can
      * optionally return false.
      */
-    Bag.prototype.forEach = function (callback) {
+    forEach(callback) {
         this.dictionary.forEach(function (k, v) {
-            var value = v.value;
-            var copies = v.copies;
-            for (var i = 0; i < copies; i++) {
+            const value = v.value;
+            const copies = v.copies;
+            for (let i = 0; i < copies; i++) {
                 if (callback(value, i) === false) {
                     return false;
                 }
             }
             return true;
         });
-    };
+    }
     /**
      * Returns the number of elements in this bag.
      * @return {number} the number of elements in this bag.
      */
-    Bag.prototype.size = function () {
+    size() {
         return this.nElements;
-    };
+    }
     /**
      * Returns true if this bag contains no elements.
      * @return {boolean} true if this bag contains no elements.
      */
-    Bag.prototype.isEmpty = function () {
+    isEmpty() {
         return this.nElements === 0;
-    };
+    }
     /**
      * Removes all of the elements from this bag.
      */
-    Bag.prototype.clear = function () {
+    clear() {
         this.nElements = 0;
         this.dictionary.clear();
-    };
-    return Bag;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Bag; // End of bag
 //# sourceMappingURL=Bag.js.map

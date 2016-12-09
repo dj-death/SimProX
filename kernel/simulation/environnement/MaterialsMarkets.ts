@@ -1,6 +1,6 @@
 ﻿import { MaterialMarket } from '../../engine/ComputeEngine/Environnement';
 
-var materialAMarket1 = new MaterialMarket({
+let materialAMarket1 = new MaterialMarket({
     id: "materialMarket1",
     label: "materialMarket",
 

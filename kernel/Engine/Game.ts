@@ -93,13 +93,13 @@ export default class Game {
     }
 
     get weeksNbByPeriod(): number {
-        var monthWeeksNb = 4;
+        let monthWeeksNb = 4;
 
         return this.configs.stage.duration * monthWeeksNb;
     }
 
     get daysNbByPeriod(): number {
-        var monthDaysNb = 30;
+        let monthDaysNb = 30;
 
         return this.configs.stage.duration * monthDaysNb;
     }

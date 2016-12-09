@@ -5,14 +5,14 @@
 /*!
  * Module dependencies
  */
-var mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
-var Schema = mongoose.Schema;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
+let mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
+let Schema = mongoose.Schema;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
 /**
  * Mongoose schema
  */
-var captchaSchema = new Schema({
+let captchaSchema = new Schema({
     txt: { type: String, required: true }
 });
 /**
@@ -22,6 +22,6 @@ captchaSchema.plugin(mongooseTimestamps);
 /**
  * Register Model
  */
-var Captcha = mongoose.model("Captcha", captchaSchema);
+let Captcha = mongoose.model("Captcha", captchaSchema);
 module.exports = Captcha;
 //# sourceMappingURL=Captcha.js.map

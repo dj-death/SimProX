@@ -1,7 +1,7 @@
 ﻿import { Economy,World } from '../../engine/ComputeEngine/Environnement';
 import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
-var maroc_stats = {
+let maroc_stats = {
     population: [// year from 2010 to 2015
         32.11, 32.53, 32.98, 33.45,	33.92,	34.38
     ],
@@ -28,7 +28,7 @@ var maroc_stats = {
 };
 
 
-var europe_stats = {
+let europe_stats = {
     population: [ // year 2010 in millio
         336.14, 336.94, 336.16, 338.76, 338.62, 339.43
     ],
@@ -64,7 +64,7 @@ var europe_stats = {
     ]
 };
 
-var usa_stats = {
+let usa_stats = {
     IPCInflationStats: [ // usa from 2010Q1  to 2016Q2 %
         2.360525, 1.767765, 1.175609, 1.270248, 2.141127, 3.430395, 3.756174, 3.293777, 2.815192, 1.889765, 1.697784, 1.889365, 1.681829, 1.39285, 1.553359, 1.233471, 1.405456, 2.050846, 1.783154, 1.248028, -0.06269593, -0.03827201, 0.1095034, 0.4662646, 1.080267, 1.05085
     ],
@@ -82,7 +82,7 @@ var usa_stats = {
     ]
 };
 
-var OECD_stats = {
+let OECD_stats = {
 
     population: [
         1241.45	, 1249.55,	1256,	1265.80, 1272.99, 1281
@@ -119,7 +119,7 @@ var OECD_stats = {
 
 };
 
-var reports = [
+let reports = [
     "The green policies promoted by the European Union are impacting on energy costs. initially the claim was that these policies would help to reduce costs. Now the subsidies required are being past on to consumers.",
     "There is a recovery in construction in the US.It is hoped this may will continue into the future.The dollar should rise in value if this happens.",
     "The International Monetary Fund is suggesting that advanced economies should borrow to spend on key infrastructure projects. The say that the Eurozone would benefit most.",
@@ -132,9 +132,9 @@ var reports = [
     "The US dollar has gained against the Euro. This can be attributed to a growing confidence in the American economy."
 ];
 
-var economie1_stats = maroc_stats;
+let economie1_stats = maroc_stats;
 
-var europe = new Economy({
+let europe = new Economy({
     id: "economy1",
     label: "economy1",
 
@@ -177,9 +177,9 @@ var europe = new Economy({
 });
 
 
-var economie2_stats = europe_stats;
+let economie2_stats = europe_stats;
 
-var northAmerica = new Economy({
+let northAmerica = new Economy({
     id: "economy2",
     label: "economy2",
 
@@ -219,9 +219,9 @@ var northAmerica = new Economy({
 });
 
 
-var economie3_stats = OECD_stats;
+let economie3_stats = OECD_stats;
 
-var restOfDevelopedWorld = new Economy({
+let restOfDevelopedWorld = new Economy({
     id: "economy3",
     label: "economy3",
 
@@ -260,12 +260,12 @@ var restOfDevelopedWorld = new Economy({
     GDPGrowthRateStats: OECD_stats.GDPGrowthRateStats
 });
 
-var economies = [europe, northAmerica, restOfDevelopedWorld];
+let economies = [europe, northAmerica, restOfDevelopedWorld];
 
 
 
 
-var world = new World({
+let world = new World({
     id: "economy4",
     label: "economy4",
 

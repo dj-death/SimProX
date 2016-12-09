@@ -1,54 +1,54 @@
 "use strict";
-var Marketing_1 = require('../../engine/ComputeEngine/Marketing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var game = require('../Games');
-var periodDaysNb = game.daysNbByPeriod;
-var advertisingPayments = {
+const Marketing_1 = require('../../engine/ComputeEngine/Marketing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+const game = require('../Games');
+let periodDaysNb = game.daysNbByPeriod;
+let advertisingPayments = {
     "THREE_MONTH": {
         credit: ENUMS.CREDIT.THREE_MONTH,
         part: 1
     }
 };
-var defaultPayments = {
+let defaultPayments = {
     advertising: advertisingPayments
 };
-var p1AdsRange = {
+let p1AdsRange = {
     threshold: 1000,
     mediane: 30000,
     wearout: 99000
 };
-var p2AdsRange = {
+let p2AdsRange = {
     threshold: 1000,
     mediane: 35000,
     wearout: 99000
 };
-var p3AdsRange = {
+let p3AdsRange = {
     threshold: 1000,
     mediane: 50000,
     wearout: 99000
 };
-var p1QualityRange = {
+let p1QualityRange = {
     threshold: 1,
     mediane: 4.5,
     wearout: 6
 };
-var p2QualityRange = {
+let p2QualityRange = {
     threshold: 1,
     mediane: 4.5,
     wearout: 6
 };
-var p3QualityRange = {
+let p3QualityRange = {
     threshold: 1,
     mediane: 4.5,
     wearout: 6
 };
-var basicDemandMatrix = [
+let basicDemandMatrix = [
     [2000, 1000, 800],
     [2100, 1200, 900],
     [1000000, 500000, 250000]
 ];
 function create() {
-    var euroMarket = new Marketing_1.Market({
+    let euroMarket = new Marketing_1.Market({
         id: "market1",
         label: "market1",
         marketID: "0",
@@ -125,7 +125,7 @@ function create() {
         salesForceWeights: [0.17, 0.15, 0.12],
         qualityWeights: [0.27, 0.3, 0.35]
     });
-    var naftaMarket = new Marketing_1.Market({
+    let naftaMarket = new Marketing_1.Market({
         id: "market2",
         label: "market2",
         marketID: "1",
@@ -202,7 +202,7 @@ function create() {
         salesForceWeights: [0.08, 0.08, 0.06],
         qualityWeights: [0.35, 0.35, 0.37]
     });
-    var internetMarket = new Marketing_1.Market({
+    let internetMarket = new Marketing_1.Market({
         id: "market3",
         label: "market3",
         marketID: "2",

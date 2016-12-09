@@ -1,30 +1,30 @@
 "use strict";
-var companyDecisionModel = require('../../models/decision/CompanyDecision');
+const companyDecisionModel = require('../../models/decision/CompanyDecision');
 //let brandDecisionModel = require('../../../models/marksimos/brandDecision.js');
 //let SKUDecisionModel = require('../../../models/marksimos/SKUDecision.js');
-var simulationResultModel = require('../../models/simulation/Result');
-var seminarModel = require('../../models/Seminar');
-var userRoleModel = require('../../models/user/UserRole');
-var decisionAssembler = require('../../assemblers/decision');
-var gameParameters; // = require('../../../gameParameters.js').parameters;
+const simulationResultModel = require('../../models/simulation/Result');
+const seminarModel = require('../../models/Seminar');
+const userRoleModel = require('../../models/user/UserRole');
+const decisionAssembler = require('../../assemblers/decision');
+let gameParameters; // = require('../../../gameParameters.js').parameters;
 /*
 let productPortfolioAssembler = require('../../../dataAssemblers/productPortfolio.js');
 let spendingDetailsAssembler = require('../../../dataAssemblers/spendingDetails.js');
 let SKUInfoAssembler = require('../../../dataAssemblers/SKUInfo.js');
 */
-var spendingDetailsAssembler = require('../../assemblers/spendingDetails');
-var logger = require('../../../kernel/utils/logger');
-var socketio = require('../../utils/socketio');
-var url = require('url');
-var util = require('util');
-var Q = require('q');
+const spendingDetailsAssembler = require('../../assemblers/spendingDetails');
+const logger = require('../../../kernel/utils/logger');
+const socketio = require('../../utils/socketio');
+let url = require('url');
+let util = require('util');
+let Q = require('q');
 /**
  * Sumit decision to CGI service  Not Used Now
  */
 function submitDecision(req, res, next) {
-    var companyId = +req.query.companyId;
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
-    var period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
+    let companyId = +req.query.companyId;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
     if (!companyId) {
         return res.json({ message: "Invalid companyId" });
     }
@@ -34,7 +34,7 @@ function submitDecision(req, res, next) {
     if (!seminarId) {
         return res.json({ message: "Invalid seminarId" });
     }
-    var result = {};
+    let result = {};
     companyDecisionModel.findOne(seminarId, period, companyId).then(function (decision) {
         if (!decision) {
             throw new Error("decision doesn't exist.");
@@ -59,9 +59,9 @@ function submitDecision(req, res, next) {
 exports.submitDecision = submitDecision;
 ;
 function getDecision(req, res, next) {
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
-    var period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
-    var companyId = +req.query.companyId;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
+    let companyId = +req.query.companyId;
     if (!seminarId || !companyId || !period) {
         return res.status(400).send({ message: "You don't choose a seminar." });
     }
@@ -74,7 +74,7 @@ function getDecision(req, res, next) {
 exports.getDecision = getDecision;
 ;
 function getDecisionForFacilitator(req, res, next) {
-    var seminarId = req.params.seminar_id;
+    let seminarId = req.params.seminar_id;
     if (!seminarId) {
         return res.send(400, { message: "Please choose a seminar ID." });
     }
@@ -413,10 +413,10 @@ export function updateBrandDecision (req, res, next) {
  *   Company Decisions
  */
 function updateCompanyDecision(req, res, next) {
-    var company_data = req.body.company_data;
-    var companyId = +req.body.companyId;
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
-    var period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
+    let company_data = req.body.company_data;
+    let companyId = +req.body.companyId;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
     if (req.user.role !== userRoleModel.roleList.student.id) {
         period = req.body.periodId;
         seminarId = req.body.seminarId;
@@ -433,7 +433,7 @@ function updateCompanyDecision(req, res, next) {
     if (period === undefined) {
         return res.send(400, { message: "Invalid period in session." });
     }
-    var tempCompanyDecision = company_data.decision; //filterCompanyDecision(company_data);
+    let tempCompanyDecision = company_data.decision; //filterCompanyDecision(company_data);
     //logger.log('tempCompanyDecision:' + util.inspect(tempCompanyDecision));
     companyDecisionModel.updateCompanyDecision(seminarId, period, companyId, tempCompanyDecision)
         .then(function (result) {
@@ -441,13 +441,13 @@ function updateCompanyDecision(req, res, next) {
         res.send({ message: 'update success.' });
     })
         .fail(function (err) {
-        var message = JSON.stringify(err, ['message', 'lower', 'upper', 'modifiedField'], 2);
+        let message = JSON.stringify(err, ['message', 'lower', 'upper', 'modifiedField'], 2);
         res.send(400, message);
     })
         .done();
     function filterCompanyDecision(postedCompanyDecision) {
-        var result = {};
-        var fields = ['d_CompanyName', 'd_IsAdditionalBudgetAccepted', 'd_RequestedAdditionalBudget', 'd_InvestmentInEfficiency', 'd_InvestmentInTechnology', 'd_InvestmentInServicing'];
+        let result = {};
+        let fields = ['d_CompanyName', 'd_IsAdditionalBudgetAccepted', 'd_RequestedAdditionalBudget', 'd_InvestmentInEfficiency', 'd_InvestmentInTechnology', 'd_InvestmentInServicing'];
         fields.forEach(function (field) {
             if (postedCompanyDecision[field] !== undefined) {
                 result[field] = postedCompanyDecision[field];
@@ -459,8 +459,8 @@ function updateCompanyDecision(req, res, next) {
 exports.updateCompanyDecision = updateCompanyDecision;
 ;
 function lockCompanyDecision(req, res, next) {
-    var company = {};
-    for (var i = 0; i < req.gameMarksimos.currentStudentSeminar.companies.length; i++) {
+    let company = {};
+    for (let i = 0; i < req.gameMarksimos.currentStudentSeminar.companies.length; i++) {
         //if this student is in this company
         if (req.gameMarksimos.currentStudentSeminar.companies[i].studentList.indexOf(req.user.email) > -1) {
             company = {
@@ -470,18 +470,18 @@ function lockCompanyDecision(req, res, next) {
             };
         }
     }
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
-    var period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
     seminarModel.findOneQ({
         seminarId: seminarId
     }).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error("Cancel promise chains. Because seminar not found.");
         }
-        var roundTime = resultSeminar.roundTime[resultSeminar.currentPeriod - 1];
-        var decisionTime = roundTime && roundTime.lockDecisionTime[company.companyId - 1];
+        let roundTime = resultSeminar.roundTime[resultSeminar.currentPeriod - 1];
+        let decisionTime = roundTime && roundTime.lockDecisionTime[company.companyId - 1];
         if (decisionTime) {
-            var startTime = typeof decisionTime.startTime === 'date' ? decisionTime.startTime : new Date();
+            let startTime = typeof decisionTime.startTime === 'date' ? decisionTime.startTime : new Date();
             resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].lockStatus = true;
             resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].lockTime = new Date();
             resultSeminar.roundTime[resultSeminar.currentPeriod - 1].lockDecisionTime[company.companyId - 1].spendHour = decisionTime.lockTime - startTime;
@@ -527,12 +527,12 @@ export function getProductPortfolio (req, res, next) {
 }
 */
 function getSpendingDetails(req, res, next) {
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
-    var period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
     if (!seminarId) {
         return res.send(400, { message: "You don't choose a seminar." });
     }
-    var companyId = +req.query.companyId;
+    let companyId = +req.query.companyId;
     spendingDetailsAssembler.getSpendingDetails(seminarId, period, companyId)
         .then(function (spendingDetails) {
         res.send(spendingDetails);
@@ -574,12 +574,12 @@ export function getSKUInfoFutureProjection (req, res, next) {
 }
 */
 function getOtherinfo(req, res, next) {
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
-    var period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let period = req.gameMarksimos.currentStudentSeminar.currentPeriod;
     if (!seminarId) {
         return res.send(400, { message: "You don't choose a seminar." });
     }
-    var companyId = +req.query.companyId;
+    let companyId = +req.query.companyId;
     Q.all([
         spendingDetailsAssembler.getSpendingDetails(seminarId, period, companyId),
         simulationResultModel.findOne(seminarId, period - 1)

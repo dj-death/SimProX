@@ -1,7 +1,7 @@
 "use strict";
-var util = require('./util');
-var Queue_1 = require('./Queue');
-var BSTree = (function () {
+const util = require('./util');
+const Queue_1 = require('./Queue');
+class BSTree {
     /**
      * Creates an empty binary search tree.
      * @class <p>A binary search tree is a binary tree in which each
@@ -37,7 +37,7 @@ var BSTree = (function () {
      * zero, or a positive integer as the first argument is less than, equal to,
      * or greater than the second.
      */
-    function BSTree(compareFunction) {
+    constructor(compareFunction) {
         this.root = null;
         this.compare = compareFunction || util.defaultCompare;
         this.nElements = 0;
@@ -47,7 +47,7 @@ var BSTree = (function () {
      * @param {Object} element the element to insert.
      * @return {boolean} true if this tree did not already contain the specified element.
      */
-    BSTree.prototype.add = function (element) {
+    add(element) {
         if (util.isUndefined(element)) {
             return false;
         }
@@ -56,115 +56,115 @@ var BSTree = (function () {
             return true;
         }
         return false;
-    };
+    }
     /**
      * Removes all of the elements from this tree.
      */
-    BSTree.prototype.clear = function () {
+    clear() {
         this.root = null;
         this.nElements = 0;
-    };
+    }
     /**
      * Returns true if this tree contains no elements.
      * @return {boolean} true if this tree contains no elements.
      */
-    BSTree.prototype.isEmpty = function () {
+    isEmpty() {
         return this.nElements === 0;
-    };
+    }
     /**
      * Returns the number of elements in this tree.
      * @return {number} the number of elements in this tree.
      */
-    BSTree.prototype.size = function () {
+    size() {
         return this.nElements;
-    };
+    }
     /**
      * Returns true if this tree contains the specified element.
      * @param {Object} element element to search for.
      * @return {boolean} true if this tree contains the specified element,
      * false otherwise.
      */
-    BSTree.prototype.contains = function (element) {
+    contains(element) {
         if (util.isUndefined(element)) {
             return false;
         }
         return this.searchNode(this.root, element) !== null;
-    };
+    }
     /**
      * Removes the specified element from this tree if it is present.
      * @return {boolean} true if this tree contained the specified element.
      */
-    BSTree.prototype.remove = function (element) {
-        var node = this.searchNode(this.root, element);
+    remove(element) {
+        const node = this.searchNode(this.root, element);
         if (node === null) {
             return false;
         }
         this.removeNode(node);
         this.nElements--;
         return true;
-    };
+    }
     /**
      * Executes the provided function once for each element present in this tree in
      * in-order.
      * @param {function(Object):*} callback function to execute, it is invoked with one
      * argument: the element value, to break the iteration you can optionally return false.
      */
-    BSTree.prototype.inorderTraversal = function (callback) {
+    inorderTraversal(callback) {
         this.inorderTraversalAux(this.root, callback, {
             stop: false
         });
-    };
+    }
     /**
      * Executes the provided function once for each element present in this tree in pre-order.
      * @param {function(Object):*} callback function to execute, it is invoked with one
      * argument: the element value, to break the iteration you can optionally return false.
      */
-    BSTree.prototype.preorderTraversal = function (callback) {
+    preorderTraversal(callback) {
         this.preorderTraversalAux(this.root, callback, {
             stop: false
         });
-    };
+    }
     /**
      * Executes the provided function once for each element present in this tree in post-order.
      * @param {function(Object):*} callback function to execute, it is invoked with one
      * argument: the element value, to break the iteration you can optionally return false.
      */
-    BSTree.prototype.postorderTraversal = function (callback) {
+    postorderTraversal(callback) {
         this.postorderTraversalAux(this.root, callback, {
             stop: false
         });
-    };
+    }
     /**
      * Executes the provided function once for each element present in this tree in
      * level-order.
      * @param {function(Object):*} callback function to execute, it is invoked with one
      * argument: the element value, to break the iteration you can optionally return false.
      */
-    BSTree.prototype.levelTraversal = function (callback) {
+    levelTraversal(callback) {
         this.levelTraversalAux(this.root, callback);
-    };
+    }
     /**
      * Returns the minimum element of this tree.
      * @return {*} the minimum element of this tree or undefined if this tree is
      * is empty.
      */
-    BSTree.prototype.minimum = function () {
+    minimum() {
         if (this.isEmpty()) {
             return undefined;
         }
         return this.minimumAux(this.root).element;
-    };
+    }
     /**
      * Returns the maximum element of this tree.
      * @return {*} the maximum element of this tree or undefined if this tree is
      * is empty.
      */
-    BSTree.prototype.maximum = function () {
+    maximum() {
         if (this.isEmpty()) {
             return undefined;
         }
         return this.maximumAux(this.root).element;
-    };
+    }
     /**
      * Executes the provided function once for each element present in this tree in inorder.
      * Equivalent to inorderTraversal.
@@ -172,33 +172,33 @@ var BSTree = (function () {
      * invoked with one argument: the element value, to break the iteration you can
      * optionally return false.
      */
-    BSTree.prototype.forEach = function (callback) {
+    forEach(callback) {
         this.inorderTraversal(callback);
-    };
+    }
     /**
      * Returns an array containing all of the elements in this tree in in-order.
      * @return {Array} an array containing all of the elements in this tree in in-order.
      */
-    BSTree.prototype.toArray = function () {
-        var array = [];
+    toArray() {
+        const array = [];
         this.inorderTraversal(function (element) {
             array.push(element);
             return true;
         });
         return array;
-    };
+    }
     /**
      * Returns the height of this tree.
      * @return {number} the height of this tree or -1 if is empty.
      */
-    BSTree.prototype.height = function () {
+    height() {
         return this.heightAux(this.root);
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.searchNode = function (node, element) {
-        var cmp = null;
+    searchNode(node, element) {
+        let cmp = null;
         while (node !== null && cmp !== 0) {
             cmp = this.compare(element, node.element);
             if (cmp < 0) {
@@ -209,11 +209,11 @@ var BSTree = (function () {
             }
         }
         return node;
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.transplant = function (n1, n2) {
+    transplant(n1, n2) {
         if (n1.parent === null) {
             this.root = n2;
         }
@@ -226,11 +226,11 @@ var BSTree = (function () {
         if (n2 !== null) {
             n2.parent = n1.parent;
         }
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.removeNode = function (node) {
+    removeNode(node) {
         if (node.leftCh === null) {
             this.transplant(node, node.rightCh);
         }
@@ -238,7 +238,7 @@ var BSTree = (function () {
             this.transplant(node, node.leftCh);
         }
         else {
-            var y = this.minimumAux(node.rightCh);
+            const y = this.minimumAux(node.rightCh);
             if (y.parent !== node) {
                 this.transplant(y, y.rightCh);
                 y.rightCh = node.rightCh;
@@ -248,11 +248,11 @@ var BSTree = (function () {
             y.leftCh = node.leftCh;
             y.leftCh.parent = y;
         }
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.inorderTraversalAux = function (node, callback, signal) {
+    inorderTraversalAux(node, callback, signal) {
         if (node === null || signal.stop) {
             return;
         }
@@ -265,12 +265,12 @@ var BSTree = (function () {
             return;
         }
         this.inorderTraversalAux(node.rightCh, callback, signal);
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.levelTraversalAux = function (node, callback) {
-        var queue = new Queue_1.default();
+    levelTraversalAux(node, callback) {
+        const queue = new Queue_1.default();
         if (node !== null) {
             queue.enqueue(node);
         }
@@ -286,11 +286,11 @@ var BSTree = (function () {
                 queue.enqueue(node.rightCh);
             }
         }
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.preorderTraversalAux = function (node, callback, signal) {
+    preorderTraversalAux(node, callback, signal) {
         if (node === null || signal.stop) {
             return;
         }
@@ -303,11 +303,11 @@ var BSTree = (function () {
             return;
         }
         this.preorderTraversalAux(node.rightCh, callback, signal);
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.postorderTraversalAux = function (node, callback, signal) {
+    postorderTraversalAux(node, callback, signal) {
         if (node === null || signal.stop) {
             return;
         }
@@ -320,41 +320,41 @@ var BSTree = (function () {
             return;
         }
         signal.stop = callback(node.element) === false;
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.minimumAux = function (node) {
+    minimumAux(node) {
         while (node.leftCh !== null) {
             node = node.leftCh;
         }
         return node;
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.maximumAux = function (node) {
+    maximumAux(node) {
         while (node.rightCh !== null) {
             node = node.rightCh;
         }
         return node;
-    };
+    }
     /**
       * @private
       */
-    BSTree.prototype.heightAux = function (node) {
+    heightAux(node) {
         if (node === null) {
             return -1;
         }
         return Math.max(this.heightAux(node.leftCh), this.heightAux(node.rightCh)) + 1;
-    };
+    }
     /*
     * @private
     */
-    BSTree.prototype.insertNode = function (node) {
-        var parent = null;
-        var position = this.root;
-        var cmp = null;
+    insertNode(node) {
+        let parent = null;
+        let position = this.root;
+        let cmp = null;
         while (position !== null) {
             cmp = this.compare(node.element, position.element);
             if (cmp === 0) {
@@ -381,20 +381,19 @@ var BSTree = (function () {
             parent.rightCh = node;
         }
         return node;
-    };
+    }
     /**
     * @private
     */
-    BSTree.prototype.createNode = function (element) {
+    createNode(element) {
         return {
             element: element,
             leftCh: null,
             rightCh: null,
             parent: null
         };
-    };
-    return BSTree;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = BSTree;
 //# sourceMappingURL=BSTree.js.map

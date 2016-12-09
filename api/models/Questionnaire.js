@@ -1,12 +1,12 @@
 "use strict";
-var mongoose = require('mongoose-q')(require('mongoose'));
-var Schema = mongoose.Schema;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
+let mongoose = require('mongoose-q')(require('mongoose'));
+let Schema = mongoose.Schema;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
 /**
  * Mongoose schema
  */
-var questionnaireSchema = new Schema({
+let questionnaireSchema = new Schema({
     seminarId: String,
     email: String,
     q_OverallSatisfactionWithTheProgram: { type: [Number], default: [5, 5, 5, 5, 5, 5] },
@@ -38,6 +38,6 @@ questionnaireSchema.plugin(mongooseTimestamps);
 /**
  * Register Model
  */
-var Questionnaire = mongoose.model("Questionnaire", questionnaireSchema);
+let Questionnaire = mongoose.model("Questionnaire", questionnaireSchema);
 module.exports = Questionnaire;
 //# sourceMappingURL=Questionnaire.js.map

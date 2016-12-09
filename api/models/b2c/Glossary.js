@@ -2,15 +2,15 @@
 /*!
  * Module dependencies
  */
-var mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
-var Schema = mongoose.Schema;
-var schemaObjectId = Schema.Types.ObjectId;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
+let mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
+let Schema = mongoose.Schema;
+let schemaObjectId = Schema.Types.ObjectId;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
 /**
  * Mongoose schema
  */
-var glossarySchema = new Schema({
+let glossarySchema = new Schema({
     type: { type: Number, default: 10 },
     name: { type: String },
     description: { type: String },
@@ -56,6 +56,6 @@ glossarySchema.statics.searchWordValidations = function (req) {
 /**
  * Register Model
  */
-var glossary = mongoose.model("Glossary", glossarySchema);
+let glossary = mongoose.model("Glossary", glossarySchema);
 module.exports = glossary;
 //# sourceMappingURL=Glossary.js.map

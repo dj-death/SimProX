@@ -3,19 +3,19 @@
 import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 import game = require('../Games');
-var weeksNbByPeriod = game.weeksNbByPeriod;
+let weeksNbByPeriod = game.weeksNbByPeriod;
 
 
 
 
-var cashPayments: ENUMS.PaymentArray = {
+let cashPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 
-var single: ENUMS.Shift,
+let single: ENUMS.Shift,
     double: ENUMS.Shift,
     treble: ENUMS.Shift,
 
@@ -86,7 +86,7 @@ treble = {
 export default function create(): Worker[] {
 
 
-    var machinist = new Worker({
+    let machinist = new Worker({
         id: "worker2",
         workerID: "1",
 
@@ -144,7 +144,7 @@ export default function create(): Worker[] {
         attritionBaseRate: 0
     });
 
-    var assemblyWorker = new Worker({
+    let assemblyWorker = new Worker({
         id: "worker1",
         workerID: "0",
 

@@ -1,15 +1,15 @@
 "use strict";
-var userModel = require('../../models/user/User');
-var userRoleModel = require('../../models/user/UserRole');
-var teamModel = require('../../models/user/Team');
-var campaignModel = require('../../models/b2c/Campaign');
-var MKError = require('../../utils/error-code');
+const userModel = require('../../models/user/User');
+const userRoleModel = require('../../models/user/UserRole');
+const teamModel = require('../../models/user/Team');
+const campaignModel = require('../../models/b2c/Campaign');
+const MKError = require('../../utils/error-code');
 function addDistributor(req, res, next) {
-    var validationErrors = userModel.registerValidations(req, userRoleModel.roleList["distributor"].id);
+    let validationErrors = userModel.registerValidations(req, userRoleModel.roleList["distributor"].id);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var newDistributor = {
+    let newDistributor = {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
@@ -39,11 +39,11 @@ function updateDistributor(req, res, next) {
     if (!req.body.id) {
         return res.send(400, { message: "distributor_id can't be empty." });
     }
-    var validationErrors = userModel.registerValidations(req, userRoleModel.roleList["distributor"].id);
+    let validationErrors = userModel.registerValidations(req, userRoleModel.roleList["distributor"].id);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var distributor = {
+    let distributor = {
         username: req.body.name,
         mobilePhone: req.body.mobilePhone,
         country: req.body.country,
@@ -56,7 +56,7 @@ function updateDistributor(req, res, next) {
         idcardNumber: req.body.idcardNumber || ''
     };
     userModel.updateQ({ _id: req.body.id }, distributor).then(function (result) {
-        var numberAffected = result.nModified;
+        let numberAffected = result.nModified;
         if (numberAffected !== 1) {
             throw new Error('Cancel promise chains. Because Update user failed. More or less than 1 record is updated. it should be only one !');
         }
@@ -68,13 +68,13 @@ function updateDistributor(req, res, next) {
 exports.updateDistributor = updateDistributor;
 ;
 function searchDistributor(req, res, next) {
-    var name = req.query.username;
-    var email = req.query.email;
-    var country = req.query.country;
-    var state = req.query.state;
-    var city = req.query.city;
-    var activated = req.query.user_status;
-    var query = {
+    let name = req.query.username;
+    let email = req.query.email;
+    let country = req.query.country;
+    let state = req.query.state;
+    let city = req.query.city;
+    let activated = req.query.user_status;
+    let query = {
         role: userRoleModel.roleList["distributor"].id
     };
     if (name)
@@ -98,12 +98,12 @@ function searchDistributor(req, res, next) {
 exports.searchDistributor = searchDistributor;
 ;
 function addFacilitator(req, res, next) {
-    var validationErrors = userModel.registerValidations(req, userRoleModel.roleList["facilitator"].id);
+    let validationErrors = userModel.registerValidations(req, userRoleModel.roleList["facilitator"].id);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var distributorId = req.user._id;
-    var newFacilitator = {
+    let distributorId = req.user._id;
+    let newFacilitator = {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
@@ -147,11 +147,11 @@ function addFacilitator(req, res, next) {
 exports.addFacilitator = addFacilitator;
 ;
 function updateFacilitator(req, res, next) {
-    var validateResult = userModel.createValidations(req);
+    let validateResult = userModel.createValidations(req);
     if (validateResult) {
         return res.send(400, { message: validateResult });
     }
-    var facilitator = {};
+    let facilitator = {};
     if (req.body.username)
         facilitator.username = req.body.username;
     if (req.body.mobilePhone)
@@ -164,7 +164,7 @@ function updateFacilitator(req, res, next) {
         facilitator.city = req.body.city;
     if (req.body.password)
         facilitator.password = userModel.generateHashPassword(req.body.password);
-    var userRole = req.user.roleId;
+    let userRole = req.user.roleId;
     if (req.body.num_of_license_granted && (userRole === userRoleModel.roleList["admin"].id || userRole === userRoleModel.roleList["distributor"].id)) {
         facilitator.numOfLicense = req.body.num_of_license_granted;
     }
@@ -177,8 +177,8 @@ function updateFacilitator(req, res, next) {
     if (Object.keys(facilitator).length === 0) {
         return res.send(400, { message: "you have to provide at least one field to update." });
     }
-    var distributorId = req.user._id;
-    var p;
+    let distributorId = req.user._id;
+    let p;
     //if the num_of_license is changed, we need to add or remove certain licenses
     //from the distributor
     if (req.body.num_of_license_granted > 0) {
@@ -189,21 +189,21 @@ function updateFacilitator(req, res, next) {
             .then(function (dbFacilitator) {
             //if this facilitator belongs to the current distributor
             if (dbFacilitator.distributorId === distributorId) {
-                var addedLicense_1 = parseInt(req.body.num_of_license_granted) - dbFacilitator.numOfLicense;
+                let addedLicense = parseInt(req.body.num_of_license_granted) - dbFacilitator.numOfLicense;
                 return userModel.findOneQ({
                     _id: distributorId
                 })
                     .then(function (dbDistributor) {
                     //if the distributor has enough license
-                    if (dbDistributor.numOfLicense > addedLicense_1) {
+                    if (dbDistributor.numOfLicense > addedLicense) {
                         return userModel.updateQ({
                             _id: distributorId
                         }, {
-                            numOfUsedLicense: dbDistributor.numOfUsedLicense + addedLicense_1,
-                            numOfLicense: dbDistributor.numOfLicense - addedLicense_1
+                            numOfUsedLicense: dbDistributor.numOfUsedLicense + addedLicense,
+                            numOfLicense: dbDistributor.numOfLicense - addedLicense
                         })
                             .then(function (result) {
-                            var numAffected = result.nModified;
+                            let numAffected = result.nModified;
                             if (numAffected !== 1) {
                                 throw { httpStatus: 400, message: 'failed to update distributor ' + distributorId + ' during updating facilitator ' + req.body.id };
                             }
@@ -213,7 +213,7 @@ function updateFacilitator(req, res, next) {
                         });
                     }
                     else {
-                        throw { httpStatus: 400, message: "you don't have enought license, you need " + addedLicense_1
+                        throw { httpStatus: 400, message: "you don't have enought license, you need " + addedLicense
                                 + " more licenses, but you only have " + dbDistributor.numOfUsedLicense };
                     }
                 });
@@ -227,7 +227,7 @@ function updateFacilitator(req, res, next) {
         p = userModel.updateQ({ _id: req.body.id }, facilitator);
     }
     p.then(function (result) {
-        var numAffected = result.nModified;
+        let numAffected = result.nModified;
         if (numAffected !== 1) {
             return res.send(400, { message: 'user does not exist.' });
         }
@@ -239,13 +239,13 @@ function updateFacilitator(req, res, next) {
 exports.updateFacilitator = updateFacilitator;
 ;
 function searchFacilitator(req, res, next) {
-    var name = req.query.username;
-    var email = req.query.email;
-    var country = req.query.country;
-    var state = req.query.state;
-    var city = req.query.city;
-    var activated = req.query.user_status;
-    var query = {
+    let name = req.query.username;
+    let email = req.query.email;
+    let country = req.query.country;
+    let state = req.query.state;
+    let city = req.query.city;
+    let activated = req.query.user_status;
+    let query = {
         role: userRoleModel.roleList["facilitator"].id
     };
     //only distributor and admin can search facilitators
@@ -271,9 +271,9 @@ function searchFacilitator(req, res, next) {
         }
         allFacilitator = JSON.parse(JSON.stringify(allFacilitator));
         return userModel.findQ({ role: userRoleModel.roleList["distributor"].id }).then(function (allDistributor) {
-            for (var i = 0; i < allFacilitator.length; i++) {
-                var facilitator = allFacilitator[i];
-                var distributor = findDistributor(facilitator.distributorId, allDistributor);
+            for (let i = 0; i < allFacilitator.length; i++) {
+                let facilitator = allFacilitator[i];
+                let distributor = findDistributor(facilitator.distributorId, allDistributor);
                 if (!distributor) {
                     return res.send(500, { message: "distributor " + facilitator.distributorId + " doesn't exist." });
                 }
@@ -285,7 +285,7 @@ function searchFacilitator(req, res, next) {
         next(err);
     }).done();
     function findDistributor(distributorId, allDistributor) {
-        for (var i = 0; i < allDistributor.length; i++) {
+        for (let i = 0; i < allDistributor.length; i++) {
             if (allDistributor[i]._id.toString() === distributorId) {
                 return allDistributor[i];
             }
@@ -295,12 +295,12 @@ function searchFacilitator(req, res, next) {
 exports.searchFacilitator = searchFacilitator;
 function addStudent(req, res, next) {
     req.body.organizationOrUniversity = req.body.university;
-    var validationErrors = userModel.registerValidations(req, req.body.userRole || userRoleModel.roleList["student"].id, req.body.studentType || userModel.getStudentType().B2B);
+    let validationErrors = userModel.registerValidations(req, req.body.userRole || userRoleModel.roleList["student"].id, req.body.studentType || userModel.getStudentType().B2B);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var facilitatorId = req.user._id;
-    var newStudent = {
+    let facilitatorId = req.user._id;
+    let newStudent = {
         username: req.body.username,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -339,11 +339,11 @@ function addStudent(req, res, next) {
 exports.addStudent = addStudent;
 ;
 function updateStudent(req, res, next) {
-    var validateResult = userModel.userInfoValidations(req);
+    let validateResult = userModel.userInfoValidations(req);
     if (validateResult) {
         return res.send(400, { message: validateResult });
     }
-    var student = {};
+    let student = {};
     if (req.body.username)
         student.username = req.body.username;
     if (req.body.mobilePhone)
@@ -373,7 +373,7 @@ function updateStudent(req, res, next) {
     if (Object.keys(student).length === 0) {
         return res.send(400, { message: "You should at least provide one field to update." });
     }
-    var student_id = req.body.id;
+    let student_id = req.body.id;
     if (!student_id) {
         return res.send(400, { message: "student_id can't be empty." });
     }
@@ -388,7 +388,7 @@ function updateStudent(req, res, next) {
         }
         return userModel.updateQ({ _id: student_id }, student);
     }).then(function (result) {
-        var numAffected = result.nModified;
+        let numAffected = result.nModified;
         if (numAffected !== 1) {
             if (numAffected > 1) {
                 throw { httpStatus: 400, message: "more than one row are updated." };
@@ -405,7 +405,7 @@ function updateStudent(req, res, next) {
 exports.updateStudent = updateStudent;
 ;
 function removeStudent(req, res, next) {
-    var student_id = req.body._id;
+    let student_id = req.body._id;
     if (!student_id) {
         return res.send(400, { message: "student_id can't be empty." });
     }
@@ -431,7 +431,7 @@ function removeStudent(req, res, next) {
 exports.removeStudent = removeStudent;
 ;
 function resetStudentPassword(req, res, next) {
-    var validationErrors = userModel.userIdValidations(req, userRoleModel.roleList["student"].id, userModel.getStudentType().B2B);
+    let validationErrors = userModel.userIdValidations(req, userRoleModel.roleList["student"].id, userModel.getStudentType().B2B);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -453,12 +453,12 @@ function resetStudentPassword(req, res, next) {
 exports.resetStudentPassword = resetStudentPassword;
 ;
 function searchStudent(req, res, next) {
-    var validationErrors = userModel.searchQueryValidations(req);
+    let validationErrors = userModel.searchQueryValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var quantity = req.query.quantity || 5000;
-    var query = {};
+    let quantity = req.query.quantity || 5000;
+    let query = {};
     /*if(req.query.user_status) query.activated = req.query.user_status;
 
     query.role = userRoleModel.roleList["student"].id;
@@ -474,13 +474,13 @@ function searchStudent(req, res, next) {
     if (req.user.roleId !== userRoleModel.roleList["admin"].id) {
         query.facilitatorId = req.user._id;
     }
-    var dataUserList;
-    var userIdList = [];
-    var teamIdList = [];
-    var userIdTeamMap = {};
-    var userIdUserMap = {};
-    var teamIdCampaignMap = {};
-    var memberIdCampaignMap = {};
+    let dataUserList;
+    let userIdList = [];
+    let teamIdList = [];
+    let userIdTeamMap = {};
+    let userIdUserMap = {};
+    let teamIdCampaignMap = {};
+    let memberIdCampaignMap = {};
     global.debug_data.userModel = userModel;
     userModel.find(query, userModel.selectFields()).sort({ createdAt: -1 }).limit(quantity).lean().execQ().then(function (result) {
         if (result.length === 0) {
@@ -518,7 +518,7 @@ function searchStudent(req, res, next) {
         });
         dataUserList.forEach(function (user) {
             if (typeof user.team !== 'undefined') {
-                var campaign = teamIdCampaignMap[user.team._id];
+                let campaign = teamIdCampaignMap[user.team._id];
                 if (campaign && campaign.length) {
                     user.joinedCampaign = teamIdCampaignMap[user.team._id];
                     user.joinCampaignTimes = user.joinCampaignTimes || [];
@@ -550,7 +550,7 @@ function searchStudent(req, res, next) {
 exports.searchStudent = searchStudent;
 ;
 function listStudentNumberByDay(req, res, next) {
-    var query = {
+    let query = {
         role: userRoleModel.roleList["student"].id
     };
     query.studentType = req.query.student_type || userModel.getStudentType().B2C;
@@ -559,15 +559,15 @@ function listStudentNumberByDay(req, res, next) {
     if (req.user.roleId !== userRoleModel.roleList["admin"].id) {
         query.facilitatorId = req.user._id;
     }
-    var now = new Date();
-    var dd = now.getDate();
-    var mm = now.getMonth(); //January is 0!
-    var yyyy = now.getFullYear();
+    let now = new Date();
+    let dd = now.getDate();
+    let mm = now.getMonth(); //January is 0!
+    let yyyy = now.getFullYear();
     query.createdAt = {
         "$gte": new Date(yyyy, mm, dd - 1),
         "$lt": new Date(yyyy, mm, dd)
     };
-    var resultData = [];
+    let resultData = [];
     userModel.findQ(query, userModel.selectFields()).then(function (result1) {
         resultData.push({
             date: yyyy + '/' + (mm + 1) + '/' + (dd - 1),

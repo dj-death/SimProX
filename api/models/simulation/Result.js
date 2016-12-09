@@ -1,14 +1,14 @@
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Q = require('q');
-var simulationResultSchema = require('./ResultSchema');
-var SimulationResult = mongoose.model("SimulationResult", simulationResultSchema);
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+let Q = require('q');
+let simulationResultSchema = require('./ResultSchema');
+let SimulationResult = mongoose.model("SimulationResult", simulationResultSchema);
 function insert(simulationResult) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     SimulationResult.create(simulationResult, function (err, result) {
         if (err) {
             return deferred.reject(err);
@@ -22,7 +22,7 @@ function findAll(seminarId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     SimulationResult.find({ seminarId: seminarId })
         .sort({ period: 'asc' })
         .exec(function (err, result) {
@@ -40,7 +40,7 @@ function findAllBefore(seminarId, period) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     SimulationResult.find({
         seminarId: seminarId,
         period: { $lte: period }
@@ -61,7 +61,7 @@ function removeAll(seminarId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     SimulationResult.remove({ seminarId: seminarId }, function (err) {
         if (err) {
             deferred.reject(err);
@@ -77,7 +77,7 @@ function findOne(seminarId, period) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     // SimulationResult.find({
     //     seminarId: seminarId,
     //     period: period
@@ -108,7 +108,7 @@ function remove(query) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     SimulationResult.remove(query, function (err) {
         if (err) {
             deferred.reject(err);

@@ -1,7 +1,7 @@
 "use strict";
-var Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
+const Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
 function create() {
-    var materialA = new Manufacturing_1.RawMaterial({
+    let materialA = new Manufacturing_1.RawMaterial({
         id: "material1",
         materialID: "0",
         label: "Material",

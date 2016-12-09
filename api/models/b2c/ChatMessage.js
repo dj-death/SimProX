@@ -2,16 +2,16 @@
 /*!
  * Module dependencies
  */
-var mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
-var Schema = mongoose.Schema;
-var schemaObjectId = Schema.Types.ObjectId;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
-var userRoleModel = require('../user/UserRole');
+let mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
+let Schema = mongoose.Schema;
+let schemaObjectId = Schema.Types.ObjectId;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
+const userRoleModel = require('../user/UserRole');
 /**
  * Mongoose schema
  */
-var chatMessageSchema = new Schema({
+let chatMessageSchema = new Schema({
     text: { type: String },
     creator: { type: schemaObjectId, ref: 'User' },
     room: {
@@ -46,6 +46,6 @@ chatMessageSchema.statics.createValidations = function (req, userRoleId) {
 /**
  * Register Model
  */
-var chatMessage = mongoose.model("Chatmessage", chatMessageSchema);
+let chatMessage = mongoose.model("Chatmessage", chatMessageSchema);
 module.exports = chatMessage;
 //# sourceMappingURL=ChatMessage.js.map

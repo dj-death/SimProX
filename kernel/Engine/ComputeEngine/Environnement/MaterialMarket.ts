@@ -65,9 +65,9 @@ export default class MaterialMarket extends IObject.IObject {
             return 0;
         }
 
-        var price: number;
+        let price: number;
 
-        var initialExchangeRate = this.economy.currency.initialExchangeRate;
+        let initialExchangeRate = this.economy.currency.initialExchangeRate;
 
         switch (term) {
             case ENUMS.FUTURES.SIX_MONTH:
@@ -93,9 +93,9 @@ export default class MaterialMarket extends IObject.IObject {
             return 0;
         }
 
-        var price: number;
+        let price: number;
 
-        var quotedExchangeRate = this.economy.currency.quotedExchangeRate; 
+        let quotedExchangeRate = this.economy.currency.quotedExchangeRate; 
 
         switch (term) {
             case ENUMS.FUTURES.SIX_MONTH:

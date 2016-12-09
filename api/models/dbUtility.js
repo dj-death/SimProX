@@ -1,10 +1,10 @@
 //import PlayerDecision = require('./decision/Decision');
 "use strict";
-var companyDecisionModel = require('./decision/CompanyDecision');
+const companyDecisionModel = require('./decision/CompanyDecision');
 /*let brandDecisionModel = require('./marksimos/brandDecision.js');
 let SKUDecisionModel = require('./marksimos/SKUDecision.js');*/
-var decisionAssembler = require('../assemblers/decision');
-var Q = require('q');
+const decisionAssembler = require('../assemblers/decision');
+let Q = require('q');
 /**
  * @param {Number} period current period
  *
@@ -32,7 +32,7 @@ exports.removeExistedDecisions = removeExistedDecisions;
  *
  */
 function saveDecision(seminarId, allDecisions) {
-    var p = Q();
+    let p = Q();
     allDecisions.forEach(function (decision) {
         p = p.then(function () {
             return Q.all([
@@ -47,7 +47,7 @@ function saveDecision(seminarId, allDecisions) {
 exports.saveDecision = saveDecision;
 ;
 function saveCompanyDecision(decision, seminarId, period) {
-    var companyDecision = decisionAssembler.getCompanyDecision(decision);
+    let companyDecision = decisionAssembler.getCompanyDecision(decision);
     companyDecision.seminarId = seminarId;
     companyDecision.period = period;
     return companyDecisionModel.save(companyDecision);

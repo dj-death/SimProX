@@ -46,7 +46,7 @@ let economy2_bank = BCE;
 
 
 
-var ECB = new CentralBank({
+let ECB = new CentralBank({
     id: "centralBank2",
     label: "centralBank2",
 
@@ -65,7 +65,7 @@ var ECB = new CentralBank({
 
 
 
-var FED = new CentralBank({
+let FED = new CentralBank({
     id: "centralBank1",
     label: "centralBank1",
 

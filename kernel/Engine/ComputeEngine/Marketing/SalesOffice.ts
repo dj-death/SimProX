@@ -48,7 +48,7 @@ export default class SalesOffice extends IObject.IObject {
     }
 
     get scrapsRevenue(): number {
-        var productsNb = this.markets[0] && this.markets[0].subMarkets.length,
+        let productsNb = this.markets[0] && this.markets[0].subMarkets.length,
             sums = 0,
             product,
             i = 0;
@@ -91,7 +91,7 @@ export default class SalesOffice extends IObject.IObject {
 
     // TODO develop it f(administrative depense)
     get recoveryEffortsRate(): number {
-        var rate: number;
+        let rate: number;
 
         rate = this.params.recoveryEfficacityBaseRate;
 
@@ -100,7 +100,7 @@ export default class SalesOffice extends IObject.IObject {
 
 
     get recoverySuccessRate(): number {
-        var rate: number,
+        let rate: number,
             easyness;
 
         rate = this.recoveryEffortsRate;
@@ -110,10 +110,10 @@ export default class SalesOffice extends IObject.IObject {
 
     // cash flows
     get tradingReceipts(): number {
-        var total: number;
-        var tradingReceiptsFromLastP = Math.round(this.lastTradingReceivables * this.recoverySuccessRate);
+        let total: number;
+        let tradingReceiptsFromLastP = Math.round(this.lastTradingReceivables * this.recoverySuccessRate);
 
-        var otherSales = this.soldOffRevenue + this.scrapsRevenue;
+        let otherSales = this.soldOffRevenue + this.scrapsRevenue;
 
         total = Utils.sums(this.markets, "tradingReceipts") + tradingReceiptsFromLastP + otherSales;
 
@@ -132,7 +132,7 @@ export default class SalesOffice extends IObject.IObject {
     }
 
     getEndState(): any {
-        var state = {
+        let state = {
             "salesRevenue": this.salesRevenue,
             "creditControlCost": this.creditControlCost,
             "salesOfficeCost": this.administrationCost,

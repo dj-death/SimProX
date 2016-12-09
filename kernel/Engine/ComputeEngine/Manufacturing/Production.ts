@@ -70,7 +70,7 @@ export default class Production {
 
     register(objects: any[]) {
 
-        var i = 0,
+        let i = 0,
             len = objects.length,
             object;
 
@@ -157,14 +157,14 @@ export default class Production {
     }
 
     get productionCO2PrimaryFootprintTotalWeight(): number {
-        var machinesCO2Weight = Utils.sums(this.machineries, "CO2PrimaryFootprintWeight", null, null, null, "=", 2);
-        var workersCO2Weight = Utils.sums(this.workers, "CO2PrimaryFootprintWeight", null, null, null, "=", 2);
+        let machinesCO2Weight = Utils.sums(this.machineries, "CO2PrimaryFootprintWeight", null, null, null, "=", 2);
+        let workersCO2Weight = Utils.sums(this.workers, "CO2PrimaryFootprintWeight", null, null, null, "=", 2);
 
         return Utils.round(machinesCO2Weight + workersCO2Weight, 2);
     }
 
     get CO2PrimaryFootprintTotalWeight(): number {
-        var weight = this.factoriesCO2PrimaryFootprintTotalWeight + this.productionCO2PrimaryFootprintTotalWeight;
+        let weight = this.factoriesCO2PrimaryFootprintTotalWeight + this.productionCO2PrimaryFootprintTotalWeight;
 
         return Utils.round(weight, 2);
     }
@@ -172,11 +172,11 @@ export default class Production {
 
     // costs
     get CO2PrimaryFootprintOffsettingCost(): number {
-        var factoriesShare = Utils.sums(this.factories, "CO2PrimaryFootprintOffsettingCost");
-        var machinesShare = Utils.sums(this.machineries, "CO2PrimaryFootprintOffsettingCost");
-        var workersShare = Utils.sums(this.workers, "CO2PrimaryFootprintOffsettingCost");
+        let factoriesShare = Utils.sums(this.factories, "CO2PrimaryFootprintOffsettingCost");
+        let machinesShare = Utils.sums(this.machineries, "CO2PrimaryFootprintOffsettingCost");
+        let workersShare = Utils.sums(this.workers, "CO2PrimaryFootprintOffsettingCost");
 
-        var totalCost = factoriesShare + machinesShare + workersShare;
+        let totalCost = factoriesShare + machinesShare + workersShare;
 
         return Math.ceil(totalCost);
     }
@@ -243,7 +243,7 @@ export default class Production {
     }
 
     get miscellaneousCost(): number {
-        var totalCost = 0;
+        let totalCost = 0;
 
         totalCost += this.factoriesFixedCost;
         totalCost += this.machinesDecommissioningCost;
@@ -265,11 +265,11 @@ export default class Production {
     }
 
     get depreciation(): number {
-        var totalValue = 0;
+        let totalValue = 0;
 
-        var machinesDepreciation = Utils.sums(this.machineries, "depreciation");
-        var landsDepreciation = Utils.sums(this.lands, "depreciation");
-        var factoriesDepreciation = Utils.sums(this.factories, "depreciation");
+        let machinesDepreciation = Utils.sums(this.machineries, "depreciation");
+        let landsDepreciation = Utils.sums(this.lands, "depreciation");
+        let factoriesDepreciation = Utils.sums(this.factories, "depreciation");
 
         totalValue += machinesDepreciation;
         totalValue += landsDepreciation;
@@ -279,8 +279,8 @@ export default class Production {
     }
 
     get inventoriesOpeningValue(): number {
-        var extractedValue = this.inventoriesLastPOpeningValue;
-        var calculatedValue = Utils.sums(this.warehouses, "openingValue");
+        let extractedValue = this.inventoriesLastPOpeningValue;
+        let calculatedValue = Utils.sums(this.warehouses, "openingValue");
 
         return extractedValue || calculatedValue;
     }
@@ -289,11 +289,11 @@ export default class Production {
         // the calculation of material is different from warehouse as it includes also next deliveries
         //return Utils.sums(this.warehouses, "closingValue");
 
-        var materialsInventoriesValue = this.materialsInventoriesValue;
-        var componentsInventoriesValue = this.componentsInventoriesValue;
-        var productsInventoriesValue = this.productsInventoriesValue;
+        let materialsInventoriesValue = this.materialsInventoriesValue;
+        let componentsInventoriesValue = this.componentsInventoriesValue;
+        let productsInventoriesValue = this.productsInventoriesValue;
 
-        var total = materialsInventoriesValue + componentsInventoriesValue + productsInventoriesValue;
+        let total = materialsInventoriesValue + componentsInventoriesValue + productsInventoriesValue;
 
         return total;
 
@@ -331,7 +331,7 @@ export default class Production {
 
         setImmediate(function () {
 
-            for (var key in that) {
+            for (let key in that) {
 
                 if (!Production.prototype.hasOwnProperty(key)) {
                     continue;

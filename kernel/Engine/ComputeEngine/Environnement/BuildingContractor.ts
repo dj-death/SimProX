@@ -78,7 +78,7 @@ export default class BuildingContractor extends IObject.IObject {
     
 
     build(requiredBuildingSquaresNb: number, client_creditWorthiness?: number): BuildingResult {
-        var worksDuration = this.params.minWorksDuration;
+        let worksDuration = this.params.minWorksDuration;
 
         if (!this.params.checkClientCreditWorthiness) {
             return {
@@ -87,8 +87,8 @@ export default class BuildingContractor extends IObject.IObject {
             }
         }
 
-        var effectiveBuildingSquaresNb;
-        var plannedBuildingTotalCost = requiredBuildingSquaresNb * this.initialBuildingSquareMetreCost;
+        let effectiveBuildingSquaresNb;
+        let plannedBuildingTotalCost = requiredBuildingSquaresNb * this.initialBuildingSquareMetreCost;
 
         if (client_creditWorthiness > 0) {
             if (plannedBuildingTotalCost <= client_creditWorthiness) {
@@ -132,7 +132,7 @@ export default class BuildingContractor extends IObject.IObject {
 
 
     get state(): any {
-        var state = {
+        let state = {
             "buildingCost": this._buildingSquareMetreCost
         };
 

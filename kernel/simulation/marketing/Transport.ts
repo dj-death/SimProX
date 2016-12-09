@@ -4,7 +4,7 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 
 
-var defaultPayments: ENUMS.PaymentArray = {
+let defaultPayments: ENUMS.PaymentArray = {
     "THREE_MONTH": {
         credit: ENUMS.CREDIT.THREE_MONTH,
         part: 1
@@ -14,7 +14,7 @@ var defaultPayments: ENUMS.PaymentArray = {
 export default function create(): Transport[] {
 
 
-    var europeTrs = new Transport({
+    let europeTrs = new Transport({
         id: "market1_transport",
         label: "market1_transport",
 
@@ -33,7 +33,7 @@ export default function create(): Transport[] {
         payments: defaultPayments
     });
 
-    var naftaTrs = new Transport({
+    let naftaTrs = new Transport({
         id: "market2_transport",
         label: "market2_transport",
         transportID: "1",
@@ -52,7 +52,7 @@ export default function create(): Transport[] {
         payments: defaultPayments
     });
 
-    var internetTrs = new Transport({
+    let internetTrs = new Transport({
         id: "market3_transport",
         label: "market3_transport",
 

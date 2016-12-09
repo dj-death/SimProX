@@ -1,7 +1,7 @@
 "use strict";
-var nodemailer = require('nodemailer');
-var Q = require('q');
-var util = require('util');
+let nodemailer = require('nodemailer');
+let Q = require('q');
+let util = require('util');
 function setSize(num) {
     return num;
 }
@@ -47,9 +47,9 @@ export function  findSKU (onePeriodResult, SKUID){
 }
 */
 function findCompany(onePeriodResult, companyId) {
-    var companyResult = undefined;
+    let companyResult = undefined;
     try {
-        for (var i = 0; i < onePeriodResult.p_Companies.length; i++) {
+        for (let i = 0; i < onePeriodResult.p_Companies.length; i++) {
             //        let companyResult = onePeriodResult.p_Companies[i];
             if (onePeriodResult.p_Companies[i].c_CompanyID === companyId) {
                 companyResult = onePeriodResult.p_Companies[i];
@@ -199,9 +199,9 @@ export function  calculateIngredientsQuality (SKUResult){
 * @param {Number} company_num num of companies we need
 */
 function createCompanyArray(company_num) {
-    var companies = [];
-    var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    for (var j = 0; j < company_num; j++) {
+    let companies = [];
+    let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let j = 0; j < company_num; j++) {
         companies.push(letters[j]);
     }
     return companies;
@@ -226,10 +226,10 @@ export function  getFactoryPriceByConsumberPrice (consumerPrice){
 }*/
 function randomString(len) {
     len = len || 32;
-    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
-    var maxPos = $chars.length;
-    var pwd = '';
-    var i = 0;
+    let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+    let maxPos = $chars.length;
+    let pwd = '';
+    let i = 0;
     for (; i < len; i++) {
         pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
     }

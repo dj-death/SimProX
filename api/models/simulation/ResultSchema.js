@@ -1,6 +1,6 @@
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 function Numeric(key, options) {
     mongoose.SchemaType.call(this, key, options, 'Numeric');
 }
@@ -9,7 +9,7 @@ Numeric.prototype = Object.create(mongoose.SchemaType.prototype);
 // validate the provided `val` and throw a `CastError` if you
 // can't convert it.
 Numeric.prototype.cast = function (val) {
-    var _val = !isNaN(val) ? Number(val) : 0;
+    let _val = !isNaN(val) ? Number(val) : 0;
     if (isNaN(_val)) {
         throw new mongoose.SchemaType.CastError('Numeric', val + ' is not a number');
     }
@@ -18,13 +18,13 @@ Numeric.prototype.cast = function (val) {
 // Don't forget to add Numeric to the type registry
 Schema.Types.Numeric = Numeric;
 /******* Results *******/
-var subProductRes = Schema({
+let subProductRes = Schema({
     outQ: Numeric,
     closingQ: Numeric,
     availableNextPQ: Numeric,
     availableNextPValue: Numeric
 });
-var productRes = Schema({
+let productRes = Schema({
     scheduledQ: Numeric,
     producedQ: Numeric,
     rejectedQ: Numeric,
@@ -36,7 +36,7 @@ var productRes = Schema({
     devProgress: Numeric,
     consumerStarRatings: String
 });
-var machineryRes = Schema({
+let machineryRes = Schema({
     effectiveSoldNb: Numeric,
     effectiveBoughtNb: Numeric,
     machinesNb: Numeric,
@@ -48,7 +48,7 @@ var machineryRes = Schema({
     machineryNetValue: Numeric,
     stats: [Schema.Types.Mixed]
 });
-var materialRes = Schema({
+let materialRes = Schema({
     openingQ: Numeric,
     premiumMaterialPurchasesQ: Numeric,
     unplannedPurchasesQ: Numeric,
@@ -58,18 +58,18 @@ var materialRes = Schema({
     closingValue: Numeric,
     deliveryNextPBoughtBeforeLastPQ: Numeric
 });
-var landRes = Schema({
+let landRes = Schema({
     availableSpace: Numeric,
     netValue: Numeric
 });
-var factoryRes = Schema({
+let factoryRes = Schema({
     availableSpace: Numeric,
     machiningSpaceUsed: Numeric,
     assemblyWorkersSpaceUsed: Numeric,
     stocksSpaceUsed: Numeric,
     netValue: Numeric
 });
-var workerRes = Schema({
+let workerRes = Schema({
     availablesAtStartNb: Numeric,
     recruitedEffectiveNb: Numeric,
     dismissedEffectiveNb: Numeric,
@@ -79,7 +79,7 @@ var workerRes = Schema({
     workedTotaHoursNb: Numeric,
     strikeNextPeriodWeeksNb: Numeric
 });
-var subMarketRes = Schema({
+let subMarketRes = Schema({
     effectiveDeliveredQ: Numeric,
     orderedQ: Numeric,
     soldQ: Numeric,
@@ -87,12 +87,12 @@ var subMarketRes = Schema({
     stockQ: Numeric,
     stockValue: Numeric
 });
-var agentRes = Schema({
+let agentRes = Schema({
     effectiveAppointedNb: Numeric,
     resignedNb: Numeric,
     availablesNextPeriodNb: Numeric
 });
-var marketRes = Schema({
+let marketRes = Schema({
     //agents: [agentRes],
     products: [subMarketRes],
     transport: {
@@ -100,14 +100,14 @@ var marketRes = Schema({
         loadsNb: Numeric
     }
 });
-var eCommerceRes = Schema({
+let eCommerceRes = Schema({
     wantedWebsitePortsNb: Numeric,
     activeWebsitePortsNb: Numeric,
     websiteVisitsNb: Numeric,
     successfulWebsiteVisitsPerThousand: Numeric,
     serviceComplaintsNb: Numeric
 });
-var economyRes = Schema({
+let economyRes = Schema({
     GDP: Numeric,
     unemploymentRatePerThousand: Numeric,
     externalTradeBalance: Numeric,
@@ -119,15 +119,15 @@ var economyRes = Schema({
     revenueBase100Index: Numeric,
     population: Numeric
 });
-var materialMarketRes = Schema({
+let materialMarketRes = Schema({
     spotPrice: Numeric,
     threeMthPrice: Numeric,
     sixMthPrice: Numeric
 });
-var buildingContractorRes = Schema({
+let buildingContractorRes = Schema({
     buildingCost: Numeric
 });
-var bankAccountRes = Schema({
+let bankAccountRes = Schema({
     banksOverdraft: Numeric,
     interestPaid: Numeric,
     interestReceived: Numeric,
@@ -137,7 +137,7 @@ var bankAccountRes = Schema({
     balance: Numeric,
     additionalLoans: Numeric
 });
-var financial = Schema({
+let financial = Schema({
     advertisingCost: Numeric,
     distributionCost: Numeric,
     ISPCost: Numeric,
@@ -208,7 +208,7 @@ var financial = Schema({
     nextPOverdraftLimit: Numeric,
     nextPBorrowingPower: Numeric
 });
-var corporateRes = Schema({
+let corporateRes = Schema({
     playerID: Numeric,
     playerName: String,
     IP: Numeric,
@@ -230,7 +230,7 @@ var corporateRes = Schema({
     sharePremiumAccount: Numeric,
     retainedEarnings: Numeric
 });
-var marketResearchRes = Schema({
+let marketResearchRes = Schema({
     playerID: Numeric,
     playerName: String,
     advertisingBudget: Numeric,
@@ -248,7 +248,7 @@ var marketResearchRes = Schema({
             consumerStarRatings: Numeric
         }]
 });
-var companyResult = Schema({
+let companyResult = Schema({
     c_CID: Number,
     c_CompanyName: String,
     report: mongoose.Schema.Types.Mixed,
@@ -355,7 +355,7 @@ var companyResult = Schema({
     workingCapital: Numeric,
     freeCashFlow: Numeric
 });
-var result = Schema({
+let result = Schema({
     seminarId: String,
     period: Number,
     p_Companies: [],

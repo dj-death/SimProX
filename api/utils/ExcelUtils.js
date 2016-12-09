@@ -1,29 +1,29 @@
 "use strict";
-var XLSX = require('xlsx-style');
-var fs = require('fs-extra');
-var path = require('path');
-var extraString = require("string");
-var XLSXPopulate = require('xlsx-populate');
-var JSON2XLSX = require('icg-json-to-xlsx');
-var Mapping = require('./Mapping');
-var console = require('../../kernel/utils/logger');
-var config = require('../../config');
+let XLSX = require('xlsx-style');
+let fs = require('fs-extra');
+let path = require('path');
+let extraString = require("string");
+let XLSXPopulate = require('xlsx-populate');
+let JSON2XLSX = require('icg-json-to-xlsx');
+const Mapping = require('./Mapping');
+const console = require('../../kernel/utils/logger');
+const config = require('../../config');
 function makeReport(wbPath, data, cb) {
     //let re = /\{{(?:(.+?):)?(.+?)(?:\.(.+?))?}}/;
-    var sheetTitle = "W";
-    var workbook = XLSX.readFile(wbPath);
-    var worksheet = workbook.Sheets[sheetTitle];
+    let sheetTitle = "W";
+    let workbook = XLSX.readFile(wbPath);
+    let worksheet = workbook.Sheets[sheetTitle];
     XLSXPopulate.fromFile(wbPath, function (err, iWorkbook) {
         if (err) {
             cb.apply(null, [err, null]);
             return console.debug(err);
         }
-        var iSheet = iWorkbook.getSheet(sheetTitle);
-        var binaryOutput;
-        for (var cellAddress in Mapping) {
-            var iCell = iSheet.getCell(cellAddress);
-            var key = Mapping[cellAddress];
-            var newValue = data[key];
+        let iSheet = iWorkbook.getSheet(sheetTitle);
+        let binaryOutput;
+        for (let cellAddress in Mapping) {
+            let iCell = iSheet.getCell(cellAddress);
+            let key = Mapping[cellAddress];
+            let newValue = data[key];
             if (!newValue) {
                 newValue = key === "reportDate" ? (new Date()).toLocaleDateString() : 0;
             }
@@ -41,9 +41,9 @@ function makeReport(wbPath, data, cb) {
     });
 }
 function excelExport(reportData, opts, cb) {
-    var lang = opts.lang || config.engine.defaultLang;
-    var reportTmplPath = config.engine.getReportModelPath(lang);
-    var options = {
+    let lang = opts.lang || config.engine.defaultLang;
+    let reportTmplPath = config.engine.getReportModelPath(lang);
+    let options = {
         seminar: reportData.seminar || 1,
         playerID: reportData.playerID || 1,
         period: reportData.period || 1,
@@ -56,7 +56,7 @@ function excelExport(reportData, opts, cb) {
 exports.excelExport = excelExport;
 ;
 function excelImport(wbPath) {
-    var workbook = XLSX.readFile(wbPath), Wsheet, reportData;
+    let workbook = XLSX.readFile(wbPath), Wsheet, reportData;
     if (!workbook) {
         console.debug('error : not a valid excel file');
         return null;
@@ -67,13 +67,13 @@ function excelImport(wbPath) {
         return null;
     }
     reportData = {};
-    for (var cellAddress in Mapping) {
-        var cell = Wsheet[cellAddress];
+    for (let cellAddress in Mapping) {
+        let cell = Wsheet[cellAddress];
         if (!cell) {
             console.log(Mapping[cellAddress] + ' @ ' + cellAddress + ' not found !');
             continue;
         }
-        var value = cell.v;
+        let value = cell.v;
         if (!isNaN(value)) {
             value = Number(value);
         }
@@ -84,11 +84,11 @@ function excelImport(wbPath) {
 exports.excelImport = excelImport;
 ;
 function dbToExcel(res) {
-    var file = './a.xlsx';
+    let file = './a.xlsx';
     fs.ensureFileSync(file);
-    var workbook = XLSX.readFile(file), aSheet = workbook.Sheets["a"];
-    var Datastore = require('nedb');
-    var simulationDb = new Datastore({ filename: config.engine.simulationDbPath + './sim.nosql', autoload: true });
+    let workbook = XLSX.readFile(file), aSheet = workbook.Sheets["a"];
+    let Datastore = require('nedb');
+    let simulationDb = new Datastore({ filename: config.engine.simulationDbPath + './sim.nosql', autoload: true });
     simulationDb.find({}, function (err, data) {
         JSON2XLSX.writeFile("./a.xlsx", data);
         /*XLSXPopulate.fromFile(file, function  (err, iWorkbook) {
@@ -164,16 +164,16 @@ function dbToExcel(res) {
 exports.dbToExcel = dbToExcel;
 ;
 function exportExcel(req, res, next) {
-    var xlsx = require('node-xlsx');
-    var fs = require('fs');
-    var name = 'app/upload/' + req.body.name;
-    var obj = {
+    let xlsx = require('node-xlsx');
+    let fs = require('fs');
+    let name = 'app/upload/' + req.body.name;
+    let obj = {
         worksheets: [{
                 name: req.body.name,
                 data: req.body.data
             }]
     };
-    var file = xlsx.build(obj);
+    let file = xlsx.build(obj);
     try {
         fs.writeFileSync(name, file, 'binary');
     }

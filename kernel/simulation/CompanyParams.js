@@ -1,6 +1,6 @@
 "use strict";
 // http://www.analyse-sectorielle.fr/2011/09/betas-des-secteurs-de-linformatique/
-var ungearedBetaBySector = {
+let ungearedBetaBySector = {
     beverage: 0.51,
     buildingMaterials: 0.85,
     constructionSupplies: 1.05,
@@ -19,7 +19,7 @@ var ungearedBetaBySector = {
     shoe: 0.89,
     utilityGeneral: 0.77
 };
-var CompanyParams = {
+let CompanyParams = {
     taxAnnumRate: 0.3,
     taxAssessedPaymentQuarter: 2,
     capitalCostInterpSchedules: {

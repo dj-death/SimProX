@@ -1,22 +1,13 @@
 "use strict";
-var ENUMS = require('../ENUMS');
-var console = require('../../../utils/logger');
-var Utils = require('../../../utils/Utils');
-var Q = require('q');
-var CashFlow = (function () {
-    function CashFlow() {
+const ENUMS = require('../ENUMS');
+const console = require('../../../utils/logger');
+const Utils = require('../../../utils/Utils');
+const Q = require('q');
+class CashFlow {
+    get Proto() {
+        return CashFlow.prototype;
     }
-    Object.defineProperty(CashFlow.prototype, "Proto", {
-        get: function () {
-            return CashFlow.prototype;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    CashFlow.prototype.init = function (bankAccount, periodDaysNb, initialCashFlowBalance, lastPayables, lastTradeReceivables) {
-        if (initialCashFlowBalance === void 0) { initialCashFlowBalance = 0; }
-        if (lastPayables === void 0) { lastPayables = 0; }
-        if (lastTradeReceivables === void 0) { lastTradeReceivables = 0; }
+    init(bankAccount, periodDaysNb, initialCashFlowBalance = 0, lastPayables = 0, lastTradeReceivables = 0) {
         this.reset();
         if (isNaN(lastPayables)) {
             console.warn("lastPayables NaN");
@@ -37,8 +28,8 @@ var CashFlow = (function () {
         this.periodDaysNb = periodDaysNb;
         // now pay payables of last period
         this.bankAccount.withdraw(lastPayables);
-    };
-    CashFlow.prototype.reset = function () {
+    }
+    reset() {
         this.operating = {
             payments: {},
             receipts: {},
@@ -62,14 +53,14 @@ var CashFlow = (function () {
         };
         this.periodPayments = 0;
         this.periodReceipts = 0;
-    };
-    CashFlow.prototype.cover = function (companyObjs) {
-        var self = this;
-        for (var key in companyObjs) {
+    }
+    cover(companyObjs) {
+        let self = this;
+        for (let key in companyObjs) {
             if (!companyObjs.hasOwnProperty(key)) {
                 continue;
             }
-            var obj = companyObjs[key];
+            let obj = companyObjs[key];
             if (typeof obj !== "object") {
                 continue;
             }
@@ -95,15 +86,13 @@ var CashFlow = (function () {
                 }
             }
         }
-    };
-    CashFlow.prototype.addPayment = function (total, paymentParams, libelle, activityType) {
-        if (libelle === void 0) { libelle = ''; }
-        if (activityType === void 0) { activityType = ENUMS.ACTIVITY.OPERATING; }
+    }
+    addPayment(total, paymentParams, libelle = '', activityType = ENUMS.ACTIVITY.OPERATING) {
         if (!Utils.isNumericValid(total)) {
             console.warn('adding payment of null or not reel total :', arguments);
             return;
         }
-        var activity;
+        let activity;
         switch (activityType) {
             case ENUMS.ACTIVITY.INVESTING:
                 activity = this.investing;
@@ -118,19 +107,19 @@ var CashFlow = (function () {
                 activity = this.operating;
                 break;
         }
-        for (var key in paymentParams) {
+        for (let key in paymentParams) {
             if (!paymentParams.hasOwnProperty(key)) {
                 continue;
             }
-            var item = paymentParams[key];
-            var part = item.part;
+            let item = paymentParams[key];
+            let part = item.part;
             if (isNaN(part)) {
                 part = 0;
             }
-            var amount = Math.ceil(total * part);
-            var credit = item.credit;
-            var currPeriodPaymentsRatio;
-            var currPeriodPayments;
+            let amount = Math.ceil(total * part);
+            let credit = item.credit;
+            let currPeriodPaymentsRatio;
+            let currPeriodPayments;
             if (activity.payments[ENUMS.CREDIT[credit]] === undefined) {
                 activity.payments[ENUMS.CREDIT[credit]] = 0;
             }
@@ -150,14 +139,13 @@ var CashFlow = (function () {
             // now pay
             this.bankAccount.withdraw(currPeriodPayments);
         }
-    };
-    CashFlow.prototype.addReceipt = function (total, paymentParams, activityType) {
-        if (activityType === void 0) { activityType = ENUMS.ACTIVITY.OPERATING; }
+    }
+    addReceipt(total, paymentParams, activityType = ENUMS.ACTIVITY.OPERATING) {
         if (!Utils.isNumericValid(total)) {
             console.warn('adding receipt of null or not reel total:', arguments);
             return;
         }
-        var activity;
+        let activity;
         switch (activityType) {
             case ENUMS.ACTIVITY.INVESTING:
                 activity = this.investing;
@@ -172,19 +160,19 @@ var CashFlow = (function () {
                 activity = this.operating;
                 break;
         }
-        for (var key in paymentParams) {
+        for (let key in paymentParams) {
             if (!paymentParams.hasOwnProperty(key)) {
                 continue;
             }
-            var item = paymentParams[key];
-            var part = item.part;
+            let item = paymentParams[key];
+            let part = item.part;
             if (isNaN(part)) {
                 part = 0;
             }
-            var amount = total * part;
-            var credit = item.credit;
-            var currPeriodRatio;
-            var currPeriodReceipts;
+            let amount = total * part;
+            let credit = item.credit;
+            let currPeriodRatio;
+            let currPeriodReceipts;
             if (activity.receipts[ENUMS.CREDIT[credit]] === undefined) {
                 activity.receipts[ENUMS.CREDIT[credit]] = 0;
             }
@@ -203,91 +191,47 @@ var CashFlow = (function () {
             // now receive money
             this.bankAccount.payIn(currPeriodReceipts);
         }
-    };
-    Object.defineProperty(CashFlow.prototype, "tradingReceipts", {
-        get: function () {
-            return this.operating.periodReceipts;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "tradingPayments", {
-        get: function () {
-            return this.operating.periodPayments + this.lastPayables;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "tradePayablesValue", {
-        get: function () {
-            return this.operating.periodPayables;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "assetsSales", {
-        get: function () {
-            return this.investing.periodReceipts;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "assetsPurchases", {
-        get: function () {
-            return this.investing.periodPayments;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "operatingNetCashFlow", {
-        get: function () {
-            return this.operating.periodReceipts - this.tradingPayments;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "financingNetCashFlow", {
-        get: function () {
-            return this.financing.periodReceipts - this.financing.periodPayments;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "investingNetCashFlow", {
-        get: function () {
-            return this.investing.periodReceipts - this.investing.periodPayments;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "netCashFlow", {
-        get: function () {
-            return this.operatingNetCashFlow + this.investingNetCashFlow + this.financingNetCashFlow;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "cashFlowBalance", {
-        get: function () {
-            return this.netCashFlow + this.initialCashFlowBalance;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CashFlow.prototype, "previousBalance", {
-        get: function () {
-            return this.initialCashFlowBalance;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    CashFlow.prototype.getEndState = function (prefix) {
-        var deferred = Q.defer();
-        var endState = {};
-        var value;
-        var that = this;
+    }
+    get tradingReceipts() {
+        return this.operating.periodReceipts;
+    }
+    get tradingPayments() {
+        return this.operating.periodPayments + this.lastPayables;
+    }
+    get tradePayablesValue() {
+        return this.operating.periodPayables;
+    }
+    get assetsSales() {
+        return this.investing.periodReceipts;
+    }
+    get assetsPurchases() {
+        return this.investing.periodPayments;
+    }
+    get operatingNetCashFlow() {
+        return this.operating.periodReceipts - this.tradingPayments;
+    }
+    get financingNetCashFlow() {
+        return this.financing.periodReceipts - this.financing.periodPayments;
+    }
+    get investingNetCashFlow() {
+        return this.investing.periodReceipts - this.investing.periodPayments;
+    }
+    get netCashFlow() {
+        return this.operatingNetCashFlow + this.investingNetCashFlow + this.financingNetCashFlow;
+    }
+    get cashFlowBalance() {
+        return this.netCashFlow + this.initialCashFlowBalance;
+    }
+    get previousBalance() {
+        return this.initialCashFlowBalance;
+    }
+    getEndState(prefix) {
+        let deferred = Q.defer();
+        let endState = {};
+        let value;
+        let that = this;
         setImmediate(function () {
-            for (var key in that) {
+            for (let key in that) {
                 console.silly("cf GES @ of %s", key);
                 if (!CashFlow.prototype.hasOwnProperty(key)) {
                     continue;
@@ -305,9 +249,8 @@ var CashFlow = (function () {
             deferred.resolve(endState);
         });
         return deferred.promise;
-    };
-    return CashFlow;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CashFlow;
 //# sourceMappingURL=CashFlow.js.map

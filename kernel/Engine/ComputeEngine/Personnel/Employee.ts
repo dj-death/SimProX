@@ -151,7 +151,7 @@ export class Employee extends IObject.IObject {
     }
 
     get personnelCost(): number {
-        var sums = 0;
+        let sums = 0;
 
         sums += this.recruitCost;
         sums += this.dismissalCost;
@@ -161,7 +161,7 @@ export class Employee extends IObject.IObject {
     }
 
     get wages(): number {
-        var wages = this.salary * this.employeesNb;
+        let wages = this.salary * this.employeesNb;
         return wages;
     }
 
@@ -278,7 +278,7 @@ export class Employee extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(recruitedNb)) {
+        if (!Utils.isInteger(recruitedNb)) {
             recruitedNb = Math.round(recruitedNb);
         }
 
@@ -307,7 +307,7 @@ export class Employee extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(trainedNb)) {
+        if (!Utils.isInteger(trainedNb)) {
             trainedNb = Math.round(trainedNb);
         }
 
@@ -335,7 +335,7 @@ export class Employee extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(dismissedNb)) {
+        if (!Utils.isInteger(dismissedNb)) {
             dismissedNb = Math.round(dismissedNb);
         }
 

@@ -16,9 +16,9 @@ import Utils = require('../../../utils/Utils');
 import Collections = require('../../../utils/Collections');
 
 import $jStat = require("jstat");
-var jStat = $jStat.jStat;
+let jStat = $jStat.jStat;
 
-var extraString = require('string');
+let extraString = require('string');
 
 
 
@@ -103,7 +103,7 @@ export default class Product extends IObject.IObject {
     }
 
     _calcRejectedUnitsNbOf(quantity: number): number {
-        var landa: number,
+        let landa: number,
             probability: number,
             value = 0,
             result;
@@ -240,9 +240,9 @@ export default class Product extends IObject.IObject {
 
         this.restoreLastState(lastResults, lastDecs);
 
-        var warehouseID = "warehouse" + this.params.id;
+        let warehouseID = "warehouse" + this.params.id;
 
-        var externalStorageUnitCost = this.params.costs.externalStorageUnitCost;
+        let externalStorageUnitCost = this.params.costs.externalStorageUnitCost;
 
         // external storage and lost probability just for local stocks this is just a global temporary container for each submarket stock
         this.warehouse = new Warehouse.Warehouse({
@@ -301,8 +301,8 @@ export default class Product extends IObject.IObject {
 
     // set valuation method
     get inventoryUnitValue(): number {
-        var totalCost = this.materialUnitCost + this.manufacturingUnitCost;
-        var unitValue = totalCost * 1.1;
+        let totalCost = this.materialUnitCost + this.manufacturingUnitCost;
+        let unitValue = totalCost * 1.1;
 
         return Utils.ceil(unitValue, 2);
     }
@@ -336,8 +336,8 @@ export default class Product extends IObject.IObject {
     }
 
     get scheduledNb(): number {
-        var wantedNb = this.wantedNb;
-        var producedNb = this.producedNb;
+        let wantedNb = this.wantedNb;
+        let producedNb = this.producedNb;
 
         if (producedNb > wantedNb) {
             return wantedNb;
@@ -347,14 +347,14 @@ export default class Product extends IObject.IObject {
     }
 
     get openingValue(): number {
-        var openingValue = Utils.sums(this.localStocks, "openingValue", null, null, null, ">", 2);
+        let openingValue = Utils.sums(this.localStocks, "openingValue", null, null, null, ">", 2);
 
         return openingValue;
     }
 
     get closingValue(): number {
-        var closingQ = Utils.sums(this.localStocks, "closingQ", null, null, null, ">", 2);
-        var closingValue = closingQ * this.inventoryUnitValue;
+        let closingQ = Utils.sums(this.localStocks, "closingQ", null, null, null, ">", 2);
+        let closingValue = closingQ * this.inventoryUnitValue;
 
         return closingValue;
     }
@@ -415,21 +415,21 @@ export default class Product extends IObject.IObject {
     }
 
     getNeededResForProd(quantity, ...semiProductsDecisions: number[]): any {
-        var rejectedNb = this._calcRejectedUnitsNbOf(quantity);
+        let rejectedNb = this._calcRejectedUnitsNbOf(quantity);
         quantity += rejectedNb;
 
-        var i = 0,
+        let i = 0,
             len = this.semiProducts.length,
             manufacturingUnitTime: number,
             premiumQualityProp: number,
 
             result = [];
 
-        var resources;
+        let resources;
 
-        var lastParams = [].concat(this.lastManufacturingParams);
+        let lastParams = [].concat(this.lastManufacturingParams);
 
-        var needed = {};
+        let needed = {};
 
         for (; i < len; i++) {
 
@@ -441,8 +441,8 @@ export default class Product extends IObject.IObject {
             result.push(resources);
         }
 
-        for (var j = 0, len = result.length; j < len; j++) {
-            for (var key in result[j]) {
+        for (let j = 0, len = result.length; j < len; j++) {
+            for (let key in result[j]) {
                 if (!result[j].hasOwnProperty(key)) {
                     continue;
                 }
@@ -477,11 +477,11 @@ export default class Product extends IObject.IObject {
             return;
         }
 
-        if (!Number.isInteger(quantity)) {
+        if (!Utils.isInteger(quantity)) {
             quantity = Math.round(quantity);
         }
 
-        var manufacturedNb: number,
+        let manufacturedNb: number,
             rejectedNb: number,
             availableNb: number,
 
@@ -517,15 +517,15 @@ export default class Product extends IObject.IObject {
             return 0;
         }
 
-        var wantedNb = quantity;
+        let wantedNb = quantity;
 
-        var diff = (this.semiProducts.length * 2) - (semiProductsDecisions.length - 1);
+        let diff = (this.semiProducts.length * 2) - (semiProductsDecisions.length - 1);
 
         if (diff < 0) {
             console.warn("you didn't give us enough params to manufacture", diff);
         }
 
-        var semiPTypesNb = this.semiProducts.length,
+        let semiPTypesNb = this.semiProducts.length,
             manufacturingUnitTime: number,
             premiumQualityProp: number,
 
@@ -534,7 +534,7 @@ export default class Product extends IObject.IObject {
 
             finalisedNb: number;
 
-        var paramsNb = semiProductsDecisions.length;
+        let paramsNb = semiProductsDecisions.length;
 
         // something wrong with params
         if (paramsNb !== (semiPTypesNb * 2) || !Utils.testIfAllParamsIsNumeric(semiProductsDecisions)) {
@@ -553,7 +553,7 @@ export default class Product extends IObject.IObject {
 
         
         for (let i = 0; i < semiPTypesNb; i++) {
-            var prodQ; 
+            let prodQ; 
             manufacturingUnitTime = semiProductsDecisions[2 * i] || 0;
             premiumQualityProp = semiProductsDecisions[2 * i + 1] || 0;
 
@@ -586,7 +586,7 @@ export default class Product extends IObject.IObject {
             return 0;
         }
 
-        var rejectedNb = this._calcRejectedUnitsNbOf(quantity);
+        let rejectedNb = this._calcRejectedUnitsNbOf(quantity);
 
         this.rejectedNb += rejectedNb;
 
@@ -604,11 +604,11 @@ export default class Product extends IObject.IObject {
             return 0;
         }
 
-        if (!Number.isInteger(quantity)) {
+        if (!Utils.isInteger(quantity)) {
             quantity = Math.round(quantity);
         }
 
-        /*var availableQ = this.warehouse.availableQ,
+        /*let availableQ = this.warehouse.availableQ,
             diff: number,
             args,
             deliveredQ: number;
@@ -627,7 +627,7 @@ export default class Product extends IObject.IObject {
             
         }*/
 
-        var deliveredQ = this.warehouse.moveOut(quantity);
+        let deliveredQ = this.warehouse.moveOut(quantity);
 
         market.receiveFrom(deliveredQ, this, price, advertisingBudget, customerCredit);
 
@@ -635,10 +635,10 @@ export default class Product extends IObject.IObject {
     }
 
     get investmentEffort(): number {
-        var effort;
+        let effort;
 
         // A steady effort is most likely to be effective.
-        var devBudgets: number[] = [],
+        let devBudgets: number[] = [],
             devVariations: number[] = [],
             devResults: number[] = [];
 
@@ -647,14 +647,14 @@ export default class Product extends IObject.IObject {
             devResults.push(elm.improvementResult);
         });
 
-        var cumulativeBudget = jStat(devBudgets).sum() + this.developmentBudget;
+        let cumulativeBudget = jStat(devBudgets).sum() + this.developmentBudget;
 
-        var lastStat = this.devStats.peek();
+        let lastStat = this.devStats.peek();
 
-        var lastDevBudget = lastStat && lastStat.devBudget || 1;
-        var lastVariation = this.developmentBudget / lastDevBudget;
+        let lastDevBudget = lastStat && lastStat.devBudget || 1;
+        let lastVariation = this.developmentBudget / lastDevBudget;
 
-        var projectMaturity = this.devStats.size() + 1;
+        let projectMaturity = this.devStats.size() + 1;
 
         // le cout total criitique augmente evec l'inflation
         let minEffectiveDevBudget = Math.round(this.params.minEffectiveDevBudget * this.economy.producerPriceBase100Index / 100);
@@ -671,9 +671,9 @@ export default class Product extends IObject.IObject {
     }
 
     get RnDProjectProgress(): number {
-        var progress;
-        var investmentEffort = this.investmentEffort;
-        var projectMaturity = this.devStats.size() + 1; // current period
+        let progress;
+        let investmentEffort = this.investmentEffort;
+        let projectMaturity = this.devStats.size() + 1; // current period
 
         progress = 1 - Math.exp(-projectMaturity * investmentEffort);
 
@@ -718,7 +718,7 @@ export default class Product extends IObject.IObject {
 
 
     soldOff(): number {
-        var soldOffQ = 0;
+        let soldOffQ = 0;
 
         this.localStocks.forEach(function (stock) {
             soldOffQ += stock.openingQ;
@@ -740,8 +740,8 @@ export default class Product extends IObject.IObject {
     }
 
     takeUpImprovements(toImplement: boolean) {
-        var lastRes = this.lastImprovementResults[this.lastImprovementResults.length - 1];
-        var isThereAnyMajorNotYetImplemented = this.majorNotYetImplementedNb > 0;
+        let lastRes = this.lastImprovementResults[this.lastImprovementResults.length - 1];
+        let isThereAnyMajorNotYetImplemented = this.majorNotYetImplementedNb > 0;
 
         // It is possible to leave a major improvement for so long that a second one is reported. 
         // In this case when you do take one up, you automatically take both with an increased marketing effect.
@@ -772,12 +772,12 @@ export default class Product extends IObject.IObject {
         let quality;
         let coefficient;
 
-        var assembledSubPdt = this.semiProducts.filter(function (subPdt: SemiProduct) {
+        let assembledSubPdt = this.semiProducts.filter(function (subPdt: SemiProduct) {
             return !subPdt.isMachined;
         }) [0];
 
         // Assembly time should be transformed from absolute time in minutes to percentage. 
-        var ratio = Utils.ceil(assembledSubPdt.lastManufacturingParams[0] / assembledSubPdt.params.manufacturingCfg.minManufacturingUnitTime, 2);
+        let ratio = Utils.ceil(assembledSubPdt.lastManufacturingParams[0] / assembledSubPdt.params.manufacturingCfg.minManufacturingUnitTime, 2);
 
         // Each additional percentage increases quality estimate of the product, 
         // but the effect is decreasing and each additional percentage has lighter weight than the previous one.
@@ -813,7 +813,7 @@ export default class Product extends IObject.IObject {
         let quality;
         let coefficient;
 
-        var premiumQualityProp = this.lastManufacturingParams[1];
+        let premiumQualityProp = this.lastManufacturingParams[1];
 
 
         // Also, as for the assembly, each additional percent increase quality estimate of the product, 
@@ -892,7 +892,7 @@ export default class Product extends IObject.IObject {
     // Than it is rounded to the nearest hundredth according to the rule.
     // Actual error of such estimation is + /- 0.01 compared with fact.
     /*get customerQualityEstimate(): number {
-        var quality = this.RnDQuality + this.assemblyQuality + this.materialsQuality;
+        let quality = this.RnDQuality + this.assemblyQuality + this.materialsQuality;
 
         return Utils.round(quality, 2);
     }*/
@@ -904,7 +904,7 @@ export default class Product extends IObject.IObject {
     }
 
     get consumerStarRatings(): string {
-        var starsNb = Math.round(this.qualityScore);
+        let starsNb = Math.round(this.qualityScore);
 
         return extraString('').padLeft(starsNb, '*').s;
     }
@@ -923,7 +923,7 @@ export default class Product extends IObject.IObject {
 
         // TODO: add Dangerous or ecologically unsound products are included in guarantee servicing, and are usually large quantities.
 
-        var losses = this.lostNb * this.inventoryUnitValue;
+        let losses = this.lostNb * this.inventoryUnitValue;
 
         this.insurance && this.insurance.claims(losses);
 

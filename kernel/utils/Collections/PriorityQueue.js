@@ -1,7 +1,7 @@
 "use strict";
-var util = require('./util');
-var Heap_1 = require('./Heap');
-var PriorityQueue = (function () {
+const util = require('./util');
+const Heap_1 = require('./Heap');
+class PriorityQueue {
     /**
      * Creates an empty priority queue.
      * @class <p>In a priority queue each element is associated with a "priority",
@@ -26,7 +26,7 @@ var PriorityQueue = (function () {
      * zero, or a positive integer as the first argument is less than, equal to,
      * or greater than the second.
      */
-    function PriorityQueue(compareFunction) {
+    constructor(compareFunction) {
         this.heap = new Heap_1.default(util.reverseCompareFunction(compareFunction));
     }
     /**
@@ -34,67 +34,67 @@ var PriorityQueue = (function () {
      * @param {Object} element the element to insert.
      * @return {boolean} true if the element was inserted, or false if it is undefined.
      */
-    PriorityQueue.prototype.enqueue = function (element) {
+    enqueue(element) {
         return this.heap.add(element);
-    };
+    }
     /**
      * Inserts the specified element into this priority queue.
      * @param {Object} element the element to insert.
      * @return {boolean} true if the element was inserted, or false if it is undefined.
      */
-    PriorityQueue.prototype.add = function (element) {
+    add(element) {
         return this.heap.add(element);
-    };
+    }
     /**
      * Retrieves and removes the highest priority element of this queue.
      * @return {*} the the highest priority element of this queue,
      *  or undefined if this queue is empty.
      */
-    PriorityQueue.prototype.dequeue = function () {
+    dequeue() {
         if (this.heap.size() !== 0) {
-            var el = this.heap.peek();
+            const el = this.heap.peek();
             this.heap.removeRoot();
             return el;
         }
         return undefined;
-    };
+    }
     /**
      * Retrieves, but does not remove, the highest priority element of this queue.
      * @return {*} the highest priority element of this queue, or undefined if this queue is empty.
      */
-    PriorityQueue.prototype.peek = function () {
+    peek() {
         return this.heap.peek();
-    };
+    }
     /**
      * Returns true if this priority queue contains the specified element.
      * @param {Object} element element to search for.
      * @return {boolean} true if this priority queue contains the specified element,
      * false otherwise.
      */
-    PriorityQueue.prototype.contains = function (element) {
+    contains(element) {
         return this.heap.contains(element);
-    };
+    }
     /**
      * Checks if this priority queue is empty.
      * @return {boolean} true if and only if this priority queue contains no items; false
      * otherwise.
      */
-    PriorityQueue.prototype.isEmpty = function () {
+    isEmpty() {
         return this.heap.isEmpty();
-    };
+    }
     /**
      * Returns the number of elements in this priority queue.
      * @return {number} the number of elements in this priority queue.
      */
-    PriorityQueue.prototype.size = function () {
+    size() {
         return this.heap.size();
-    };
+    }
     /**
      * Removes all of the elements from this priority queue.
      */
-    PriorityQueue.prototype.clear = function () {
+    clear() {
         this.heap.clear();
-    };
+    }
     /**
      * Executes the provided function once for each element present in this queue in
      * no particular order.
@@ -102,11 +102,10 @@ var PriorityQueue = (function () {
      * invoked with one argument: the element value, to break the iteration you can
      * optionally return false.
      */
-    PriorityQueue.prototype.forEach = function (callback) {
+    forEach(callback) {
         this.heap.forEach(callback);
-    };
-    return PriorityQueue;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = PriorityQueue; // end of priority queue
 //# sourceMappingURL=PriorityQueue.js.map

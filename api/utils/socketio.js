@@ -2,11 +2,11 @@
 /**
  * Socket.io configuration
  */
-var _ = require('lodash');
-var seminarModel = require('../models/Seminar');
-var userRole = require('../models/user/UserRole');
-var console = require('../../kernel/utils/logger');
-var jwt = require("jsonwebtoken");
+let _ = require('lodash');
+const seminarModel = require('../models/Seminar');
+const userRole = require('../models/user/UserRole');
+const console = require('../../kernel/utils/logger');
+let jwt = require("jsonwebtoken");
 // When the user disconnects.. perform this
 function onDisconnect() {
     console.log('User DISCONNECTED SocketIO');
@@ -35,9 +35,9 @@ function init(socketio) {
     //   handshake: true
     // }));
     socketio.on('connection', function (socket) {
-        var token = socket.decoded_token && socket.decoded_token.name || socket.handshake.query.token;
-        var roomMarksimosCompany;
-        var roomSeminar;
+        let token = socket.decoded_token && socket.decoded_token.name || socket.handshake.query.token;
+        let roomMarksimosCompany;
+        let roomSeminar;
         if (!token) {
             socket.disconnect('unauthorized');
             return;
@@ -53,7 +53,7 @@ function init(socketio) {
                 else {
                     if (userRole.roleList.student.id == user.role) {
                         seminarModel.findSeminarByUserId(user._id).then(function (seminarResult) {
-                            var company = _.find(seminarResult.companyAssignment, function (company) {
+                            let company = _.find(seminarResult.companyAssignment, function (company) {
                                 return company.studentList.indexOf(user.email) > -1;
                             });
                             roomMarksimosCompany = seminarResult.seminarId.toString() + company.companyId.toString();

@@ -1,10 +1,10 @@
 "use strict";
-var util = require('util');
-var fs = require('fs');
-var Q = require('q');
-var request = require('request');
-var _ = require('underscore'); // npm install underscore to install
-var sendCloud = {
+let util = require('util');
+let fs = require('fs');
+let Q = require('q');
+let request = require('request');
+let _ = require('underscore'); // npm install underscore to install
+let sendCloud = {
     module: {
         mail: 'mail',
         stats: 'stats',
@@ -19,7 +19,7 @@ var sendCloud = {
         xml: 'xml'
     }
 };
-var serverSettingsDefault = {
+let serverSettingsDefault = {
     url: 'http://sendcloud.sohu.com/',
     sendCloudModule: 'mail',
     action: 'send_template',
@@ -38,9 +38,7 @@ var serverSettingsDefault = {
     gzip_compress: 'false'
 };
 // Export createTransport method
-function createEmailSender(sendmethod, serversettings) {
-    if (sendmethod === void 0) { sendmethod = 'webapi'; }
-    if (serversettings === void 0) { serversettings = serverSettingsDefault; }
+function createEmailSender(sendmethod = 'webapi', serversettings = serverSettingsDefault) {
     serversettings = _.extend(serverSettingsDefault, serversettings);
     return new NodemailerSendCloud(sendmethod, serversettings);
 }
@@ -69,8 +67,8 @@ NodemailerSendCloud.prototype.sendMail = function (mail, callback) {
     mail.template_invoke_name = mail.template_invoke_name || this.serverSettings.template_invoke_name;
     mail.substitution_vars = mail.substitution_vars || this.serverSettings.substitution_vars;
     mail.substitution_vars = JSON.stringify(mail.substitution_vars);
-    var queryUrl = this.serverSettings.url + this.sendMethod + '/' + this.module + '.' + this.action + '.' + this.format;
-    var postUrl = queryUrl;
+    let queryUrl = this.serverSettings.url + this.sendMethod + '/' + this.module + '.' + this.action + '.' + this.format;
+    let postUrl = queryUrl;
     if (this.serverSettings.action === sendCloud.action.send) {
         queryUrl = queryUrl + '?api_user=' + this.serverSettings.api_user + '&api_key=' + this.serverSettings.api_key;
         queryUrl = queryUrl + '&from=' + mail.from + '&to=' + mail.to + '&subject=' + mail.subject + '&html=' + mail.html;
@@ -105,7 +103,7 @@ NodemailerSendCloud.prototype.sendMail = function (mail, callback) {
     }
 };
 NodemailerSendCloud.prototype.sendMailQ = function (mail) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     mail.api_user = this.serverSettings.api_user;
     mail.api_key = this.serverSettings.api_key;
     mail.from = mail.from || this.serverSettings.from;
@@ -115,8 +113,8 @@ NodemailerSendCloud.prototype.sendMailQ = function (mail) {
     mail.template_invoke_name = mail.template_invoke_name || this.serverSettings.template_invoke_name;
     mail.substitution_vars = mail.substitution_vars || this.serverSettings.substitution_vars;
     mail.substitution_vars = JSON.stringify(mail.substitution_vars);
-    var queryUrl = this.serverSettings.url + this.sendMethod + '/' + this.module + '.' + this.action + '.' + this.format;
-    var postUrl = queryUrl;
+    let queryUrl = this.serverSettings.url + this.sendMethod + '/' + this.module + '.' + this.action + '.' + this.format;
+    let postUrl = queryUrl;
     if (this.serverSettings.action === sendCloud.action.send) {
         queryUrl = queryUrl + '?api_user=' + this.serverSettings.api_user + '&api_key=' + this.serverSettings.api_key;
         queryUrl = queryUrl + '&from=' + mail.from + '&to=' + mail.to + '&subject=' + mail.subject + '&html=' + mail.html;

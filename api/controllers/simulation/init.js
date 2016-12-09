@@ -1,28 +1,28 @@
 "use strict";
-var seminarModel = require('../../models/Seminar');
-var Scenario = require('../../models/scenario/Scenario');
-var reportModel = require('../../models/simulation/Report');
-var chartModel = require('../../models/simulation/Chart');
-var companyDecisionModel = require('../../models/decision/CompanyDecision');
-var simulationResultModel = require('../../models/simulation/Result');
-/*var brandDecisionModel = require('../../../models/marksimos/brandDecision.js');
-var SKUDecisionModel = require('../../../models/marksimos/SKUDecision.js');
+const seminarModel = require('../../models/Seminar');
+const Scenario = require('../../models/scenario/Scenario');
+const reportModel = require('../../models/simulation/Report');
+const chartModel = require('../../models/simulation/Chart');
+const companyDecisionModel = require('../../models/decision/CompanyDecision');
+const simulationResultModel = require('../../models/simulation/Result');
+/*let brandDecisionModel = require('../../../models/marksimos/brandDecision.js');
+let SKUDecisionModel = require('../../../models/marksimos/SKUDecision.js');
 */
-var dbutility = require('../../models/dbUtility');
-var decisionCleaner = require('../../convertors/decisionCleaner');
-var allResultsCleaner = require('../../convertors/allResultsCleaner');
-var chartAssembler = require('../../assemblers/chart');
-var financialReportAssembler = require('../../assemblers/financialReport');
-var SimMain = require('../../../kernel/app');
-var Flat = require('../../utils/Flat');
-var Utils = require('../../../kernel/utils/Utils');
-var console = require('../../../kernel/utils/logger');
-var utility = require('../../utils/utility');
-var _ = require('underscore');
-var Q = require('q');
-var http = require('http');
-var util = require('util');
-var oneHour = 60 * 60 * 1000;
+const dbutility = require('../../models/dbUtility');
+const decisionCleaner = require('../../convertors/decisionCleaner');
+const allResultsCleaner = require('../../convertors/allResultsCleaner');
+const chartAssembler = require('../../assemblers/chart');
+const financialReportAssembler = require('../../assemblers/financialReport');
+const SimMain = require('../../../kernel/app');
+const Flat = require('../../utils/Flat');
+const Utils = require('../../../kernel/utils/Utils');
+const console = require('../../../kernel/utils/logger');
+const utility = require('../../utils/utility');
+let _ = require('underscore');
+let Q = require('q');
+let http = require('http');
+let util = require('util');
+let oneHour = 60 * 60 * 1000;
 /**
  * Initialize game data, only certain perople can call this method
  *
@@ -31,22 +31,22 @@ var oneHour = 60 * 60 * 1000;
  */
 global.debug_data.SimMain = SimMain;
 function init(io) {
-    var status;
+    let status;
     return function (req, res, next) {
         if (status == 'pending') {
             return res.status(404).json({ message: 'Service is locked by other process, please wait for seconds...' });
         }
         else {
             status = 'pending';
-            var seminarResult_1;
-            var seminarId_1 = req.params.seminar_id;
-            var simulation_span_1;
-            var company_num_1;
-            var currentPeriod_1;
-            var simulationScenarioID_1;
-            var companies_1;
-            var hists = void 0;
-            if (!seminarId_1) {
+            let seminarResult;
+            let seminarId = req.params.seminar_id;
+            let simulation_span;
+            let company_num;
+            let currentPeriod;
+            let simulationScenarioID;
+            let companies;
+            let hists;
+            if (!seminarId) {
                 status = 'active';
                 return res.status(400).json({ message: "seminarId cannot be empty." });
             }
@@ -54,7 +54,7 @@ function init(io) {
                 msg: 'Start calling Initialize.DLL...',
                 isError: false
             });
-            seminarModel.findOneQ({ seminarId: seminarId_1 }).then(function (dbSeminar) {
+            seminarModel.findOneQ({ seminarId: seminarId }).then(function (dbSeminar) {
                 if (!dbSeminar) {
                     status = 'active';
                     throw { message: "Cancel promise chains. Because seminar doesn't exist." };
@@ -63,56 +63,56 @@ function init(io) {
                     status = 'active';
                     throw { message: "Cancel promise chains. Because initialize a seminar that already starts." };
                 }
-                seminarResult_1 = dbSeminar;
+                seminarResult = dbSeminar;
                 //before init, a new seminar should be created,
                 //and it's currentPeriod should be set correctly = 1
-                currentPeriod_1 = dbSeminar.currentPeriod;
-                simulation_span_1 = dbSeminar.simulation_span;
-                company_num_1 = dbSeminar.company_num;
-                simulationScenarioID_1 = dbSeminar.simulationScenarioID;
+                currentPeriod = dbSeminar.currentPeriod;
+                simulation_span = dbSeminar.simulation_span;
+                company_num = dbSeminar.company_num;
+                simulationScenarioID = dbSeminar.simulationScenarioID;
                 //create company array
-                companies_1 = dbSeminar.companies || utility.createCompanyArray(company_num_1);
+                companies = dbSeminar.companies || utility.createCompanyArray(company_num);
                 return Q.all([
-                    simulationResultModel.removeAll(seminarId_1),
-                    dbutility.removeExistedDecisions(seminarId_1),
-                    chartModel.remove(seminarId_1),
-                    reportModel.remove(seminarId_1)
+                    simulationResultModel.removeAll(seminarId),
+                    dbutility.removeExistedDecisions(seminarId),
+                    chartModel.remove(seminarId),
+                    reportModel.remove(seminarId)
                 ])
                     .then(function () {
-                    return loadScenario(simulationScenarioID_1);
+                    return loadScenario(simulationScenarioID);
                 })
                     .then(function (hists) {
                     return Q.all([
-                        initSimulationResult(seminarId_1, companies_1, hists),
-                        initDecision(seminarId_1, companies_1, hists),
+                        initSimulationResult(seminarId, companies, hists),
+                        initDecision(seminarId, companies, hists),
                     ]);
                 })
                     .then(function () {
                     return Q.all([
-                        simulationResultModel.findAll(seminarId_1)
+                        simulationResultModel.findAll(seminarId)
                     ])
                         .spread(function (allResults) {
                         return Q.all([
-                            initChartData(seminarId_1, allResults),
+                            initChartData(seminarId, allResults),
                             //initCompanyStatusReport(seminarId, allResults, 0),
-                            initFinancialReport(seminarId_1, allResults),
+                            initFinancialReport(seminarId, allResults),
                         ]);
                     });
                 })
                     .then(function () {
                     //copy decision of period (currentPeriod - 1 = 0)
                     //    return undefined;
-                    return duplicateLastPeriodDecision(seminarId_1, currentPeriod_1 - 1);
+                    return duplicateLastPeriodDecision(seminarId, currentPeriod - 1);
                 })
                     .then(function () {
-                    seminarResult_1.isInitialized = true;
-                    if (seminarResult_1.roundTime.length > 0) {
-                        seminarResult_1.roundTime[0].startTime = new Date();
-                        if (seminarResult_1.roundTime[0].roundTimeHour !== 0) {
-                            seminarResult_1.roundTime[0].endTime = new Date(new Date().getTime() + oneHour * seminarResult_1.roundTime[0].roundTimeHour);
+                    seminarResult.isInitialized = true;
+                    if (seminarResult.roundTime.length > 0) {
+                        seminarResult.roundTime[0].startTime = new Date();
+                        if (seminarResult.roundTime[0].roundTimeHour !== 0) {
+                            seminarResult.roundTime[0].endTime = new Date(new Date().getTime() + oneHour * seminarResult.roundTime[0].roundTimeHour);
                         }
                     }
-                    return seminarResult_1.saveQ();
+                    return seminarResult.saveQ();
                 }).then(function (result) {
                     status = 'active';
                     if (!result) {
@@ -136,32 +136,32 @@ function init(io) {
 }
 exports.init = init;
 function runSimulation() {
-    var status;
+    let status;
     return function (req, res, next) {
         if (status == 'pending') {
             return res.send(400, { message: "Last request is still pending, please wait for runSimulation process complete..." });
         }
         else {
             status = 'pending';
-            var seminarId_2 = req.params.seminar_id;
-            var goingToNewPeriod_1 = req.body.goingToNewPeriod;
-            var decisionsOverwriteSwitchers_1 = req.body.decisionsOverwriteSwitchers || [];
-            var selectedPeriod_1;
-            if (!seminarId_2) {
+            let seminarId = req.params.seminar_id;
+            let goingToNewPeriod = req.body.goingToNewPeriod;
+            let decisionsOverwriteSwitchers = req.body.decisionsOverwriteSwitchers || [];
+            let selectedPeriod;
+            if (!seminarId) {
                 status = 'active';
                 return res.send(400, { message: "You have not choose a seminar." });
             }
-            if (goingToNewPeriod_1 == undefined) {
+            if (goingToNewPeriod == undefined) {
                 status = 'active';
                 return res.send(400, { message: "Which period need to run?" });
             }
-            if ((decisionsOverwriteSwitchers_1 == [])) {
+            if ((decisionsOverwriteSwitchers == [])) {
                 status = 'active';
                 return res.send(400, { message: 'need parameter decisionsOverwriteSwitchers' });
             }
             //check if this seminar exists
             seminarModel.findOneQ({
-                seminarId: seminarId_2
+                seminarId: seminarId
             })
                 .then(function (dbSeminar) {
                 if (!dbSeminar) {
@@ -174,34 +174,34 @@ function runSimulation() {
                 if (dbSeminar.isSimulationFinished) {
                     throw { message: "the last round simulation has been executed." };
                 }
-                if (goingToNewPeriod_1) {
-                    selectedPeriod_1 = dbSeminar.currentPeriod;
-                    decisionsOverwriteSwitchers_1 = [];
-                    for (var i = 0; i < dbSeminar.company_num; i++) {
-                        decisionsOverwriteSwitchers_1.push(true);
+                if (goingToNewPeriod) {
+                    selectedPeriod = dbSeminar.currentPeriod;
+                    decisionsOverwriteSwitchers = [];
+                    for (let i = 0; i < dbSeminar.company_num; i++) {
+                        decisionsOverwriteSwitchers.push(true);
                     }
                 }
                 else {
-                    selectedPeriod_1 = dbSeminar.currentPeriod - 1;
-                    if (decisionsOverwriteSwitchers_1.length != dbSeminar.company_num) {
+                    selectedPeriod = dbSeminar.currentPeriod - 1;
+                    if (decisionsOverwriteSwitchers.length != dbSeminar.company_num) {
                         throw { message: "Cancel promise chains. Because Incorrect parameter decisionsOverwriteSwitchers in the post request." };
                     }
                 }
-                var companies = [];
-                for (var i = 0; i < dbSeminar.company_num; i++) {
+                let companies = [];
+                for (let i = 0; i < dbSeminar.company_num; i++) {
                     companies.push(i + 1);
                 }
                 // simulate env
-                return simulationResultModel.findAllBefore(seminarId_2, selectedPeriod_1 - 1).then(function (lastResults) {
+                return simulationResultModel.findAllBefore(seminarId, selectedPeriod - 1).then(function (lastResults) {
                     if (!lastResults.length) {
                         throw { message: "Cancel promise chains. Because Incorrect parameter decisionsOverwriteSwitchers in the post request." };
                     }
-                    var envLastStates = [];
-                    var lastCompaniesResults = [];
-                    var currPeriodDecisions = [];
+                    let envLastStates = [];
+                    let lastCompaniesResults = [];
+                    let currPeriodDecisions = [];
                     lastResults.forEach(function (result) {
-                        var envState = result.environnement;
-                        var compsStates = result.companies;
+                        let envState = result.environnement;
+                        let compsStates = result.companies;
                         envState.period = result.period;
                         envLastStates.push(envState);
                         lastCompaniesResults.push(compsStates);
@@ -213,27 +213,27 @@ function runSimulation() {
                      */
                     SimMain.launchSim();
                     console.silly("launch sim success !");
-                    SimMain.initEnvironnemet(selectedPeriod_1, envLastStates);
+                    SimMain.initEnvironnemet(selectedPeriod, envLastStates);
                     console.silly("init env success !");
-                    SimMain.simulateEnv(selectedPeriod_1);
+                    SimMain.simulateEnv(selectedPeriod);
                     console.silly("sim env success !");
-                    return companyDecisionModel.findAllBeforePeriod(seminarId_2, selectedPeriod_1).then(function (allCompaniesDecision) {
+                    return companyDecisionModel.findAllBeforePeriod(seminarId, selectedPeriod).then(function (allCompaniesDecision) {
                         global.debug_data.allCompaniesDecision = allCompaniesDecision;
                         allCompaniesDecision.forEach(function (data) {
-                            var d_CID = data._id;
-                            var decisions = [];
-                            var lastResults = [];
+                            let d_CID = data._id;
+                            let decisions = [];
+                            let lastResults = [];
                             lastCompaniesResults.forEach(function (data) {
-                                var res = data[d_CID - 1];
+                                let res = data[d_CID - 1];
                                 lastResults.push(res);
                             });
                             data.decisions.forEach(function (obj) {
                                 decisions.push(obj.decision);
                             });
-                            var currPDecision = decisions.pop();
+                            let currPDecision = decisions.pop();
                             currPeriodDecisions.push(currPDecision);
                             global.debug_data.d_CID = d_CID;
-                            global.debug_data.selectedPeriod = selectedPeriod_1;
+                            global.debug_data.selectedPeriod = selectedPeriod;
                             global.debug_data.decisions = decisions;
                             global.debug_data.lastResults = lastResults;
                             global.debug_data.envLastStates = envLastStates;
@@ -241,9 +241,9 @@ function runSimulation() {
                             /*
                              *  restore last state and set companies decisions
                              */
-                            SimMain.initialize(d_CID, selectedPeriod_1, decisions, lastResults, envLastStates);
+                            SimMain.initialize(d_CID, selectedPeriod, decisions, lastResults, envLastStates);
                             console.silly("sim init success !");
-                            SimMain.setDecisions(d_CID, selectedPeriod_1, currPDecision);
+                            SimMain.setDecisions(d_CID, selectedPeriod, currPDecision);
                             console.warn("sim set decision success !", d_CID);
                         });
                         /*
@@ -260,8 +260,8 @@ function runSimulation() {
                             if (!envSimResult) {
                                 throw new Error('process envSimResult failed nothing got');
                             }
-                            var p = Q();
-                            var currPeriodResult = {
+                            let p = Q();
+                            let currPeriodResult = {
                                 environnement: envSimResult,
                                 companies: []
                             };
@@ -270,8 +270,8 @@ function runSimulation() {
                             */
                             companies.forEach(function (d_CID) {
                                 p = p.then(function (result) {
-                                    var deferred = Q.defer();
-                                    processEndState(d_CID, selectedPeriod_1).then(function (playerEndState) {
+                                    let deferred = Q.defer();
+                                    processEndState(d_CID, selectedPeriod).then(function (playerEndState) {
                                         if (!playerEndState) {
                                             throw new Error('process end state failed nothing got');
                                         }
@@ -285,7 +285,7 @@ function runSimulation() {
                             *  generate BI report
                             */
                             return p.then(function (simulationResult) {
-                                var deferred = Q.defer();
+                                let deferred = Q.defer();
                                 prepareBI(simulationResult, currPeriodDecisions).then(function (finalisedCompanyResults) {
                                     if (!finalisedCompanyResults) {
                                         throw new Error('finalisedCompanyResults failed nothing got');
@@ -303,23 +303,23 @@ function runSimulation() {
                         throw { message: 'Cancel promise chains. Because no simulationResult' };
                     }
                     return Q.all([
-                        removeCurrentPeriodSimulationResult(seminarId_2, selectedPeriod_1),
-                        chartModel.remove(seminarId_2),
-                        reportModel.remove(seminarId_2)
+                        removeCurrentPeriodSimulationResult(seminarId, selectedPeriod),
+                        chartModel.remove(seminarId),
+                        reportModel.remove(seminarId)
                     ]).then(function () {
                         console.log('get current period simulation result finished.');
                         //once removeCurrentPeriodSimulationResult success,
                         //query and save the current period simulation result
-                        return initCurrentPeriodSimulationResult(seminarId_2, selectedPeriod_1, simulationResult);
+                        return initCurrentPeriodSimulationResult(seminarId, selectedPeriod, simulationResult);
                     });
                 }).then(function () {
                     return Q.all([
-                        simulationResultModel.findAll(seminarId_2)
+                        simulationResultModel.findAll(seminarId)
                     ]).spread(function (allResults) {
                         return Q.all([
-                            initChartData(seminarId_2, allResults),
+                            initChartData(seminarId, allResults),
                             //initCompanyStatusReport(seminarId, allResults, selectedPeriod),
-                            initFinancialReport(seminarId_2, allResults),
+                            initFinancialReport(seminarId, allResults),
                         ]);
                     });
                 }).then(function () {
@@ -328,14 +328,14 @@ function runSimulation() {
                     //DO NOT create the next period decision automatically
                     if (dbSeminar.currentPeriod < dbSeminar.simulation_span) {
                         status = 'active';
-                        return createNewDecisionBasedOnLastPeriodDecision(seminarId_2, selectedPeriod_1, decisionsOverwriteSwitchers_1, goingToNewPeriod_1);
+                        return createNewDecisionBasedOnLastPeriodDecision(seminarId, selectedPeriod, decisionsOverwriteSwitchers, goingToNewPeriod);
                     }
                     else {
                         return undefined;
                     }
                 }).then(function () {
                     console.log('create duplicate decision from last period finished.');
-                    if (goingToNewPeriod_1) {
+                    if (goingToNewPeriod) {
                         if (dbSeminar.currentPeriod < dbSeminar.simulation_span) {
                         }
                         else if (dbSeminar.currentPeriod = dbSeminar.simulation_span) {
@@ -393,7 +393,7 @@ function removeCurrentPeriodSimulationResult(seminarId, currentPeriod) {
     });
 }
 function submitDecisionForAllCompany(companies, period, seminarId) {
-    var p = Q();
+    let p = Q();
     companies.forEach(function (companyId) {
         p = p.then(function () {
             //console.log("submit decision finished.");
@@ -403,7 +403,7 @@ function submitDecisionForAllCompany(companies, period, seminarId) {
     return p;
 }
 function submitDecision(companyId, period, seminarId) {
-    var result = {};
+    let result = {};
     console.log('Submit Decision For companyId:' + companyId + ', period:' + period + ', seminarId:' + seminarId);
     return companyDecisionModel.findOne(seminarId, period, companyId).then(function (decision) {
         if (!decision) {
@@ -453,23 +453,23 @@ function loadScenario(simulationScenarioID) {
 function clone(obj) {
     if (null == obj || "object" != typeof obj)
         return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
+    let copy = obj.constructor();
+    for (let attr in obj) {
         if (obj.hasOwnProperty(attr))
             copy[attr] = obj[attr];
     }
     return copy;
 }
 function initDecision(seminarId, companies, initData) {
-    var hists = initData.historiques;
-    var tempDecisions = [];
+    let hists = initData.historiques;
+    let tempDecisions = [];
     if (hists.length) {
         hists.forEach(function (data) {
             if (data.period > 0) {
                 return;
             }
             companies.forEach(function (comp) {
-                var decision = {
+                let decision = {
                     period: data.period,
                     seminarId: seminarId,
                     d_CID: comp.companyId,
@@ -488,16 +488,16 @@ function cleanDecisions(allDecisions) {
     });
 }
 function initSimulationResult(seminarId, companies, initData) {
-    var hists = initData.historiques;
-    var allResults = [];
+    let hists = initData.historiques;
+    let allResults = [];
     if (hists.length) {
         hists.forEach(function (data) {
-            var refResults = clone(data.results);
-            var period = data.period;
+            let refResults = clone(data.results);
+            let period = data.period;
             if (period > 0) {
                 return;
             }
-            var results = {
+            let results = {
                 period: period,
                 seminarId: seminarId,
             };
@@ -510,7 +510,7 @@ function initSimulationResult(seminarId, companies, initData) {
             };
             results.companies = [];
             companies.forEach(function (comp) {
-                var refCompResults = clone(data.results);
+                let refCompResults = clone(data.results);
                 refCompResults.c_CID = comp.companyId;
                 refCompResults.c_CompanyName = comp.companyName;
                 results.companies.push(refCompResults);
@@ -518,8 +518,8 @@ function initSimulationResult(seminarId, companies, initData) {
             allResults.push(results);
         });
     }
-    var saveOperations = [];
-    for (var i = 0; i < allResults.length; i++) {
+    let saveOperations = [];
+    for (let i = 0; i < allResults.length; i++) {
         saveOperations.push(simulationResultModel.insert(allResults[i]));
     }
     return Q.all(saveOperations);
@@ -614,12 +614,12 @@ function initMarketIndicatorReport(seminarId, currentPeriod){
  * @param {Object} allResults allResults of all periods
  */
 function initChartData(seminarId, allResults) {
-    var period = allResults[allResults.length - 1].period + 1;
+    let period = allResults[allResults.length - 1].period + 1;
     return Q.all([
         seminarModel.findOneQ({ seminarId: seminarId }),
     ]).spread(function (seminar, exogenous) {
         //generate charts from allResults
-        var chartData = chartAssembler.extractChartData(allResults, {
+        let chartData = chartAssembler.extractChartData(allResults, {
             simulation_span: seminar.simulation_span,
             exogenous: exogenous
         });
@@ -632,12 +632,12 @@ function initChartData(seminarId, allResults) {
 function reset(variable) {
     switch (typeof variable) {
         case "object":
-            for (var key in variable) {
+            for (let key in variable) {
                 if (!variable.hasOwnProperty(key)) {
                     continue;
                 }
-                var prop = variable[key];
-                var type = typeof prop;
+                let prop = variable[key];
+                let type = typeof prop;
                 if (type !== "object" && type !== "array") {
                     variable[key] = type === 'number' ? 0 : '';
                 }
@@ -655,7 +655,7 @@ function reset(variable) {
             }
             break;
         case "array":
-            for (var i = 0, len = variable.length; i < len; i++) {
+            for (let i = 0, len = variable.length; i < len; i++) {
                 reset(variable[i]);
             }
             break;
@@ -664,11 +664,11 @@ function reset(variable) {
 function duplicateLastPeriodDecision(seminarId, lastPeriod) {
     return companyDecisionModel.findAllInPeriod(seminarId, lastPeriod)
         .then(function (allCompanyDecision) {
-        var p = Q('init');
-        var emptyCompanyDecision = allCompanyDecision[0].toObject().decision;
+        let p = Q('init');
+        let emptyCompanyDecision = allCompanyDecision[0].toObject().decision;
         reset(emptyCompanyDecision);
         allCompanyDecision.forEach(function (companyDecision) {
-            var tempCompanyDecision = {
+            let tempCompanyDecision = {
                 period: companyDecision.period + 1,
                 seminarId: companyDecision.seminarId,
                 d_CID: companyDecision.d_CID,
@@ -700,11 +700,11 @@ function duplicateLastPeriodDecision(seminarId, lastPeriod) {
 function createNewDecisionBasedOnLastPeriodDecision(seminarId, lastPeriod, decisionsOverwriteSwitchers, goingToNewPeriod) {
     return companyDecisionModel.findAllInPeriod(seminarId, lastPeriod)
         .then(function (allCompanyDecision) {
-        var p = Q('init');
+        let p = Q('init');
         allCompanyDecision.forEach(function (companyDecision) {
-            var decision = companyDecision.toObject().decision;
+            let decision = companyDecision.toObject().decision;
             //reset(decision);
-            var tempCompanyDecision = {
+            let tempCompanyDecision = {
                 period: companyDecision.period + 1,
                 seminarId: companyDecision.seminarId,
                 d_CID: companyDecision.d_CID,
@@ -741,18 +741,18 @@ function createNewDecisionBasedOnLastPeriodDecision(seminarId, lastPeriod, decis
     });
 }
 function convertEndState(endState) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     if (!endState) {
         return deferred.reject(new Error("no endState"));
     }
-    var result = Flat.unflatten(endState, {
+    let result = Flat.unflatten(endState, {
         delimiter: "_"
     });
     deferred.resolve(result);
     return deferred.promise;
 }
 function processEndState(playerID, currPeriod) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     if (playerID === undefined || currPeriod === undefined) {
         return deferred.reject(new Error("Invalid argument playerId, currPeriod for processEndState"));
     }
@@ -762,7 +762,7 @@ function processEndState(playerID, currPeriod) {
         }
         // flat report
         playerEndState["report"] = processFlatReport(playerEndState);
-        var playerResults = Flat.unflatten(playerEndState, {
+        let playerResults = Flat.unflatten(playerEndState, {
             delimiter: "_"
         });
         console.silly('player:' + playerID + ' endstats succes');
@@ -772,9 +772,9 @@ function processEndState(playerID, currPeriod) {
         deferred.reject(err);
     }).done();
     function processFlatReport(playerEndState) {
-        var flatReport = {};
+        let flatReport = {};
         Object.keys(playerEndState).forEach(function (key) {
-            var newKey = "res_" + key;
+            let newKey = "res_" + key;
             flatReport[newKey] = playerEndState[key];
         });
         return flatReport;
@@ -782,20 +782,20 @@ function processEndState(playerID, currPeriod) {
     return deferred.promise;
 }
 function prepareBI(simulationResult, allCompaniesDecs) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     setImmediate(function () {
-        var companiesResults = simulationResult.companies;
+        let companiesResults = simulationResult.companies;
         // BI
-        var BI_free = getBIInfos(companiesResults, 0);
-        var BI_corporateActivity = getBIInfos(companiesResults, 1);
-        var BI_marketShares = getBIInfos(companiesResults, 2);
-        var i = 0;
-        var len = companiesResults.length;
+        let BI_free = getBIInfos(companiesResults, 0);
+        let BI_corporateActivity = getBIInfos(companiesResults, 1);
+        let BI_marketShares = getBIInfos(companiesResults, 2);
+        let i = 0;
+        let len = companiesResults.length;
         for (; i < len; i++) {
-            var playerEndState = companiesResults[i];
-            var decision = allCompaniesDecs[i];
-            var isCorporateActivityOrdered = decision.orderCorporateActivityInfo;
-            var areMarketSharesOrdered = decision.orderMarketSharesInfo;
+            let playerEndState = companiesResults[i];
+            let decision = allCompaniesDecs[i];
+            let isCorporateActivityOrdered = decision.orderCorporateActivityInfo;
+            let areMarketSharesOrdered = decision.orderMarketSharesInfo;
             playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_free);
             if (isCorporateActivityOrdered) {
                 playerEndState.report = Utils.ObjectApply(playerEndState.report, BI_corporateActivity);
@@ -811,25 +811,25 @@ function prepareBI(simulationResult, allCompaniesDecs) {
     return deferred.promise;
 }
 function getBIInfos(results, includeInfoType) {
-    var BI = {};
-    var corporateActivityInfo = SimMain.getList_corporateActivityInfo();
-    var freeInfo = SimMain.getList_freeInfo();
+    let BI = {};
+    let corporateActivityInfo = SimMain.getList_corporateActivityInfo();
+    let freeInfo = SimMain.getList_freeInfo();
     results.forEach(function (res, idx) {
-        var CID = idx + 1;
-        var prefix = "res_BI_corporate" + CID + "_";
+        let CID = idx + 1;
+        let prefix = "res_BI_corporate" + CID + "_";
         BI[prefix + "playerID"] = CID;
-        var report = res.report;
-        for (var key in report) {
+        let report = res.report;
+        for (let key in report) {
             if (!report.hasOwnProperty(key)) {
                 continue;
             }
-            var splits = key.split("_");
+            let splits = key.split("_");
             if (!splits) {
                 continue;
             }
             // remove res or dec
             splits.shift();
-            var property = splits[splits.length - 1];
+            let property = splits[splits.length - 1];
             if (property === "marketVolumeShareOfSales") {
                 if (includeInfoType !== 2) {
                     continue;
@@ -848,7 +848,7 @@ function getBIInfos(results, includeInfoType) {
             else {
                 continue;
             }
-            var newKey = prefix + splits.join("_");
+            let newKey = prefix + splits.join("_");
             BI[newKey] = report[key];
         }
     });

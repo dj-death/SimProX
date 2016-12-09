@@ -1,5 +1,5 @@
 "use strict";
-var mongoose = require('mongoose-q')(require('mongoose'));
+let mongoose = require('mongoose-q')(require('mongoose'));
 function Numeric(key, options) {
     mongoose.SchemaType.call(this, key, options, 'Numeric');
 }
@@ -8,7 +8,7 @@ Numeric.prototype = Object.create(mongoose.SchemaType.prototype);
 // validate the provided `val` and throw a `CastError` if you
 // can't convert it.
 Numeric.prototype.cast = function (val) {
-    var _val = !isNaN(val) ? Number(val) : 0;
+    let _val = !isNaN(val) ? Number(val) : 0;
     if (isNaN(_val)) {
         throw new mongoose.SchemaType.CastError('Numeric', val + ' is not a number');
     }
@@ -17,14 +17,14 @@ Numeric.prototype.cast = function (val) {
 // Don't forget to add Numeric to the type registry
 mongoose.Schema.Types.Numeric = Numeric;
 // default -1 means repeat
-var manufacturingTime = mongoose.Schema({
+let manufacturingTime = mongoose.Schema({
     time: {
         type: Numeric,
         default: -1,
         max: 999
     },
 });
-var subProduct = mongoose.Schema({
+let subProduct = mongoose.Schema({
     subcontractQ: {
         type: Numeric,
         min: 0,
@@ -37,7 +37,7 @@ var subProduct = mongoose.Schema({
         max: 1
     }
 });
-var product = mongoose.Schema({
+let product = mongoose.Schema({
     //manufacturingTime: [manufacturingTime],
     manufacturingTime: {
         type: Numeric,
@@ -66,7 +66,7 @@ var product = mongoose.Schema({
         max: 1
     }
 });
-var machineType = mongoose.Schema({
+let machineType = mongoose.Schema({
     boughtNb: {
         type: Numeric,
         default: 0,
@@ -80,7 +80,7 @@ var machineType = mongoose.Schema({
         max: 99
     }
 });
-var machinery = mongoose.Schema({
+let machinery = mongoose.Schema({
     maintenanceHours: {
         type: Numeric,
         default: -1,
@@ -89,7 +89,7 @@ var machinery = mongoose.Schema({
     },
     types: [machineType]
 });
-var futures = mongoose.Schema({
+let futures = mongoose.Schema({
     term: Numeric,
     quantity: {
         type: Numeric,
@@ -98,10 +98,10 @@ var futures = mongoose.Schema({
         max: 99000
     }
 });
-var material = mongoose.Schema({
+let material = mongoose.Schema({
     purchases: [futures]
 });
-var factory = mongoose.Schema({
+let factory = mongoose.Schema({
     extension: {
         type: Numeric,
         default: 0,
@@ -109,7 +109,7 @@ var factory = mongoose.Schema({
         max: 9999
     }
 });
-var worker = mongoose.Schema({
+let worker = mongoose.Schema({
     hourlyWageRate: {
         type: Numeric,
         default: -1,
@@ -129,7 +129,7 @@ var worker = mongoose.Schema({
         max: 9
     }
 });
-var subMarket = mongoose.Schema({
+let subMarket = mongoose.Schema({
     advertisingBudget: {
         type: Numeric,
         default: -1,
@@ -149,7 +149,7 @@ var subMarket = mongoose.Schema({
         max: 9999
     },
 });
-var agent = mongoose.Schema({
+let agent = mongoose.Schema({
     appointedNb: {
         type: Numeric,
         default: -1,
@@ -169,7 +169,7 @@ var agent = mongoose.Schema({
         max: 99000
     }
 });
-var market = mongoose.Schema({
+let market = mongoose.Schema({
     corporateComBudget: {
         type: Numeric,
         default: -1,
@@ -179,7 +179,7 @@ var market = mongoose.Schema({
     //agents: [agent],
     products: [subMarket]
 });
-var eCommerce = mongoose.Schema({
+let eCommerce = mongoose.Schema({
     websitePortsNb: {
         type: Numeric,
         default: -1,
@@ -193,7 +193,7 @@ var eCommerce = mongoose.Schema({
         max: 999000
     }
 });
-var insurance = mongoose.Schema({
+let insurance = mongoose.Schema({
     plan: {
         type: Numeric,
         default: -1,
@@ -201,11 +201,11 @@ var insurance = mongoose.Schema({
         max: 4
     }
 });
-var bankAccount = mongoose.Schema({
+let bankAccount = mongoose.Schema({
     termLoans: Numeric,
     termDeposit: Numeric
 });
-var playerDecisionSchema = mongoose.Schema({
+let playerDecisionSchema = mongoose.Schema({
     seminarId: String,
     period: Number,
     d_CID: Number,

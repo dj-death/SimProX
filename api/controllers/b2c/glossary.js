@@ -1,17 +1,17 @@
 "use strict";
-var glossaryModel = require('../../models/b2c/Glossary');
-var tagModel = require('../../models/b2c/Tag');
-var Segment = require('segment');
+const glossaryModel = require('../../models/b2c/Glossary');
+const tagModel = require('../../models/b2c/Tag');
+let Segment = require('segment');
 function addGlossary(req, res, next) {
-    var validationErrors = glossaryModel.addValidations(req);
+    let validationErrors = glossaryModel.addValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
     if (!Array.isArray(req.body.tagList)) {
         return res.status(400).send({ message: 'Tag of Glossary is not array' });
     }
-    var tagsCreateOriginalTextArray = [];
-    var tagsCreateResultIdArray = [];
+    let tagsCreateOriginalTextArray = [];
+    let tagsCreateResultIdArray = [];
     req.body.tagList.forEach(function (tag) {
         if (tag.text !== "") {
             tagsCreateOriginalTextArray.push(tag.text);
@@ -57,15 +57,15 @@ function addGlossary(req, res, next) {
 exports.addGlossary = addGlossary;
 ;
 function updateGlossary(req, res, next) {
-    var validationErrors = glossaryModel.addValidations(req);
+    let validationErrors = glossaryModel.addValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
     if (!Array.isArray(req.body.tagList)) {
         return res.status(400).send({ message: 'Tag of Glossary is not array' });
     }
-    var tagsCreateOriginalTextArray = [];
-    var tagsCreateResultIdArray = [];
+    let tagsCreateOriginalTextArray = [];
+    let tagsCreateResultIdArray = [];
     req.body.tagList.forEach(function (tag) {
         if (tag.text !== "") {
             tagsCreateOriginalTextArray.push(tag.text);
@@ -100,17 +100,17 @@ function updateGlossary(req, res, next) {
 exports.updateGlossary = updateGlossary;
 ;
 function searchGlossary(req, res, next) {
-    var keywordSearch = req.query.keyword || '';
-    var type = req.query.type || 'all';
-    var query = {};
+    let keywordSearch = req.query.keyword || '';
+    let type = req.query.type || 'all';
+    let query = {};
     if (type !== 'all') {
         query.$and = [
             { type: type }
         ];
     }
     if (keywordSearch) {
-        var strRegex = ".*[" + keywordSearch.split('').join('][') + "].*";
-        var regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
+        let strRegex = ".*[" + keywordSearch.split('').join('][') + "].*";
+        let regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
         query.$or = [
             { 'name': regex },
             { 'question': regex }
@@ -125,23 +125,23 @@ function searchGlossary(req, res, next) {
 exports.searchGlossary = searchGlossary;
 ;
 function searchGlossaryWithWord(req, res, next) {
-    var validationErrors = glossaryModel.searchWordValidations(req);
+    let validationErrors = glossaryModel.searchWordValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var keywordSearch = req.body.keyword || '';
-    var type = req.body.type || 'all';
-    var segmentWord = new Segment();
+    let keywordSearch = req.body.keyword || '';
+    let type = req.body.type || 'all';
+    let segmentWord = new Segment();
     segmentWord.useDefault();
-    var words = segmentWord.doSegment(keywordSearch);
-    var wordsTextArray = [];
-    var tagsResultIdArray = [];
+    let words = segmentWord.doSegment(keywordSearch);
+    let wordsTextArray = [];
+    let tagsResultIdArray = [];
     //console.log("word: ", words);
     words.forEach(function (word) {
         wordsTextArray.push(word.w);
     });
-    var query = {};
-    var results = {
+    let query = {};
+    let results = {
         tags: [],
         glossaries: []
     };
@@ -151,8 +151,8 @@ function searchGlossaryWithWord(req, res, next) {
         ];
     }
     if (keywordSearch) {
-        var strRegex = ".*[" + keywordSearch.split('').join('][') + "].*";
-        var regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
+        let strRegex = ".*[" + keywordSearch.split('').join('][') + "].*";
+        let regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
         query.$or = [
             { 'name': regex },
             { 'question': regex }

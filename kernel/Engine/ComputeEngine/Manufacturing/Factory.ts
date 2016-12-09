@@ -34,19 +34,19 @@ export default class Factory extends Space.Space  {
     }
 
     get machiningSpaceUsed(): number {
-        var total = this.spaceUsages[ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.MACHINES]];
+        let total = this.spaceUsages[ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.MACHINES]];
 
         return Math.ceil(total);
     }
 
     get workersSpaceUsed(): number {
-        var total = this.spaceUsages[ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.WORKERS]];
+        let total = this.spaceUsages[ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.WORKERS]];
 
         return Math.ceil(total);
     }
 
     get stocksSpaceUsed(): number {
-        var total = this.spaceUsages[ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.STOCKS]]
+        let total = this.spaceUsages[ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.STOCKS]]
 
         return Math.ceil(total);
     }

@@ -5,7 +5,7 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 export default function create(): RawMaterial[] {
 
-    var materialA = new RawMaterial({
+    let materialA = new RawMaterial({
         id: "material1",
         materialID: "0",
 

@@ -3,7 +3,7 @@
 import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 
-var defaultPayments: ENUMS.PaymentArray = {
+let defaultPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1

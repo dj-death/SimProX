@@ -1,7 +1,7 @@
 ﻿import { BuildingContractor } from '../../engine/ComputeEngine/Environnement';
 import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
-var buildingContractor = new BuildingContractor({
+let buildingContractor = new BuildingContractor({
     id: "buildingContractor1",
     label: "buildingContractor1",
 

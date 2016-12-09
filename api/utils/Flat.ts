@@ -5,21 +5,21 @@ let testIfBuffer = require('is-buffer');
 
 
 String.prototype["endsWith"] = function  (searchString, position) {
-    var subjectString = this.toString();
+    let subjectString = this.toString();
     if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
         position = subjectString.length;
     }
     position -= searchString.length;
-    var lastIndex = subjectString.indexOf(searchString, position);
+    let lastIndex = subjectString.indexOf(searchString, position);
     return lastIndex !== -1 && lastIndex === position;
 };
 
 
 function  makeNewKey(key, isArray, isArrayItem) {
-    var newKey;
-    var isPlural = key.endsWith("s") && isArray;
-    var isEndingYPlural = key.endsWith("ies");
-    var charsNb = key.length;
+    let newKey;
+    let isPlural = key.endsWith("s") && isArray;
+    let isEndingYPlural = key.endsWith("ies");
+    let charsNb = key.length;
     newKey = key;
     if (isPlural) {
         if (isEndingYPlural) {
@@ -43,21 +43,21 @@ export function  flatten(target, opts, output?, prev?) {
         delimiter: '_',
         prefix: undefined
     };
-    var optDelimiter = opts.delimiter;
-    var prefix = opts.prefix ? opts.prefix + '' + optDelimiter : '';
-    var isArrayItem = Array.isArray(target);
+    let optDelimiter = opts.delimiter;
+    let prefix = opts.prefix ? opts.prefix + '' + optDelimiter : '';
+    let isArrayItem = Array.isArray(target);
 
     Object.keys(target).forEach(function  (key) {
-        var value = target[key];
+        let value = target[key];
 
         if (typeof value === "function ") {
             return;
         }
 
-        var isObject = testIfObject(value) && (Object.keys(value).length > 0);
-        var isArray = Array.isArray(value);
-        var delimiter = isArrayItem ? '' : optDelimiter;
-        var newKey = (typeof prev === 'string') ? prev + delimiter : '';
+        let isObject = testIfObject(value) && (Object.keys(value).length > 0);
+        let isArray = Array.isArray(value);
+        let delimiter = isArrayItem ? '' : optDelimiter;
+        let newKey = (typeof prev === 'string') ? prev + delimiter : '';
         newKey += makeNewKey(key, isArray, isArrayItem);
         if (isObject) {
             return flatten(value, opts, output, newKey);
@@ -73,16 +73,16 @@ export function  flatten(target, opts, output?, prev?) {
 
 export function  unflatten(target, opts) {
     opts = opts || {};
-    var delimiter = opts.delimiter || '.';
-    var result = {};
-    var parentObj = result;
-    var keys = Object.keys(target);
+    let delimiter = opts.delimiter || '.';
+    let result = {};
+    let parentObj = result;
+    let keys = Object.keys(target);
     function  convertToCollectionName(str) {
-        var numberPattern = /\d+$/g;
-        var collectionName;
-        var collMatches = str.match(numberPattern);
-        var numberStartIdx = str.search(numberPattern);
-        var collIndx;
+        let numberPattern = /\d+$/g;
+        let collectionName;
+        let collMatches = str.match(numberPattern);
+        let numberStartIdx = str.search(numberPattern);
+        let collIndx;
         if (collMatches && collMatches.length) {
             collectionName = str.substr(0, numberStartIdx);
             if (collectionName.endsWith("y")) {
@@ -97,25 +97,25 @@ export function  unflatten(target, opts) {
         return [str];
     }
     function  __process(key) {
-        var result = [];
-        var split = key.split(delimiter);
+        let result = [];
+        let split = key.split(delimiter);
         if (!split.length) {
             return result;
         }
-        for (var i = 0, len = split.length; i < len; i++) {
-            var elm = split[i];
-            var newStrs = convertToCollectionName(elm);
+        for (let i = 0, len = split.length; i < len; i++) {
+            let elm = split[i];
+            let newStrs = convertToCollectionName(elm);
             result = result.concat(newStrs);
         }
         return result;
     }
-    for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i];
-        var subkeys = __process(key); //key.split(delimiter);
-        var last = subkeys.pop();
-        for (var ii = 0, len = subkeys.length; ii < len; ++ii) {
-            var subkey = subkeys[ii];
-            var newObj = (ii < len) && !isNaN(subkeys[ii + 1]) ? [] : {};
+    for (let i = 0; i < keys.length; ++i) {
+        let key = keys[i];
+        let subkeys = __process(key); //key.split(delimiter);
+        let last = subkeys.pop();
+        for (let ii = 0, len = subkeys.length; ii < len; ++ii) {
+            let subkey = subkeys[ii];
+            let newObj = (ii < len) && !isNaN(subkeys[ii + 1]) ? [] : {};
             parentObj[subkey] = typeof parentObj[subkey] === 'undefined' ? newObj : parentObj[subkey];
             parentObj = parentObj[subkey];
         }
@@ -128,27 +128,27 @@ export function  unflatten(target, opts) {
 /*
 export function  unflatten(target, opts) {
     opts = opts || {};
-    var delimiter = opts.delimiter || '.';
-    var overwrite = opts.overwrite || false;
-    var result = {};
-    var optDelimiter = opts.delimiter || '.';
-    var usedPrefixes = opts.prefix;
-    var isbuffer = testIfBuffer(target);
+    let delimiter = opts.delimiter || '.';
+    let overwrite = opts.overwrite || false;
+    let result = {};
+    let optDelimiter = opts.delimiter || '.';
+    let usedPrefixes = opts.prefix;
+    let isbuffer = testIfBuffer(target);
     if (isbuffer || Object.prototype.toString.call(target) !== '[object Object]') {
         return target;
     }
     // safely ensure that the key is
     // an integer.
     function  getkey(key) {
-        var parsedKey = Number(key);
+        let parsedKey = Number(key);
         return (isNaN(parsedKey) || (key.indexOf('.') !== -1)) ? key : parsedKey;
     }
     function  convertToCollectionName(str) {
-        var numberPattern = /\d+$/g;
-        var collectionName;
-        var collMatches = str.match(numberPattern);
-        var numberStartIdx = str.search(numberPattern);
-        var collIndx;
+        let numberPattern = /\d+$/g;
+        let collectionName;
+        let collMatches = str.match(numberPattern);
+        let numberStartIdx = str.search(numberPattern);
+        let collIndx;
         if (collMatches && collMatches.length) {
             collectionName = str.substr(0, numberStartIdx);
             if (collectionName.endsWith("y")) {
@@ -163,28 +163,28 @@ export function  unflatten(target, opts) {
         return [str];
     }
     function  process(key) {
-        var result = [];
-        var split = key.split(optDelimiter);
+        let result = [];
+        let split = key.split(optDelimiter);
         if (!split.length) {
             return result;
         }
         split.forEach(function  (elm, idx) {
-            var newStrs = convertToCollectionName(elm);
+            let newStrs = convertToCollectionName(elm);
             result = result.concat(newStrs);
         });
         return result;
     }
     Object.keys(target).forEach(function  (key) {
-        var split = process(key);
-        var key1 = getkey(split.shift());
-        var key2 = getkey(split[0]);
-        var recipient = result;
+        let split = process(key);
+        let key1 = getkey(split.shift());
+        let key2 = getkey(split[0]);
+        let recipient = result;
         while (key2 !== undefined) {
-            var type = Object.prototype.toString.call(recipient[key1]);
+            let type = Object.prototype.toString.call(recipient[key1]);
             console.log('type', type);
-            var isobject = (type === "[object Object]" ||
+            let isobject = (type === "[object Object]" ||
                 type === "[object Array]");
-            var isArray = (type === "[object Array]");
+            let isArray = (type === "[object Array]");
             // do not write over falsey, non-undefined values if overwrite is false
             if (!overwrite && !isobject && typeof recipient[key1] !== 'undefined') {
                 return;

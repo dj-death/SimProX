@@ -1,8 +1,8 @@
 "use strict";
-var Environnement_1 = require('../../engine/ComputeEngine/Environnement');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var Utils = require('../../utils/Utils');
-var subContracterDefaultParams, alphaASubContracterParams, alphaBSubContracterParams, alphaCSubContracterParams;
+const Environnement_1 = require('../../engine/ComputeEngine/Environnement');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+const Utils = require('../../utils/Utils');
+let subContracterDefaultParams, alphaASubContracterParams, alphaBSubContracterParams, alphaCSubContracterParams;
 subContracterDefaultParams = {
     name: "Sous-Traitant",
     availableFutures: {
@@ -27,13 +27,13 @@ subContracterDefaultParams = {
 alphaASubContracterParams = Utils.ObjectApply({}, subContracterDefaultParams, { manufacturingUnitCost: 60, offeredSubProductsIDs: ["0"] });
 alphaBSubContracterParams = Utils.ObjectApply({}, subContracterDefaultParams, { manufacturingUnitCost: 75, offeredSubProductsIDs: ["2"] });
 alphaCSubContracterParams = Utils.ObjectApply({}, subContracterDefaultParams, { manufacturingUnitCost: 120, offeredSubProductsIDs: ["4"] });
-var cashPayments = {
+let cashPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
-var threeMonthsPayments = {
+let threeMonthsPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 0
@@ -44,9 +44,9 @@ var threeMonthsPayments = {
     }
 };
 function create() {
-    var alphaASubContracter = new Environnement_1.SubContracter(alphaASubContracterParams);
-    var alphaBSubContracter = new Environnement_1.SubContracter(alphaBSubContracterParams);
-    var alphaCSubContracter = new Environnement_1.SubContracter(alphaCSubContracterParams);
+    let alphaASubContracter = new Environnement_1.SubContracter(alphaASubContracterParams);
+    let alphaBSubContracter = new Environnement_1.SubContracter(alphaBSubContracterParams);
+    let alphaCSubContracter = new Environnement_1.SubContracter(alphaCSubContracterParams);
     return [alphaASubContracter, alphaBSubContracter, alphaCSubContracter];
 }
 Object.defineProperty(exports, "__esModule", { value: true });

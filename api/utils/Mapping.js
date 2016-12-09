@@ -1,6 +1,6 @@
 // remember each time you change the mapping you should create scenario and initialize the sim session
 "use strict";
-var Mapping = {
+let Mapping = {
     "A699": "reportDate",
     "A862": "playerName",
     "A1": "seminar",

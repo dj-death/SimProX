@@ -153,7 +153,7 @@ export class Machine {
         // and if a breakdown does occur the shorter the time before the machine is back in service again.
 
         // A further consequence of ageing is that a machine will tend to break down more often
-        var landa = this.params.breakdownProba * this.capacity;
+        let landa = this.params.breakdownProba * this.capacity;
 
         // Array of X poisson variates with mean/variance of landa 
         this.breakdownHoursNb = Utils.getPoisson(landa);
@@ -174,7 +174,7 @@ export class Machine {
     }
 
     get possibleHoursNb(): number {
-        var value;
+        let value;
 
         value = this.capacity - this.maintenancePlannedHoursNb - this.maintenanceOverContractedHoursNb;
 
@@ -288,20 +288,20 @@ export class Machine {
     }
 
     get remainingLifetime_atPeriodBeginning(): number {
-        var remaining = this.params.usefulLife - this.age;
+        let remaining = this.params.usefulLife - this.age;
 
         return remaining >= 0 ? remaining : 0;
     }
 
     get remainingLifetime_atPeriodEnd(): number {
-        var remaining = this.params.usefulLife - this.age - 1;
+        let remaining = this.params.usefulLife - this.age - 1;
 
         return remaining >= 0 ? remaining : 0;
     }
 
 
     get rawValue(): number {
-        var rawValue = this.lastNetValue;
+        let rawValue = this.lastNetValue;
 
         if (rawValue === undefined) {
             if (this.age <= 0) {
@@ -322,7 +322,7 @@ export class Machine {
             return 0;
         }
 
-        var depreciation = this.rawValue * this.params.depreciationRate;
+        let depreciation = this.rawValue * this.params.depreciationRate;
 
         return depreciation;
     }

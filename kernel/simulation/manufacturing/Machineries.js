@@ -1,19 +1,19 @@
 "use strict";
-var Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var cashPayments = {
+const Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let cashPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
-var maintenancePayments = {
+let maintenancePayments = {
     "THREE_MONTH": {
         credit: ENUMS.CREDIT.THREE_MONTH,
         part: 1
     }
 };
-var machinesParams = [
+let machinesParams = [
     {
         id: "machine1",
         label: "Machine 1",
@@ -38,7 +38,7 @@ var machinesParams = [
     }
 ];
 function create() {
-    var atelier1Machinery = new Manufacturing_1.Machinery({
+    let atelier1Machinery = new Manufacturing_1.Machinery({
         id: "machinery1",
         machineryID: "0",
         atelierID: "0",
@@ -63,7 +63,7 @@ function create() {
     return [atelier1Machinery];
 }
 exports.create = create;
-var atelier1MachineryStates = [
+let atelier1MachineryStates = [
     {
         type: 0,
         age: 19,

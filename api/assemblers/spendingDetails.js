@@ -1,10 +1,10 @@
 //let gameParameters = require('../gameParameters.js').parameters;
 "use strict";
-var simulationResultModel = require('../models/simulation/Result');
-var seminarModel = require('../models/Seminar');
-var decisionAssembler = require('../assemblers/decision');
-var consts = require('../consts');
-var Q = require('q');
+const simulationResultModel = require('../models/simulation/Result');
+const seminarModel = require('../models/Seminar');
+const decisionAssembler = require('../assemblers/decision');
+let consts = require('../consts');
+let Q = require('q');
 /**
 * @param {Number} currentPeriod
 */
@@ -15,8 +15,8 @@ function getSpendingDetails(seminarId, currentPeriod, companyId) {
         simulationResultModel.findOne(seminarId, currentPeriod - 1)
     ])
         .spread(function (decision, seminar, lastPeriodResult) {
-        var brandData = [];
-        var companyData = {};
+        let brandData = [];
+        let companyData = {};
         //assemble brand data
         /*for (let i = 0; i < decision.d_BrandsDecisions.length; i++) {
             let brandDecision = decision.d_BrandsDecisions[i];
@@ -84,7 +84,7 @@ function getSpendingDetails(seminarId, currentPeriod, companyId) {
         /*total.salesForce + total.consumerCommunication + total.consumerPromotion
             + total.tradeExpenses + total.estimatedAdditionalTradeMarginCost + total.estimatedWholesaleBonusCost + companyData.investmentInProductionEfficiency + companyData.investmentInProcessingTechnology;
             */
-        var companyDataInAllResults; // = utility.findCompany(lastPeriodResult, companyId)
+        let companyDataInAllResults; // = utility.findCompany(lastPeriodResult, companyId)
         //average budget per period
         companyData.averageBudgetPerPeriod = 500000; //companyDataInAllResults.c_TotalInvestmentBudget / (seminar.simulationSpan);
         companyData.totalInvestmentBudget = 6666666666666; //companyDataInAllResults.c_TotalInvestmentBudget;

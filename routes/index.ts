@@ -416,7 +416,7 @@ export function get(io) {
 
     apiRouter.get('/stratege/setup/create_admin', function (req, res, next) {
 
-            var userList = [
+            let userList = [
                 {
                     "username": "admin",
                     "password": "admin",
@@ -592,8 +592,8 @@ export function get(io) {
 							if (err) {
 								return res.status(400).send( {message: "add default admin and users failed."});
 							} else {
-								//for (var i=1; i<arguments.length; ++i) {
-								//    var user = arguments[i];
+								//for (let i=1; i<arguments.length; ++i) {
+								//    let user = arguments[i];
 								//    // do some stuff with candy
 								//}
 
@@ -612,12 +612,12 @@ export function get(io) {
 					if (err) {
 						return res.status(400).send( {message: "add default admin and users failed."});
 					} else {
-						//for (var i=1; i<arguments.length; ++i) {
-						//    var user = arguments[i];
+						//for (let i=1; i<arguments.length; ++i) {
+						//    let user = arguments[i];
 						//    // do some stuff with candy
 						//}
 
-						var userListResults = Array.prototype.slice.call(arguments, 1);
+						let userListResults = Array.prototype.slice.call(arguments, 1);
 						return res.status(200).send(userListResults);
 					}
 				});

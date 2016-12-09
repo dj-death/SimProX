@@ -1,10 +1,10 @@
 ﻿import { Currency } from '../../engine/ComputeEngine/Environnement';
 
-var EUR2MAD_stats = [ // from 2010Q1 to 2016Q2
+let EUR2MAD_stats = [ // from 2010Q1 to 2016Q2
     0.089, 0.09, 0.091, 0.089, 0.09, 0.089, 0.089, 0.09, 0.09, 0.09, 0.091, 0.09, 0.09, 0.09, 0.09, 0.09, 0.089, 0.089, 0.089, 0.091, 0.092, 0.094, 0.092, 0.093, 0.092, 0.092
 ];
 
-var euro = new Currency({
+let euro = new Currency({
     id: "currency1",
     currencyID: "0",
 
@@ -17,7 +17,7 @@ var euro = new Currency({
     isStable: true
 });
 
-var dollar = new Currency({
+let dollar = new Currency({
     id: "currency2",
     currencyID: "1",
 

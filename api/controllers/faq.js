@@ -1,7 +1,7 @@
 "use strict";
-var faqModel = require('../models/Faq');
-var logger = require('../../kernel/utils/logger');
-var faq = [
+const faqModel = require('../models/Faq');
+const logger = require('../../kernel/utils/logger');
+let faq = [
     {
         'reportName': 'FAQ',
         'language': 'en_US',

@@ -1,14 +1,14 @@
 "use strict";
-var util = require('./util');
-var arrays = require('./arrays');
-var LinkedList = (function () {
+const util = require('./util');
+const arrays = require('./arrays');
+class LinkedList {
     /**
     * Creates an empty Linked List.
     * @class A linked list is a data structure consisting of a group of nodes
     * which together represent a sequence.
     * @constructor
     */
-    function LinkedList() {
+    constructor() {
         /**
         * First node in the list
         * @type {Object}
@@ -36,14 +36,14 @@ var LinkedList = (function () {
     * @return {boolean} true if the element was added or false if the index is invalid
     * or if the element is undefined.
     */
-    LinkedList.prototype.add = function (item, index) {
+    add(item, index) {
         if (util.isUndefined(index)) {
             index = this.nElements;
         }
         if (index < 0 || index > this.nElements || util.isUndefined(item)) {
             return false;
         }
-        var newNode = this.createNode(item);
+        const newNode = this.createNode(item);
         if (this.nElements === 0) {
             // First node in the list.
             this.firstNode = newNode;
@@ -60,48 +60,48 @@ var LinkedList = (function () {
             this.firstNode = newNode;
         }
         else {
-            var prev = this.nodeAtIndex(index - 1);
+            const prev = this.nodeAtIndex(index - 1);
             newNode.next = prev.next;
             prev.next = newNode;
         }
         this.nElements++;
         return true;
-    };
+    }
     /**
     * Returns the first element in this list.
     * @return {*} the first element of the list or undefined if the list is
     * empty.
     */
-    LinkedList.prototype.first = function () {
+    first() {
         if (this.firstNode !== null) {
             return this.firstNode.element;
         }
         return undefined;
-    };
+    }
     /**
     * Returns the last element in this list.
     * @return {*} the last element in the list or undefined if the list is
     * empty.
     */
-    LinkedList.prototype.last = function () {
+    last() {
         if (this.lastNode !== null) {
             return this.lastNode.element;
         }
         return undefined;
-    };
+    }
     /**
      * Returns the element at the specified position in this list.
      * @param {number} index desired index.
      * @return {*} the element at the given index or undefined if the index is
      * out of bounds.
      */
-    LinkedList.prototype.elementAtIndex = function (index) {
-        var node = this.nodeAtIndex(index);
+    elementAtIndex(index) {
+        const node = this.nodeAtIndex(index);
         if (node === null) {
             return undefined;
         }
         return node.element;
-    };
+    }
     /**
      * Returns the index in this list of the first occurrence of the
      * specified element, or -1 if the List does not contain this element.
@@ -122,13 +122,13 @@ var LinkedList = (function () {
      * of the specified element, or -1 if this list does not contain the
      * element.
      */
-    LinkedList.prototype.indexOf = function (item, equalsFunction) {
-        var equalsF = equalsFunction || util.defaultEquals;
+    indexOf(item, equalsFunction) {
+        const equalsF = equalsFunction || util.defaultEquals;
         if (util.isUndefined(item)) {
             return -1;
         }
-        var currentNode = this.firstNode;
-        var index = 0;
+        let currentNode = this.firstNode;
+        let index = 0;
         while (currentNode !== null) {
             if (equalsF(currentNode.element, item)) {
                 return index;
@@ -137,7 +137,7 @@ var LinkedList = (function () {
             currentNode = currentNode.next;
         }
         return -1;
-    };
+    }
     /**
        * Returns true if this list contains the specified element.
        * <p>If the elements inside the list are
@@ -156,9 +156,9 @@ var LinkedList = (function () {
        * @return {boolean} true if this list contains the specified element, false
        * otherwise.
        */
-    LinkedList.prototype.contains = function (item, equalsFunction) {
+    contains(item, equalsFunction) {
         return (this.indexOf(item, equalsFunction) >= 0);
-    };
+    }
     /**
      * Removes the first occurrence of the specified element in this list.
      * <p>If the elements inside the list are
@@ -174,13 +174,13 @@ var LinkedList = (function () {
      * @param {Object} item element to be removed from this list, if present.
      * @return {boolean} true if the list contained the specified element.
      */
-    LinkedList.prototype.remove = function (item, equalsFunction) {
-        var equalsF = equalsFunction || util.defaultEquals;
+    remove(item, equalsFunction) {
+        const equalsF = equalsFunction || util.defaultEquals;
         if (this.nElements < 1 || util.isUndefined(item)) {
             return false;
         }
-        var previous = null;
-        var currentNode = this.firstNode;
+        let previous = null;
+        let currentNode = this.firstNode;
         while (currentNode !== null) {
             if (equalsF(currentNode.element, item)) {
                 if (currentNode === this.firstNode) {
@@ -205,15 +205,15 @@ var LinkedList = (function () {
             currentNode = currentNode.next;
         }
         return false;
-    };
+    }
     /**
      * Removes all of the elements from this list.
      */
-    LinkedList.prototype.clear = function () {
+    clear() {
         this.firstNode = null;
         this.lastNode = null;
         this.nElements = 0;
-    };
+    }
     /**
      * Returns true if this list is equal to the given list.
      * Two lists are equal if they have the same elements in the same order.
@@ -224,8 +224,8 @@ var LinkedList = (function () {
      * the === operator is used to check equality between elements.
      * @return {boolean} true if this list is equal to the given list.
      */
-    LinkedList.prototype.equals = function (other, equalsFunction) {
-        var eqF = equalsFunction || util.defaultEquals;
+    equals(other, equalsFunction) {
+        const eqF = equalsFunction || util.defaultEquals;
         if (!(other instanceof LinkedList)) {
             return false;
         }
@@ -233,11 +233,11 @@ var LinkedList = (function () {
             return false;
         }
         return this.equalsAux(this.firstNode, other.firstNode, eqF);
-    };
+    }
     /**
     * @private
     */
-    LinkedList.prototype.equalsAux = function (n1, n2, eqF) {
+    equalsAux(n1, n2, eqF) {
         while (n1 !== null) {
             if (!eqF(n1.element, n2.element)) {
                 return false;
@@ -246,17 +246,17 @@ var LinkedList = (function () {
             n2 = n2.next;
         }
         return true;
-    };
+    }
     /**
      * Removes the element at the specified position in this list.
      * @param {number} index given index.
      * @return {*} removed element or undefined if the index is out of bounds.
      */
-    LinkedList.prototype.removeElementAtIndex = function (index) {
+    removeElementAtIndex(index) {
         if (index < 0 || index >= this.nElements) {
             return undefined;
         }
-        var element;
+        let element;
         if (this.nElements === 1) {
             //First node in the list.
             element = this.firstNode.element;
@@ -264,7 +264,7 @@ var LinkedList = (function () {
             this.lastNode = null;
         }
         else {
-            var previous = this.nodeAtIndex(index - 1);
+            const previous = this.nodeAtIndex(index - 1);
             if (previous === null) {
                 element = this.firstNode.element;
                 this.firstNode = this.firstNode.next;
@@ -280,16 +280,16 @@ var LinkedList = (function () {
         }
         this.nElements--;
         return element;
-    };
+    }
     /**
      * Executes the provided function once for each element present in this list in order.
      * @param {function(Object):*} callback function to execute, it is
      * invoked with two argument: the element value, and the index to break the iteration you can
      * optionally return false.
      */
-    LinkedList.prototype.forEach = function (callback) {
-        var currentNode = this.firstNode;
-        var i = 0;
+    forEach(callback) {
+        let currentNode = this.firstNode;
+        let i = 0;
         while (currentNode !== null) {
             if (callback.call(null, currentNode.element, i) === false) {
                 break;
@@ -297,15 +297,15 @@ var LinkedList = (function () {
             currentNode = currentNode.next;
             ++i;
         }
-    };
+    }
     /**
      * Reverses the order of the elements in this linked list (makes the last
      * element first, and the first element last).
      */
-    LinkedList.prototype.reverse = function () {
-        var previous = null;
-        var current = this.firstNode;
-        var temp = null;
+    reverse() {
+        let previous = null;
+        let current = this.firstNode;
+        let temp = null;
         while (current !== null) {
             temp = current.next;
             current.next = previous;
@@ -315,66 +315,65 @@ var LinkedList = (function () {
         temp = this.firstNode;
         this.firstNode = this.lastNode;
         this.lastNode = temp;
-    };
+    }
     /**
      * Returns an array containing all of the elements in this list in proper
      * sequence.
      * @return {Array.<*>} an array containing all of the elements in this list,
      * in proper sequence.
      */
-    LinkedList.prototype.toArray = function () {
-        var array = [];
-        var currentNode = this.firstNode;
+    toArray() {
+        const array = [];
+        let currentNode = this.firstNode;
         while (currentNode !== null) {
             array.push(currentNode.element);
             currentNode = currentNode.next;
         }
         return array;
-    };
+    }
     /**
      * Returns the number of elements in this list.
      * @return {number} the number of elements in this list.
      */
-    LinkedList.prototype.size = function () {
+    size() {
         return this.nElements;
-    };
+    }
     /**
      * Returns true if this list contains no elements.
      * @return {boolean} true if this list contains no elements.
      */
-    LinkedList.prototype.isEmpty = function () {
+    isEmpty() {
         return this.nElements <= 0;
-    };
-    LinkedList.prototype.toString = function () {
+    }
+    toString() {
         return arrays.toString(this.toArray());
-    };
+    }
     /**
      * @private
      */
-    LinkedList.prototype.nodeAtIndex = function (index) {
+    nodeAtIndex(index) {
         if (index < 0 || index >= this.nElements) {
             return null;
         }
         if (index === (this.nElements - 1)) {
             return this.lastNode;
         }
-        var node = this.firstNode;
-        for (var i = 0; i < index; i++) {
+        let node = this.firstNode;
+        for (let i = 0; i < index; i++) {
             node = node.next;
         }
         return node;
-    };
+    }
     /**
      * @private
      */
-    LinkedList.prototype.createNode = function (item) {
+    createNode(item) {
         return {
             element: item,
             next: null
         };
-    };
-    return LinkedList;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = LinkedList; // End of linked list
 //# sourceMappingURL=LinkedList.js.map

@@ -1,7 +1,7 @@
 "use strict";
-var Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
+const Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
 function create() {
-    var atelierMoulage = new Manufacturing_1.Atelier({
+    let atelierMoulage = new Manufacturing_1.Atelier({
         id: "atelier1",
         atelierID: "0",
         label: "Atelier de Moulage",
@@ -14,7 +14,7 @@ function create() {
             power: 0
         }
     });
-    var atelierFinition = new Manufacturing_1.Atelier({
+    let atelierFinition = new Manufacturing_1.Atelier({
         id: "atelier2",
         atelierID: "1",
         label: "Atelier de Finition",

@@ -1,6 +1,4 @@
-﻿var __dirname = __dirname || process.cwd();
-
-var config = {
+﻿let config = {
     port: 1337,
     ip: "127.0.0.1",
 

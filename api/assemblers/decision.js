@@ -1,8 +1,8 @@
 "use strict";
-var companyDecisionModel = require('../models/decision/CompanyDecision');
+const companyDecisionModel = require('../models/decision/CompanyDecision');
 /*let brandDecisionModel = require('../models/marksimos/brandDecision.js');
 let SKUDecisionModel = require('../models/marksimos/SKUDecision.js');*/
-var Q = require('q');
+let Q = require('q');
 /**
  * Get decision of one period
  */
@@ -123,10 +123,10 @@ exports.getCompanyDecision = getCompanyDecision;
  * @param {Object} decision decision got from CGI service
  */
 function getBrandDecisions(decision) {
-    var results = [];
-    for (var i = 0; i < decision.d_BrandsDecisions.length; i++) {
-        var brandDecision = decision.d_BrandsDecisions[i];
-        var SKUIDs = brandDecision.d_SKUsDecisions.map(function (SKUDecision) {
+    let results = [];
+    for (let i = 0; i < decision.d_BrandsDecisions.length; i++) {
+        let brandDecision = decision.d_BrandsDecisions[i];
+        let SKUIDs = brandDecision.d_SKUsDecisions.map(function (SKUDecision) {
             return SKUDecision.d_SKUID;
         });
         results.push({
@@ -146,11 +146,11 @@ exports.getBrandDecisions = getBrandDecisions;
  * @param {Object} decision decision got from CGI service
  */
 function getSKUDecisions(decision) {
-    var results = [];
-    for (var i = 0; i < decision.d_BrandsDecisions.length; i++) {
-        var brandDecision = decision.d_BrandsDecisions[i];
-        for (var j = 0; j < brandDecision.d_SKUsDecisions.length; j++) {
-            var SKUDecision = brandDecision.d_SKUsDecisions[j];
+    let results = [];
+    for (let i = 0; i < decision.d_BrandsDecisions.length; i++) {
+        let brandDecision = decision.d_BrandsDecisions[i];
+        for (let j = 0; j < brandDecision.d_SKUsDecisions.length; j++) {
+            let SKUDecision = brandDecision.d_SKUsDecisions[j];
             results.push({
                 d_CID: decision.d_CID,
                 d_BrandID: brandDecision.d_BrandID,

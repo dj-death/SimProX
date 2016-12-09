@@ -1,5 +1,5 @@
 "use strict";
-var _hasOwnProperty = Object.prototype.hasOwnProperty;
+const _hasOwnProperty = Object.prototype.hasOwnProperty;
 exports.has = function (obj, prop) {
     return _hasOwnProperty.call(obj, prop);
 };
@@ -49,8 +49,7 @@ exports.defaultToString = defaultToString;
 /**
 * Joins all the properies of the object using the provided join string
 */
-function makeString(item, join) {
-    if (join === void 0) { join = ','; }
+function makeString(item, join = ',') {
     if (item === null) {
         return 'COLLECTION_NULL';
     }
@@ -61,9 +60,9 @@ function makeString(item, join) {
         return item.toString();
     }
     else {
-        var toret = '{';
-        var first = true;
-        for (var prop in item) {
+        let toret = '{';
+        let first = true;
+        for (const prop in item) {
             if (exports.has(item, prop)) {
                 if (first) {
                     first = false;

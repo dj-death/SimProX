@@ -1,16 +1,10 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Manufacturing_1 = require('../Manufacturing');
-var Pool = (function (_super) {
-    __extends(Pool, _super);
-    function Pool() {
+const Manufacturing_1 = require('../Manufacturing');
+class Pool extends Manufacturing_1.Warehouse {
+    constructor() {
         ++Pool.counter;
-        var ID = "pool" + Pool.counter;
-        var defaultParams = {
+        let ID = "pool" + Pool.counter;
+        let defaultParams = {
             id: ID,
             label: ID,
             lostProbability: 0,
@@ -20,39 +14,38 @@ var Pool = (function (_super) {
                 externalStorageUnitCost: 0
             }
         };
-        _super.call(this, defaultParams);
+        super(defaultParams);
         this.isPersistedObject = true;
     }
-    Pool.prototype.reset = function () {
-        _super.prototype.reset.call(this);
+    reset() {
+        super.reset();
         Pool.counter = 0;
-    };
-    Pool.prototype.employ = function (quantity) {
+    }
+    employ(quantity) {
         return this.moveOut(quantity);
-    };
-    Pool.prototype.train = function (quantity) {
+    }
+    train(quantity) {
         return this.moveOut(quantity);
-    };
+    }
     // remember to see if we need to set future
-    Pool.prototype.free = function (quantity) {
+    free(quantity) {
         this.moveIn(quantity);
-    };
-    Pool.counter = 0;
-    return Pool;
-}(Manufacturing_1.Warehouse));
-var LabourPool = (function () {
-    function LabourPool() {
+    }
+}
+Pool.counter = 0;
+class LabourPool {
+    constructor() {
         this.unemployedSkilledPool = new Pool();
         this.unemployedUnskilledPool = new Pool();
         this.employedSkilledPool = new Pool();
     }
-    LabourPool.prototype.init = function (unemployedSkilledNb, unemployedUnskilledNb, employedSkilledNb) {
+    init(unemployedSkilledNb, unemployedUnskilledNb, employedSkilledNb) {
         this.unemployedSkilledPool.init(unemployedSkilledNb);
         this.unemployedUnskilledPool.init(unemployedUnskilledNb);
         this.employedSkilledPool.init(employedSkilledNb);
-    };
-    LabourPool.prototype.employ = function (quantity, isUnskilled) {
-        var effectiveQ, restQ;
+    }
+    employ(quantity, isUnskilled) {
+        let effectiveQ, restQ;
         if (isUnskilled) {
             effectiveQ = this.unemployedUnskilledPool.employ(quantity);
         }
@@ -64,10 +57,9 @@ var LabourPool = (function () {
             }
         }
         return effectiveQ;
-    };
-    LabourPool.prototype.train = function (quantity, lookForUnskilled) {
-        if (lookForUnskilled === void 0) { lookForUnskilled = true; }
-        var effectiveQ;
+    }
+    train(quantity, lookForUnskilled = true) {
+        let effectiveQ;
         if (lookForUnskilled) {
             effectiveQ = this.unemployedUnskilledPool.train(quantity);
         }
@@ -75,9 +67,8 @@ var LabourPool = (function () {
             effectiveQ = this.unemployedSkilledPool.train(quantity);
         }
         return effectiveQ;
-    };
-    return LabourPool;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = LabourPool;
 //# sourceMappingURL=LabourPool.js.map

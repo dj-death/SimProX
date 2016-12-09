@@ -1,5 +1,5 @@
 "use strict";
-var consts = require('../consts');
+let consts = require('../consts');
 /*
 Report data structure
 
@@ -66,9 +66,9 @@ Report data structure
 
 */
 function getFinancialReport(allResults) {
-    var allCompanyReport = [];
-    var currPeriodResult = allResults[0];
-    var companiesResults = currPeriodResult.companies;
+    let allCompanyReport = [];
+    let currPeriodResult = allResults[0];
+    let companiesResults = currPeriodResult.companies;
     function isCompanyExist(companyId, result) {
         return result.some(function (companyReport) {
             return companyReport.companyId === companyId;
@@ -85,7 +85,7 @@ function getFinancialReport(allResults) {
     });
     allCompanyReport.forEach(function (companyReport) {
         allResults.forEach(function (onePeriodResult) {
-            var periodReport = onePeriodResult;
+            let periodReport = onePeriodResult;
             periodReport.period = onePeriodResult.period;
             companyReport.periods.push(periodReport);
         });
@@ -258,7 +258,7 @@ function reportForBrand(onePeriodResult, companyId) {
 }
 */
 function reportForCompanyTotal(onePeriodResult, companyId) {
-    var report = {};
+    let report = {};
     onePeriodResult.p_Companies.forEach(function (companyResult) {
         if (companyId === companyResult.c_CompanyID) {
             report = {

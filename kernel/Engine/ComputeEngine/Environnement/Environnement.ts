@@ -43,7 +43,7 @@ export default class Environnement {
 
     public static register(object) {
 
-        var that = this.getInstance();
+        let that = this.getInstance();
 
         if (object instanceof Env.Economy) {
             that.economies.push(object);
@@ -72,9 +72,9 @@ export default class Environnement {
         let deferred = Q.defer();
 
 
-        var that = this.getInstance();
-        var proto = this.prototype;
-        var endState = {};
+        let that = this.getInstance();
+        let proto = this.prototype;
+        let endState = {};
 
         if (proto === undefined) {
             let err = new Error("Getting endstate of an empty dept");
@@ -89,7 +89,7 @@ export default class Environnement {
 
         setImmediate(function  () {
 
-            for (var key in proto) {
+            for (let key in proto) {
                 console.silly("env GES @ %s of %s", key);
 
                 if (!proto.hasOwnProperty(key)) {

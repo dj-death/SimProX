@@ -6,7 +6,7 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 export default function create(): Management {
 
 
-    var management = new Management({
+    let management = new Management({
         id: "management1",
         label: "management1",
         minDailyTrainedEmployeesNb: 5,

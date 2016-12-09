@@ -2,17 +2,17 @@
 /*!
  * Module dependencies
  */
-var mongoose = require('mongoose-q')(require('mongoose'), { spread: false });
-var Schema = mongoose.Schema;
-var schemaObjectId = Schema.Types.ObjectId;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
+let mongoose = require('mongoose-q')(require('mongoose'), { spread: false });
+let Schema = mongoose.Schema;
+let schemaObjectId = Schema.Types.ObjectId;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
 //let consts = require('../../consts.js');
-var gameTokenModel = require('./user/GameAuthToken');
+const gameTokenModel = require('./user/GameAuthToken');
 /**
  * Mongoose schema
  */
-var seminarSchema = new Schema({
+let seminarSchema = new Schema({
     seminarId: String,
     seminarCode: String,
     description: String,
@@ -66,7 +66,7 @@ seminarSchema.plugin(mongooseTimestamps);
  * Statics
  */
 seminarSchema.statics.findSeminarByUserId = function (userid) {
-    var that = this;
+    let that = this;
     global.debug_data.gameTokenModel = gameTokenModel;
     return gameTokenModel.findOneQ({ userId: userid }).then(function (gameToken) {
         if (gameToken) {
@@ -121,6 +121,6 @@ seminarSchema.statics.studentEmailValidations = function (req) {
 /**
  * Register Model
  */
-var Seminar = mongoose.model("Seminar", seminarSchema);
+let Seminar = mongoose.model("Seminar", seminarSchema);
 module.exports = Seminar;
 //# sourceMappingURL=Seminar.js.map

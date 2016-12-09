@@ -6,7 +6,7 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 export default function create(): RMWarehouse[] {
 
 
-    var rmWarehouse = new RMWarehouse({
+    let rmWarehouse = new RMWarehouse({
         id: "rmWarehouse1",
         label: "rmWarehouse1",
 

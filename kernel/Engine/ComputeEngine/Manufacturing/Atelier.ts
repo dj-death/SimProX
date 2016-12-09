@@ -45,7 +45,7 @@ export default class Atelier extends IObject.IObject {
     private _workedMinutesNb: number;
 
     get workedHoursNb(): number {
-        var hoursNb = this._workedMinutesNb / 60;
+        let hoursNb = this._workedMinutesNb / 60;
 
         return parseFloat(hoursNb.toFixed(2));
     }
@@ -58,7 +58,7 @@ export default class Atelier extends IObject.IObject {
         this.machinery = machinery;
         this.factory = factory;
 
-        var self = this;
+        let self = this;
         this.factory.on("Ready", function  () {
             console.silly("factory ready fired");
 
@@ -71,9 +71,9 @@ export default class Atelier extends IObject.IObject {
                 let decommissionedNb = (machinery.params.decommissioningTime > ENUMS.DELIVERY.IMMEDIATE) ? machinery.effectiveSoldNb : 0;
 
                 // TODO: develop it
-                var avgSpaceNeededByUnit = Utils.sums(machinery.machinesParams, "spaceNeeded") / machinery.machinesParams.length;
+                let avgSpaceNeededByUnit = Utils.sums(machinery.machinesParams, "spaceNeeded") / machinery.machinesParams.length;
 
-                var installedMachinesNb = self.install(machinesNb + decommissionedNb, avgSpaceNeededByUnit, ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.MACHINES]);
+                let installedMachinesNb = self.install(machinesNb + decommissionedNb, avgSpaceNeededByUnit, ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.MACHINES]);
 
                 installedMachinesNb -= decommissionedNb;
 
@@ -84,8 +84,8 @@ export default class Atelier extends IObject.IObject {
                 console.silly("worker before ready fired");
 
                 // install workers
-                var workersNb = worker.employeesNb;
-                var spaceNeededByPerson = worker.params.spaceNeeded;
+                let workersNb = worker.employeesNb;
+                let spaceNeededByPerson = worker.params.spaceNeeded;
 
                 worker.installedWorkersNb = self.install(workersNb, spaceNeededByPerson, ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.WORKERS]);
 
@@ -105,8 +105,8 @@ export default class Atelier extends IObject.IObject {
             return 0;
         }
 
-        var isSpaceAvailable: boolean;
-        var count = 0;
+        let isSpaceAvailable: boolean;
+        let count = 0;
 
         for (let i = 0; i < unitsNb; i++) {
             isSpaceAvailable = this.factory.useSpace(spaceNeededByUnit, usage);
@@ -130,9 +130,9 @@ export default class Atelier extends IObject.IObject {
 
 
     getNeededTimeForProd(quantity, manufacturingUnitTime: number): any {
-        var needed = {};
+        let needed = {};
 
-        var effectiveManufacturingTotalTime = quantity * manufacturingUnitTime / 60;
+        let effectiveManufacturingTotalTime = quantity * manufacturingUnitTime / 60;
         effectiveManufacturingTotalTime = parseFloat(effectiveManufacturingTotalTime.toFixed(2));
 
         if (this.machinery) {
@@ -155,7 +155,7 @@ export default class Atelier extends IObject.IObject {
             return false;
         }
 
-        var success: boolean;
+        let success: boolean;
 
         // power machinerys
         success = this.machinery && this.machinery.power(minutesNb);
@@ -169,7 +169,7 @@ export default class Atelier extends IObject.IObject {
 
         // let's see if the machinery do some trouble and need some extra time due to its depreciation
         if (this.machinery) {
-            var efficiency = this.machinery.machinesNb;
+            let efficiency = this.machinery.machinesNb;
 
             if (isFinite(efficiency) && efficiency > 0) {
                 minutesNb = Utils.ceil(minutesNb / efficiency);

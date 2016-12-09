@@ -35,7 +35,7 @@ let scenariosDb = new Datastore({
 
 export function loadScenario(scenarioID) {
 
-    var deferred = q.defer();
+    let deferred = q.defer();
 
     scenariosDb.loadDatabase(function  (err) {
         // Now commands will be executed
@@ -58,7 +58,7 @@ export function loadScenario(scenarioID) {
                 return false;
             }
 
-            var historiques = doc.historiques.sort(function  (v, w) {
+            let historiques = doc.historiques.sort(function  (v, w) {
                 /*if (typeof v.periodYear === "undefined" || typeof  v.periodQuarter === "undefined") {
                     return v.period - w.period;
                 }
@@ -88,7 +88,7 @@ export function loadScenario(scenarioID) {
 /*
 export function  loadEmptyScenario () {
 
-    var deferred = q.defer();
+    let deferred = q.defer();
 
     scenariosDb.loadDatabase(function  (err) {
         // Now commands will be executed
@@ -108,8 +108,8 @@ export function  loadEmptyScenario () {
                 return false;
             }
 
-            var hist = doc.historiques[doc.historiques.length - 1];
-            var decision = PlayerDecision.resetRawDecision(hist);
+            let hist = doc.historiques[doc.historiques.length - 1];
+            let decision = PlayerDecision.resetRawDecision(hist);
 
             decision.period = 0;
 
@@ -153,9 +153,9 @@ export function  getScenario (options, res) {
 
 export function  createScenario (options) {
 
-    var deferred = q.defer();
+    let deferred = q.defer();
 
-    var scenariosDbPath = EngineConfig.scenariosDbPath;
+    let scenariosDbPath = EngineConfig.scenariosDbPath;
 
     Dir.subdirs(scenariosDbPath, function  (err, subdirs) {
         if (err) {
@@ -164,13 +164,13 @@ export function  createScenario (options) {
             });
         }
 
-        var counter = subdirs.length;
+        let counter = subdirs.length;
 
         subdirs.forEach(function  (subdir, idx) {
             console.log(subdir);
 
-            var scenario;
-            var historiques = [];
+            let scenario;
+            let historiques = [];
 
 
             Dir.files(subdir, function  (err, files) {
@@ -180,17 +180,17 @@ export function  createScenario (options) {
                     });
                 }
 
-                var periodsNb = files.length;
+                let periodsNb = files.length;
 
                 // sort ascending
                 files.sort();
                 files.forEach(function  (file, idx) {
 
                     // add automoaticay period
-                    var period = idx + 1 - periodsNb;
+                    let period = idx + 1 - periodsNb;
 
-                    var flatHist = Excel.excelImport(file);
-                    var data = Flat.unflatten(flatHist, { delimiter: '_' });
+                    let flatHist = Excel.excelImport(file);
+                    let data = Flat.unflatten(flatHist, { delimiter: '_' });
                     data["period"] = isNaN(data["period"]) ? period : data["period"];
 
                     data["res"]["report"] = flatHist;
@@ -200,13 +200,13 @@ export function  createScenario (options) {
                         return false;
                     }
 
-                    var histRecord = {
+                    let histRecord = {
                         period: data["period"],
                         decision: data["dec"],
                         results: data["res"]
                     };
 
-                    for (var key in data) {
+                    for (let key in data) {
                         if (!data.hasOwnProperty(key)) {
                             continue;
                         }
@@ -220,7 +220,7 @@ export function  createScenario (options) {
                 });
 
                 if (historiques[0] !== undefined) {
-                    var scenarioID = historiques[0].scenarioID;
+                    let scenarioID = historiques[0].scenarioID;
                     scenarioID = scenarioID ? scenarioID.trim() : "14C";
 
                     scenario = {

@@ -1,15 +1,15 @@
 "use strict";
-var Game = require('../../simulation/Games');
-var ENUMS = require('../ComputeEngine/ENUMS');
-var console = require('../../utils/logger');
-var Utils = require('../../utils/Utils');
-var $jStat = require("jstat");
-var jStat = $jStat.jStat;
+const Game = require('../../simulation/Games');
+const ENUMS = require('../ComputeEngine/ENUMS');
+const console = require('../../utils/logger');
+const Utils = require('../../utils/Utils');
+const $jStat = require("jstat");
+let jStat = $jStat.jStat;
 function convert3DMatrixTo2D(matrix) {
-    var flattenMatrix = [];
+    let flattenMatrix = [];
     // 3D:firms
     matrix.forEach(function (matrice) {
-        var arr = [];
+        let arr = [];
         // 2D: markets
         matrice.forEach(function (vector) {
             // products // <1m1p1 f1mp1p2 >
@@ -22,13 +22,13 @@ function convert3DMatrixTo2D(matrix) {
     return flattenMatrix;
 }
 function convertVectorTo2DMatrix(vector, rowsNb, colsNb) {
-    var matrix = [];
-    var len = vector.length;
+    let matrix = [];
+    let len = vector.length;
     colsNb = colsNb || Math.round(vector.length / rowsNb);
     do {
         // a new row
-        var row = [];
-        for (var i = 0; i < colsNb; i++) {
+        let row = [];
+        for (let i = 0; i < colsNb; i++) {
             row.push(vector.shift());
             --len;
         }
@@ -44,20 +44,19 @@ var MEAN_TYPE;
 })(MEAN_TYPE || (MEAN_TYPE = {}));
 function harmonicMean(matrix) {
     // [[f1m1p1, f1m1p2],[f2m1p1, f2m1p2]];
-    var transposed = jStat(matrix).transpose(); // [[f1m1p1,f2m1p1],[f1m1p2,f2m1p2]];
-    var inversed = jStat(transposed).pow(-1); // [[1 / f1m1p1, 1 / f2m1p1],[1 / f1m1p2, 1 / f2m1p2]];
-    var meansArr = [];
+    let transposed = jStat(matrix).transpose(); // [[f1m1p1,f2m1p1],[f1m1p2,f2m1p2]];
+    let inversed = jStat(transposed).pow(-1); // [[1 / f1m1p1, 1 / f2m1p1],[1 / f1m1p2, 1 / f2m1p2]];
+    let meansArr = [];
     inversed.toArray().forEach(function (row) {
-        var mean = row.length / jStat(row).sum();
+        let mean = row.length / jStat(row).sum();
         meansArr.push(mean);
     });
     return meansArr;
 }
-function matrix3DMean(matrix, meanType) {
-    if (meanType === void 0) { meanType = MEAN_TYPE.ARITHMETIC; }
-    var secondDimSize = matrix[0].length;
-    var thirdDimSize = matrix[0][0].length;
-    var meansVector;
+function matrix3DMean(matrix, meanType = MEAN_TYPE.ARITHMETIC) {
+    let secondDimSize = matrix[0].length;
+    let thirdDimSize = matrix[0][0].length;
+    let meansVector;
     switch (meanType) {
         case MEAN_TYPE.ARITHMETIC:
             meansVector = jStat(convert3DMatrixTo2D(matrix)).mean();
@@ -71,56 +70,56 @@ function matrix3DMean(matrix, meanType) {
     }
     return convertVectorTo2DMatrix(meansVector, secondDimSize, thirdDimSize);
 }
-var Marketplace = (function () {
-    function Marketplace() {
+class Marketplace {
+    constructor() {
         this.firmsOMarkets = [];
         if (Marketplace._instance) {
             throw new Error("Error: Instantiation failed: Use getInstance() instead of new.");
         }
         Marketplace._instance = this;
     }
-    Marketplace.init = function () {
+    static init() {
         if (Marketplace._instance) {
             delete Marketplace._instance;
         }
         Marketplace._instance = new Marketplace();
-    };
-    Marketplace.getInstance = function () {
+    }
+    static getInstance() {
         if (Marketplace._instance === null) {
             Marketplace._instance = new Marketplace();
         }
         return Marketplace._instance;
-    };
-    Marketplace.register = function (firmOMarkets) {
-        var that = this.getInstance();
+    }
+    static register(firmOMarkets) {
+        let that = this.getInstance();
         that.firmsOMarkets.push(firmOMarkets);
-    };
+    }
     /*
      *   p1 p2 p3
      * m1
      * m2
      * m3
      */
-    Marketplace.getFirmsMarketingMix = function () {
-        var results = [];
-        var that = this.getInstance();
+    static getFirmsMarketingMix() {
+        let results = [];
+        let that = this.getInstance();
         that.firmsOMarkets.forEach(function (firmOMarkets) {
-            var supplyMatrix = [];
-            var pricesMatrix = [];
-            var creditsMatrix = [];
-            var directAdsMatrix = [];
-            var websiteLevelsMatrix = [];
-            var corporateAdsMatrix = [];
-            var salesForceCommissionsMatrix = [];
-            var salesForceStaffMatrix = [];
-            var salesForceSupportMatrix = [];
-            var productsQualitiesMatrix = [];
+            let supplyMatrix = [];
+            let pricesMatrix = [];
+            let creditsMatrix = [];
+            let directAdsMatrix = [];
+            let websiteLevelsMatrix = [];
+            let corporateAdsMatrix = [];
+            let salesForceCommissionsMatrix = [];
+            let salesForceStaffMatrix = [];
+            let salesForceSupportMatrix = [];
+            let productsQualitiesMatrix = [];
             firmOMarkets.forEach(function (oMarket, idx) {
-                var subMarketSupplyRow = [];
-                var subMarketPricesRow = [];
-                var subMarketCreditsRow = [];
-                var subMarketDirectAdsRow = [];
-                var subMarketPdtQualitiesRow = [];
+                let subMarketSupplyRow = [];
+                let subMarketPricesRow = [];
+                let subMarketCreditsRow = [];
+                let subMarketDirectAdsRow = [];
+                let subMarketPdtQualitiesRow = [];
                 corporateAdsMatrix.push(oMarket.smoothedCorporateAdsBudget);
                 salesForceCommissionsMatrix.push(oMarket.smoothedSalesForceCommission);
                 salesForceStaffMatrix.push(oMarket.smoothedSalesForceStaff);
@@ -139,7 +138,7 @@ var Marketplace = (function () {
                 directAdsMatrix.push(subMarketDirectAdsRow);
                 productsQualitiesMatrix.push(subMarketPdtQualitiesRow);
             });
-            var result = {
+            let result = {
                 supply: supplyMatrix,
                 prices: pricesMatrix,
                 credits: creditsMatrix,
@@ -154,21 +153,21 @@ var Marketplace = (function () {
             results.push(result);
         });
         return results;
-    };
-    Marketplace.calcIndustryMarketingMixAvg = function () {
-        var that = this.getInstance();
-        var firmsMkgMixes = this.getFirmsMarketingMix();
+    }
+    static calcIndustryMarketingMixAvg() {
+        let that = this.getInstance();
+        let firmsMkgMixes = this.getFirmsMarketingMix();
         global.debug_data.firmsMkgMixes = firmsMkgMixes;
-        var supplyMatrix = []; // [f1... [...[m2p1, m2p2, m2p3]...] ...]
-        var pricesMatrix = [];
-        var qualitiesMatrix = [];
-        var creditsMatrix = [];
-        var directAdsMatrix = [];
-        var corporateAdsMatrix = []; // [ ... f2: [ m1, m2, m3] ...] => jStat([[1,2],[3,4]]).mean() === [ 2, 3 ]
-        var salesForceCommissionsMatrix = [];
-        var salesForceStaffMatrix = [];
-        var salesForceSupportMatrix = [];
-        var websiteLevelsMatrix = [];
+        let supplyMatrix = []; // [f1... [...[m2p1, m2p2, m2p3]...] ...]
+        let pricesMatrix = [];
+        let qualitiesMatrix = [];
+        let creditsMatrix = [];
+        let directAdsMatrix = [];
+        let corporateAdsMatrix = []; // [ ... f2: [ m1, m2, m3] ...] => jStat([[1,2],[3,4]]).mean() === [ 2, 3 ]
+        let salesForceCommissionsMatrix = [];
+        let salesForceStaffMatrix = [];
+        let salesForceSupportMatrix = [];
+        let websiteLevelsMatrix = [];
         firmsMkgMixes.forEach(function (firmMkgMix) {
             corporateAdsMatrix.push(firmMkgMix.corporateAds);
             salesForceCommissionsMatrix.push(firmMkgMix.salesForceCommissions);
@@ -181,17 +180,17 @@ var Marketplace = (function () {
             creditsMatrix.push(firmMkgMix.credits);
             qualitiesMatrix.push(firmMkgMix.qualities);
         });
-        var corporateAdsMeans = jStat(corporateAdsMatrix).mean();
-        var salesForceCommissionsMeans = jStat(salesForceCommissionsMatrix).mean();
-        var salesForceStaffMeans = jStat(salesForceStaffMatrix).mean();
-        var salesForceSupportMeans = jStat(salesForceSupportMatrix).mean();
-        var websiteLevelsMeans = jStat(websiteLevelsMatrix).mean();
-        var supplyMeansMatrix = matrix3DMean(supplyMatrix);
-        var pricesMeansMatrix = matrix3DMean(pricesMatrix, MEAN_TYPE.HARMONIC);
-        var directAdsMeansMatrix = matrix3DMean(directAdsMatrix);
-        var qualitiesMeansMatrix = matrix3DMean(qualitiesMatrix);
-        var creditsMeansMatrix = matrix3DMean(creditsMatrix);
-        var industryMix = {
+        let corporateAdsMeans = jStat(corporateAdsMatrix).mean();
+        let salesForceCommissionsMeans = jStat(salesForceCommissionsMatrix).mean();
+        let salesForceStaffMeans = jStat(salesForceStaffMatrix).mean();
+        let salesForceSupportMeans = jStat(salesForceSupportMatrix).mean();
+        let websiteLevelsMeans = jStat(websiteLevelsMatrix).mean();
+        let supplyMeansMatrix = matrix3DMean(supplyMatrix);
+        let pricesMeansMatrix = matrix3DMean(pricesMatrix, MEAN_TYPE.HARMONIC);
+        let directAdsMeansMatrix = matrix3DMean(directAdsMatrix);
+        let qualitiesMeansMatrix = matrix3DMean(qualitiesMatrix);
+        let creditsMeansMatrix = matrix3DMean(creditsMatrix);
+        let industryMix = {
             corporateAds: corporateAdsMeans,
             salesForceCommissions: salesForceCommissionsMeans,
             salesForceStaff: salesForceStaffMeans,
@@ -209,18 +208,18 @@ var Marketplace = (function () {
             });
         });
         return industryMix;
-    };
-    Marketplace.calcIndustrySatisfactionScoreAvg = function () {
-        var scoresAvgs;
-        var that = this.getInstance();
-        var firmsMatrixes = [];
+    }
+    static calcIndustrySatisfactionScoreAvg() {
+        let scoresAvgs;
+        let that = this.getInstance();
+        let firmsMatrixes = [];
         this.calcIndustryMarketingMixAvg();
         that.firmsOMarkets.forEach(function (oMarkets) {
-            var matrix = [];
+            let matrix = [];
             oMarkets.forEach(function (oMarket) {
-                var subMarketsScoresRow = [];
+                let subMarketsScoresRow = [];
                 oMarket.subMarkets.forEach(function (oSubMarket) {
-                    var score = oSubMarket.customerSatisfactionScore;
+                    let score = oSubMarket.customerSatisfactionScore;
                     subMarketsScoresRow.push(score);
                 });
                 matrix.push(subMarketsScoresRow);
@@ -229,15 +228,15 @@ var Marketplace = (function () {
         });
         scoresAvgs = matrix3DMean(firmsMatrixes);
         return scoresAvgs;
-    };
-    Marketplace._calcFirmDemand = function (firmsNb, period, industrySatisfaction, lastPIndustrySatisfaction, firmSatisfaction, oSubMarket) {
-        var productId = oSubMarket["productId"];
-        var seasonalIndexes = oSubMarket.params.seasonalIndexes[productId];
-        var lastPSeasonalIdx = period === 0 ? seasonalIndexes[seasonalIndexes.length - 1] : seasonalIndexes[period - 1];
-        var seasonalIdx = seasonalIndexes[period];
-        var marketDevelopmentRate = oSubMarket.developmentRate;
-        var economicBase100Idx = oSubMarket.economy.economicBase100Index;
-        var basicDemand = oSubMarket.params.basicDemand[productId];
+    }
+    static _calcFirmDemand(firmsNb, period, industrySatisfaction, lastPIndustrySatisfaction, firmSatisfaction, oSubMarket) {
+        let productId = oSubMarket["productId"];
+        let seasonalIndexes = oSubMarket.params.seasonalIndexes[productId];
+        let lastPSeasonalIdx = period === 0 ? seasonalIndexes[seasonalIndexes.length - 1] : seasonalIndexes[period - 1];
+        let seasonalIdx = seasonalIndexes[period];
+        let marketDevelopmentRate = oSubMarket.developmentRate;
+        let economicBase100Idx = oSubMarket.economy.economicBase100Index;
+        let basicDemand = oSubMarket.params.basicDemand[productId];
         if (!Utils.isNumericValid(basicDemand)) {
             console.warn("Basic demand of %s is not reel: %d", oSubMarket.params.id, basicDemand);
             return 0;
@@ -250,72 +249,72 @@ var Marketplace = (function () {
             console.warn("industrySatisfaction of %s is not reel: %d", oSubMarket.params.id, industrySatisfaction);
             return 0;
         }
-        var avgDemandPerFirm = basicDemand * industrySatisfaction / 0.5;
-        var lastPAvgDemandPerFirm = basicDemand * lastPIndustrySatisfaction / 0.5;
+        let avgDemandPerFirm = basicDemand * industrySatisfaction / 0.5;
+        let lastPAvgDemandPerFirm = basicDemand * lastPIndustrySatisfaction / 0.5;
         console.silly("Pdt %d avgDemandPerFirm %d : basicDemand %d, seasonalIdx %d, marketDevelopmentRate % d, economicBase100Idx % d, industrySatisfaction % d", productId, avgDemandPerFirm, basicDemand, seasonalIdx, marketDevelopmentRate, economicBase100Idx, industrySatisfaction);
-        var demandVariation = avgDemandPerFirm - lastPAvgDemandPerFirm;
-        var renewalElasticity = Game.configs.demandFactors.renewalElasticity;
-        var incomingElasticity = Game.configs.demandFactors.incomingElasticity;
-        var differentiationRate = (firmSatisfaction - industrySatisfaction) / industrySatisfaction;
+        let demandVariation = avgDemandPerFirm - lastPAvgDemandPerFirm;
+        let renewalElasticity = Game.configs.demandFactors.renewalElasticity;
+        let incomingElasticity = Game.configs.demandFactors.incomingElasticity;
+        let differentiationRate = (firmSatisfaction - industrySatisfaction) / industrySatisfaction;
         if (differentiationRate < 0) {
             differentiationRate = 0;
         }
         console.silly("differentiationRate %d, demandVariation %d");
         // old clients
-        var renewalDemand = Math.round(lastPAvgDemandPerFirm * (1 + renewalElasticity * differentiationRate) * seasonalIdx * marketDevelopmentRate * (economicBase100Idx / 100));
+        let renewalDemand = Math.round(lastPAvgDemandPerFirm * (1 + renewalElasticity * differentiationRate) * seasonalIdx * marketDevelopmentRate * (economicBase100Idx / 100));
         if (renewalDemand < 0) {
             renewalDemand = 0;
         }
         // new one
-        var expansionDemand = demandVariation > 0 ? Math.round(demandVariation * (1 + incomingElasticity * differentiationRate) * seasonalIdx * marketDevelopmentRate * (economicBase100Idx / 100)) : 0;
+        let expansionDemand = demandVariation > 0 ? Math.round(demandVariation * (1 + incomingElasticity * differentiationRate) * seasonalIdx * marketDevelopmentRate * (economicBase100Idx / 100)) : 0;
         if (expansionDemand < 0) {
             expansionDemand = 0;
         }
         // considering demand before stockout redistribution
-        var primaryDemand = renewalDemand + expansionDemand;
+        let primaryDemand = renewalDemand + expansionDemand;
         console.silly("primaryDemand %d = , renewalDemand %d, expansionDemand %d", primaryDemand, renewalDemand, expansionDemand);
         return primaryDemand;
-    };
-    Marketplace.simulate = function () {
-        var self = this;
-        var that = this.getInstance();
-        var industrySatisfactionScoreAvgs = this.calcIndustrySatisfactionScoreAvg();
+    }
+    static simulate() {
+        let self = this;
+        let that = this.getInstance();
+        let industrySatisfactionScoreAvgs = this.calcIndustrySatisfactionScoreAvg();
         console.silly('industrySatisfactionScoreAvgs 1');
-        var firmsNb = that.firmsOMarkets.length;
-        var period = 0;
+        let firmsNb = that.firmsOMarkets.length;
+        let period = 0;
         industrySatisfactionScoreAvgs.forEach(function (market, marketIdx) {
             market.forEach(function (industrySatisfaction, subMIdx) {
-                var i = 0;
-                var stockoutQ = 0;
+                let i = 0;
+                let stockoutQ = 0;
                 for (; i < firmsNb; i++) {
-                    var oMarket = that.firmsOMarkets[i][marketIdx];
-                    var oSubMarket = oMarket.subMarkets[subMIdx];
-                    var firmSatisfaction = oSubMarket.customerSatisfactionScore;
-                    var lastPIndustrySatisfaction = oSubMarket.lastIndustrySatisfactionScoreAvg;
-                    var primaryDemand = self._calcFirmDemand(firmsNb, period, industrySatisfaction, lastPIndustrySatisfaction, firmSatisfaction, oSubMarket);
-                    var soldQ = oSubMarket.getOrdersOf(primaryDemand);
-                    var backlogQ = Math.floor((primaryDemand - soldQ) * oSubMarket.params.dissatisfiedOrdersCancelledPercent);
+                    let oMarket = that.firmsOMarkets[i][marketIdx];
+                    let oSubMarket = oMarket.subMarkets[subMIdx];
+                    let firmSatisfaction = oSubMarket.customerSatisfactionScore;
+                    let lastPIndustrySatisfaction = oSubMarket.lastIndustrySatisfactionScoreAvg;
+                    let primaryDemand = self._calcFirmDemand(firmsNb, period, industrySatisfaction, lastPIndustrySatisfaction, firmSatisfaction, oSubMarket);
+                    let soldQ = oSubMarket.getOrdersOf(primaryDemand);
+                    let backlogQ = Math.floor((primaryDemand - soldQ) * oSubMarket.params.dissatisfiedOrdersCancelledPercent);
                     stockoutQ += (primaryDemand - soldQ - backlogQ);
                 }
-                var _tries = 0;
+                let _tries = 0;
                 while (stockoutQ > 0) {
                     if (_tries > 100) {
                         console.warn("something strange with stockout loop");
                         break;
                     }
                     i = 0;
-                    var stockoutSold = 0;
+                    let stockoutSold = 0;
                     for (; i < firmsNb; i++) {
-                        var oMarket = that.firmsOMarkets[i][marketIdx];
-                        var oSubMarket = oMarket.subMarkets[subMIdx];
-                        var firmSatisfaction = oSubMarket.customerSatisfactionScore;
+                        let oMarket = that.firmsOMarkets[i][marketIdx];
+                        let oSubMarket = oMarket.subMarkets[subMIdx];
+                        let firmSatisfaction = oSubMarket.customerSatisfactionScore;
                         // proportion contributed by a company to the determination of industry demand
-                        var residualDemand = Math.round(stockoutQ * firmSatisfaction / (industrySatisfaction * firmsNb));
+                        let residualDemand = Math.round(stockoutQ * firmSatisfaction / (industrySatisfaction * firmsNb));
                         if (residualDemand < 0) {
                             residualDemand = 0;
                         }
-                        var soldQ = oSubMarket.getOrdersOf(residualDemand);
-                        var backlogQ = Math.floor((residualDemand - soldQ) * oSubMarket.params.dissatisfiedOrdersCancelledPercent);
+                        let soldQ = oSubMarket.getOrdersOf(residualDemand);
+                        let backlogQ = Math.floor((residualDemand - soldQ) * oSubMarket.params.dissatisfiedOrdersCancelledPercent);
                         stockoutSold += (soldQ + backlogQ);
                     }
                     if (stockoutSold === 0) {
@@ -324,31 +323,31 @@ var Marketplace = (function () {
                     stockoutQ -= stockoutSold;
                     ++_tries;
                 }
-                var totalSoldQ = 0;
-                var totalSalesRevenue = 0;
-                for (var j = 0; j < firmsNb; j++) {
-                    var oMarket = that.firmsOMarkets[j][marketIdx];
-                    var oSubMarket = oMarket.subMarkets[subMIdx];
+                let totalSoldQ = 0;
+                let totalSalesRevenue = 0;
+                for (let j = 0; j < firmsNb; j++) {
+                    let oMarket = that.firmsOMarkets[j][marketIdx];
+                    let oSubMarket = oMarket.subMarkets[subMIdx];
                     totalSoldQ += oSubMarket.soldQ;
                     totalSalesRevenue += oSubMarket.salesRevenue;
                 }
-                for (var j = 0; j < firmsNb; j++) {
-                    var oMarket = that.firmsOMarkets[j][marketIdx];
-                    var oSubMarket = oMarket.subMarkets[subMIdx];
+                for (let j = 0; j < firmsNb; j++) {
+                    let oMarket = that.firmsOMarkets[j][marketIdx];
+                    let oSubMarket = oMarket.subMarkets[subMIdx];
                     oSubMarket.industryTotalSalesRevenue = totalSalesRevenue;
                     oSubMarket.industryTotalSoldQ = totalSoldQ;
                     oSubMarket.industrySatisfactionScoreAvg = industrySatisfaction;
                 }
             });
         });
-    };
-    Marketplace.simulateEnv = function () {
-        var materialMarketPrices = [
+    }
+    static simulateEnv() {
+        let materialMarketPrices = [
             { term: ENUMS.FUTURES.IMMEDIATE, basePrice: 50.754 },
             { term: ENUMS.FUTURES.THREE_MONTH, basePrice: 32.615 },
             { term: ENUMS.FUTURES.SIX_MONTH, basePrice: 29.748 }
         ];
-        var componentsPrices = {
+        let componentsPrices = {
             p1: {
                 marketPrice: [
                     { term: ENUMS.FUTURES.THREE_MONTH, basePrice: 123 },
@@ -374,15 +373,14 @@ var Marketplace = (function () {
                 ]
             }
         };
-        var buildingCost = 1000;
+        let buildingCost = 1000;
         return {
             componentsPrices: componentsPrices,
             materialMarketPrices: materialMarketPrices,
             buildingCost: buildingCost
         };
-    };
-    Marketplace._instance = null;
-    return Marketplace;
-}());
+    }
+}
+Marketplace._instance = null;
 exports.Marketplace = Marketplace;
 //# sourceMappingURL=Marketplace.js.map

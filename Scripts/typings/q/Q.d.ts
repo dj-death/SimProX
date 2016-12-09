@@ -330,11 +330,11 @@ declare namespace Q {
     /**
      * A settable property that will intercept any uncaught errors that would otherwise be thrown in the next tick of the event loop, usually as a result of done. Can be useful for getting the full stack trace of an error in browsers, which is not usually possible with window.onerror.
      */
-    export var onerror: (reason: any) => void;
+    export let onerror: (reason: any) => void;
     /**
      * A settable property that lets you turn on long stack trace support. If turned on, "stack jumps" will be tracked across asynchronous promise operations, so that if an uncaught error is thrown by done or a rejection reason's stack property is inspected in a rejection callback, a long stack trace is produced.
      */
-    export var longStackSupport: boolean;
+    export let longStackSupport: boolean;
 
     /**
      * Calling resolve with a pending promise causes promise to wait on the passed promise, becoming fulfilled with its fulfillment value or rejected with its rejection reason (or staying pending forever, if the passed promise does).

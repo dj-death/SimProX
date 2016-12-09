@@ -1,5 +1,5 @@
 "use strict";
-var util = require('./util');
+const util = require('./util');
 /**
  * Returns the position of the first occurrence of the specified item
  * within the specified array.4
@@ -11,9 +11,9 @@ var util = require('./util');
  * within the specified array, or -1 if not found.
  */
 function indexOf(array, item, equalsFunction) {
-    var equals = equalsFunction || util.defaultEquals;
-    var length = array.length;
-    for (var i = 0; i < length; i++) {
+    const equals = equalsFunction || util.defaultEquals;
+    const length = array.length;
+    for (let i = 0; i < length; i++) {
         if (equals(array[i], item)) {
             return i;
         }
@@ -32,9 +32,9 @@ exports.indexOf = indexOf;
  * within the specified array or -1 if not found.
  */
 function lastIndexOf(array, item, equalsFunction) {
-    var equals = equalsFunction || util.defaultEquals;
-    var length = array.length;
-    for (var i = length - 1; i >= 0; i--) {
+    const equals = equalsFunction || util.defaultEquals;
+    const length = array.length;
+    for (let i = length - 1; i >= 0; i--) {
         if (equals(array[i], item)) {
             return i;
         }
@@ -63,7 +63,7 @@ exports.contains = contains;
  * @return {boolean} true if the array changed after this call.
  */
 function remove(array, item, equalsFunction) {
-    var index = indexOf(array, item, equalsFunction);
+    const index = indexOf(array, item, equalsFunction);
     if (index < 0) {
         return false;
     }
@@ -82,10 +82,10 @@ exports.remove = remove;
  * equal to the specified object.
  */
 function frequency(array, item, equalsFunction) {
-    var equals = equalsFunction || util.defaultEquals;
-    var length = array.length;
-    var freq = 0;
-    for (var i = 0; i < length; i++) {
+    const equals = equalsFunction || util.defaultEquals;
+    const length = array.length;
+    let freq = 0;
+    for (let i = 0; i < length; i++) {
         if (equals(array[i], item)) {
             freq++;
         }
@@ -105,12 +105,12 @@ exports.frequency = frequency;
  * @return {boolean} true if the two arrays are equal
  */
 function equals(array1, array2, equalsFunction) {
-    var equals = equalsFunction || util.defaultEquals;
+    const equals = equalsFunction || util.defaultEquals;
     if (array1.length !== array2.length) {
         return false;
     }
-    var length = array1.length;
-    for (var i = 0; i < length; i++) {
+    const length = array1.length;
+    for (let i = 0; i < length; i++) {
         if (!equals(array1[i], array2[i])) {
             return false;
         }
@@ -138,7 +138,7 @@ function swap(array, i, j) {
     if (i < 0 || i >= array.length || j < 0 || j >= array.length) {
         return false;
     }
-    var temp = array[i];
+    const temp = array[i];
     array[i] = array[j];
     array[j] = temp;
     return true;
@@ -157,9 +157,8 @@ exports.toString = toString;
  * optionally return false.
  */
 function forEach(array, callback) {
-    var i = 0;
-    for (var _i = 0, array_1 = array; _i < array_1.length; _i++) {
-        var ele = array_1[_i];
+    let i = 0;
+    for (const ele of array) {
         if (callback && callback(ele, i) === false) {
             return;
         }

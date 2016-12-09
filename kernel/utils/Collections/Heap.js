@@ -1,7 +1,7 @@
 "use strict";
-var collections = require('./util');
-var arrays = require('./arrays');
-var Heap = (function () {
+const collections = require('./util');
+const arrays = require('./arrays');
+class Heap {
     /**
      * Creates an empty Heap.
      * @class
@@ -45,7 +45,7 @@ var Heap = (function () {
      * zero, or a positive integer as the first argument is less than, equal to,
      * or greater than the second.
      */
-    function Heap(compareFunction) {
+    constructor(compareFunction) {
         /**
          * Array used to store the elements od the heap.
          * @type {Array.<Object>}
@@ -61,9 +61,9 @@ var Heap = (function () {
      * @return {number} The index of the left child.
      * @private
      */
-    Heap.prototype.leftChildIndex = function (nodeIndex) {
+    leftChildIndex(nodeIndex) {
         return (2 * nodeIndex) + 1;
-    };
+    }
     /**
      * Returns the index of the right child of the node at the given index.
      * @param {number} nodeIndex The index of the node to get the right child
@@ -71,18 +71,18 @@ var Heap = (function () {
      * @return {number} The index of the right child.
      * @private
      */
-    Heap.prototype.rightChildIndex = function (nodeIndex) {
+    rightChildIndex(nodeIndex) {
         return (2 * nodeIndex) + 2;
-    };
+    }
     /**
      * Returns the index of the parent of the node at the given index.
      * @param {number} nodeIndex The index of the node to get the parent for.
      * @return {number} The index of the parent.
      * @private
      */
-    Heap.prototype.parentIndex = function (nodeIndex) {
+    parentIndex(nodeIndex) {
         return Math.floor((nodeIndex - 1) / 2);
-    };
+    }
     /**
      * Returns the index of the smaller child node (if it exists).
      * @param {number} leftChild left child index.
@@ -91,7 +91,7 @@ var Heap = (function () {
      * exists.
      * @private
      */
-    Heap.prototype.minIndex = function (leftChild, rightChild) {
+    minIndex(leftChild, rightChild) {
         if (rightChild >= this.data.length) {
             if (leftChild >= this.data.length) {
                 return -1;
@@ -108,68 +108,68 @@ var Heap = (function () {
                 return rightChild;
             }
         }
-    };
+    }
     /**
      * Moves the node at the given index up to its proper place in the heap.
      * @param {number} index The index of the node to move up.
      * @private
      */
-    Heap.prototype.siftUp = function (index) {
-        var parent = this.parentIndex(index);
+    siftUp(index) {
+        let parent = this.parentIndex(index);
         while (index > 0 && this.compare(this.data[parent], this.data[index]) > 0) {
             arrays.swap(this.data, parent, index);
             index = parent;
             parent = this.parentIndex(index);
         }
-    };
+    }
     /**
      * Moves the node at the given index down to its proper place in the heap.
      * @param {number} nodeIndex The index of the node to move down.
      * @private
      */
-    Heap.prototype.siftDown = function (nodeIndex) {
+    siftDown(nodeIndex) {
         //smaller child index
-        var min = this.minIndex(this.leftChildIndex(nodeIndex), this.rightChildIndex(nodeIndex));
+        let min = this.minIndex(this.leftChildIndex(nodeIndex), this.rightChildIndex(nodeIndex));
         while (min >= 0 && this.compare(this.data[nodeIndex], this.data[min]) > 0) {
             arrays.swap(this.data, min, nodeIndex);
             nodeIndex = min;
             min = this.minIndex(this.leftChildIndex(nodeIndex), this.rightChildIndex(nodeIndex));
         }
-    };
+    }
     /**
      * Retrieves but does not remove the root element of this heap.
      * @return {*} The value at the root of the heap. Returns undefined if the
      * heap is empty.
      */
-    Heap.prototype.peek = function () {
+    peek() {
         if (this.data.length > 0) {
             return this.data[0];
         }
         else {
             return undefined;
         }
-    };
+    }
     /**
      * Adds the given element into the heap.
      * @param {*} element the element.
      * @return true if the element was added or fals if it is undefined.
      */
-    Heap.prototype.add = function (element) {
+    add(element) {
         if (collections.isUndefined(element)) {
             return undefined;
         }
         this.data.push(element);
         this.siftUp(this.data.length - 1);
         return true;
-    };
+    }
     /**
      * Retrieves and removes the root element of this heap.
      * @return {*} The value removed from the root of the heap. Returns
      * undefined if the heap is empty.
      */
-    Heap.prototype.removeRoot = function () {
+    removeRoot() {
         if (this.data.length > 0) {
-            var obj = this.data[0];
+            const obj = this.data[0];
             this.data[0] = this.data[this.data.length - 1];
             this.data.splice(this.data.length - 1, 1);
             if (this.data.length > 0) {
@@ -178,38 +178,38 @@ var Heap = (function () {
             return obj;
         }
         return undefined;
-    };
+    }
     /**
      * Returns true if this heap contains the specified element.
      * @param {Object} element element to search for.
      * @return {boolean} true if this Heap contains the specified element, false
      * otherwise.
      */
-    Heap.prototype.contains = function (element) {
-        var equF = collections.compareToEquals(this.compare);
+    contains(element) {
+        const equF = collections.compareToEquals(this.compare);
         return arrays.contains(this.data, element, equF);
-    };
+    }
     /**
      * Returns the number of elements in this heap.
      * @return {number} the number of elements in this heap.
      */
-    Heap.prototype.size = function () {
+    size() {
         return this.data.length;
-    };
+    }
     /**
      * Checks if this heap is empty.
      * @return {boolean} true if and only if this heap contains no items; false
      * otherwise.
      */
-    Heap.prototype.isEmpty = function () {
+    isEmpty() {
         return this.data.length <= 0;
-    };
+    }
     /**
      * Removes all of the elements from this heap.
      */
-    Heap.prototype.clear = function () {
+    clear() {
         this.data.length = 0;
-    };
+    }
     /**
      * Executes the provided function once for each element present in this heap in
      * no particular order.
@@ -217,11 +217,10 @@ var Heap = (function () {
      * invoked with one argument: the element value, to break the iteration you can
      * optionally return false.
      */
-    Heap.prototype.forEach = function (callback) {
+    forEach(callback) {
         arrays.forEach(this.data, callback);
-    };
-    return Heap;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Heap;
 //# sourceMappingURL=Heap.js.map

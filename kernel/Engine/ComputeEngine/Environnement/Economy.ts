@@ -295,7 +295,7 @@ export class Economy extends BaseEconomy {
 
     // TODO develop it
     get economyShortTermRisk(): number {
-        var avgCreditRating = this.params.avgCreditShortTermRating,
+        let avgCreditRating = this.params.avgCreditShortTermRating,
             rate: number;
 
         if (!avgCreditRating) {
@@ -308,7 +308,7 @@ export class Economy extends BaseEconomy {
     }
 
     get economyLongTermRisk(): number {
-        var avgCreditRating = this.params.avgCreditLongTermRating,
+        let avgCreditRating = this.params.avgCreditLongTermRating,
             rate: number;
 
         if (!avgCreditRating) {
@@ -323,7 +323,7 @@ export class Economy extends BaseEconomy {
 
     // TODO develop
     calcLatePaymentsRate(debtTerm: ENUMS.CREDIT): number {
-        var rate: number,
+        let rate: number,
             economyShortTermRisk = this.economyShortTermRisk,
             avgLatePaymentsRate = this.params.avgLatePaymentsRate,
             avgDSO = this.params.avgDaysSalesOutstanding;

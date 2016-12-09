@@ -1,6 +1,6 @@
 
 export function LoadConfigIni (DataDirectory: string, seminar : string) {
-    var ini: any; //Tinifile;
+    let ini: any; //Tinifile;
     
     /*ini = TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'CgiConfig.ini');
   
@@ -11,11 +11,11 @@ export function LoadConfigIni (DataDirectory: string, seminar : string) {
 
 
 export function ReadResults(PeriodNumber : number, SeminarCode : string, DataDirectory : string, OnePeriodResults : any /*TAllResults*/ ) : number {
-    var ResultsFile : any; //file of TAllResults;
-    var FileName    :  string;
-    var TempResult  : number;
+    let ResultsFile : any; //file of TAllResults;
+    let FileName    :  string;
+    let TempResult  : number;
     
-    var ResultsFileName = "ff";
+    let ResultsFileName = "ff";
 
     FileName = DataDirectory +  ResultsFileName + SeminarCode;
     

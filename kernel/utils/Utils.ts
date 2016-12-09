@@ -15,7 +15,7 @@
 
 //require('cloud/Engine/es6-shim.js');
 
-var enumerables: string[] = [/*'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable',*/'valueOf', 'toLocaleString', 'toString', 'constructor'];
+let enumerables: string[] = [/*'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable',*/'valueOf', 'toLocaleString', 'toString', 'constructor'];
 
 import * as IObject from '../Engine/ComputeEngine/IObject';
 
@@ -27,7 +27,7 @@ import ENUMS = require('../Engine/ComputeEngine/ENUMS');
 
 
 function populateArray(value: number, length: number): number[] {
-    var arr = [],
+    let arr = [],
         i = 0;
 
     for (; i < length; i++) {
@@ -38,7 +38,7 @@ function populateArray(value: number, length: number): number[] {
 }
 
 function getValueAtAdress(object: any, property: string) {
-    var splits = property.split("."),
+    let splits = property.split("."),
         j = 0,
         splitsNb = splits.length,
 
@@ -60,7 +60,7 @@ function getValueAtAdress(object: any, property: string) {
 
 
 export function sums(collection, property: string, filterProp?: string, filterValue?: any, coefficients?, roundType: string = ">", precision: number = 0): number {
-    var len: number = collection.length || collection.size(),
+    let len: number = collection.length || collection.size(),
         sum: number = 0,
         value,
         item;
@@ -89,7 +89,7 @@ export function sums(collection, property: string, filterProp?: string, filterVa
 
         }
 
-        var propertyValue = item[property];
+        let propertyValue = item[property];
 
         if (isNaN(propertyValue)) {
             return true;
@@ -117,7 +117,7 @@ export function sums(collection, property: string, filterProp?: string, filterVa
 
 
 export function aggregate(collection, property: string, operation, coefficients): number {
-    var i: number,
+    let i: number,
         len: number = collection.length,
         aggregation: number = 0;
 
@@ -126,7 +126,7 @@ export function aggregate(collection, property: string, operation, coefficients)
     }
 
     for (i = 0; i < len; i++) {
-        var properyValue = collection[i][property];
+        let properyValue = collection[i][property];
 
         if (isNaN(properyValue)) {
             continue;
@@ -151,7 +151,7 @@ function cloneFn(item) {
         return item.cloneNode(true);
     }
 
-    var type = toString.call(item),
+    let type = toString.call(item),
         i, j, k, clone, key;
 
     // Date
@@ -191,7 +191,7 @@ function cloneFn(item) {
 }
 
 export function ObjectApply(destination, ...rest: any[]): any {
-    var i = 1,
+    let i = 1,
         ln = arguments.length,
         object, key, value, sourceKey;
 
@@ -218,7 +218,7 @@ export function ObjectApply(destination, ...rest: any[]): any {
 
 
 export function makeID(decision) {
-    var ID = "";
+    let ID = "";
 
     ID += decision.seminarId;
     ID += decision.groupId;
@@ -249,7 +249,7 @@ export function correctFloat(n: number): number {
 export function round(value: number, precision: number = 0): number {
     value = correctFloat(value);
 
-    var base = Math.pow(10, precision);
+    let base = Math.pow(10, precision);
 
     return Math.round(value * base) / base;
 }
@@ -257,7 +257,7 @@ export function round(value: number, precision: number = 0): number {
 export function ceil(value: number, precision: number = 0): number {
     value = correctFloat(value);
 
-    var base = Math.pow(10, precision);
+    let base = Math.pow(10, precision);
 
     return Math.ceil(value * base) / base;
 }
@@ -265,7 +265,7 @@ export function ceil(value: number, precision: number = 0): number {
 export function floor(value: number, precision: number = 0): number {
     value = correctFloat(value);
 
-    var base = Math.pow(10, precision);
+    let base = Math.pow(10, precision);
 
     return Math.floor(value * base) / base;
 }
@@ -273,7 +273,7 @@ export function floor(value: number, precision: number = 0): number {
 export function roundMultiplier(value: number, multiplier: number = 0): number {
     value = correctFloat(value);
 
-    var mod = value % multiplier,
+    let mod = value % multiplier,
         result = value - mod;
 
     if (mod >= 0.5 * multiplier) {
@@ -356,8 +356,8 @@ export function compare(n1: number, sens: string, n2: number, epsilon?): boolean
     n1 = correctFloat(n1);
     n2 = correctFloat(n2);
 
-    var diff = correctFloat(n1 - n2);
-    var isEqual = Math.abs(diff) < epsilon;
+    let diff = correctFloat(n1 - n2);
+    let isEqual = Math.abs(diff) < epsilon;
 
     switch (sens) {
         case "<<":
@@ -418,7 +418,7 @@ export function sign(x): number {
 */
 
 export function snapInRange(value: number, increment: number, minValue: number = 0, maxValue: number = Infinity): number {
-    var tween;
+    let tween;
 
     // default minValue to zero 
     minValue = (minValue || 0);
@@ -455,7 +455,7 @@ export function isNumericValid(value) {
 
 
 export function getDecimalPart(value: number): number {
-    var decimals = value.toString().split("."),
+    let decimals = value.toString().split("."),
         len = decimals.length;
 
     if (len < 2) {
@@ -467,8 +467,8 @@ export function getDecimalPart(value: number): number {
 
 
 export function NODE_ENV(): string {
-    var nodeEnv = (process.env.NODE_ENV || '').toLowerCase();
-    var env;
+    let nodeEnv = (process.env.NODE_ENV || '').toLowerCase();
+    let env;
 
     if (nodeEnv === 'prod' || nodeEnv === 'production') {
         env = 'prod';
@@ -482,7 +482,7 @@ export function NODE_ENV(): string {
 }
 
 export function getPoisson(lambda: number): number {
-    var L: number = Math.exp(-lambda),
+    let L: number = Math.exp(-lambda),
         p: number = 1.0,
         k: number = 0;
 
@@ -585,4 +585,9 @@ export function normalize(value: number, range: ENUMS.VariableRange): number {
     }
 
     return normalizedValue;
+}
+
+
+export function isInteger(value) {
+    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
 }

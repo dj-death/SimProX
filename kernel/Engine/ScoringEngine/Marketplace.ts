@@ -10,12 +10,12 @@ import console = require('../../utils/logger');
 import Utils = require('../../utils/Utils');
 
 import $jStat = require("jstat");
-var jStat = $jStat.jStat;
+let jStat = $jStat.jStat;
 
 
 
 function convert3DMatrixTo2D(matrix: Array<number[][]>): number[][] {
-    var flattenMatrix = [];
+    let flattenMatrix = [];
 
     // 3D:firms
     matrix.forEach(function (matrice) {
@@ -85,10 +85,10 @@ function harmonicMean(matrix: Array<number[]>): number[] {
 
 
 function matrix3DMean(matrix: Array<number[][]>, meanType: MEAN_TYPE = MEAN_TYPE.ARITHMETIC): number[][] {
-    var secondDimSize = matrix[0].length;
-    var thirdDimSize = matrix[0][0].length;
+    let secondDimSize = matrix[0].length;
+    let thirdDimSize = matrix[0][0].length;
 
-    var meansVector;
+    let meansVector;
 
     switch (meanType) {
         case MEAN_TYPE.ARITHMETIC :
@@ -468,7 +468,7 @@ export class Marketplace {
 
                     i = 0;
 
-                    var stockoutSold = 0;
+                    let stockoutSold = 0;
 
                     for (; i < firmsNb; i++) {
                         let oMarket = that.firmsOMarkets[i][marketIdx];
@@ -501,10 +501,10 @@ export class Marketplace {
                 }
 
 
-                var totalSoldQ = 0;
-                var totalSalesRevenue = 0;
+                let totalSoldQ = 0;
+                let totalSalesRevenue = 0;
                 
-                for (var j = 0; j < firmsNb; j++) {
+                for (let j = 0; j < firmsNb; j++) {
                     let oMarket = that.firmsOMarkets[j][marketIdx];
                     let oSubMarket = oMarket.subMarkets[subMIdx];
 
@@ -514,7 +514,7 @@ export class Marketplace {
 
 
 
-                for (var j = 0; j < firmsNb; j++) {
+                for (let j = 0; j < firmsNb; j++) {
                     let oMarket = that.firmsOMarkets[j][marketIdx];
                     let oSubMarket = oMarket.subMarkets[subMIdx];
 
@@ -532,13 +532,13 @@ export class Marketplace {
 
 
     static simulateEnv() {
-        var materialMarketPrices = [
+        let materialMarketPrices = [
             { term: ENUMS.FUTURES.IMMEDIATE, basePrice: 50.754 },
             { term: ENUMS.FUTURES.THREE_MONTH, basePrice: 32.615 },
             { term: ENUMS.FUTURES.SIX_MONTH, basePrice: 29.748 }
         ];
 
-        var componentsPrices = {
+        let componentsPrices = {
             p1: {
                 marketPrice: [
                     { term: ENUMS.FUTURES.THREE_MONTH, basePrice: 123 },
@@ -570,7 +570,7 @@ export class Marketplace {
             }
         };
 
-        var buildingCost = 1000;
+        let buildingCost = 1000;
 
 
         return {

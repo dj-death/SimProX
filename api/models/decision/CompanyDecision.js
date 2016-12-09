@@ -1,12 +1,12 @@
 "use strict";
-var mongoose = require('mongoose');
-var Q = require('q');
-var util = require('util');
-var console = require('../../../kernel/utils/logger');
-var tDecisionSchema = require('./CompanyDecSchema');
+let mongoose = require('mongoose');
+let Q = require('q');
+let util = require('util');
+const console = require('../../../kernel/utils/logger');
+const tDecisionSchema = require('./CompanyDecSchema');
 //let spendingDetailsAssembler = require('../../dataAssemblers/spendingDetails.js');
 //let consts = require('../../consts.js');
-var CompanyDecision = mongoose.model('CompanyDecision', tDecisionSchema);
+let CompanyDecision = mongoose.model('CompanyDecision', tDecisionSchema);
 exports.query = CompanyDecision;
 /*
 tDecisionSchema.pre('save', true, function (next, done) {
@@ -137,7 +137,7 @@ function remove(seminarId, companyId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     if (!seminarId) {
         deferred.reject(new Error("Invalid argument seminarId"));
     }
@@ -161,7 +161,7 @@ function removeAll(seminarId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     if (!seminarId) {
         deferred.reject(new Error("Invalid argument seminarId"));
     }
@@ -182,16 +182,16 @@ function save(decision) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     if (!decision) {
         deferred.resolve();
     }
     else {
-        var decisionResult_1 = new CompanyDecision(decision);
+        let decisionResult = new CompanyDecision(decision);
         CompanyDecision.remove({
-            seminarId: decisionResult_1.seminarId,
-            period: decisionResult_1.period,
-            d_CID: decisionResult_1.d_CID
+            seminarId: decisionResult.seminarId,
+            period: decisionResult.period,
+            d_CID: decisionResult.d_CID
         }, function (err, numberRemoved) {
             if (err) {
                 return deferred.reject(err);
@@ -199,7 +199,7 @@ function save(decision) {
             if (numberRemoved.result.n === 0 && decision.reRunLastRound) {
                 return deferred.reject(new Error('There are no Company decisions deleted when create Company Decisions'));
             }
-            decisionResult_1.save(function (err, saveDecision, numAffected) {
+            decisionResult.save(function (err, saveDecision, numAffected) {
                 if (err) {
                     deferred.reject(err);
                 }
@@ -216,7 +216,7 @@ function findOne(seminarId, period, companyId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     if (!seminarId) {
         deferred.reject(new Error("Invalid argument seminarId"));
     }
@@ -244,7 +244,7 @@ function updateCompanyDecision(seminarId, period, companyId, decision) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     if (!seminarId) {
         deferred.reject(new Error("Invalid argument seminarId."));
     }
@@ -267,7 +267,7 @@ function updateCompanyDecision(seminarId, period, companyId, decision) {
                 return deferred.reject(err);
             }
             if (!doc) {
-                var validateErr = new Error('Cannot find company Decision not found.');
+                let validateErr = new Error('Cannot find company Decision not found.');
                 return deferred.reject(validateErr);
             }
             /*let fields = ['d_RequestedAdditionalBudget',
@@ -301,7 +301,7 @@ function findAllInPeriod(seminarId, period) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     CompanyDecision.find({
         seminarId: seminarId,
         period: period
@@ -317,7 +317,7 @@ function findAllBeforePeriod(seminarId, period) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     CompanyDecision.aggregate([{
             $match: {
                 period: {
@@ -364,7 +364,7 @@ function insertEmptyCompanyDecision(seminarId, period) {
     //find all company decisions in the last period
     return findAllInPeriod(seminarId, period - 1)
         .then(function (allCompanyDecisions) {
-        var p = Q();
+        let p = Q();
         allCompanyDecisions.forEach(function (companyDecision) {
             p = p.then(function () {
                 return save({

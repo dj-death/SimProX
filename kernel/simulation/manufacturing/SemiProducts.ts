@@ -5,14 +5,14 @@ import Utils = require('../../utils/Utils');
 
 
 
-var cashPayments: ENUMS.PaymentArray = {
+let cashPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 
-var threeMonthsPayments: ENUMS.PaymentArray = {
+let threeMonthsPayments: ENUMS.PaymentArray = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 0
@@ -27,7 +27,7 @@ var threeMonthsPayments: ENUMS.PaymentArray = {
 
 export default function create(): SemiProduct[] {
 
-    var alphaA = new SemiProduct({
+    let alphaA = new SemiProduct({
         id: "subProduct1",
         subProductID: "0",
 
@@ -53,7 +53,7 @@ export default function create(): SemiProduct[] {
         }
     });
 
-    var betaA = new SemiProduct({
+    let betaA = new SemiProduct({
         id: "subProduct2",
         subProductID: "1",
 
@@ -79,7 +79,7 @@ export default function create(): SemiProduct[] {
         }
     });
 
-    var alphaB = new SemiProduct({
+    let alphaB = new SemiProduct({
         id: "subProduct3",
         subProductID: "2",
 
@@ -105,7 +105,7 @@ export default function create(): SemiProduct[] {
         }
     });
 
-    var betaB = new SemiProduct({
+    let betaB = new SemiProduct({
         id: "subProduct4",
         subProductID: "3",
 
@@ -131,7 +131,7 @@ export default function create(): SemiProduct[] {
         }
     });
 
-    var alphaC = new SemiProduct({
+    let alphaC = new SemiProduct({
         id: "subProduct5",
         subProductID: "4",
 
@@ -157,7 +157,7 @@ export default function create(): SemiProduct[] {
         }
     });
 
-    var betaC = new SemiProduct({
+    let betaC = new SemiProduct({
         id: "subProduct6",
         subProductID: "5",
 

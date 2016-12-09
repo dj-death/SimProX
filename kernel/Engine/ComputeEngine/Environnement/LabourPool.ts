@@ -10,9 +10,9 @@ class Pool extends Warehouse {
     
     constructor() {
         ++ Pool.counter;
-        var ID = "pool" + Pool.counter;
+        let ID = "pool" + Pool.counter;
 
-        var defaultParams = {
+        let defaultParams = {
             id: ID,
             label: ID,
             lostProbability: 0,
@@ -71,7 +71,7 @@ export default class LabourPool {
 
 
     employ(quantity: number, isUnskilled: boolean): number {
-        var effectiveQ: number,
+        let effectiveQ: number,
             restQ: number;
 
         if (isUnskilled) {
@@ -91,7 +91,7 @@ export default class LabourPool {
     }
 
     train(quantity: number, lookForUnskilled: boolean = true): number {
-        var effectiveQ: number;
+        let effectiveQ: number;
 
         if (lookForUnskilled) {
             effectiveQ = this.unemployedUnskilledPool.train(quantity);

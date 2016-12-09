@@ -1,18 +1,18 @@
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Q = require('q');
-var reportSchema = new Schema({
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+let Q = require('q');
+let reportSchema = new Schema({
     seminarId: String,
     reportName: String,
     reportData: {}
 });
-var Report = mongoose.model("Report", reportSchema);
+let Report = mongoose.model("Report", reportSchema);
 function findOne(seminarId, reportName) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Report.findOne({
         seminarId: seminarId,
         reportName: reportName
@@ -31,7 +31,7 @@ function remove(seminarId) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Report.remove({ seminarId: seminarId }, function (err) {
         if (err) {
             deferred.reject(err);
@@ -48,7 +48,7 @@ function insert(report) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Report.create(report, function (err) {
         if (err) {
             return deferred.reject(err);
@@ -63,7 +63,7 @@ function update(seminarId, report) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     Report.update({
         seminarId: seminarId
     }, report)

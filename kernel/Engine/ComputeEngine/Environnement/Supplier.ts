@@ -86,7 +86,7 @@ export class Supplier<T extends Material> extends IObject.IObject {
 
     // helpers
     _getPrice(quality: ENUMS.QUALITY, term: ENUMS.FUTURES/*, credit: ENUMS.CREDIT*/): number {
-        var price: number,
+        let price: number,
             basePrice = this.market.getPrice(term) / this.market.params.standardLotQuantity,
             qualityPremium = this.params.availableQualities[ENUMS.QUALITY[quality]].premium;
 
@@ -97,7 +97,7 @@ export class Supplier<T extends Material> extends IObject.IObject {
 
 
     _getReelTimePrice(quality: ENUMS.QUALITY, term: ENUMS.FUTURES/*, credit: ENUMS.CREDIT*/): number {
-        var price,
+        let price,
             basePrice = this.market.getQuotedPrice(term) / this.market.params.standardLotQuantity,
             qualityPremium = this.params.availableQualities[ENUMS.QUALITY[quality]].premium;
 
@@ -129,7 +129,7 @@ export class Supplier<T extends Material> extends IObject.IObject {
             return false;
         }
 
-        var orderValue: number,
+        let orderValue: number,
             price: number;
 
         // 9di bli moujoud matmchich blach

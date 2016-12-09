@@ -1,14 +1,14 @@
-﻿var winston = require('winston');
-var expressWinston = require('express-winston');
+﻿let winston = require('winston');
+let expressWinston = require('express-winston');
 
 winston.emitErrs = true;
 
 
-var date = (new Date()).toLocaleString().replace(/:/g, "-");
-var suffix = '@' + date + ".log";
+let date = (new Date()).toLocaleString().replace(/:/g, "-");
+let suffix = '@' + date + ".log";
 
 
-var wLogger = new (expressWinston.logger)({
+let wLogger = new (expressWinston.logger)({
     exitOnError: false,
 
     transports: [

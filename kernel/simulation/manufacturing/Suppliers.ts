@@ -6,7 +6,7 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 export default function create(): Supplier<RawMaterial>[] {
 
-    var supplierA1 = new Supplier<RawMaterial>({
+    let supplierA1 = new Supplier<RawMaterial>({
         supplierID: "0",
         id: "Supplier1",
         label: "Supplier1",

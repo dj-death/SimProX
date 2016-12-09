@@ -1,7 +1,7 @@
 "use strict";
-var Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
+const Manufacturing_1 = require('../../engine/ComputeEngine/Manufacturing');
 function create() {
-    var rmWarehouse = new Manufacturing_1.RMWarehouse({
+    let rmWarehouse = new Manufacturing_1.RMWarehouse({
         id: "rmWarehouse1",
         label: "rmWarehouse1",
         warehouseID: "0",

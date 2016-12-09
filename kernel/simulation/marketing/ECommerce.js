@@ -1,8 +1,8 @@
 "use strict";
-var Marketing_1 = require('../../engine/ComputeEngine/Marketing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
+const Marketing_1 = require('../../engine/ComputeEngine/Marketing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
 function create() {
-    var eCommerce = new Marketing_1.ECommerce({
+    let eCommerce = new Marketing_1.ECommerce({
         id: "eCommerce1",
         label: "eCommerce1",
         eCommerceID: "0",

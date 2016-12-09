@@ -185,7 +185,7 @@ export default class Machinery extends IObject.IObject {
 
     
     get machinesEfficiencyAvg(): number {
-        var avg = Utils.sums(this.machines.toArray(), "efficiency", "isInstalled", true, null, "=", 4) / this.machinesNb;
+        let avg = Utils.sums(this.machines.toArray(), "efficiency", "isInstalled", true, null, "=", 4) / this.machinesNb;
 
         return Utils.round(avg, 4);
     }
@@ -238,7 +238,7 @@ export default class Machinery extends IObject.IObject {
 
     // externe so influenced by inflation
     get maintenanceCost(): number {
-        var cost: number;
+        let cost: number;
 
         let maintenanceHourlyCost = Utils.round(this.params.costs.maintenanceHourlyCost * this.economy.producerPriceBase100Index / 100, 2);
         let overContractedMaintenanceHourlyCost = Utils.round(this.params.costs.overContractedMaintenanceHourlyCost * this.economy.producerPriceBase100Index / 100, 2);
@@ -254,7 +254,7 @@ export default class Machinery extends IObject.IObject {
     }
 
     get effectiveAvailableHoursNb(): number {
-        var value;
+        let value;
 
         value = this.theoreticalAvailableHoursNb - this.maintenancePlannedTotalHoursNb - this.maintenanceOverContractedHoursNb;
 
@@ -265,7 +265,7 @@ export default class Machinery extends IObject.IObject {
     }
 
     get CO2PrimaryFootprintHeat(): number {
-        var total = Utils.sums(this.machines, "CO2PrimaryFootprintHeat", "isInstalled", true);
+        let total = Utils.sums(this.machines, "CO2PrimaryFootprintHeat", "isInstalled", true);
 
         return total;
     }
@@ -314,7 +314,7 @@ export default class Machinery extends IObject.IObject {
     setShiftLevel(shiftLevel: ENUMS.SHIFT_LEVEL) { 
         this.onBeforeReady(); // at this point we have machines nb sync so let install
 
-        if (!Number.isInteger(shiftLevel)) {
+        if (!Utils.isInteger(shiftLevel)) {
             shiftLevel = Math.round(shiftLevel);
         }
 
@@ -399,7 +399,7 @@ export default class Machinery extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(boughtNb)) {
+        if (!Utils.isInteger(boughtNb)) {
             boughtNb = Math.round(boughtNb);
         }
 
@@ -464,7 +464,7 @@ export default class Machinery extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(soldNb)) {
+        if (!Utils.isInteger(soldNb)) {
             soldNb = Math.round(soldNb);
         }
 
@@ -519,7 +519,7 @@ export default class Machinery extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(hoursByMachineNb)) {
+        if (!Utils.isInteger(hoursByMachineNb)) {
             hoursByMachineNb = Math.round(hoursByMachineNb);
         }
 
@@ -549,7 +549,7 @@ export default class Machinery extends IObject.IObject {
         // The cost of this work (which may need to be done at the emergency rate) 
         // can then be added to your quarterly insurance claim provided that you have the appropriate insurance.
         // Your insurer's assessment of lost sales first considers Product 3 in the EU, then Nafta and finally the internet; then Product 2 and finally Product 1, until all lost sales specifically attributable to loss of machine capacity are covered.
-        var losses = Utils.sums(this.machines, "catastrophicFailuresHoursNb") * 0;
+        let losses = Utils.sums(this.machines, "catastrophicFailuresHoursNb") * 0;
 
         this.insurance && this.insurance.claims(losses);
     }

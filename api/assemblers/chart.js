@@ -2,7 +2,7 @@
 /*
  所有chart
  */
-var consts = require('../consts');
+let consts = require('../consts');
 //Market Share
 function marketShareInValue(allResults) {
     return generateChartData(allResults, function (company) {
@@ -48,23 +48,23 @@ function returnOnInvestment(allResults) {
 }
 exports.returnOnInvestment = returnOnInvestment;
 function investmentsVersusBudget(allResults, simulationSpan) {
-    var companyNum = allResults[allResults.length - 1].p_Market.m_CompaniesCount;
-    var result = {
+    let companyNum = allResults[allResults.length - 1].p_Market.m_CompaniesCount;
+    let result = {
         companyNames: [],
         chartData: [],
         periods: []
     };
-    for (var i = 4; i < allResults.length; i++) {
-        var onePeriodResult = allResults[i];
+    for (let i = 4; i < allResults.length; i++) {
+        let onePeriodResult = allResults[i];
         result.chartData.push([]);
         result.periods.push(onePeriodResult.period);
-        for (var j = 0; j < companyNum; j++) {
-            var company = onePeriodResult.p_Companies[j];
-            var companyName = company.c_CompanyName;
+        for (let j = 0; j < companyNum; j++) {
+            let company = onePeriodResult.p_Companies[j];
+            let companyName = company.c_CompanyName;
             if (result.companyNames.length <= j) {
                 result.companyNames.push(companyName);
             }
-            var percentage = (i + 1) / simulationSpan
+            let percentage = (i + 1) / simulationSpan
                 * (company.c_TotalInvestmentBudget - company.c_FutureXtraBudget);
             if (percentage > 0) {
                 percentage = company.c_CumulatedInvestments / percentage * 100;
@@ -107,7 +107,7 @@ function totalInventoryAtTrade(allResults) {
 exports.totalInventoryAtTrade = totalInventoryAtTrade;
 //segment leader top 5
 function segmentsLeadersByValue(allResults, segment) {
-    var result = [];
+    let result = [];
     /*allResults.forEach(function (onePeriodResult) {
         let segmentNameAndIndex = config.segmentNameAndIndex;
         let segmentIndex = segmentNameAndIndex[segment];
@@ -158,16 +158,16 @@ function netMarketPrice(allResults) {
 exports.netMarketPrice = netMarketPrice;
 ;
 function segmentValueShareTotalMarket(allResults) {
-    var currentPeriodIndex = allResults.length - 1;
-    var period = allResults[currentPeriodIndex];
-    var market = period.p_Market;
+    let currentPeriodIndex = allResults.length - 1;
+    let period = allResults[currentPeriodIndex];
+    let market = period.p_Market;
     //there are only 6 segments
-    var segmentNum = consts.ConsumerSegmentsMaxTotal - 1;
+    let segmentNum = consts.ConsumerSegmentsMaxTotal - 1;
     //let segmentNames = config.segmentNames;
-    var results = {
+    let results = {
         chartData: []
     };
-    for (var i = 0; i < segmentNum; i++) {
+    for (let i = 0; i < segmentNum; i++) {
         //let segmentName = segmentNames[i];
         results.chartData.push({
             segmentName: i,
@@ -179,14 +179,14 @@ function segmentValueShareTotalMarket(allResults) {
 exports.segmentValueShareTotalMarket = segmentValueShareTotalMarket;
 ;
 function perceptionMap(allResults, exogenous) {
-    var result = {
+    let result = {
         periods: [],
         exogenous: []
     };
     //Exogenous
-    var exoSegmentsIdealPoints = exogenous.exo_SegmentsIdealPoints;
-    for (var p = 0; p < exoSegmentsIdealPoints.length; p++) {
-        var point = exoSegmentsIdealPoints[p];
+    let exoSegmentsIdealPoints = exogenous.exo_SegmentsIdealPoints;
+    for (let p = 0; p < exoSegmentsIdealPoints.length; p++) {
+        let point = exoSegmentsIdealPoints[p];
         result.exogenous.push({
             segmentName: p,
             imagePerception: point[1],
@@ -194,28 +194,28 @@ function perceptionMap(allResults, exogenous) {
         });
     }
     allResults.forEach(function (onePeriodResult) {
-        var perviousPeriodResult;
+        let perviousPeriodResult;
         if (onePeriodResult.period != -3) {
             perviousPeriodResult = allResults[onePeriodResult.period + 2];
         }
         else {
             perviousPeriodResult = undefined;
         }
-        var periodReport = {
+        let periodReport = {
             period: onePeriodResult.period,
             allCompanyData: []
         };
-        for (var i = 0; i < onePeriodResult.p_Companies.length; i++) {
-            var company = onePeriodResult.p_Companies[i];
-            var companyName = company.c_CompanyName;
-            var companyData = {
+        for (let i = 0; i < onePeriodResult.p_Companies.length; i++) {
+            let company = onePeriodResult.p_Companies[i];
+            let companyName = company.c_CompanyName;
+            let companyData = {
                 companyName: companyName,
                 brands: [],
                 SKUs: []
             };
             //brands data
-            for (var j = 0; j < onePeriodResult.p_Brands.length; j++) {
-                var brand = onePeriodResult.p_Brands[j];
+            for (let j = 0; j < onePeriodResult.p_Brands.length; j++) {
+                let brand = onePeriodResult.p_Brands[j];
                 if (company.c_CompanyID === brand.b_ParentCompanyID) {
                     companyData.brands.push({
                         brandName: brand.b_BrandName,
@@ -231,12 +231,12 @@ function perceptionMap(allResults, exogenous) {
 }
 exports.perceptionMap = perceptionMap;
 function inventoryReport(allResults) {
-    var periodResult = allResults[allResults.length - 1];
-    var result = [];
-    for (var i = 0; i < periodResult.p_Companies.length; i++) {
-        var company = periodResult.p_Companies[i];
-        var companyName = company.c_CompanyName;
-        var companyData = {
+    let periodResult = allResults[allResults.length - 1];
+    let result = [];
+    for (let i = 0; i < periodResult.p_Companies.length; i++) {
+        let company = periodResult.p_Companies[i];
+        let companyName = company.c_CompanyName;
+        let companyData = {
             companyName: companyName,
             companyId: company.c_CompanyID,
             SKUs: []
@@ -257,10 +257,10 @@ function inventoryReport(allResults) {
     function getSKUInventory(SKU) {
         if (!SKU)
             throw new Error("Invalid parameter SKU.");
-        var result = [];
+        let result = [];
         //FMCG can keep stocks in 3 periods
-        for (var i = 2; i >= 0; i--) {
-            var totalStock = SKU.u_ps_FactoryStocks[i].s_ps_Volume + SKU.u_ps_WholesaleStocks[i].s_ps_Volume + SKU.u_ps_RetailStocks[i].s_ps_Volume;
+        for (let i = 2; i >= 0; i--) {
+            let totalStock = SKU.u_ps_FactoryStocks[i].s_ps_Volume + SKU.u_ps_WholesaleStocks[i].s_ps_Volume + SKU.u_ps_RetailStocks[i].s_ps_Volume;
             totalStock = totalStock * consts.ActualSize[SKU.u_PackSize];
             result.push({
                 // 'FMCG': [
@@ -442,22 +442,22 @@ function prepareSKUTooltips(currentPeriodResult, perviousPeriodResult, SKUID) {
  * @return {Object} chart data
  */
 function generateChartData(allResults, dataExtractor) {
-    var lastPeriodResult = allResults[allResults.length - 1];
-    var companyNum = lastPeriodResult.companies.length;
-    var result = {
+    let lastPeriodResult = allResults[allResults.length - 1];
+    let companyNum = lastPeriodResult.companies.length;
+    let result = {
         periods: [],
         companyNames: [],
         chartData: []
     };
-    for (var i = 0; i < allResults.length; i++) {
-        var onePeriodResult = allResults[i];
-        var periodId = onePeriodResult.period;
-        var environnement = onePeriodResult.environnement;
+    for (let i = 0; i < allResults.length; i++) {
+        let onePeriodResult = allResults[i];
+        let periodId = onePeriodResult.period;
+        let environnement = onePeriodResult.environnement;
         result.periods.push(periodId);
-        var periodChartData = [];
-        for (var j = 0; j < companyNum; j++) {
-            var company = onePeriodResult.companies[j];
-            var companyName = company.c_CompanyName;
+        let periodChartData = [];
+        for (let j = 0; j < companyNum; j++) {
+            let company = onePeriodResult.companies[j];
+            let companyName = company.c_CompanyName;
             if (result.companyNames.indexOf(companyName) === -1) {
                 result.companyNames.push(companyName);
             }
@@ -529,7 +529,7 @@ function extractMarketEvolutionChartData(allResults, dataExtractor) {
 }
 function extractChartData(results, settings) {
     //生成chart数据
-    var _marketShareInValue = marketShareInValue(results);
+    let _marketShareInValue = marketShareInValue(results);
     /* let _marketShareInVolume = marketShareInVolume(results);
      let _mindSpaceShare = mindSpaceShare(results);
      let _shelfSpaceShare = shelfSpaceShare(results);

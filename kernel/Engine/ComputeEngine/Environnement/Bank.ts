@@ -54,13 +54,13 @@ export default class Bank extends IObject.IObject {
     }
 
     get authorisedOverdraftInterestRate(): number {
-        var baseRate = this.interestRate;
+        let baseRate = this.interestRate;
 
         return baseRate * (1 + this.params.authorisedOverdraftPremiumRate);
     }
 
     get unAuthorisedOverdraftInterestRate(): number {
-        var baseRate = this.interestRate;
+        let baseRate = this.interestRate;
 
         return baseRate * (1 + this.params.unAuthorisedOverdraftPremiumRate);
     }
@@ -70,8 +70,8 @@ export default class Bank extends IObject.IObject {
     }
 
     get termDepositCreditorInterestRate(): number {
-        var baseRate = this.interestRate;
-        var termDepositPremiumRate = this.params.termDepositPremiumRate;
+        let baseRate = this.interestRate;
+        let termDepositPremiumRate = this.params.termDepositPremiumRate;
 
         return baseRate * (1 + termDepositPremiumRate);
     }
@@ -89,13 +89,13 @@ export default class Bank extends IObject.IObject {
     // helpers
 
     calcAuthorisedOverdraftLimit(companyFile: ENUMS.Company_BankFile): number {
-        var limit: number;
+        let limit: number;
 
-        var property = companyFile.property || 0;
-        var inventories = companyFile.inventories || 0;
-        var tradeReceivables = companyFile.tradeReceivables || 0;
-        var tradePayables = companyFile.tradePayables || 0;
-        var taxDue = companyFile.taxDue || 0;
+        let property = companyFile.property || 0;
+        let inventories = companyFile.inventories || 0;
+        let tradeReceivables = companyFile.tradeReceivables || 0;
+        let tradePayables = companyFile.tradePayables || 0;
+        let taxDue = companyFile.taxDue || 0;
 
         limit = property * 0.5;
         limit += inventories * 0.5;

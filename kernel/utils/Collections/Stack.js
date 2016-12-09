@@ -1,6 +1,6 @@
 "use strict";
-var LinkedList_1 = require('./LinkedList');
-var Stack = (function () {
+const LinkedList_1 = require('./LinkedList');
+class Stack {
     /**
      * Creates an empty Stack.
      * @class A Stack is a Last-In-First-Out (LIFO) data structure, the last
@@ -8,7 +8,7 @@ var Stack = (function () {
      * implementation uses a linked list as a container.
      * @constructor
      */
-    function Stack() {
+    constructor() {
         this.list = new LinkedList_1.default();
     }
     /**
@@ -16,41 +16,41 @@ var Stack = (function () {
      * @param {Object} elem the element to be pushed onto this stack.
      * @return {boolean} true if the element was pushed or false if it is undefined.
      */
-    Stack.prototype.push = function (elem) {
+    push(elem) {
         return this.list.add(elem, 0);
-    };
+    }
     /**
      * Pushes an item onto the top of this stack.
      * @param {Object} elem the element to be pushed onto this stack.
      * @return {boolean} true if the element was pushed or false if it is undefined.
      */
-    Stack.prototype.add = function (elem) {
+    add(elem) {
         return this.list.add(elem, 0);
-    };
+    }
     /**
      * Removes the object at the top of this stack and returns that object.
      * @return {*} the object at the top of this stack or undefined if the
      * stack is empty.
      */
-    Stack.prototype.pop = function () {
+    pop() {
         return this.list.removeElementAtIndex(0);
-    };
+    }
     /**
      * Looks at the object at the top of this stack without removing it from the
      * stack.
      * @return {*} the object at the top of this stack or undefined if the
      * stack is empty.
      */
-    Stack.prototype.peek = function () {
+    peek() {
         return this.list.first();
-    };
+    }
     /**
      * Returns the number of elements in this stack.
      * @return {number} the number of elements in this stack.
      */
-    Stack.prototype.size = function () {
+    size() {
         return this.list.size();
-    };
+    }
     /**
      * Returns true if this stack contains the specified element.
      * <p>If the elements inside this stack are
@@ -69,23 +69,23 @@ var Stack = (function () {
      * @return {boolean} true if this stack contains the specified element,
      * false otherwise.
      */
-    Stack.prototype.contains = function (elem, equalsFunction) {
+    contains(elem, equalsFunction) {
         return this.list.contains(elem, equalsFunction);
-    };
+    }
     /**
      * Checks if this stack is empty.
      * @return {boolean} true if and only if this stack contains no items; false
      * otherwise.
      */
-    Stack.prototype.isEmpty = function () {
+    isEmpty() {
         return this.list.isEmpty();
-    };
+    }
     /**
      * Removes all of the elements from this stack.
      */
-    Stack.prototype.clear = function () {
+    clear() {
         this.list.clear();
-    };
+    }
     /**
      * Executes the provided function once for each element present in this stack in
      * LIFO order.
@@ -93,11 +93,10 @@ var Stack = (function () {
      * invoked with one argument: the element value, to break the iteration you can
      * optionally return false.
      */
-    Stack.prototype.forEach = function (callback) {
+    forEach(callback) {
         this.list.forEach(callback);
-    };
-    return Stack;
-}());
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Stack; // End of stack
 //# sourceMappingURL=Stack.js.map

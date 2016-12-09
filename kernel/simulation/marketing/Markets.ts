@@ -3,52 +3,52 @@
 import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 import game = require('../Games');
-var periodDaysNb = game.daysNbByPeriod;
+let periodDaysNb = game.daysNbByPeriod;
 
 
 
-var advertisingPayments: ENUMS.PaymentArray = {
+let advertisingPayments: ENUMS.PaymentArray = {
     "THREE_MONTH": {
         credit: ENUMS.CREDIT.THREE_MONTH,
         part: 1
     }
 };
 
-var defaultPayments = {
+let defaultPayments = {
     advertising: advertisingPayments  
 };
 
-var p1AdsRange = {
+let p1AdsRange = {
     threshold: 1000,
     mediane: 30000,
     wearout: 99000
 };
 
-var p2AdsRange = {
+let p2AdsRange = {
     threshold: 1000,
     mediane: 35000,
     wearout: 99000
 };
 
-var p3AdsRange = {
+let p3AdsRange = {
     threshold: 1000,
     mediane: 50000,
     wearout: 99000
 };
 
-var p1QualityRange = {
+let p1QualityRange = {
     threshold: 1,
     mediane: 4.5,
     wearout: 6
 };
 
-var p2QualityRange = {
+let p2QualityRange = {
     threshold: 1,
     mediane: 4.5,
     wearout: 6
 };
 
-var p3QualityRange = {
+let p3QualityRange = {
     threshold: 1,
     mediane: 4.5,
     wearout: 6
@@ -65,7 +65,7 @@ let basicDemandMatrix = [
 
 export default function create(): Market[] {
 
-    var euroMarket = new Market({
+    let euroMarket = new Market({
         id: "market1",
         label: "market1",
 
@@ -162,7 +162,7 @@ export default function create(): Market[] {
 
     });
 
-    var naftaMarket = new Market({
+    let naftaMarket = new Market({
         id: "market2",
         label: "market2",
 
@@ -256,7 +256,7 @@ export default function create(): Market[] {
         
     });
 
-    var internetMarket = new Market({
+    let internetMarket = new Market({
         id: "market3",
         label: "market3",
 

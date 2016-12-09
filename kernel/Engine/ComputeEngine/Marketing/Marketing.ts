@@ -45,7 +45,7 @@ export default class Marketing {
 
     register(objects: IObject.IObject[]) {
 
-        var i = 0,
+        let i = 0,
             len = objects.length,
             object;
 
@@ -159,7 +159,7 @@ export default class Marketing {
 
         setImmediate(function () {
 
-            for (var key in that) {
+            for (let key in that) {
                 if (!Marketing.prototype.hasOwnProperty(key)) {
                     continue;
                 }

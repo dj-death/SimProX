@@ -1,14 +1,14 @@
-﻿var winston = require('winston');
+﻿let winston = require('winston');
 winston.emitErrs = true;
 
 
-var date = (new Date()).toLocaleString().replace(/:/g, "-");
-var suffix = '@' + date + ".log";
+let date = (new Date()).toLocaleString().replace(/:/g, "-");
+let suffix = '@' + date + ".log";
 
 const NODE_ENV = global.process.env.NODE_ENV;
 
 
-var wLogger = new (winston.Logger)({
+let wLogger = new (winston.Logger)({
     exitOnError: false,
 
     transports: [

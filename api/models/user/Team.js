@@ -2,15 +2,15 @@
 /*!
  * Module dependencies
  */
-var mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
-var Schema = mongoose.Schema;
-var schemaObjectId = Schema.Types.ObjectId;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
+let mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
+let Schema = mongoose.Schema;
+let schemaObjectId = Schema.Types.ObjectId;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
 /**
  * Mongoose schema
  */
-var teamSchema = new Schema({
+let teamSchema = new Schema({
     name: { type: String },
     description: { type: String },
     creator: { type: schemaObjectId, ref: 'User' },
@@ -41,6 +41,6 @@ teamSchema.statics.updateValidations = function (req) {
 /**
  * Register Model
  */
-var Team = mongoose.model("Team", teamSchema);
+let Team = mongoose.model("Team", teamSchema);
 module.exports = Team;
 //# sourceMappingURL=Team.js.map

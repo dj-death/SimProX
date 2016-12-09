@@ -1,20 +1,20 @@
 "use strict";
-var Marketing_1 = require('../../engine/ComputeEngine/Marketing');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var salesForceDefaultCostsParams = {
+const Marketing_1 = require('../../engine/ComputeEngine/Marketing');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let salesForceDefaultCostsParams = {
     minSupportPerAgent: 5000,
     dismissal: 5000,
     recruitment: 7500,
     training: 0
 };
-var defaultPayments = {
+let defaultPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 function create() {
-    var euroAgents = new Marketing_1.SalesForce({
+    let euroAgents = new Marketing_1.SalesForce({
         id: "agent1",
         label: "agent1",
         agentID: "0",
@@ -31,7 +31,7 @@ function create() {
         payments: defaultPayments,
         attritionBaseRate: 0
     });
-    var naftaDistributors = new Marketing_1.SalesForce({
+    let naftaDistributors = new Marketing_1.SalesForce({
         id: "agent2",
         label: "agent2",
         agentID: "1",
@@ -48,7 +48,7 @@ function create() {
         payments: defaultPayments,
         attritionBaseRate: 0
     });
-    var internetDistributor = new Marketing_1.SalesForce({
+    let internetDistributor = new Marketing_1.SalesForce({
         id: "agent3",
         label: "agent3",
         agentID: "2",

@@ -14,10 +14,10 @@ import ENUMS = require('../ENUMS');
 import console = require('../../../utils/logger');
 import Utils = require('../../../utils/Utils');
 
-var extraString = require('string');
+let extraString = require('string');
 
-var $jStat = require("jstat");
-var jStat = $jStat.jStat;
+let $jStat = require("jstat");
+let jStat = $jStat.jStat;
 
 
 interface WebsiteCosts {
@@ -300,7 +300,7 @@ export default class ECommerce extends IObject.IObject {
     }
 
     get websiteConsumerStarRatings(): string {
-        var starsNb = Math.round(this.websiteLevel);
+        let starsNb = Math.round(this.websiteLevel);
 
         return extraString('').padLeft(starsNb, '*').s;
     }
@@ -400,7 +400,7 @@ export default class ECommerce extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(portsNb)) {
+        if (!Utils.isInteger(portsNb)) {
             portsNb = Math.round(portsNb);
         }
 

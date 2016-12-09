@@ -27,9 +27,9 @@ export function clean (decision) {
 }
 
 function removeEmptyBrand(decision) {
-    var tempBrand = [];
-    for (var j = 0; j < decision.d_BrandsDecisions.length; j++) {
-        var brand = decision.d_BrandsDecisions[j];
+    let tempBrand = [];
+    for (let j = 0; j < decision.d_BrandsDecisions.length; j++) {
+        let brand = decision.d_BrandsDecisions[j];
 
         if (brand.d_BrandID !== 0) {
             tempBrand.push(brand);
@@ -39,8 +39,8 @@ function removeEmptyBrand(decision) {
 }
 
 function cleanBrandName(decision) {
-    for (var j = 0; j < decision.d_BrandsDecisions.length; j++) {
-        var brand = decision.d_BrandsDecisions[j];
+    for (let j = 0; j < decision.d_BrandsDecisions.length; j++) {
+        let brand = decision.d_BrandsDecisions[j];
         brand.d_BrandName = brand.d_BrandName
             .filter(function (n) { return n !== '\u0000' })
             .join('').trim();
@@ -48,14 +48,14 @@ function cleanBrandName(decision) {
 }
 
 function removeEmptySKU(decision) {
-    for (var j = 0; j < decision.d_BrandsDecisions.length; j++) {
-        var brand = decision.d_BrandsDecisions[j];
+    for (let j = 0; j < decision.d_BrandsDecisions.length; j++) {
+        let brand = decision.d_BrandsDecisions[j];
 
         if (brand.d_BrandID !== 0) {
             //clean SKU data
-            var tempSku = [];
-            for (var i = 0; i < brand.d_SKUsDecisions.length; i++) {
-                var sku = brand.d_SKUsDecisions[i];
+            let tempSku = [];
+            for (let i = 0; i < brand.d_SKUsDecisions.length; i++) {
+                let sku = brand.d_SKUsDecisions[i];
                 if (sku.d_SKUID !== 0) {
                     tempSku.push(sku);
                 }
@@ -66,10 +66,10 @@ function removeEmptySKU(decision) {
 }
 
 function cleanSKUName(decision) {
-    for (var j = 0; j < decision.d_BrandsDecisions.length; j++) {
-        var brand = decision.d_BrandsDecisions[j];
-        for (var i = 0; i < brand.d_SKUsDecisions.length; i++) {
-            var sku = brand.d_SKUsDecisions[i];
+    for (let j = 0; j < decision.d_BrandsDecisions.length; j++) {
+        let brand = decision.d_BrandsDecisions[j];
+        for (let i = 0; i < brand.d_SKUsDecisions.length; i++) {
+            let sku = brand.d_SKUsDecisions[i];
             sku.d_SKUName = sku.d_SKUName
                 .filter(function (n) { return n !== '\u0000' })
                 .join('').trim();

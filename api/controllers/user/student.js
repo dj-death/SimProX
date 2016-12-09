@@ -1,24 +1,24 @@
 "use strict";
-var userModel = require('../../models/user/User');
-var userRoleModel = require('../../models/user/UserRole');
-var teamModel = require('../../models/user/Team');
-var fileUploadModel = require('../../models/user/fileupload');
-var MKError = require('../../utils/error-code');
-var _ = require('lodash');
-var request = require('request');
-var Q = require('q');
-var nodeBB = require('../../utils/nodeBB');
+const userModel = require('../../models/user/User');
+const userRoleModel = require('../../models/user/UserRole');
+const teamModel = require('../../models/user/Team');
+const fileUploadModel = require('../../models/user/fileupload');
+const MKError = require('../../utils/error-code');
+let _ = require('lodash');
+let request = require('request');
+let Q = require('q');
+const nodeBB = require('../../utils/nodeBB');
 //let ObjectId = require('mongoose').Types.ObjectId;
-var pickedUpdatedKeys = ['gender', 'birthday', 'firstName', 'lastName', 'idcardNumber', 'mobilePhone', 'qq', 'gameMarksimosPosition',
+let pickedUpdatedKeys = ['gender', 'birthday', 'firstName', 'lastName', 'idcardNumber', 'mobilePhone', 'qq', 'gameMarksimosPosition',
     'majorsDegree', 'dateOfEnterCollege', 'dateOfGraduation', 'organizationOrUniversity', 'occupation', 'currentLocation',
     'country', 'state', 'city', 'district', 'street', 'websiteLanguage', 'workExperiences', 'LanguageSkills', 'eductionBackgrounds', 'societyExperiences'];
 function updateStudentB2CInfo(req, res, next) {
-    var validationErrors = userModel.userInfoValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
+    let validationErrors = userModel.userInfoValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var updatedUser = _.pick(req.body, pickedUpdatedKeys);
-    var promise = Q();
+    let updatedUser = _.pick(req.body, pickedUpdatedKeys);
+    let promise = Q();
     if (updatedUser.mobilePhone && req.user.mobilePhone !== updatedUser.mobilePhone) {
         updatedUser.phoneVerified = false;
         promise = userModel.findOneQ({ mobilePhone: req.body.mobilePhone })
@@ -55,7 +55,7 @@ function uploadStudentAvatar(req, res, next) {
 exports.uploadStudentAvatar = uploadStudentAvatar;
 ;
 function updateStudentB2CPassword(req, res, next) {
-    var validationErrors = userModel.passwordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
+    let validationErrors = userModel.passwordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -80,7 +80,7 @@ function updateStudentB2CPassword(req, res, next) {
 exports.updateStudentB2CPassword = updateStudentB2CPassword;
 ;
 function updateTeam(req, res, next) {
-    var validationErrors = teamModel.updateValidations(req);
+    let validationErrors = teamModel.updateValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -101,11 +101,11 @@ function updateTeam(req, res, next) {
 exports.updateTeam = updateTeam;
 ;
 function addStudentToTeam(req, res, next) {
-    var validationErrors = userModel.usernameValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
+    let validationErrors = userModel.usernameValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var userData = {};
+    let userData = {};
     userModel.findOneQ({ $or: [
             { 'username': req.body.username },
             { 'email': req.body.email }
@@ -151,11 +151,11 @@ function addStudentToTeam(req, res, next) {
 exports.addStudentToTeam = addStudentToTeam;
 ;
 function removeStudentToTeam(req, res, next) {
-    var validationErrors = userModel.userIdValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
+    let validationErrors = userModel.userIdValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var userData = {};
+    let userData = {};
     userModel.findByIdQ(req.params._id).then(function (resultUser) {
         if (!resultUser) {
             throw new Error('Cancel promise chains. Because User not found!');

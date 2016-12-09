@@ -1,28 +1,28 @@
 "use strict";
-var seminarModel = require('../../models/Seminar');
-var gameTokenModel = require('../../models/user/GameAuthToken');
-var userModel = require('../../models/user/User');
-var userRoleModel = require('../../models/user/UserRole');
-var teamModel = require('../../models/user/Team');
-var chatmessageModel = require('../../models/b2c/ChatMessage');
-var console = require('../../../kernel/utils/logger');
+const seminarModel = require('../../models/Seminar');
+const gameTokenModel = require('../../models/user/GameAuthToken');
+const userModel = require('../../models/user/User');
+const userRoleModel = require('../../models/user/UserRole');
+const teamModel = require('../../models/user/Team');
+const chatmessageModel = require('../../models/b2c/ChatMessage');
+const console = require('../../../kernel/utils/logger');
 //let consts = require('../../../consts.js');
-var utility = require('../../utils/utility');
-var socketio = require('../../utils/socketio');
-var util = require('util');
+const utility = require('../../utils/utility');
+const socketio = require('../../utils/socketio');
+let util = require('util');
 /**
  * Seminar API for Facilitator
  */
 function addSeminar(req, res, next) {
-    var validationErrors = seminarModel.createValidations(req);
+    let validationErrors = seminarModel.createValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
     if (!Array.isArray(req.body.roundTime)) {
         return res.status(400).send({ message: 'round time is wrong format, should be int' });
     }
-    var facilitatorId = req.user._id;
-    var seminar = {
+    let facilitatorId = req.user._id;
+    let seminar = {
         facilitatorId: facilitatorId,
         isInitialized: false,
         seminarCode: req.body.seminarCode,
@@ -33,8 +33,8 @@ function addSeminar(req, res, next) {
         companies: [],
         roundTime: []
     };
-    var companyNameList = utility.createCompanyArray(seminar.company_num);
-    for (var i = 0; i < seminar.company_num; i++) {
+    let companyNameList = utility.createCompanyArray(seminar.company_num);
+    for (let i = 0; i < seminar.company_num; i++) {
         seminar.companies.push({
             companyId: i + 1,
             companyName: companyNameList[i],
@@ -42,15 +42,15 @@ function addSeminar(req, res, next) {
             teamList: []
         });
     }
-    var tempRoundTime = {};
+    let tempRoundTime = {};
     req.body.roundTime.forEach(function (time, index) {
         if (typeof time.period !== 'undefined' && typeof time.hour !== 'undefined') {
             tempRoundTime[time.period] = time.hour;
         }
     });
     console.warn('seminar.simulation_span', seminar.simulation_span);
-    for (var j = 1; j <= seminar.simulation_span; j++) {
-        var oneRoundTime = {
+    for (let j = 1; j <= seminar.simulation_span; j++) {
+        let oneRoundTime = {
             period: j,
             roundTimeHour: tempRoundTime[j] || 0,
             lockDecisionTime: seminar.companies
@@ -71,7 +71,7 @@ function addSeminar(req, res, next) {
             numOfUsedLicense: dbFacilitator.numOfUsedLicense + 1
         });
     }).then(function (result) {
-        var numAffected = result.nModified;
+        let numAffected = result.nModified;
         if (numAffected !== 1) {
             throw new Error("Cancel promise chains. update facilitator failed, or update more than one facilitator.");
         }
@@ -97,13 +97,13 @@ function addSeminar(req, res, next) {
 exports.addSeminar = addSeminar;
 ;
 function updateSeminar(req, res, next) {
-    var validationErrors = seminarModel.updateValidations(req);
+    let validationErrors = seminarModel.updateValidations(req);
     if (validationErrors) {
         return res.status(400).send({
             message: validationErrors, success: false
         });
     }
-    var seminarId = req.body._id;
+    let seminarId = req.body._id;
     seminarModel.findOneQ({ _id: seminarId }).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error("Cancel promise chains. seminar not found.");
@@ -119,13 +119,13 @@ function updateSeminar(req, res, next) {
 exports.updateSeminar = updateSeminar;
 ;
 function removeSeminar(req, res, next) {
-    var validationErrors = seminarModel.removeValidations(req);
+    let validationErrors = seminarModel.removeValidations(req);
     if (validationErrors) {
         return res.status(400).send({
             message: validationErrors, success: false
         });
     }
-    var seminarId = req.params.seminar_id;
+    let seminarId = req.params.seminar_id;
     seminarModel.findOneQ({ seminarId: seminarId }).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error('Cancel promise chains. Because Seminar not found !');
@@ -143,7 +143,7 @@ function removeSeminar(req, res, next) {
 exports.removeSeminar = removeSeminar;
 ;
 function updateSeminarUnlockDecision(req, res, next) {
-    var validationErrors = seminarModel.seminarIdValidations(req);
+    let validationErrors = seminarModel.seminarIdValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -175,14 +175,14 @@ exports.updateSeminarUnlockDecision = updateSeminarUnlockDecision;
 function assignStudentToSeminar(req, res, next) {
     req.checkBody('seminar_id', 'Invalid seminar id.').notEmpty().isInt();
     req.checkBody('company_id', 'Invalid company id.').notEmpty().isInt();
-    var seminarId = req.body.seminar_id;
-    var companyId = +req.body.company_id;
+    let seminarId = req.body.seminar_id;
+    let companyId = +req.body.company_id;
     //let validationErrors = req.validationErrors();
-    var validationErrors = seminarModel.studentEmailValidations(req);
+    let validationErrors = seminarModel.studentEmailValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var userData;
+    let userData;
     userModel.findOneQ({ $or: [
             { username: req.body.username },
             { email: req.body.email }
@@ -196,11 +196,11 @@ function assignStudentToSeminar(req, res, next) {
         if (!resultSeminar) {
             throw new Error('Cancel promise chains. Because Seminar not found !');
         }
-        var companies = resultSeminar.companies;
-        var isStudentAssignedToSeminar = false;
-        var isTeamAssignedToSeminar = false;
+        let companies = resultSeminar.companies;
+        let isStudentAssignedToSeminar = false;
+        let isTeamAssignedToSeminar = false;
         if (req.body.studentemail !== '') {
-            for (var i = 0; i < companies.length; i++) {
+            for (let i = 0; i < companies.length; i++) {
                 if (companies[i].studentList.indexOf(userData.email) > -1) {
                     isStudentAssignedToSeminar = true;
                     throw new Error('Cancel promise chains. Because email have already assigned to this seminar!');
@@ -268,7 +268,7 @@ exports.assignStudentToSeminar = assignStudentToSeminar;
 ;
 function removeStudentFromSeminar(req, res, next) {
     req.checkBody('seminarId', 'Invalid seminar id.').notEmpty().isInt();
-    var email, teamid;
+    let email, teamid;
     if (req.body.studentemail !== '') {
         req.checkBody('studentemail', 'Invalid email.').notEmpty().isEmail();
         email = req.body.studentemail;
@@ -277,21 +277,21 @@ function removeStudentFromSeminar(req, res, next) {
         req.checkBody('teamid', 'User ID should be 24 characters').notEmpty().len(24, 24);
         teamid = req.body.teamid;
     }
-    var validationErrors = req.validationErrors();
+    let validationErrors = req.validationErrors();
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var seminarId = req.body.seminarId;
+    let seminarId = req.body.seminarId;
     seminarModel.findOneQ({ seminarId: seminarId }).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error("seminar " + seminarId + " doesn't exist.");
         }
-        var companies = resultSeminar.companies;
+        let companies = resultSeminar.companies;
         if (req.body.studentemail !== '') {
-            for (var i = 0; i < companies.length; i++) {
+            for (let i = 0; i < companies.length; i++) {
                 //if this student is in this company
                 if (companies[i].studentList.indexOf(email) > -1) {
-                    for (var j = 0; j < companies[i].studentList.length; j++) {
+                    for (let j = 0; j < companies[i].studentList.length; j++) {
                         if (companies[i].studentList[j] === email) {
                             companies[i].studentList.splice(j, 1);
                         }
@@ -336,7 +336,7 @@ function removeStudentFromSeminar(req, res, next) {
             });
         }
     }).then(function (result) {
-        var numberAffected = result[0];
+        let numberAffected = result[0];
         if (numberAffected !== 1) {
             throw new Error('Cancel promise chains. Because Because Update seminar failed. More or less than 1 record is updated. it should be only one !');
         }
@@ -348,10 +348,10 @@ function removeStudentFromSeminar(req, res, next) {
 exports.removeStudentFromSeminar = removeStudentFromSeminar;
 ;
 function getSeminarOfFacilitator(req, res, next) {
-    var facilitatorId = req.user._id;
-    var keywordFilter = req.query.filterKey || '';
-    var status = req.query.status || 'all';
-    var query = {};
+    let facilitatorId = req.user._id;
+    let keywordFilter = req.query.filterKey || '';
+    let status = req.query.status || 'all';
+    let query = {};
     query.$and = [
         { facilitatorId: facilitatorId }
     ];
@@ -359,8 +359,8 @@ function getSeminarOfFacilitator(req, res, next) {
         query.$and.push({ 'isInitialized': status });
     }
     if (keywordFilter) {
-        var strRegex = ".*[" + keywordFilter.split('').join('][') + "].*";
-        var regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
+        let strRegex = ".*[" + keywordFilter.split('').join('][') + "].*";
+        let regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
         query.$or = [
             { 'description': regex },
             { 'seminarId': regex },
@@ -368,9 +368,9 @@ function getSeminarOfFacilitator(req, res, next) {
         ];
     }
     seminarModel.find(query).sort({ seminarId: -1 }).execQ().then(function (allSeminars) {
-        var teamList = [];
-        var teamListHashTable = {};
-        var companyRoundTimeMap = {};
+        let teamList = [];
+        let teamListHashTable = {};
+        let companyRoundTimeMap = {};
         allSeminars.forEach(function (seminar) {
             seminar.companies.forEach(function (company) {
                 if (typeof company.teamList !== 'undefined') {
@@ -418,15 +418,15 @@ function getSeminarOfFacilitator(req, res, next) {
             allSeminars.forEach(function (seminarOld) {
                 if (seminarOld.companies.length > 0) {
                     if (typeof seminarOld.companies[0].companyId == 'undefined') {
-                        var companyList = [];
-                        for (var j = 0; j < seminarOld.companies.length; j++) {
+                        let companyList = [];
+                        for (let j = 0; j < seminarOld.companies.length; j++) {
                             if (typeof seminarOld.companies[j] !== 'undefined') {
-                                var companyNew = {
+                                let companyNew = {
                                     companyId: j + 1,
                                     companyName: String.fromCharCode('A'.charCodeAt(0) + j),
                                     studentList: []
                                 };
-                                for (var k = 0; k < seminarOld.companies[j].length; k++) {
+                                for (let k = 0; k < seminarOld.companies[j].length; k++) {
                                     companyNew.studentList.push(seminarOld.companies[j][k]);
                                 }
                                 companyList.push(companyNew);
@@ -445,7 +445,7 @@ function getSeminarOfFacilitator(req, res, next) {
 exports.getSeminarOfFacilitator = getSeminarOfFacilitator;
 ;
 function seminarInfoForFacilitator(req, res, next) {
-    var seminarId = req.params.seminar_id;
+    let seminarId = req.params.seminar_id;
     if (!seminarId) {
         return res.send(400, { message: "Invalid seminarId" });
     }
@@ -467,15 +467,15 @@ exports.seminarInfoForFacilitator = seminarInfoForFacilitator;
  * Seminar API for Student
  */
 function getSeminarList(req, res, next) {
-    var email = req.user.email;
-    var assignedSeminars = [];
+    let email = req.user.email;
+    let assignedSeminars = [];
     seminarModel.find({
         companies: { $elemMatch: { studentList: { $in: [email] } } },
         isInitialized: true
     }).sort({ isSimulationFinished: 1, seminarId: -1 }).execQ().then(function (allSeminars) {
-        for (var i = 0; i < allSeminars.length; i++) {
-            var seminar = allSeminars[i];
-            for (var j = 0; j < seminar.companies.length; j++) {
+        for (let i = 0; i < allSeminars.length; i++) {
+            let seminar = allSeminars[i];
+            for (let j = 0; j < seminar.companies.length; j++) {
                 if (typeof seminar.companies[j].studentList !== 'undefined') {
                     if (seminar.companies[j].studentList.indexOf(email) > -1) {
                         if (seminar.isInitialized) {
@@ -495,9 +495,9 @@ function getSeminarList(req, res, next) {
 exports.getSeminarList = getSeminarList;
 ;
 function chooseSeminarForStudent(req, res, next) {
-    var seminarId = req.query.seminar_id;
+    let seminarId = req.query.seminar_id;
     req.checkQuery('seminar_id', 'Invalid seminarId').isInt();
-    var errors = req.validationErrors();
+    let errors = req.validationErrors();
     if (errors) {
         return res.status(400).send('There have been validation errors: ' + util.inspect(errors), 400);
     }
@@ -506,7 +506,7 @@ function chooseSeminarForStudent(req, res, next) {
             return res.status(400).send({ message: "seminar " + seminarId + " doesn't exist." });
         }
         else {
-            var newGameToken = {
+            let newGameToken = {
                 userId: req.user._id,
                 gameId: userRoleModel.gameList.stratege.id,
                 seminarId: dbSeminar.seminarId
@@ -529,11 +529,11 @@ exports.chooseSeminarForStudent = chooseSeminarForStudent;
  * Seminar Socket.IO API
  */
 function sendChatMessageSeminar(req, res, next) {
-    var validationErrors = chatmessageModel.createValidations(req, req.user.role);
+    let validationErrors = chatmessageModel.createValidations(req, req.user.role);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var socketRoom;
+    let socketRoom;
     if (userRoleModel.roleList.facilitator.id === req.user.role) {
         socketRoom = req.body.seminarRoom;
     }
@@ -557,7 +557,7 @@ function sendChatMessageSeminar(req, res, next) {
 exports.sendChatMessageSeminar = sendChatMessageSeminar;
 ;
 function sendChatMessageSeminarCompany(req, res, next) {
-    var validationErrors = chatmessageModel.createValidations(req, req.user.role);
+    let validationErrors = chatmessageModel.createValidations(req, req.user.role);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }

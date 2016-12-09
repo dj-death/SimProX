@@ -148,9 +148,9 @@ export default class Capital extends IObject.IObject {
             return;
         }
 
-        var variationRate = Math.abs((this.initialSharesNb - this.sharesNbAtStartOfYear) / this.sharesNbAtStartOfYear);
-        var maxAllowedVariationRate = this.params.restrictions.capitalAnnualVariationLimitRate - variationRate;
-        var currPeriodMaxIssuedSharesNb = Math.ceil(maxAllowedVariationRate * this.sharesNbAtStartOfYear);
+        let variationRate = Math.abs((this.initialSharesNb - this.sharesNbAtStartOfYear) / this.sharesNbAtStartOfYear);
+        let maxAllowedVariationRate = this.params.restrictions.capitalAnnualVariationLimitRate - variationRate;
+        let currPeriodMaxIssuedSharesNb = Math.ceil(maxAllowedVariationRate * this.sharesNbAtStartOfYear);
 
         if (quantity > currPeriodMaxIssuedSharesNb) {
             this.issuedSharesNb = currPeriodMaxIssuedSharesNb;
@@ -167,9 +167,9 @@ export default class Capital extends IObject.IObject {
             return;
         }
 
-        var variationRate = Math.abs((this.initialSharesNb - this.sharesNbAtStartOfYear) / this.sharesNbAtStartOfYear);
-        var maxAllowedVariationRate = this.params.restrictions.capitalAnnualVariationLimitRate - variationRate;
-        var currPeriodMaxRepurchasedSharesNb = Math.ceil(maxAllowedVariationRate * this.sharesNbAtStartOfYear);
+        let variationRate = Math.abs((this.initialSharesNb - this.sharesNbAtStartOfYear) / this.sharesNbAtStartOfYear);
+        let maxAllowedVariationRate = this.params.restrictions.capitalAnnualVariationLimitRate - variationRate;
+        let currPeriodMaxRepurchasedSharesNb = Math.ceil(maxAllowedVariationRate * this.sharesNbAtStartOfYear);
 
         if (quantity > currPeriodMaxRepurchasedSharesNb) {
             this.repurchasedSharesNb = currPeriodMaxRepurchasedSharesNb;

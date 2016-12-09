@@ -17,11 +17,11 @@ import Utils = require('../../../utils/Utils');
 
 import Game = require('../../../simulation/Games');
 
-var everpolate = require('everpolate');
+let everpolate = require('everpolate');
 
-var linear = everpolate.linear;
+let linear = everpolate.linear;
 
-var linearSolver = require('linear-solve');
+let linearSolver = require('linear-solve');
 
 // TEST
 const UNIT_VALUES = [98.85, 157.18, 254.74];
@@ -246,10 +246,10 @@ class SubMarket extends IObject.IObject {
         this.restoreLastState(lastResults, lastDecs);
 
         // create warehouse
-        var warehouseID = "warehouse_" + this.params.id;
-        var initialExchangeRate = this.economy.currency.initialExchangeRate;
+        let warehouseID = "warehouse_" + this.params.id;
+        let initialExchangeRate = this.economy.currency.initialExchangeRate;
 
-        var storageCostPerProductUnit = this.params.costs.storageCostPerProductUnit * initialExchangeRate;
+        let storageCostPerProductUnit = this.params.costs.storageCostPerProductUnit * initialExchangeRate;
 
         this.warehouse = new Warehouse({
             id: warehouseID,
@@ -313,8 +313,8 @@ class SubMarket extends IObject.IObject {
     industryTotalSalesRevenue: number;
 
     get soldQ(): number {
-        var demandQ = this.orderedQ + this.lastPBacklogSoldQ;
-        var supplyQ = this.effectiveDeliveredQ + this.warehouse.openingQ - this.soldOffQ;
+        let demandQ = this.orderedQ + this.lastPBacklogSoldQ;
+        let supplyQ = this.effectiveDeliveredQ + this.warehouse.openingQ - this.soldOffQ;
 
         return Math.min(demandQ, supplyQ);
     }
@@ -727,7 +727,7 @@ class SubMarket extends IObject.IObject {
 
 
     get tradingReceipts(): number {
-        var currPeriodReceiptsRatio: number,
+        let currPeriodReceiptsRatio: number,
             credit = this.customerCredit,
             latePaymentsRate = 0;
 
@@ -779,7 +779,7 @@ class SubMarket extends IObject.IObject {
             return false;
         }
 
-        var value = quantity * price;
+        let value = quantity * price;
 
         this.price = price;
         this.advertisingBudget = adsBudget;
@@ -790,7 +790,7 @@ class SubMarket extends IObject.IObject {
 
         // TODO: develop it f(prix varia
         if (this.openingBacklogQ > 0) {
-            var backlogSoldQ = this.getOrdersOf(this.lastPBacklogQ, false); // false not a new order
+            let backlogSoldQ = this.getOrdersOf(this.lastPBacklogQ, false); // false not a new order
 
             this.openingBacklogQ -= backlogSoldQ;
             this.lastPBacklogSoldQ += backlogSoldQ;
@@ -814,7 +814,7 @@ class SubMarket extends IObject.IObject {
             this.orderedQ += quantity;
         }
 
-        var deliveredQ = this.warehouse.moveOut(quantity);
+        let deliveredQ = this.warehouse.moveOut(quantity);
 
         this.returnForRepair();
 
@@ -836,7 +836,7 @@ class SubMarket extends IObject.IObject {
     }
 
     returnForRepair() {
-        var returnedQ = this._calcReturnedQ();
+        let returnedQ = this._calcReturnedQ();
 
         this.product.returnForRepair(returnedQ);
     }
@@ -934,7 +934,7 @@ export default class Market extends IObject.IObject {
 
         this.salesForce.market = this;
 
-        var productCode: number,
+        let productCode: number,
             subMarket: SubMarket;
 
         this.subMarkets = [];
@@ -942,8 +942,8 @@ export default class Market extends IObject.IObject {
         for (let i = 0, len = products.length; i < len; i++) {
             productCode = products[i].params.code;
 
-            var id = this.params.id + "_" + products[i].params.id;
-            var params = Utils.ObjectApply({}, this.params, { id: id });
+            let id = this.params.id + "_" + products[i].params.id;
+            let params = Utils.ObjectApply({}, this.params, { id: id });
 
             let subMarketLastResults = [];
             let subMarketLastDecs = [];
@@ -1014,7 +1014,7 @@ export default class Market extends IObject.IObject {
     }
 
     get advertisingCost(): number {
-        var total,
+        let total,
             i = 0,
             len = this.subMarkets.length,
             budget;
@@ -1279,7 +1279,7 @@ export default class Market extends IObject.IObject {
             console.warn("Market %s @ containerCapacityUnitsNb params is not valid %d", this.params.label, containerCapacityUnitsNb);
         }
 
-        var subMarket = this.subMarkets[product.params.code];
+        let subMarket = this.subMarkets[product.params.code];
 
         return subMarket && subMarket.receiveFrom.apply(subMarket, arguments);
     }

@@ -1,4 +1,4 @@
-﻿var Mapping = {
+﻿let Mapping = {
 
     "A699": "reportDate",
 

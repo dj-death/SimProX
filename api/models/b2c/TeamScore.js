@@ -2,15 +2,15 @@
 /*!
  * Module dependencies
  */
-var mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
-var Schema = mongoose.Schema;
-var schemaObjectId = Schema.Types.ObjectId;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
+let mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
+let Schema = mongoose.Schema;
+let schemaObjectId = Schema.Types.ObjectId;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
 /**
  * Mongoose schema
  */
-var teamScoreSchema = new Schema({
+let teamScoreSchema = new Schema({
     ranking: { type: Number, default: 0 },
     marksimosScore: { type: Number, default: 0 },
     timeCost: { type: Number },
@@ -43,6 +43,6 @@ teamScoreSchema.statics.updateValidations = function (req) {
 /**
  * Register Model
  */
-var TeamScore = mongoose.model("Teamscore", teamScoreSchema);
+let TeamScore = mongoose.model("Teamscore", teamScoreSchema);
 module.exports = TeamScore;
 //# sourceMappingURL=TeamScore.js.map

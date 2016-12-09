@@ -1,15 +1,15 @@
 "use strict";
-var Finance_1 = require('../../engine/ComputeEngine/Finance');
-var game = require('../Games');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var defaultPayments = {
+const Finance_1 = require('../../engine/ComputeEngine/Finance');
+const game = require('../Games');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let defaultPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 function create() {
-    var eurobankAccount = new Finance_1.BankAccount({
+    let eurobankAccount = new Finance_1.BankAccount({
         id: "bankAccount1",
         label: "bankAccount1",
         bankAccountID: "0",

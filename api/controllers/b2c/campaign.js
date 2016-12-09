@@ -1,21 +1,21 @@
 "use strict";
-var userModel = require('../../models/user/User');
-var userRoleModel = require('../../models/user/UserRole');
-var teamModel = require('../../models/user/Team');
-var seminarModel = require('../../models/Seminar');
-var campaignModel = require('../../models/b2c/Campaign');
-var teamScoreModel = require('../../models/b2c/TeamScore');
-var fileUploadModel = require('../../models/user/fileupload');
-var MKError = require('../../utils/error-code');
-var MessageXSend = require('../../utils/submail/messageXSend');
-var Q = require('q');
+const userModel = require('../../models/user/User');
+const userRoleModel = require('../../models/user/UserRole');
+const teamModel = require('../../models/user/Team');
+const seminarModel = require('../../models/Seminar');
+const campaignModel = require('../../models/b2c/Campaign');
+const teamScoreModel = require('../../models/b2c/TeamScore');
+const fileUploadModel = require('../../models/user/fileupload');
+const MKError = require('../../utils/error-code');
+const MessageXSend = require('../../utils/submail/messageXSend');
+let Q = require('q');
 function campaignListPage(req, res, next) {
     campaignModel.find({ activated: true }).populate('seminarsList').populate('teamsList').populate('pictures.listCover').populate('pictures.firstCover').populate('pictures.benefit1').populate('pictures.benefit2').populate('pictures.benefit3').populate('pictures.qualification').populate('pictures.process').sort({ createdAt: -1 }).execQ().then(function (resultCampaign) {
         if (resultCampaign.length == 0) {
             return res.status(400).send({ message: "campaign doesn't exist." });
         }
         resultCampaign.forEach(function (campaign) {
-            var totalMembers = 0;
+            let totalMembers = 0;
             campaign.teamsList.forEach(function (team) {
                 if (Array.isArray(team.memberList)) {
                     totalMembers = totalMembers + team.memberList.length + 1;
@@ -34,7 +34,7 @@ function campaignListPage(req, res, next) {
 exports.campaignListPage = campaignListPage;
 ;
 function campaignSingleInfoPage(req, res, next) {
-    var validationErrors = campaignModel.campaignIdValidations(req);
+    let validationErrors = campaignModel.campaignIdValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -42,7 +42,7 @@ function campaignSingleInfoPage(req, res, next) {
         if (!resultCampaign) {
             return res.status(400).send({ message: "campaign doesn't exist." });
         }
-        var totalMembers = 0;
+        let totalMembers = 0;
         resultCampaign.teamsList.forEach(function (team) {
             if (Array.isArray(team.memberList)) {
                 totalMembers = totalMembers + team.memberList.length + 1;
@@ -60,7 +60,7 @@ function campaignSingleInfoPage(req, res, next) {
 exports.campaignSingleInfoPage = campaignSingleInfoPage;
 ;
 function campaignSingleInfo(req, res, next) {
-    var validationErrors = campaignModel.campaignIdValidations(req);
+    let validationErrors = campaignModel.campaignIdValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -68,7 +68,7 @@ function campaignSingleInfo(req, res, next) {
         if (!resultCampaign) {
             return res.status(400).send({ message: "campaign doesn't exist." });
         }
-        var totalMembers = 0;
+        let totalMembers = 0;
         resultCampaign.teamsList.forEach(function (team) {
             if (Array.isArray(team.memberList)) {
                 totalMembers = totalMembers + team.memberList.length + 1;
@@ -83,11 +83,11 @@ function campaignSingleInfo(req, res, next) {
 exports.campaignSingleInfo = campaignSingleInfo;
 ;
 function addCampaign(req, res, next) {
-    var validationErrors = campaignModel.updateValidations(req);
+    let validationErrors = campaignModel.updateValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var newCampaign = new campaignModel({
+    let newCampaign = new campaignModel({
         name: req.body.name,
         description: req.body.description,
         location: req.body.location || '',
@@ -106,11 +106,11 @@ function addCampaign(req, res, next) {
 exports.addCampaign = addCampaign;
 ;
 function updateCampaign(req, res, next) {
-    var validationErrors = campaignModel.updateValidations(req);
+    let validationErrors = campaignModel.updateValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var campaignId = req.body._id;
+    let campaignId = req.body._id;
     campaignModel.findOneAndUpdateQ({ _id: campaignId }, { $set: {
             name: req.body.name,
             description: req.body.description,
@@ -131,13 +131,13 @@ function updateCampaign(req, res, next) {
 }
 exports.updateCampaign = updateCampaign;
 function removeCampaign(req, res, next) {
-    var validationErrors = campaignModel.removeValidations(req);
+    let validationErrors = campaignModel.removeValidations(req);
     if (validationErrors) {
         return res.status(400).send({
             message: validationErrors, success: false
         });
     }
-    var campaignId = req.body._id;
+    let campaignId = req.body._id;
     campaignModel.findOneQ({ _id: campaignId }).then(function (resultCampaign) {
         if (!resultCampaign) {
             throw new Error('Cancel promise chains. Because Campaign not found !');
@@ -155,11 +155,11 @@ function removeCampaign(req, res, next) {
 exports.removeCampaign = removeCampaign;
 ;
 function uploadCampaignPics(req, res, next) {
-    var validationErrors = campaignModel.campaignIdValidations(req);
+    let validationErrors = campaignModel.campaignIdValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var uploadPicFields = [
+    let uploadPicFields = [
         { fieldname: 'uploadListCover', modelFieldName: 'listCover' },
         { fieldname: 'uploadFirstCover', modelFieldName: 'firstCover' },
         { fieldname: 'uploadBenefit1', modelFieldName: 'benefit1' },
@@ -168,8 +168,8 @@ function uploadCampaignPics(req, res, next) {
         { fieldname: 'uploadQualification', modelFieldName: 'qualification' },
         { fieldname: 'uploadProcess', modelFieldName: 'process' }
     ];
-    var currentFieldname, currentModelFieldname, fileid;
-    for (var p in req.files) {
+    let currentFieldname, currentModelFieldname, fileid;
+    for (let p in req.files) {
         if (req.files.hasOwnProperty(p)) {
             currentFieldname = p;
         }
@@ -200,21 +200,21 @@ function uploadCampaignPics(req, res, next) {
 exports.uploadCampaignPics = uploadCampaignPics;
 ;
 function searchCampaign(req, res, next) {
-    var validationErrors = campaignModel.searchQueryValidations(req);
+    let validationErrors = campaignModel.searchQueryValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var searchKeyword = req.query.keyword || '';
-    var activated = req.query.activated || 'all';
-    var query = {};
+    let searchKeyword = req.query.keyword || '';
+    let activated = req.query.activated || 'all';
+    let query = {};
     if (activated !== 'all') {
         query.$and = [
             { activated: activated }
         ];
     }
     if (searchKeyword) {
-        var strRegex = ".*[" + searchKeyword.split('').join('][') + "].*";
-        var regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
+        let strRegex = ".*[" + searchKeyword.split('').join('][') + "].*";
+        let regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
         query.$or = [
             { 'name': regex },
             { 'description': regex },
@@ -230,7 +230,7 @@ function searchCampaign(req, res, next) {
             next(new Error('Cancel promise chains. Because campaign not found !'));
         }
         // Deep population is here
-        var campaignOptions = [
+        let campaignOptions = [
             { path: 'teamsList.memberList', model: 'User', select: userModel.selectFields() },
             { path: 'teamsList.creator', model: 'User', select: userModel.selectFields() }
         ];
@@ -249,22 +249,22 @@ function searchCampaign(req, res, next) {
 exports.searchCampaign = searchCampaign;
 ;
 function searchTeamMarksimosScore(req, res, next) {
-    var validationErrors = campaignModel.searchQueryValidations(req);
+    let validationErrors = campaignModel.searchQueryValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var searchKeyword = req.query.keyword || '';
-    var activated = req.query.activated || 'all';
-    var quantity = req.query.quantity || 5000;
-    var query = {};
+    let searchKeyword = req.query.keyword || '';
+    let activated = req.query.activated || 'all';
+    let quantity = req.query.quantity || 5000;
+    let query = {};
     if (activated !== 'all') {
         query.$and = [
             { activated: activated }
         ];
     }
     if (searchKeyword) {
-        var strRegex = ".*[" + searchKeyword.split('').join('][') + "].*";
-        var regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
+        let strRegex = ".*[" + searchKeyword.split('').join('][') + "].*";
+        let regex = { $regex: strRegex, $options: 'i' }; // $options : 'i' Means case insensitivity to match upper and lower cases. 不区分大小写
         query.$or = [
             { 'name': regex },
             { 'description': regex },
@@ -272,7 +272,7 @@ function searchTeamMarksimosScore(req, res, next) {
             { 'matchDate': regex }
         ];
     }
-    var campaignIdList = [];
+    let campaignIdList = [];
     campaignModel.findQ(query).then(function (resultCampaigns) {
         if (!resultCampaigns) {
             throw new MKError('Cancel promise chains. Because campaign not found!', MKError.errorCode.common.notFound);
@@ -288,7 +288,7 @@ function searchTeamMarksimosScore(req, res, next) {
             throw new MKError('Cancel promise chains. Because TeamScores not found!', MKError.errorCode.common.notFound);
         }
         // Deep population is here
-        var teamScoreOptions = [
+        let teamScoreOptions = [
             { path: 'team.memberList', model: 'User', select: userModel.selectFields() },
             { path: 'team.creator', model: 'User', select: userModel.selectFields() }
         ];
@@ -303,21 +303,21 @@ function searchTeamMarksimosScore(req, res, next) {
 exports.searchTeamMarksimosScore = searchTeamMarksimosScore;
 ;
 function countTeamJoinCampaign(req, res, next) {
-    var now = new Date();
-    var dd = now.getDate();
-    var mm = now.getMonth(); //January is 0!
-    var yyyy = now.getFullYear();
-    var query = {};
+    let now = new Date();
+    let dd = now.getDate();
+    let mm = now.getMonth(); //January is 0!
+    let yyyy = now.getFullYear();
+    let query = {};
     query.joinCampaignTime = {
         "$gte": new Date(yyyy, mm, dd - 1),
         "$lt": new Date(yyyy, mm, dd)
     };
-    var resultData = [];
+    let resultData = [];
     teamModel.find(query).populate('memberList').execQ().then(function (result1) {
         if (!result1) {
             throw new MKError('Cancel promise chains. Because Team not found!', MKError.errorCode.common.notFound);
         }
-        var tempCount = 0;
+        let tempCount = 0;
         if (result1.length > 0) {
             result1.forEach(function (team) {
                 if (Array.isArray(team.memberList)) {
@@ -340,7 +340,7 @@ function countTeamJoinCampaign(req, res, next) {
         if (!result2) {
             throw new MKError('Cancel promise chains. Because Team not found!', MKError.errorCode.common.notFound);
         }
-        var tempCount = 0;
+        let tempCount = 0;
         if (result2.length > 0) {
             result2.forEach(function (team) {
                 if (Array.isArray(team.memberList)) {
@@ -362,11 +362,11 @@ function countTeamJoinCampaign(req, res, next) {
 exports.countTeamJoinCampaign = countTeamJoinCampaign;
 ;
 function addSeminarToCampaign(req, res, next) {
-    var validationErrors = campaignModel.addSeminarValidations(req);
+    let validationErrors = campaignModel.addSeminarValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var dataSeminar;
+    let dataSeminar;
     seminarModel.findByIdQ(req.body.seminarId).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error('Cancel promise chains. Because Seminar not found !');
@@ -396,11 +396,11 @@ function addSeminarToCampaign(req, res, next) {
 exports.addSeminarToCampaign = addSeminarToCampaign;
 ;
 function removeSeminarFromCampaign(req, res, next) {
-    var validationErrors = campaignModel.addSeminarValidations(req);
+    let validationErrors = campaignModel.addSeminarValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var dataSeminar;
+    let dataSeminar;
     seminarModel.findOneQ({ seminarId: req.body.seminarId }).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error('Cancel promise chains. Because Seminar not found !');
@@ -426,7 +426,7 @@ function removeSeminarFromCampaign(req, res, next) {
 exports.removeSeminarFromCampaign = removeSeminarFromCampaign;
 ;
 function addTeamToCampaign(req, res, next) {
-    var validationErrors = campaignModel.addTeamValidations(req);
+    let validationErrors = campaignModel.addTeamValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -434,7 +434,7 @@ function addTeamToCampaign(req, res, next) {
         // For student role
         return res.status(400).send({ message: 'only student own team can join campaign' });
     }
-    var dataTeam, dataUser;
+    let dataTeam, dataUser;
     userModel.findOneQ({ username: req.body.username }).then(function (resultUser) {
         if (!resultUser) {
             throw new Error('Cancel promise chains. Because User not found !');
@@ -478,10 +478,10 @@ function addTeamToCampaign(req, res, next) {
     }).then(function (savedDoc) {
         dataTeam.joinCampaignTime = new Date();
         dataTeam.save();
-        var messageXSend = new MessageXSend();
+        let messageXSend = new MessageXSend();
         messageXSend.add_to(dataUser.mobilePhone);
         messageXSend.set_project('xyUwS4');
-        var xsendQ = Q.nbind(messageXSend.xsend, messageXSend);
+        let xsendQ = Q.nbind(messageXSend.xsend, messageXSend);
         xsendQ();
         return res.status(200).send({ message: "Assign team to campaign success." });
     }).fail(function (err) {
@@ -491,11 +491,11 @@ function addTeamToCampaign(req, res, next) {
 exports.addTeamToCampaign = addTeamToCampaign;
 ;
 function removeTeamFromCampaign(req, res, next) {
-    var validationErrors = campaignModel.removeTeamValidations(req);
+    let validationErrors = campaignModel.removeTeamValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var dataTeam;
+    let dataTeam;
     teamModel.findByIdQ(req.body.teamId).then(function (resultTeam) {
         if (!resultTeam) {
             throw new Error('Cancel promise chains. Because Team not found !');

@@ -14,7 +14,7 @@
  */
 //require('cloud/Engine/es6-shim.js');
 var enumerables = ['valueOf', 'toLocaleString', 'toString', 'constructor'];
-var Game = require('../simulation/Games');
+const Game = require('../simulation/Games');
 function populateArray(value, length) {
     var arr = [], i = 0;
     for (; i < length; i++) {
@@ -34,14 +34,12 @@ function getValueAtAdress(object, property) {
     }
     return value;
 }
-function sums(collection, property, filterProp, filterValue, coefficients, roundType, precision) {
-    if (roundType === void 0) { roundType = ">"; }
-    if (precision === void 0) { precision = 0; }
+function sums(collection, property, filterProp, filterValue, coefficients, roundType = ">", precision = 0) {
     var len = collection.length || collection.size(), sum = 0, value, item;
     if (!coefficients || typeof coefficients === 'number') {
         coefficients = populateArray(coefficients || 1, len);
     }
-    var i = 0;
+    let i = 0;
     collection.forEach(function (item) {
         if (filterProp) {
             value = getValueAtAdress(item, filterProp);
@@ -127,11 +125,7 @@ function cloneFn(item) {
     }
     return clone || item;
 }
-function ObjectApply(destination) {
-    var rest = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        rest[_i - 1] = arguments[_i];
-    }
+function ObjectApply(destination, ...rest) {
     var i = 1, ln = arguments.length, object, key, value, sourceKey;
     for (; i < ln; i++) {
         object = arguments[i];
@@ -179,29 +173,25 @@ function correctFloat(n) {
     return parseFloat(n.toPrecision(14));
 }
 exports.correctFloat = correctFloat;
-function round(value, precision) {
-    if (precision === void 0) { precision = 0; }
+function round(value, precision = 0) {
     value = correctFloat(value);
     var base = Math.pow(10, precision);
     return Math.round(value * base) / base;
 }
 exports.round = round;
-function ceil(value, precision) {
-    if (precision === void 0) { precision = 0; }
+function ceil(value, precision = 0) {
     value = correctFloat(value);
     var base = Math.pow(10, precision);
     return Math.ceil(value * base) / base;
 }
 exports.ceil = ceil;
-function floor(value, precision) {
-    if (precision === void 0) { precision = 0; }
+function floor(value, precision = 0) {
     value = correctFloat(value);
     var base = Math.pow(10, precision);
     return Math.floor(value * base) / base;
 }
 exports.floor = floor;
-function roundMultiplier(value, multiplier) {
-    if (multiplier === void 0) { multiplier = 0; }
+function roundMultiplier(value, multiplier = 0) {
     value = correctFloat(value);
     var mod = value % multiplier, result = value - mod;
     if (mod >= 0.5 * multiplier) {
@@ -211,8 +201,7 @@ function roundMultiplier(value, multiplier) {
 }
 exports.roundMultiplier = roundMultiplier;
 // utils m3a negatif -0.5 => -1 instead of normal 0
-function trunc(value, precision) {
-    if (precision === void 0) { precision = 0; }
+function trunc(value, precision = 0) {
     return value < 0 ? ceil(value, precision) : floor(value, precision);
 }
 exports.trunc = trunc;
@@ -254,8 +243,7 @@ exports.randomInt = randomInt;
 * Validate that a value is numeric and convert it to a number if necessary. Returns the specified default value if
 * it is not.
 */
-function from(value, defaultValue) {
-    if (defaultValue === void 0) { defaultValue = 0; }
+function from(value, defaultValue = 0) {
     if (isFinite(value)) {
         value = parseFloat(value);
     }
@@ -319,9 +307,7 @@ exports.sign = sign;
 * @param {Number} [maxValue=Infinity] The maximum value to which the returned value must be constrained.
 * @return {Number} The value of the nearest snap target.
 */
-function snapInRange(value, increment, minValue, maxValue) {
-    if (minValue === void 0) { minValue = 0; }
-    if (maxValue === void 0) { maxValue = Infinity; }
+function snapInRange(value, increment, minValue = 0, maxValue = Infinity) {
     var tween;
     // default minValue to zero 
     minValue = (minValue || 0);
@@ -386,10 +372,9 @@ function isBasicType(obj) {
     return (typeof obj !== "object") && (typeof obj !== "function");
 }
 exports.isBasicType = isBasicType;
-function getStat(stats, currPeriod, statsPeriodicity) {
-    if (statsPeriodicity === void 0) { statsPeriodicity = 1; }
-    var period = (currPeriod + Game.configs.historicPeriodsNb - 1) * statsPeriodicity;
-    var end = stats.length - 1;
+function getStat(stats, currPeriod, statsPeriodicity = 1) {
+    let period = (currPeriod + Game.configs.historicPeriodsNb - 1) * statsPeriodicity;
+    let end = stats.length - 1;
     if (stats[period] === undefined && stats.length) {
         console.warn("There is no stats for for the period %d", period, stats);
     }
@@ -410,9 +395,9 @@ function simpleexpSmooth(data, alpha) {
     if (data.length < 2) {
         return data[0];
     }
-    var smoothedVal;
-    var i = 1;
-    var len = data.length;
+    let smoothedVal;
+    let i = 1;
+    let len = data.length;
     for (; i < len; i++) {
         smoothedVal = data[i] * alpha + data[i - 1] * (1 - alpha);
         data[i] = correctFloat(smoothedVal);
@@ -421,10 +406,10 @@ function simpleexpSmooth(data, alpha) {
 }
 exports.simpleexpSmooth = simpleexpSmooth;
 function normalize(value, range) {
-    var normalizedValue;
-    var threshold = range.threshold;
-    var wearout = range.wearout;
-    var mediane = range.mediane;
+    let normalizedValue;
+    let threshold = range.threshold;
+    let wearout = range.wearout;
+    let mediane = range.mediane;
     // extrem situation
     if (threshold === wearout) {
         if (value < threshold) {
@@ -452,4 +437,8 @@ function normalize(value, range) {
     return normalizedValue;
 }
 exports.normalize = normalize;
+function isInteger(value) {
+    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+}
+exports.isInteger = isInteger;
 //# sourceMappingURL=Utils.js.map

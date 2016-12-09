@@ -1,7 +1,7 @@
 "use strict";
-var Environnement_1 = require('../../engine/ComputeEngine/Environnement');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var buildingContractor = new Environnement_1.BuildingContractor({
+const Environnement_1 = require('../../engine/ComputeEngine/Environnement');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let buildingContractor = new Environnement_1.BuildingContractor({
     id: "buildingContractor1",
     label: "buildingContractor1",
     BuildingContractorID: "0",

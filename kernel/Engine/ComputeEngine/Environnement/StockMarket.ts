@@ -15,7 +15,7 @@ import FinUtils = require('../../../utils/FinUtils');
 
 
 import $jStat = require("jstat");
-var jStat = $jStat.jStat;
+let jStat = $jStat.jStat;
 
 
 

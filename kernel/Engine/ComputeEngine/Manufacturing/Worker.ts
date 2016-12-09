@@ -104,15 +104,15 @@ export default class Worker extends Employee {
     // helpers
 
     _calcResignedNb(): number {
-        var workersNb = this.employeesNb;
+        let workersNb = this.employeesNb;
 
         return 0;
     }
 
     _calcDisaffectionHoursNb(): number {
-        var activeEmployeesNb = this.employeesNb - this.inactiveEmployeesNb;
+        let activeEmployeesNb = this.employeesNb - this.inactiveEmployeesNb;
 
-        var probability,
+        let probability,
             landa,
             vars: number[],
             value;
@@ -139,7 +139,7 @@ export default class Worker extends Employee {
     }
 
     _calcStrikeNextPeriodWeeksNb(): number {
-        var probability: number,
+        let probability: number,
             weeksMax = this.shift.weeksWorkedByPeriod,
             value = 0;
         
@@ -159,14 +159,14 @@ export default class Worker extends Employee {
 
         if (machinery !== null && this.params.defaultRecruit === true) {
 
-            var self = this;
+            let self = this;
 
             this.machinery.on("Ready", function (machinery: Machinery) {
                 console.silly("machine ready fired", arguments);
 
-                var variation = machinery.operatorsNb - self.employeesNb;
-                var recruitedNb = variation > 0 ? variation : 0;
-                var surplusDismissedNb = variation < 0 ? Math.abs(Math.ceil(variation * self.params.surplusMaxDismissedPercent)) : 0;
+                let variation = machinery.operatorsNb - self.employeesNb;
+                let recruitedNb = variation > 0 ? variation : 0;
+                let surplusDismissedNb = variation < 0 ? Math.abs(Math.ceil(variation * self.params.surplusMaxDismissedPercent)) : 0;
                 
                 // necessary to call all actions even with param 0
                 self.recruit(recruitedNb);
@@ -179,7 +179,7 @@ export default class Worker extends Employee {
     }
 
     get timeUnitCost(): number {
-        var cost = this.hourlyWageRate * (1 + this.shift.shiftPremium) * this.workersPerPosteNb;
+        let cost = this.hourlyWageRate * (1 + this.shift.shiftPremium) * this.workersPerPosteNb;
 
         return cost;
     }
@@ -221,7 +221,7 @@ export default class Worker extends Employee {
 
     //result
     get inactiveEmployeesNb(): number {
-        var result = this.employeesNb - this.installedWorkersNb;
+        let result = this.employeesNb - this.installedWorkersNb;
 
         if (this.machinery && this.machinery.operatorsNb < this.installedWorkersNb) {
             result += (this.installedWorkersNb - this.machinery.operatorsNb);
@@ -233,7 +233,7 @@ export default class Worker extends Employee {
    _workedTotaMinutesNb: number;
 
     get workedTotaHoursNb(): number {
-        var total = Utils.floor(this._workedTotaMinutesNb / 60);
+        let total = Utils.floor(this._workedTotaMinutesNb / 60);
 
         if (this._workedTotaMinutesNb % 60 > 45) {
             ++total;
@@ -287,7 +287,7 @@ export default class Worker extends Employee {
     }
 
     get effectiveAvailableTotalHoursNb(): number {
-        var value;
+        let value;
 
         value = this.theoreticalAvailableTotalHoursNb - this.absenteeismHoursNb - this.strikeNotifiedHoursNb;
 
@@ -302,7 +302,7 @@ export default class Worker extends Employee {
     }
 
     get weekDaysWorkedHoursNb(): number {
-        var hoursNb: number,
+        let hoursNb: number,
             effectiveMaxHoursWeekDays: number;
 
         effectiveMaxHoursWeekDays = this.shift.maxHoursWeekDays - (this.strikeNotifiedWeeksNb * this.params.strikeHoursPerWeekDays);
@@ -318,7 +318,7 @@ export default class Worker extends Employee {
     }
 
     get overtimeWorkedHoursNb(): number {
-        var overtimeWorkedHoursNb: number,
+        let overtimeWorkedHoursNb: number,
             effectiveMaxHoursWeekDays: number;
 
         effectiveMaxHoursWeekDays = this.shift.maxHoursWeekDays - (this.strikeNotifiedWeeksNb * this.params.strikeHoursPerWeekDays);
@@ -335,7 +335,7 @@ export default class Worker extends Employee {
     }
 
     get overtimeSaturdayWorkedHoursNb(): number {
-        var hoursNb: number,
+        let hoursNb: number,
             effectiveMaxHoursOvertimeSaturday: number;
 
         effectiveMaxHoursOvertimeSaturday = this.shift.maxHoursOvertimeSaturday - (this.strikeNotifiedWeeksNb * this.params.strikeHoursPerSaturday);
@@ -351,7 +351,7 @@ export default class Worker extends Employee {
     }
 
     get overtimeSundayWorkedHoursNb(): number {
-        var hoursNb: number,
+        let hoursNb: number,
             effectiveMaxHoursOvertimeSunday: number;
 
         hoursNb = this.overtimeWorkedHoursNb - this.overtimeSaturdayWorkedHoursNb;
@@ -370,8 +370,8 @@ export default class Worker extends Employee {
     }
 
     get overtimeIntensity(): number {
-        var intensity: number;
-        var totalMaxOvertimeHours: number;
+        let intensity: number;
+        let totalMaxOvertimeHours: number;
 
         totalMaxOvertimeHours = (this.shift.maxHoursOvertimeSaturday + this.shift.maxHoursOvertimeSunday) * this.postesNb * this.shiftLevel;
         // TODO: calc separate intensity for saturday and sunday with coefficient of rough
@@ -381,9 +381,9 @@ export default class Worker extends Employee {
     }
 
     get workedWeeksNb(): number {
-        var effectiveMaxHoursWeekDays = (this.shift.maxHoursWeekDays - (this.strikeNotifiedWeeksNb * this.params.strikeHoursPerWeekDays)) * (this.postesNb * this.shiftLevel);
-        var maxHoursWeekDaysPerWeek = effectiveMaxHoursWeekDays / this.shift.weeksWorkedByPeriod;
-        var workedWeekDaysWeeksNb = Math.ceil(this.weekDaysWorkedHoursNb / maxHoursWeekDaysPerWeek);
+        let effectiveMaxHoursWeekDays = (this.shift.maxHoursWeekDays - (this.strikeNotifiedWeeksNb * this.params.strikeHoursPerWeekDays)) * (this.postesNb * this.shiftLevel);
+        let maxHoursWeekDaysPerWeek = effectiveMaxHoursWeekDays / this.shift.weeksWorkedByPeriod;
+        let workedWeekDaysWeeksNb = Math.ceil(this.weekDaysWorkedHoursNb / maxHoursWeekDaysPerWeek);
 
         return workedWeekDaysWeeksNb;
     }
@@ -407,9 +407,9 @@ export default class Worker extends Employee {
     // costs
 
     get externalWorkersCost(): number {
-        var totalCost;
-        var basicRate = this.hourlyWageRate;
-        var adjustedRate;
+        let totalCost;
+        let basicRate = this.hourlyWageRate;
+        let adjustedRate;
 
         if (basicRate < this.params.minHourlyWageRate) {
             basicRate = this.params.minHourlyWageRate;
@@ -423,7 +423,7 @@ export default class Worker extends Employee {
     }
    
     get wages(): number {
-        var wages,
+        let wages,
             minSalary: number,
 
             weekDaysWorkedHoursNb: number,
@@ -440,7 +440,7 @@ export default class Worker extends Employee {
             avgSalary: number,
             inactivesSalaries: number;
 
-        var minTotalPaidHours = this.params.minPaidHours * this.postesNb * this.shiftLevel;
+        let minTotalPaidHours = this.params.minPaidHours * this.postesNb * this.shiftLevel;
 
         basicRate = this.hourlyWageRate;
 
@@ -471,8 +471,8 @@ export default class Worker extends Employee {
     }
 
     get avgWagePerWorkerPerWeekWorked(): number {
-        var avgWagePerWorker = this.wages / this.installedWorkersNb;
-        var avgWagePerWorkerPerWeekWorked = avgWagePerWorker / this.workedWeeksNb;
+        let avgWagePerWorker = this.wages / this.installedWorkersNb;
+        let avgWagePerWorkerPerWeekWorked = avgWagePerWorker / this.workedWeeksNb;
 
         return Math.ceil(avgWagePerWorkerPerWeekWorked);
     }
@@ -494,7 +494,7 @@ export default class Worker extends Employee {
             return false;
         }
 
-        var success = true;
+        let success = true;
 
         if (! Utils.isNumericValid(minutesNb)) {
             console.warn('Worker @ Quantity not reel', arguments);
@@ -532,7 +532,7 @@ export default class Worker extends Employee {
 
         console.debug("pay :", hourlyWageRate);
 
-        var basicRate = hourlyWageRate * this.params.skilledRateOfPay;
+        let basicRate = hourlyWageRate * this.params.skilledRateOfPay;
 
         if (basicRate < this.params.minHourlyWageRate) {
             basicRate = this.params.minHourlyWageRate;
@@ -546,7 +546,7 @@ export default class Worker extends Employee {
             shiftLevel = 1;
         }
 
-        if (!Number.isInteger(shiftLevel)) {
+        if (!Utils.isInteger(shiftLevel)) {
             shiftLevel = Math.round(shiftLevel);
         }
 
@@ -563,7 +563,7 @@ export default class Worker extends Employee {
         this.resignedNb = this._calcResignedNb();
 
         // TODO: add Loss of machine time and assembly time are shown under breakdown time and absenteeism, respectively and are not separated from routine minor problems.
-        var losses = 0;
+        let losses = 0;
 
         this.insurance && this.insurance.claims(losses);
     }

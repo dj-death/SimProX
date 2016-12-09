@@ -1,6 +1,6 @@
 "use strict";
-var Environnement_1 = require('../../engine/ComputeEngine/Environnement');
-var BKAM = {
+const Environnement_1 = require('../../engine/ComputeEngine/Environnement');
+let BKAM = {
     baseTreasuryBondsInterestRate: 3.249,
     treasuryBondsInterestRateStats: [
         3.249, 3.585, 3.58, 3.423,
@@ -17,7 +17,7 @@ var BKAM = {
         2.25, 2.25 // 2016
     ]
 };
-var BCE = {
+let BCE = {
     baseInterestBaseRate: 1.25,
     interestBaseRateStats: [
         1, 1, 1, 1,
@@ -29,9 +29,9 @@ var BCE = {
         0, 0 // 2016
     ],
 };
-var economy1_bank = BKAM;
-var economy2_bank = BCE;
-var ECB = new Environnement_1.CentralBank({
+let economy1_bank = BKAM;
+let economy2_bank = BCE;
+let ECB = new Environnement_1.CentralBank({
     id: "centralBank2",
     label: "centralBank2",
     centralBankID: "1",
@@ -42,7 +42,7 @@ var ECB = new Environnement_1.CentralBank({
     baseTreasuryBondsInterestRate: economy1_bank.baseTreasuryBondsInterestRate,
     treasuryBondsInterestRateStats: economy1_bank.treasuryBondsInterestRateStats
 });
-var FED = new Environnement_1.CentralBank({
+let FED = new Environnement_1.CentralBank({
     id: "centralBank1",
     label: "centralBank1",
     centralBankID: "0",

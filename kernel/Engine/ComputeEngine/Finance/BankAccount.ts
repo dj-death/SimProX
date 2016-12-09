@@ -157,7 +157,7 @@ export default class BankAccount extends IObject.IObject {
             return;
         }
 
-        var accordedTermLoans = this.bank.demandTermLoans(amount);
+        let accordedTermLoans = this.bank.demandTermLoans(amount);
 
         this.additionnelTermLoans += accordedTermLoans;
 
@@ -213,9 +213,9 @@ export default class BankAccount extends IObject.IObject {
 
 
     get interestReceived(): number {
-        var interestRate = this.bank.termDepositCreditorInterestRate;
-        var base = this.termDeposit;
-        var prorataTemporis = this.params.periodDaysNb / 360;
+        let interestRate = this.bank.termDepositCreditorInterestRate;
+        let base = this.termDeposit;
+        let prorataTemporis = this.params.periodDaysNb / 360;
 
         return Utils.round(base * interestRate * prorataTemporis);
     }
@@ -223,17 +223,17 @@ export default class BankAccount extends IObject.IObject {
     get overdraftInterestPaid(): number {
         // The interest rate charged on an unauthorised overdraft is much higher. 
         // Furthermore, this higher rate will apply to the whole overdraft, and not just the excess over your authorised limit.
-        var interestRate = this.unAuthorisedOverdraft === 0 ? this.bank.authorisedOverdraftInterestRate : this.bank.unAuthorisedOverdraftInterestRate;
-        var base = (this.overdraft + this.initialOverdraft) / 2;
-        var prorataTemporis = this.params.periodDaysNb / 360;
+        let interestRate = this.unAuthorisedOverdraft === 0 ? this.bank.authorisedOverdraftInterestRate : this.bank.unAuthorisedOverdraftInterestRate;
+        let base = (this.overdraft + this.initialOverdraft) / 2;
+        let prorataTemporis = this.params.periodDaysNb / 360;
 
         return Utils.round(base * interestRate * prorataTemporis);
     }
 
     get termLoansInterestPaid(): number {
-        var interestRate = this.bank.termLoansInterestRate;
-        var base = this.termLoans;
-        var prorataTemporis = this.params.periodDaysNb / 360;
+        let interestRate = this.bank.termLoansInterestRate;
+        let base = this.termLoans;
+        let prorataTemporis = this.params.periodDaysNb / 360;
 
         return Utils.round(base * interestRate * prorataTemporis);
     }

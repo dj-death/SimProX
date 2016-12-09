@@ -4,14 +4,14 @@
  * @see module: api/model/user/userrole.js
  */
 "use strict";
-var mongoose = require('mongoose-q')(require('mongoose'));
-var Schema = mongoose.Schema;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
+let mongoose = require('mongoose-q')(require('mongoose'));
+let Schema = mongoose.Schema;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
 /**
  * Resource Permission Name Have Two Type : Resource Get(Read) and Resource CUD(create, update and delete)
  */
-var appResource = {
+let appResource = {
     stratege: {
         studentLogin: 'studentLogin',
         adminLogin: 'adminLogin',
@@ -48,7 +48,7 @@ var appResource = {
 /**
  * UserRoles  (Will Store in Schema)
  */
-var roles = [
+let roles = [
     {
         id: 1,
         name: 'admin',
@@ -128,8 +128,8 @@ var roles = [
         permissions: []
     }
 ];
-var roleListResult = {};
-var getRoleList = function () {
+let roleListResult = {};
+let getRoleList = function () {
     roles.forEach(function (role) {
         roleListResult[role.name] = role;
         roleListResult[role.id] = role;
@@ -142,9 +142,9 @@ var getRoleList = function () {
  * @param {string} resource - The resource  of the Resource Permission.
  * @param {string} userroleid - The userroleid of the user.
  */
-var authorizeRolePermission = function (resource, userRoleId) {
+let authorizeRolePermission = function (resource, userRoleId) {
     if (userRoleId > 0) {
-        var role = roleListResult[userRoleId];
+        let role = roleListResult[userRoleId];
         if (role.permissions.indexOf(resource) > -1) {
             return true;
         }
@@ -154,21 +154,21 @@ var authorizeRolePermission = function (resource, userRoleId) {
 /**
  * GameList  (Will Store in Schema)
  */
-var games = [
+let games = [
     {
         id: 10,
         name: 'stratege'
     }
 ];
-var gameListResult = {};
-var getGameList = function () {
+let gameListResult = {};
+let getGameList = function () {
     games.forEach(function (game) {
         gameListResult[game.name] = game;
         gameListResult[game.id] = game;
     });
     return gameListResult;
 };
-var config = {
+let config = {
     games: games,
     gameList: getGameList(),
     right: appResource,

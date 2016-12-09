@@ -1,36 +1,36 @@
 "use strict";
-var userModel = require('../../models/user/User');
-var userRoleModel = require('../../models/user/UserRole');
-var teamModel = require('../../models/user/Team');
-var Token = require('../../models/user/authenticationtoken');
-var campaignModel = require('../../models/b2c/Campaign');
-var seminarModel = require('../../models/Seminar');
-var emailModel = require('../../models/user/EmailContent');
-var Captcha = require('../../models/user/Captcha');
-var MessageXSend = require('../../utils/submail/messageXSend');
-var MKError = require('../../utils/error-code');
-var mailProvider = require('../../utils/sendCloud');
-var mailSender = mailProvider.createEmailSender();
-var _ = require('lodash');
-var uuid = require('node-uuid');
-var util = require('util');
-var Q = require('q');
-var request = require('request');
-var jwt = require("jsonwebtoken");
-var unless = require('express-unless');
-var passportJWT = require("passport-jwt");
-var JwtStrategy = passportJWT.Strategy, ExtractJwt = passportJWT.ExtractJwt;
-var console = require('../../../kernel/utils/logger');
-var nodeBB = require('../../utils/nodeBB');
-var config = require('../../../config');
-var expiresTime = 60 * 60 * 24; // 1 days
+const userModel = require('../../models/user/User');
+const userRoleModel = require('../../models/user/UserRole');
+const teamModel = require('../../models/user/Team');
+const Token = require('../../models/user/authenticationtoken');
+const campaignModel = require('../../models/b2c/Campaign');
+const seminarModel = require('../../models/Seminar');
+const emailModel = require('../../models/user/EmailContent');
+const Captcha = require('../../models/user/Captcha');
+const MessageXSend = require('../../utils/submail/messageXSend');
+const MKError = require('../../utils/error-code');
+const mailProvider = require('../../utils/sendCloud');
+let mailSender = mailProvider.createEmailSender();
+let _ = require('lodash');
+let uuid = require('node-uuid');
+let util = require('util');
+let Q = require('q');
+let request = require('request');
+let jwt = require("jsonwebtoken");
+let unless = require('express-unless');
+let passportJWT = require("passport-jwt");
+let JwtStrategy = passportJWT.Strategy, ExtractJwt = passportJWT.ExtractJwt;
+const console = require('../../../kernel/utils/logger');
+const nodeBB = require('../../utils/nodeBB');
+const config = require('../../../config');
+let expiresTime = 60 * 60 * 24; // 1 days
 /**
  * Passport LocalStrategy For Login and Generate Token.
  */
 Token.clearToken();
 //Passport
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+let passport = require('passport');
+let LocalStrategy = require('passport-local').Strategy;
 /**
  * Passport LocalStrategy For Login and Generate Token.
  */
@@ -95,11 +95,11 @@ function initAuth() {
         else {
             req.checkBody('username', 'Username should be 5-20 characters').notEmpty().len(5, 20);
         }
-        var errors = req.validationErrors();
+        let errors = req.validationErrors();
         if (errors) {
             return done(null, false, { message: util.inspect(errors) });
         }
-        var rememberMe = false;
+        let rememberMe = false;
         if (req.body.rememberMe) {
             rememberMe = true;
         }
@@ -197,9 +197,8 @@ exports.logout = logout;
  *    authLoginToken( { successRedirect: '/',  failureRedirect: '/login',  failureFlash: true });
  *
  */
-function authLoginToken(options) {
-    if (options === void 0) { options = {}; }
-    var middleware = function (req, res, next) {
+function authLoginToken(options = {}) {
+    let middleware = function (req, res, next) {
         options = options || {};
         if (typeof options.failureRedirect === 'undefined') {
             options.failureRedirect = false;
@@ -208,9 +207,9 @@ function authLoginToken(options) {
             if (!obj) {
                 return null;
             }
-            var chain = field.split(']').join('').split('[');
-            for (var i = 0, len = chain.length; i < len; i++) {
-                var prop = obj[chain[i]];
+            let chain = field.split(']').join('').split('[');
+            for (let i = 0, len = chain.length; i < len; i++) {
+                let prop = obj[chain[i]];
                 if (typeof (prop) === 'undefined') {
                     return null;
                 }
@@ -233,8 +232,8 @@ function authLoginToken(options) {
             }
             return next();
         }
-        var tokenName = 'x-access-token';
-        var token = req.headers[tokenName] || lookup(req.body, tokenName) || lookup(req.query, tokenName) || req.cookies[tokenName];
+        let tokenName = 'x-access-token';
+        let token = req.headers[tokenName] || lookup(req.body, tokenName) || lookup(req.query, tokenName) || req.cookies[tokenName];
         if (token) {
             Token.verifyToken(token, function (err, user) {
                 if (err) {
@@ -253,7 +252,7 @@ function authLoginToken(options) {
                                 company: false
                             }
                         };
-                        var company = _.find(seminarResult.companies, function (company) {
+                        let company = _.find(seminarResult.companies, function (company) {
                             return company.studentList.indexOf(user.email) > -1;
                         });
                         if (typeof company !== 'undefined') {
@@ -303,17 +302,15 @@ exports.authLoginToken = authLoginToken;
  *
  * @param {Object} options
  */
-function authRole(permission, options) {
-    if (permission === void 0) { permission = ''; }
-    if (options === void 0) { options = {}; }
+function authRole(permission = '', options = {}) {
     return function (req, res, next) {
-        var user = req.user;
+        let user = req.user;
         if (!user) {
             return next(new UnauthorizedError('permission_denied', { message: 'Permission denied' }));
         }
         permission = permission || "";
         options = options || {};
-        var hasPermissions = userRoleModel.authRolePermission(permission, user.roleId);
+        let hasPermissions = userRoleModel.authRolePermission(permission, user.roleId);
         if (hasPermissions) {
             return next();
         }
@@ -330,7 +327,7 @@ function authRole(permission, options) {
 exports.authRole = authRole;
 ;
 function getUserInfo(req, res, next) {
-    var userResult;
+    let userResult;
     if (req.gameMarksimos && req.gameMarksimos.currentStudent) {
         userResult = req.gameMarksimos.currentStudent.toObject();
         userResult.currentMarksimosSeminar = req.gameMarksimos.currentStudentSeminar.toObject();
@@ -340,7 +337,7 @@ function getUserInfo(req, res, next) {
         }
         userResult.currentMarksimosSeminar.numOfCompany = userResult.currentMarksimosSeminar.company_num;
         userResult.currentMarksimosSeminar.maxPeriodRound = userResult.currentMarksimosSeminar.simulation_span;
-        for (var i = 0; i < userResult.currentMarksimosSeminar.companies.length; i++) {
+        for (let i = 0; i < userResult.currentMarksimosSeminar.companies.length; i++) {
             //if this student is in this company
             if (userResult.currentMarksimosSeminar.companies[i].studentList.indexOf(userResult.email) > -1) {
                 userResult.currentMarksimosSeminar.currentCompany = {
@@ -360,7 +357,7 @@ function getUserInfo(req, res, next) {
         }
     }
     userResult.roleName = req.user.roleName;
-    var teamIdList = [];
+    let teamIdList = [];
     teamModel.findOne({ creator: userResult._id }).populate('memberList', userModel.selectFields()).execQ().then(function (resultTeam) {
         userResult.team = resultTeam || [];
         return teamModel.find({ memberList: { $elemMatch: { $in: [userResult._id] } } }).populate('memberList', userModel.selectFields()).populate('creator', userModel.selectFields()).lean().execQ();
@@ -379,7 +376,7 @@ function getUserInfo(req, res, next) {
                 }
             });
         });
-        var teamid;
+        let teamid;
         if (typeof userResult.team._id === 'undefined') {
             teamid = null;
         }
@@ -404,11 +401,11 @@ exports.getUserInfo = getUserInfo;
  *
  */
 function registerB2CStudent(req, res, next) {
-    var validationErrors = userModel.registerValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
+    let validationErrors = userModel.registerValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var newUser = {
+    let newUser = {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
@@ -446,12 +443,12 @@ function registerB2CStudent(req, res, next) {
         if (!resultUser) {
             throw new Error('Cancel promise chains. Because Save new user to database error.');
         }
-        var messageXSend = new MessageXSend();
+        let messageXSend = new MessageXSend();
         messageXSend.add_to(resultUser.mobilePhone);
         messageXSend.set_project('k0tCo3');
-        var xsendQ = Q.nbind(messageXSend.xsend, messageXSend);
+        let xsendQ = Q.nbind(messageXSend.xsend, messageXSend);
         xsendQ();
-        var mailContent = emailModel.registration();
+        let mailContent = emailModel.registration();
         //mailContent.to = resultUser.email;
         mailContent.substitution_vars.to.push(resultUser.email);
         mailContent.substitution_vars.sub['%username%'].push(resultUser.username);
@@ -467,11 +464,11 @@ function registerB2CStudent(req, res, next) {
         }).done();
         //register nodeBB user
         if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'ken' || process.env.NODE_ENV === 'jin') {
-            var newUserInfo_1 = _.pick(req.body, ['username', 'email', 'password']);
-            nodeBB.registerNodeBB(newUserInfo_1, function (err, uid) {
+            let newUserInfo = _.pick(req.body, ['username', 'email', 'password']);
+            nodeBB.registerNodeBB(newUserInfo, function (err, uid) {
                 if (err) {
                     console.error('NodeBB register error:');
-                    console.error(newUserInfo_1);
+                    console.error(newUserInfo);
                     return;
                 }
                 resultUser.bbsUid = uid;
@@ -486,11 +483,11 @@ function registerB2CStudent(req, res, next) {
 exports.registerB2CStudent = registerB2CStudent;
 ;
 function registerB2CEnterprise(req, res, next) {
-    var validationErrors = userModel.registerValidations(req, userRoleModel.roleList.enterprise.id);
+    let validationErrors = userModel.registerValidations(req, userRoleModel.roleList.enterprise.id);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var newUser = {
+    let newUser = {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
@@ -516,7 +513,7 @@ function registerB2CEnterprise(req, res, next) {
 exports.registerB2CEnterprise = registerB2CEnterprise;
 ;
 function verifyUsername(req, res, next) {
-    var validationErrors = userModel.usernameValidations(req);
+    let validationErrors = userModel.usernameValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -530,7 +527,7 @@ function verifyUsername(req, res, next) {
 exports.verifyUsername = verifyUsername;
 ;
 function verifyEmail(req, res, next) {
-    var validationErrors = userModel.emailValidations(req);
+    let validationErrors = userModel.emailValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -544,7 +541,7 @@ function verifyEmail(req, res, next) {
 exports.verifyEmail = verifyEmail;
 ;
 function verifyMobilePhone(req, res, next) {
-    var validationErrors = userModel.mobilePhoneValidations(req);
+    let validationErrors = userModel.mobilePhoneValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -559,11 +556,11 @@ exports.verifyMobilePhone = verifyMobilePhone;
 ;
 // http://www.hcdlearning.com/e4e/emailverify/registration?email=jinwyp@163.com&emailtoken=f70c16b5-2cf1-42d1-90ba-b2fa1bcd3db8
 function activateRegistrationEmail(req, res, next) {
-    var validationErrors = userModel.emailVerifyRegistrationValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
+    let validationErrors = userModel.emailVerifyRegistrationValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
     if (validationErrors) {
         return next(new Error('Cancel Email Activate ! ' + validationErrors[0].msg));
     }
-    var nowDate = new Date();
+    let nowDate = new Date();
     userModel.findOneQ({
         email: req.query.email,
         emailActivateToken: req.query.emailtoken,
@@ -591,7 +588,7 @@ function activateRegistrationEmail(req, res, next) {
 exports.activateRegistrationEmail = activateRegistrationEmail;
 ;
 function sendResetPasswordEmail(req, res, next) {
-    var validationErrors = userModel.resetForgotPasswordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C, 1);
+    let validationErrors = userModel.resetForgotPasswordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C, 1);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -604,7 +601,7 @@ function sendResetPasswordEmail(req, res, next) {
         resultUser.resetPasswordVerifyCode = Math.floor(Math.random() * (999999 - 100000) + 100000);
         return resultUser.saveQ();
     }).then(function (resultUser) {
-        var mailContent = emailModel.resetPassword();
+        let mailContent = emailModel.resetPassword();
         mailContent.substitution_vars.to.push(resultUser[0].email);
         mailContent.substitution_vars.sub['%username%'].push(resultUser[0].username);
         mailContent.substitution_vars.sub['%useremail%'].push(resultUser[0].email);
@@ -629,11 +626,11 @@ exports.sendResetPasswordEmail = sendResetPasswordEmail;
 ;
 // http://www.hcdlearning.com/e4e/e4e/emailverify/changepassword?username=jinwyp&passwordtoken=799731
 function forgotPasswordStep2(req, res, next) {
-    var validationErrors = userModel.emailVerifyResetPasswordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
+    let validationErrors = userModel.emailVerifyResetPasswordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C);
     if (validationErrors) {
         return next(new Error('Cancel Reset password! ' + validationErrors[0].msg));
     }
-    var nowDate = new Date();
+    let nowDate = new Date();
     userModel.findOneQ({
         username: req.query.username,
         resetPasswordToken: req.query.passwordtoken
@@ -656,7 +653,7 @@ function forgotPasswordStep2(req, res, next) {
 exports.forgotPasswordStep2 = forgotPasswordStep2;
 ;
 function verifyResetPasswordCode(req, res, next) {
-    var validationErrors = userModel.resetForgotPasswordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C, 2);
+    let validationErrors = userModel.resetForgotPasswordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C, 2);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -675,7 +672,7 @@ function verifyResetPasswordCode(req, res, next) {
 exports.verifyResetPasswordCode = verifyResetPasswordCode;
 ;
 function resetNewPassword(req, res, next) {
-    var validationErrors = userModel.resetForgotPasswordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C, 3);
+    let validationErrors = userModel.resetForgotPasswordValidations(req, userRoleModel.roleList.student.id, userModel.getStudentType().B2C, 3);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
@@ -690,7 +687,7 @@ function resetNewPassword(req, res, next) {
         resultUser.password = req.body.password;
         return resultUser.saveQ();
     }).then(function (result) {
-        var savedDoc = result[0];
+        let savedDoc = result[0];
         if (savedDoc.bbsUid) {
             nodeBB.resetNodeBBPassword(savedDoc.bbsUid, req.body.password);
         }
@@ -703,17 +700,17 @@ exports.resetNewPassword = resetNewPassword;
 ;
 function generateRegistrationCaptcha(req, res, next) {
     Captcha.findOneAndRemove({ _id: req.cookies['x-captcha-token'] });
-    var captcha = String(Math.floor(Math.random() * (999999 - 100000) + 100000));
+    let captcha = String(Math.floor(Math.random() * (999999 - 100000) + 100000));
     //    let verifyCodeExpires = new Date(new Date().getTime() + 1000 * 60 * 60); // one hour
     // TODO: first verify unique phone
-    var mobilePhone = req.query.mobilePhone;
-    var messageXSend = new MessageXSend();
+    let mobilePhone = req.query.mobilePhone;
+    let messageXSend = new MessageXSend();
     messageXSend.add_var('code', captcha);
     messageXSend.add_to(mobilePhone);
     messageXSend.set_project('pPlo2');
-    var xsendQ = Q.nbind(messageXSend.xsend, messageXSend);
+    let xsendQ = Q.nbind(messageXSend.xsend, messageXSend);
     xsendQ().then(function (result) {
-        var parsedRes = JSON.parse(result);
+        let parsedRes = JSON.parse(result);
         if (parsedRes.status === "error") {
             throw new Error('Cancel promise chains. Because ' + parsedRes.msg);
         }
@@ -732,27 +729,27 @@ exports.generateRegistrationCaptcha = generateRegistrationCaptcha;
 ;
 function generatePhoneVerifyCode(req, res, next) {
     req.body.mobilePhone = req.user.mobilePhone || '';
-    var validationErrors = userModel.mobilePhoneValidations(req);
+    let validationErrors = userModel.mobilePhoneValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var messageXSend = new MessageXSend();
-    var verifyCode = String(Math.floor(Math.random() * (999999 - 100000) + 100000));
-    var verifyCodeExpires = new Date(new Date().getTime() + 1000 * 60 * 60); // one hour
+    let messageXSend = new MessageXSend();
+    let verifyCode = String(Math.floor(Math.random() * (999999 - 100000) + 100000));
+    let verifyCodeExpires = new Date(new Date().getTime() + 1000 * 60 * 60); // one hour
     userModel.updateQ({ _id: req.user._id }, { $set: { phoneVerifyCode: verifyCode, phoneVerifyCodeExpires: verifyCodeExpires } })
         .then(function (result) {
-        var numAffected = result.nModified;
+        let numAffected = result.nModified;
         if (numAffected !== 1) {
             throw new Error('Cancel promise chains. Because Update phoneVerifyCode failed. More or less than 1 record is updated. it should be only one !');
         }
         messageXSend.add_var('code', verifyCode);
         messageXSend.add_to(req.user.mobilePhone);
         messageXSend.set_project('pPlo2');
-        var xsendQ = Q.nbind(messageXSend.xsend, messageXSend);
+        let xsendQ = Q.nbind(messageXSend.xsend, messageXSend);
         return xsendQ();
     })
         .then(function (result) {
-        var parsedRes = JSON.parse(result);
+        let parsedRes = JSON.parse(result);
         if (parsedRes.status === "error") {
             return res.status(400).send(parsedRes);
         }
@@ -764,12 +761,12 @@ function generatePhoneVerifyCode(req, res, next) {
 exports.generatePhoneVerifyCode = generatePhoneVerifyCode;
 ;
 function verifyPhoneVerifyCode(req, res, next) {
-    var validationErrors = userModel.mobilePhoneVerifyCodeValidations(req);
+    let validationErrors = userModel.mobilePhoneVerifyCodeValidations(req);
     if (validationErrors) {
         return res.status(400).send({ message: validationErrors });
     }
-    var phoneVerifyCode = req.body.phoneVerifyCode;
-    var nowDate = new Date();
+    let phoneVerifyCode = req.body.phoneVerifyCode;
+    let nowDate = new Date();
     userModel.findOneQ({
         username: req.user.username
     }).then(function (resultUser) {

@@ -1,14 +1,14 @@
 "use strict";
-var Finance_1 = require('../../engine/ComputeEngine/Finance');
-var ENUMS = require('../../engine/ComputeEngine/ENUMS');
-var defaultPayments = {
+const Finance_1 = require('../../engine/ComputeEngine/Finance');
+const ENUMS = require('../../engine/ComputeEngine/ENUMS');
+let defaultPayments = {
     "CASH": {
         credit: ENUMS.CREDIT.CASH,
         part: 1
     }
 };
 function create() {
-    var alphaInsurance = new Finance_1.Insurance({
+    let alphaInsurance = new Finance_1.Insurance({
         id: "insurance1",
         label: "insurance1",
         insuranceID: "0",

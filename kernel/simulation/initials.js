@@ -1,5 +1,5 @@
 "use strict";
-var initials = {
+let initials = {
     period: -3,
     playerID: 1,
     decision: {

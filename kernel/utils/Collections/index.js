@@ -5,7 +5,7 @@
 //
 // Orginal javascript code was by Mauricio Santos
 //
-var _arrays = require('./arrays');
+const _arrays = require('./arrays');
 exports.arrays = _arrays;
 var Bag_1 = require('./Bag');
 exports.Bag = Bag_1.default;
@@ -29,6 +29,6 @@ var Set_1 = require('./Set');
 exports.Set = Set_1.default;
 var Stack_1 = require('./Stack');
 exports.Stack = Stack_1.default;
-var _util = require('./util');
+const _util = require('./util');
 exports.util = _util;
 //# sourceMappingURL=index.js.map

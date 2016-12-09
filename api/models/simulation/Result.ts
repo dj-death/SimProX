@@ -7,7 +7,7 @@ import console = require('../../../kernel/utils/logger');
 
 let simulationResultSchema = require('./ResultSchema');
 
-var SimulationResult = mongoose.model("SimulationResult", simulationResultSchema);
+let SimulationResult = mongoose.model("SimulationResult", simulationResultSchema);
 
 
 export function insert(simulationResult) {

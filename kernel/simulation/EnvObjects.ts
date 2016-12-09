@@ -9,7 +9,7 @@ import labourPools = require('./environnement/LabourPools');
 
 
 
-var objects = {
+let objects = {
     world: economies.world,
     economies: economies.economies,
     currencies: currencies,

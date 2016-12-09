@@ -1,22 +1,22 @@
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Q = require('q');
-var categorySchema = new Schema({
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+let Q = require('q');
+let categorySchema = new Schema({
     name: String,
     questions: [{ title: String, answer: String }]
 });
-var faqSchema = new Schema({
+let faqSchema = new Schema({
     reportName: String,
     language: String,
     categories: [categorySchema]
 });
-var FAQ = mongoose.model("FAQ", faqSchema);
+let FAQ = mongoose.model("FAQ", faqSchema);
 function insert(faq) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     FAQ.create(faq, function (err, result) {
         if (err) {
             return deferred.reject(err);
@@ -31,7 +31,7 @@ function findByReportName(reportName) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     FAQ.find({
         reportName: reportName
     }, function (err, result) {
@@ -50,7 +50,7 @@ function remove(query) {
     if (!mongoose.connection.readyState) {
         throw new Error("mongoose is not connected.");
     }
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     FAQ.remove(query, function (err, result) {
         if (err) {
             return deferred.reject(err);

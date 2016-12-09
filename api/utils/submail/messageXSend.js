@@ -1,5 +1,5 @@
 "use strict";
-var Message = require('./message');
+const Message = require('./message');
 function MessageXSend() {
     this.to = [];
     this.to_name = [];
@@ -19,15 +19,15 @@ function MessageXSend() {
     this.set_project = function (project) {
         this.project = project;
     };
-    this.add_var = function (key, val) {
+    this.add_let = function (key, val) {
         this.vars[key] = val;
     };
     this.build_params = function () {
-        var params = {};
+        let params = {};
         if (this.to.length > 0) {
-            var toValue = '';
-            for (var index in this.to) {
-                var name = '';
+            let toValue = '';
+            for (let index in this.to) {
+                let name = '';
                 if (this.to_name[index] != undefined) {
                     name = this.to_name[index];
                 }
@@ -36,8 +36,8 @@ function MessageXSend() {
             params['to'] = toValue.substring(0, toValue.length - 1);
         }
         if (this.addressbook.length > 0) {
-            var addressbookValue = '';
-            for (var index in this.addressbook) {
+            let addressbookValue = '';
+            for (let index in this.addressbook) {
                 addressbookValue += this.addressbook[index] + ',';
             }
             params['addressbook'] = addressbookValue.substring(0, addressbookValue.length - 1);
@@ -51,7 +51,7 @@ function MessageXSend() {
         return params;
     };
     this.xsend = function (cb) {
-        var message = new Message();
+        let message = new Message();
         message.xsend(this.build_params(), cb);
     };
 }

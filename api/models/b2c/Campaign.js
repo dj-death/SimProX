@@ -2,15 +2,15 @@
 /*!
  * Module dependencies
  */
-var mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
-var Schema = mongoose.Schema;
-var schemaObjectId = Schema.Types.ObjectId;
-var Q = require('q');
-var mongooseTimestamps = require('mongoose-timestamp');
+let mongoose = require('mongoose-q')(require('mongoose'), { spread: true });
+let Schema = mongoose.Schema;
+let schemaObjectId = Schema.Types.ObjectId;
+let Q = require('q');
+let mongooseTimestamps = require('mongoose-timestamp');
 /**
  * Mongoose schema
  */
-var campaignSchema = new Schema({
+let campaignSchema = new Schema({
     name: { type: String },
     description: { type: String },
     location: { type: String },
@@ -89,6 +89,6 @@ campaignSchema.statics.campaignIdValidations = function (req) {
 /**
  * Register Model
  */
-var Campaign = mongoose.model("Campaign", campaignSchema);
+let Campaign = mongoose.model("Campaign", campaignSchema);
 module.exports = Campaign;
 //# sourceMappingURL=Campaign.js.map

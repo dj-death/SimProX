@@ -5,7 +5,7 @@ import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
 export default function create(): Intelligence {
 
-    var BI = new Intelligence({
+    let BI = new Intelligence({
         id: "BI",
         label: "BI",
 

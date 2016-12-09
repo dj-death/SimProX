@@ -1,60 +1,60 @@
 "use strict";
-var game = require('../../simulation/Games');
-var CompanyParams = require('../../simulation/CompanyParams');
-var Company = require('./Company');
-var Lands_1 = require('../../simulation/manufacturing/Lands');
-var Factories_1 = require('../../simulation/manufacturing/Factories');
-var machineries = require('../../simulation/manufacturing/Machineries');
-var RMWarehouses_1 = require('../../simulation/manufacturing/RMWarehouses');
-var RawMaterials_1 = require('../../simulation/manufacturing/RawMaterials');
-var Suppliers_1 = require('../../simulation/manufacturing/Suppliers');
-var Products_1 = require('../../simulation/manufacturing/Products');
-var SemiProducts_1 = require('../../simulation/manufacturing/SemiProducts');
-var SubContracters_1 = require('../../simulation/manufacturing/SubContracters');
-var Ateliers_1 = require('../../simulation/manufacturing/Ateliers');
-var Workers_1 = require('../../simulation/manufacturing/Workers');
-var Markets_1 = require('../../simulation/marketing/Markets');
-var SalesForce_1 = require('../../simulation/marketing/SalesForce');
-var SalesOffice_1 = require('../../simulation/marketing/SalesOffice');
-var Transport_1 = require('../../simulation/marketing/Transport');
-var ECommerce_1 = require('../../simulation/marketing/ECommerce');
-var Intelligence_1 = require('../../simulation/marketing/Intelligence');
-var Management_1 = require('../../simulation/personnel/Management');
-var Insurances_1 = require('../../simulation/finance/Insurances');
-var BankAccounts_1 = require('../../simulation/finance/BankAccounts');
-var Capital_1 = require('../../simulation/finance/Capital');
-var Manufacturing_1 = require('./Manufacturing');
-var Marketing_1 = require('./Marketing');
-var Finance_1 = require('./Finance');
-var Factory = (function () {
-    function Factory() {
+const game = require('../../simulation/Games');
+const CompanyParams = require('../../simulation/CompanyParams');
+const Company = require('./Company');
+const Lands_1 = require('../../simulation/manufacturing/Lands');
+const Factories_1 = require('../../simulation/manufacturing/Factories');
+const machineries = require('../../simulation/manufacturing/Machineries');
+const RMWarehouses_1 = require('../../simulation/manufacturing/RMWarehouses');
+const RawMaterials_1 = require('../../simulation/manufacturing/RawMaterials');
+const Suppliers_1 = require('../../simulation/manufacturing/Suppliers');
+const Products_1 = require('../../simulation/manufacturing/Products');
+const SemiProducts_1 = require('../../simulation/manufacturing/SemiProducts');
+const SubContracters_1 = require('../../simulation/manufacturing/SubContracters');
+const Ateliers_1 = require('../../simulation/manufacturing/Ateliers');
+const Workers_1 = require('../../simulation/manufacturing/Workers');
+const Markets_1 = require('../../simulation/marketing/Markets');
+const SalesForce_1 = require('../../simulation/marketing/SalesForce');
+const SalesOffice_1 = require('../../simulation/marketing/SalesOffice');
+const Transport_1 = require('../../simulation/marketing/Transport');
+const ECommerce_1 = require('../../simulation/marketing/ECommerce');
+const Intelligence_1 = require('../../simulation/marketing/Intelligence');
+const Management_1 = require('../../simulation/personnel/Management');
+const Insurances_1 = require('../../simulation/finance/Insurances');
+const BankAccounts_1 = require('../../simulation/finance/BankAccounts');
+const Capital_1 = require('../../simulation/finance/Capital');
+const Manufacturing_1 = require('./Manufacturing');
+const Marketing_1 = require('./Marketing');
+const Finance_1 = require('./Finance');
+class Factory {
+    constructor() {
         if (Factory._instance) {
             throw new Error("Error: Instantiation failed: Use getInstance() instead of new.");
         }
         Factory._instance = this;
     }
-    Factory.init = function () {
-        var that = this.getInstance();
+    static init() {
+        let that = this.getInstance();
         if (Factory._instance) {
             delete Factory._instance;
         }
         Factory._instance = new Factory();
-    };
-    Factory.getInstance = function () {
+    }
+    static getInstance() {
         if (Factory._instance === null) {
             Factory._instance = new Factory();
         }
         return Factory._instance;
-    };
-    Factory.getObjects = function (playerID) {
-        var objects = this.playersObjects[playerID];
+    }
+    static getObjects(playerID) {
+        let objects = this.playersObjects[playerID];
         if (objects === undefined) {
             return this.createObjects(playerID);
         }
         return objects;
-    };
-    Factory.createObjects = function (playerID) {
-        var objects = {
+    }
+    static createObjects(playerID) {
+        let objects = {
             game: game,
             Company: new Company.Company(),
             CompanyParams: CompanyParams,
@@ -87,10 +87,9 @@ var Factory = (function () {
         };
         this.playersObjects[playerID] = objects;
         return objects;
-    };
-    Factory._instance = null;
-    Factory.playersObjects = {};
-    return Factory;
-}());
+    }
+}
+Factory._instance = null;
+Factory.playersObjects = {};
 exports.Factory = Factory;
 //# sourceMappingURL=ObjectsFactory.js.map

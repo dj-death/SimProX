@@ -35,7 +35,7 @@ class IDepartment {
 
         setImmediate(function () {
 
-            for (var key in that) {
+            for (let key in that) {
                 console.silly("GES @ %s of %s", key, deptName);
 
                 if (Proto.hasOwnProperty(key) || key === "departmentName") {
@@ -53,8 +53,8 @@ class IDepartment {
                         console.warn("GES @ %s : %s is NaN", deptName, key);
                     }
 
-                    key = prefix ? (prefix + key) : key;
-                    endState[key] = value;
+                    let newKey = prefix ? (prefix + key) : key;
+                    endState[newKey] = value;
 
                 } catch (e) {
                     console.error(e, "exception @ Fin");

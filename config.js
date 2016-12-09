@@ -1,5 +1,5 @@
 "use strict";
-var config = {
+let config = {
     fileUploadDirectory: __dirname + "/kernel/data/",
     engine: {
         scenariosDbPath: __dirname + "/kernel/data/scenarios",

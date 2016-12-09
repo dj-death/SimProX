@@ -1,32 +1,31 @@
 "use strict";
-var reportModel = require('../../models/simulation/Report');
-var simulationResult = require('../../models/simulation/Result');
-var companyDecisionModel = require('../../models/decision/CompanyDecision');
-var seminarModel = require('../../models/Seminar');
-var userRoleModel = require('../../models/user/UserRole');
-var teamModel = require('../../models/user/Team');
-var teamScoreModel = require('../../models/b2c/TeamScore');
-var logger = require('../../../kernel/utils/logger');
-var Utils = require('../../../kernel/utils/Utils');
-var Flat = require('../../utils/Flat');
-var Excel = require('../../utils/ExcelUtils');
-var Q = require('q');
-var _ = require('underscore');
-var extraString = require("string");
+const reportModel = require('../../models/simulation/Report');
+const simulationResult = require('../../models/simulation/Result');
+const companyDecisionModel = require('../../models/decision/CompanyDecision');
+const seminarModel = require('../../models/Seminar');
+const userRoleModel = require('../../models/user/UserRole');
+const teamModel = require('../../models/user/Team');
+let teamScoreModel = require('../../models/b2c/TeamScore');
+const logger = require('../../../kernel/utils/logger');
+const Utils = require('../../../kernel/utils/Utils');
+const Flat = require('../../utils/Flat');
+const Excel = require('../../utils/ExcelUtils');
+let Q = require('q');
+let _ = require('underscore');
 function getStudentFinalScore(req, res, next) {
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
     if (req.user.role !== userRoleModel.roleList.student.id) {
         seminarId = +req.params.seminarId;
     }
     if (!seminarId) {
         return res.send(400, { message: "You don't choose a seminar." });
     }
-    var tempRoundTime = {};
-    var seminarData = {};
-    var teamIdList = [];
-    var teamHashMap = {};
-    var companyHashMap = {};
-    var scoreData = [];
+    let tempRoundTime = {};
+    let seminarData = {};
+    let teamIdList = [];
+    let teamHashMap = {};
+    let companyHashMap = {};
+    let scoreData = [];
     seminarModel.findOneQ({ seminarId: seminarId }).then(function (resultSeminar) {
         if (!resultSeminar) {
             throw new Error("Cancel promise chains. seminar not found.");
@@ -42,7 +41,7 @@ function getStudentFinalScore(req, res, next) {
                 tempRoundTime['p' + period.period] = {};
                 if (period.lockDecisionTime && period.lockDecisionTime.length) {
                     period.lockDecisionTime.forEach(function (company) {
-                        var time = {
+                        let time = {
                             days: 0,
                             leftDays: 0,
                             hours: 0,
@@ -90,19 +89,19 @@ function getStudentFinalScore(req, res, next) {
         }
         // 保存比赛结果到teamScoreModel 里面
         if (seminarData.isSimulationFinished === true) {
-            var finalScoreList = _.sortBy(result.scoreData[result.scoreData.length - 1].scores, 'finalScore').reverse();
-            var teamScoreList_1 = [];
-            var companyRoundTimeMap_1 = {};
+            let finalScoreList = _.sortBy(result.scoreData[result.scoreData.length - 1].scores, 'finalScore').reverse();
+            let teamScoreList = [];
+            let companyRoundTimeMap = {};
             // 处理每个小组的所有回合提交锁定决策的总时间
             if (Array.isArray(seminarData.roundTime)) {
                 seminarData.roundTime.forEach(function (period) {
                     period.lockDecisionTime.forEach(function (company) {
-                        companyRoundTimeMap_1[company.companyId] = companyRoundTimeMap_1[company.companyId] || 0;
+                        companyRoundTimeMap[company.companyId] = companyRoundTimeMap[company.companyId] || 0;
                         if (company.lockStatus) {
-                            companyRoundTimeMap_1[company.companyId] = companyRoundTimeMap_1[company.companyId] + company.spendHour;
+                            companyRoundTimeMap[company.companyId] = companyRoundTimeMap[company.companyId] + company.spendHour;
                         }
                         else {
-                            companyRoundTimeMap_1[company.companyId] = companyRoundTimeMap_1[company.companyId] + period.roundTimeHour * 1000 * 60 * 60;
+                            companyRoundTimeMap[company.companyId] = companyRoundTimeMap[company.companyId] + period.roundTimeHour * 1000 * 60 * 60;
                         }
                     });
                 });
@@ -116,10 +115,10 @@ function getStudentFinalScore(req, res, next) {
                         }
                     }
                 });
-                var companyScore = {
+                let companyScore = {
                     ranking: score.ranking,
                     marksimosScore: score.finalScore,
-                    timeCost: companyRoundTimeMap_1[score.companyId],
+                    timeCost: companyRoundTimeMap[score.companyId],
                     marksimosSeminar: seminarData._id
                 };
                 if (score.teamid) {
@@ -134,11 +133,11 @@ function getStudentFinalScore(req, res, next) {
                 else {
                     companyScore.timeCostStatus = 0;
                 }
-                teamScoreList_1.push(companyScore);
+                teamScoreList.push(companyScore);
             });
             teamScoreModel.findQ({ marksimosSeminar: seminarData._id }).then(function (resultTeamScores) {
                 if (resultTeamScores.length === 0) {
-                    teamScoreModel.createQ(teamScoreList_1);
+                    teamScoreModel.createQ(teamScoreList);
                 }
             }).fail(next).done();
         }
@@ -175,15 +174,15 @@ function getStudentFinalScore(req, res, next) {
 exports.getStudentFinalScore = getStudentFinalScore;
 ;
 function getReport(req, res, next) {
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
     if (req.user.role !== userRoleModel.roleList.student.id) {
         seminarId = +req.query.seminarId;
     }
     if (!seminarId) {
         return res.status(400).send({ message: "You don't choose a seminar." });
     }
-    var companyId = +req.query.companyId;
-    var reportName = req.params.report_name;
+    let companyId = +req.query.companyId;
+    let reportName = req.params.report_name;
     if (!reportName) {
         return res.status(400).send({ message: "Invalid parameter reportName." });
     }
@@ -210,24 +209,24 @@ function getFinalScore(seminarId) {
         simulationResult.findAll(seminarId),
         seminarModel.findOneQ({ seminarId: seminarId })
     ]).spread(function (requestedPeriodResultArr, seminarInfo) {
-        var resultArr = {
+        let resultArr = {
             scoreData: [],
             showLastPeriodScore: seminarInfo.showLastPeriodScore
         };
-        var initialPeriodResult;
+        let initialPeriodResult;
         requestedPeriodResultArr.forEach(function (requestedPeriodResult) {
             if (requestedPeriodResult.period == 0) {
                 //原来作为比较的阶段0
                 initialPeriodResult = requestedPeriodResult;
             }
             if (requestedPeriodResult.period >= 0) {
-                var period = requestedPeriodResult.period;
-                var scores = [];
-                var highest_SOM = void 0, lowest_SOM_1, highest_Profit = void 0, lowest_Profit_1;
-                var a_1, b_1, c_1, d_1;
-                for (var i = 0; i < requestedPeriodResult.p_Companies.length; i++) {
-                    var originalSOM = void 0, originalProfit = void 0, originalBudget = void 0;
-                    var scaledSOM = void 0, scaledProfit = void 0, scaledBudget = void 0, finalScore = void 0;
+                let period = requestedPeriodResult.period;
+                let scores = [];
+                let highest_SOM, lowest_SOM, highest_Profit, lowest_Profit;
+                let a, b, c, d;
+                for (let i = 0; i < requestedPeriodResult.p_Companies.length; i++) {
+                    let originalSOM, originalProfit, originalBudget;
+                    let scaledSOM, scaledProfit, scaledBudget, finalScore;
                     originalSOM = 100 * (requestedPeriodResult.p_Companies[i].c_ValueSegmentShare[6] - initialPeriodResult.p_Companies[i].c_ValueSegmentShare[6]);
                     originalProfit = requestedPeriodResult.p_Companies[i].c_CumulatedNetResults;
                     originalBudget = (period / seminarInfo.simulation_span) * requestedPeriodResult.p_Companies[i].c_TotalInvestmentBudget;
@@ -245,55 +244,55 @@ function getFinalScore(seminarId) {
                     });
                 }
                 highest_SOM = _.max(scores, function (companyScore) { return companyScore.originalSOM; }).originalSOM;
-                lowest_SOM_1 = _.min(scores, function (companyScore) { return companyScore.originalSOM; }).originalSOM;
+                lowest_SOM = _.min(scores, function (companyScore) { return companyScore.originalSOM; }).originalSOM;
                 highest_Profit = _.max(scores, function (companyScore) { return companyScore.originalProfit; }).originalProfit;
-                lowest_Profit_1 = _.min(scores, function (companyScore) { return companyScore.originalProfit; }).originalProfit;
-                a_1 = highest_SOM - lowest_SOM_1;
-                c_1 = highest_Profit - lowest_Profit_1;
+                lowest_Profit = _.min(scores, function (companyScore) { return companyScore.originalProfit; }).originalProfit;
+                a = highest_SOM - lowest_SOM;
+                c = highest_Profit - lowest_Profit;
                 scores.forEach(function (companyScore) {
-                    if (lowest_SOM_1 < 0) {
-                        companyScore.scaledSOM = companyScore.originalSOM + a_1;
+                    if (lowest_SOM < 0) {
+                        companyScore.scaledSOM = companyScore.originalSOM + a;
                     }
                     else {
                         companyScore.scaledSOM = companyScore.originalSOM;
                     }
-                    if (lowest_Profit_1 < 0) {
-                        companyScore.scaledProfit = companyScore.originalProfit + c_1;
+                    if (lowest_Profit < 0) {
+                        companyScore.scaledProfit = companyScore.originalProfit + c;
                     }
                     else {
                         companyScore.scaledProfit = companyScore.originalProfit;
                     }
                 });
-                if (lowest_SOM_1 < 0) {
-                    lowest_SOM_1 = lowest_SOM_1 + a_1;
-                    highest_SOM = highest_SOM + a_1;
+                if (lowest_SOM < 0) {
+                    lowest_SOM = lowest_SOM + a;
+                    highest_SOM = highest_SOM + a;
                 }
-                if (lowest_Profit_1 < 0) {
-                    lowest_Profit_1 = lowest_Profit_1 + c_1;
-                    highest_Profit = highest_Profit + c_1;
+                if (lowest_Profit < 0) {
+                    lowest_Profit = lowest_Profit + c;
+                    highest_Profit = highest_Profit + c;
                 }
-                if (highest_SOM > lowest_SOM_1) {
-                    a_1 = 100 / (highest_SOM - lowest_SOM_1);
-                    b_1 = 100 - (a_1 * highest_SOM);
-                }
-                else {
-                    a_1 = 0;
-                    b_1 = 50;
-                }
-                if (highest_Profit > lowest_Profit_1) {
-                    c_1 = 100 / (highest_Profit - lowest_Profit_1);
-                    d_1 = 100 - (c_1 * highest_Profit);
+                if (highest_SOM > lowest_SOM) {
+                    a = 100 / (highest_SOM - lowest_SOM);
+                    b = 100 - (a * highest_SOM);
                 }
                 else {
-                    c_1 = 0;
-                    d_1 = 50;
+                    a = 0;
+                    b = 50;
+                }
+                if (highest_Profit > lowest_Profit) {
+                    c = 100 / (highest_Profit - lowest_Profit);
+                    d = 100 - (c * highest_Profit);
+                }
+                else {
+                    c = 0;
+                    d = 50;
                 }
                 scores.forEach(function (companyScore) {
-                    companyScore.scaledSOM = a_1 * companyScore.scaledSOM + b_1;
+                    companyScore.scaledSOM = a * companyScore.scaledSOM + b;
                     if (companyScore.scaledSOM < 0) {
                         companyScore.scaledSOM = 0;
                     }
-                    companyScore.scaledProfit = c_1 * companyScore.scaledProfit + d_1;
+                    companyScore.scaledProfit = c * companyScore.scaledProfit + d;
                     if (companyScore.scaledProfit < 0) {
                         companyScore.scaledProfit = 0;
                     }
@@ -321,9 +320,9 @@ function isReportNeedFilter(report_name) {
 function extractReportOfOneCompany(report, companyId) {
     if (!report || !report.reportData)
         return;
-    var reportData = report.reportData;
-    var tempReportData = [];
-    for (var i = 0; i < reportData.length; i++) {
+    let reportData = report.reportData;
+    let tempReportData = [];
+    for (let i = 0; i < reportData.length; i++) {
         if (reportData[i].companyId === companyId) {
             tempReportData.push(reportData[i]);
         }
@@ -331,15 +330,15 @@ function extractReportOfOneCompany(report, companyId) {
     return tempReportData;
 }
 function exportToExcel(req, res, next) {
-    var seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
+    let seminarId = req.gameMarksimos.currentStudentSeminar.seminarId;
     if (req.user.role !== userRoleModel.roleList.student.id) {
         seminarId = +req.query.seminarId;
     }
     if (!seminarId) {
         return res.status(400).send({ message: "You don't choose a seminar." });
     }
-    var companyId = +req.query.companyId;
-    var period = +req.query.period;
+    let companyId = +req.query.companyId;
+    let period = +req.query.period;
     return Q.all([
         simulationResult.findOne(seminarId, period),
         companyDecisionModel.findOne(seminarId, period, companyId)
@@ -349,30 +348,33 @@ function exportToExcel(req, res, next) {
         if (!allPeriodResults || !companyDecision) {
             return res.status(400).send({ message: "Report doesn't exist." });
         }
-        var companyResult = allPeriodResults.companies[companyId - 1];
-        var options = {
+        let companyResult = allPeriodResults.companies[companyId - 1];
+        let options = {
             lang: 'fr' //req.params.lang
         };
-        var aboutInfos = {
+        let { d_CID, d_CompanyName, seminarCode, period } = companyDecision;
+        let periodYear = period;
+        let periodQuarter = period;
+        let aboutInfos = {
             "reportDate": (new Date()).toLocaleDateString(),
-            "playerName": 'Entreprise ' + companyDecision.d_CompanyName,
-            "playerID": companyDecision.d_CID,
-            "seminar": companyDecision.seminarCode,
+            "playerName": `Entreprise ${d_CompanyName}`,
+            "playerID": d_CID,
+            "seminar": seminarCode,
             "scenarioID": '',
-            "periodYear": companyDecision.period,
-            "periodQuarter": companyDecision.period,
-            "period": companyDecision.period
+            "periodYear": periodYear,
+            "periodQuarter": periodQuarter,
+            "period": period
         };
-        var fileName = extraString("Report {{seminar}}{{playerID}} - {{periodYear}}Q{{periodQuarter}}.xlsx").template(aboutInfos).s;
-        var flattenDec = Flat.flatten(companyDecision.decision, {
+        let fileName = `Report ${seminarCode}${d_CID} - ${periodYear}Q${periodQuarter}.xlsx`;
+        let flattenDec = Flat.flatten(companyDecision.decision, {
             delimiter: '_',
             prefix: 'dec'
         });
-        var flattenRes = companyResult.report || Flat.flatten(companyResult, {
+        let flattenRes = companyResult.report || Flat.flatten(companyResult, {
             delimiter: '_',
             prefix: 'res'
         });
-        var reportData = Utils.ObjectApply(aboutInfos, flattenDec, flattenRes);
+        let reportData = Utils.ObjectApply(aboutInfos, flattenDec, flattenRes);
         Excel.excelExport(reportData, options, function (err, binary) {
             if (err) {
                 console.error(err);

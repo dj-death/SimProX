@@ -107,7 +107,7 @@ export class Factory {
     }
 
     public static init() {
-        var that = this.getInstance();
+        let that = this.getInstance();
 
         if (Factory._instance) {
             delete Factory._instance;

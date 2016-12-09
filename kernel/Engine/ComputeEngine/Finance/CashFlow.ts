@@ -115,7 +115,7 @@ export default class CashFlow {
 
 
     cover(companyObjs: Object) {
-        var self = this;
+        let self = this;
 
         for (let key in companyObjs) {
 
@@ -163,7 +163,7 @@ export default class CashFlow {
             return;
         }
 
-        var activity: Activity;
+        let activity: Activity;
 
         switch (activityType) {
             case ENUMS.ACTIVITY.INVESTING:
@@ -183,23 +183,23 @@ export default class CashFlow {
                 break;
         }
 
-        for (var key in paymentParams) {
+        for (let key in paymentParams) {
             if (!paymentParams.hasOwnProperty(key)) {
                 continue;
             }
 
-            var item = paymentParams[key];
-            var part = item.part;
+            let item = paymentParams[key];
+            let part = item.part;
 
             if (isNaN(part)) {
                 part = 0;
             }
 
-            var amount = Math.ceil(total * part);
-            var credit = item.credit;
+            let amount = Math.ceil(total * part);
+            let credit = item.credit;
 
-            var currPeriodPaymentsRatio;
-            var currPeriodPayments;
+            let currPeriodPaymentsRatio;
+            let currPeriodPayments;
 
             if (activity.payments[ENUMS.CREDIT[credit]] === undefined) {
                 activity.payments[ENUMS.CREDIT[credit]] = 0;
@@ -235,7 +235,7 @@ export default class CashFlow {
             return;
         }
 
-        var activity;
+        let activity;
 
         switch (activityType) {
             case ENUMS.ACTIVITY.INVESTING:
@@ -255,23 +255,23 @@ export default class CashFlow {
                 break;
         }
 
-        for (var key in paymentParams) {
+        for (let key in paymentParams) {
             if (!paymentParams.hasOwnProperty(key)) {
                 continue;
             }
 
-            var item = paymentParams[key];
-            var part = item.part;
+            let item = paymentParams[key];
+            let part = item.part;
 
             if (isNaN(part)) {
                 part = 0;
             }
 
-            var amount = total * part;
-            var credit = item.credit;
+            let amount = total * part;
+            let credit = item.credit;
 
-            var currPeriodRatio;
-            var currPeriodReceipts;
+            let currPeriodRatio;
+            let currPeriodReceipts;
 
             if (activity.receipts[ENUMS.CREDIT[credit]] === undefined) {
                 activity.receipts[ENUMS.CREDIT[credit]] = 0;
@@ -347,13 +347,13 @@ export default class CashFlow {
     getEndState(prefix?: string): Q.Promise<any> {
         let deferred = Q.defer();
 
-        var endState = {};
-        var value;
+        let endState = {};
+        let value;
 
         let that: Object = this;
 
         setImmediate(function  () {
-            for (var key in that) {
+            for (let key in that) {
 
                 console.silly("cf GES @ of %s", key);
 

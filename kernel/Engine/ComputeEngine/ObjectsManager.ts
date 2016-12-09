@@ -39,10 +39,10 @@ function _finish(objects: IObjects): Q.Promise<any> {
 
         deptObj = objects[dept];
 
-        var i = 0,
+        let i = 0,
             len = deptObj.length;
 
-        var item;
+        let item;
 
         for (; i < len; i++) {
 
@@ -153,8 +153,8 @@ export default class ObjectsManager {
 
 
     public static init(doRestorePersistents: boolean = true) {
-        var that = this.getInstance();
-        var persistents = ObjectsManager.persistents;
+        let that = this.getInstance();
+        let persistents = ObjectsManager.persistents;
 
         if (ObjectsManager._instance) {
             delete ObjectsManager._instance;

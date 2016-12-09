@@ -13,7 +13,7 @@ function _between(value, min, max, option) {
     }
 }
 function _minMax(num1, num2) {
-    var min, max;
+    let min, max;
     if (num1 > num2) {
         min = num2;
         max = num1;
@@ -66,14 +66,14 @@ function lte(value, num) {
 }
 exports.lte = lte;
 function between(value, num1, num2, option) {
-    var minMax = _minMax(num1, num2);
+    let minMax = _minMax(num1, num2);
     return _between(value, minMax.min, minMax.max, option);
 }
 exports.between = between;
 function eachBetween(value, num1, num2, option) {
-    var minMax = _minMax(num1, num2);
+    let minMax = _minMax(num1, num2);
     if (value) {
-        for (var i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; i++) {
             if (!_between(value[i], minMax.min, minMax.max, option)) {
                 return false;
             }
@@ -84,7 +84,7 @@ function eachBetween(value, num1, num2, option) {
 exports.eachBetween = eachBetween;
 function eachInt(value) {
     if (value) {
-        for (var i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; i++) {
             if (!_toBeInt(value[i])) {
                 return false;
             }
@@ -95,7 +95,7 @@ function eachInt(value) {
 exports.eachInt = eachInt;
 function eachEqualInt(value) {
     if (value) {
-        for (var i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; i++) {
             if (!_isEqualInt(value[i])) {
                 return false;
             }

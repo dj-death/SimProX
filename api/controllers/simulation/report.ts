@@ -17,8 +17,6 @@ import Excel = require('../../utils/ExcelUtils');
 
 let Q = require('q');
 let _ = require('underscore');
-let extraString = require("string");
-
 
 
 
@@ -270,24 +268,24 @@ export function getReport(req, res, next) {
 
 
     reportModel.findOne(seminarId, reportName)
-    .then(function (report) {
+        .then(function (report) {
 
-        if (report === null || report === undefined) {
-            return res.status(400).send({ message: "Report doesn't exist." })
-        }
+            if (report === null || report === undefined) {
+                return res.status(400).send({ message: "Report doesn't exist." })
+            }
 
-        if (req.user.role === userRoleModel.roleList.student.id && isReportNeedFilter(reportName)) {
+            if (req.user.role === userRoleModel.roleList.student.id && isReportNeedFilter(reportName)) {
 
-            return res.send(extractReportOfOneCompany(report, companyId));
-        }
+                return res.send(extractReportOfOneCompany(report, companyId));
+            }
 
-        res.send(report.reportData);
-    })
-    .fail(function (err) {
-        logger.error(err);
-        res.status(500).send({ message: "fail to get report." });
-    })
-    .done();
+            res.send(report.reportData);
+        })
+        .fail(function (err) {
+            logger.error(err);
+            res.status(500).send({ message: "fail to get report." });
+        })
+        .done();
 
 };
 
@@ -465,37 +463,40 @@ export function exportToExcel(req, res, next) {
 
         let companyResult = allPeriodResults.companies[companyId - 1];
 
-        var options = {
+        let options = {
             lang: 'fr'//req.params.lang
         }
 
+        let {d_CID, d_CompanyName, seminarCode, period} = companyDecision;
+        let periodYear = period;
+        let periodQuarter = period;
 
-        var aboutInfos = {
+        let aboutInfos = {
             "reportDate": (new Date()).toLocaleDateString(),
-            "playerName": 'Entreprise ' + companyDecision.d_CompanyName,
-            "playerID": companyDecision.d_CID,
-            "seminar": companyDecision.seminarCode,
+            "playerName": `Entreprise ${d_CompanyName}`,
+            "playerID": d_CID,
+            "seminar": seminarCode,
             "scenarioID": '',
-            "periodYear": companyDecision.period,
-            "periodQuarter": companyDecision.period,
-            "period": companyDecision.period
+            "periodYear": periodYear,
+            "periodQuarter": periodQuarter,
+            "period": period
         };
 
 
-        var fileName = extraString("Report {{seminar}}{{playerID}} - {{periodYear}}Q{{periodQuarter}}.xlsx").template(aboutInfos).s;
+        let fileName = `Report ${seminarCode}${d_CID} - ${periodYear}Q${periodQuarter}.xlsx`;
 
-        var flattenDec = Flat.flatten(companyDecision.decision, {
+        let flattenDec = Flat.flatten(companyDecision.decision, {
             delimiter: '_',
             prefix: 'dec'
         });
 
 
-        var flattenRes = companyResult.report || Flat.flatten(companyResult, {
+        let flattenRes = companyResult.report || Flat.flatten(companyResult, {
             delimiter: '_',
             prefix: 'res'
         });
 
-        var reportData = Utils.ObjectApply(aboutInfos, flattenDec, flattenRes);
+        let reportData = Utils.ObjectApply(aboutInfos, flattenDec, flattenRes);
 
         Excel.excelExport(reportData, options, function (err, binary) {
             if (err) {

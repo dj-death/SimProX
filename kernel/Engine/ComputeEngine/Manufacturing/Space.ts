@@ -188,7 +188,7 @@ export class Space extends IObject.IObject {
     }
 
     get depreciation(): number {
-        var depreciation = Math.ceil(this.rawValue * this.params.depreciationRate);
+        let depreciation = Math.ceil(this.rawValue * this.params.depreciationRate);
 
         return depreciation;
     }
@@ -199,7 +199,7 @@ export class Space extends IObject.IObject {
             return this.availableSpaceNextPeriod * this.extensionSquareMetreCost;
         }
 
-        var netValue = this.rawValue - this.depreciation;
+        let netValue = this.rawValue - this.depreciation;
 
         return netValue;
     }
@@ -280,7 +280,7 @@ export class Space extends IObject.IObject {
             return false;
         }
 
-        if (!Number.isInteger(extension)) {
+        if (!Utils.isInteger(extension)) {
             extension = Math.round(extension);
         }
 
@@ -290,12 +290,12 @@ export class Space extends IObject.IObject {
             return false;
         }
 
-        var possibleExtension = extension > this.unusedSpace ? this.unusedSpace : extension;
+        let possibleExtension = extension > this.unusedSpace ? this.unusedSpace : extension;
 
-        var extensionRes = this.contractor.build(possibleExtension, this.creditWorthiness);
+        let extensionRes = this.contractor.build(possibleExtension, this.creditWorthiness);
 
-        var effectiveExtension = extensionRes.squaresNb;
-        var extensionDuration = extensionRes.duration;
+        let effectiveExtension = extensionRes.squaresNb;
+        let extensionDuration = extensionRes.duration;
 
         if (this === this.peripherySpace && this.params.id === this.peripherySpace.params.id) {
 
@@ -324,13 +324,13 @@ export class Space extends IObject.IObject {
     }
 
     onSpaceFree() {
-        var req: Request = this.requests.peek();
+        let req: Request = this.requests.peek();
 
         if (!req) {
             return;
         }
 
-        var isRemaining = req.callback.apply(req.scope, []);
+        let isRemaining = req.callback.apply(req.scope, []);
 
         if (!isRemaining) {
             this.requests.dequeue();

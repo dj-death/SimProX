@@ -73,7 +73,7 @@ export class Warehouse extends IObject.IObject {
 
     // TODO: implement
     _calcMaterialLostUnitsOfThis(quantity: number): number {
-        var lostQ: number,
+        let lostQ: number,
             vars: number[];
 
         // variable X binomial 
@@ -93,7 +93,7 @@ export class Warehouse extends IObject.IObject {
             return 0;
         }
 
-        var lostQ = this._calcMaterialLostUnitsOfThis(quantity);
+        let lostQ = this._calcMaterialLostUnitsOfThis(quantity);
 
         if (lostQ > this.availableQ) {
             console.warn("something strange with warehouse %s loss %d / %d", this.params.id, lostQ, this.availableQ);
@@ -108,7 +108,7 @@ export class Warehouse extends IObject.IObject {
     }
 
     _calcMaterialSpoiledUnitsOfThis(quantity: number): number {
-        var spoiledQ: number,
+        let spoiledQ: number,
             vars: number[],
             probability = (this.stockedItem && this.stockedItem.params && this.stockedItem.params.spoilProbability) || 0;
 
@@ -124,7 +124,7 @@ export class Warehouse extends IObject.IObject {
             return 0;
         }
 
-        var spoiledQ = this._calcMaterialSpoiledUnitsOfThis(quantity);
+        let spoiledQ = this._calcMaterialSpoiledUnitsOfThis(quantity);
 
         if (spoiledQ > this.availableQ ) {
             console.warn("something strange with warehouse spoil");
@@ -151,13 +151,13 @@ export class Warehouse extends IObject.IObject {
 
         this.space = space;
 
-        var self = this;
+        let self = this;
 
         this.space && this.space.on("Ready", function () {
             console.silly("space ready fired");
 
-            var spaceNeededByUnit = self.stockedItem && self.stockedItem.params.spaceNeeded || 0;
-            var storedUnitsNb = self.store(openingQ, spaceNeededByUnit);
+            let spaceNeededByUnit = self.stockedItem && self.stockedItem.params.spaceNeeded || 0;
+            let storedUnitsNb = self.store(openingQ, spaceNeededByUnit);
 
             self.externalOpeningQ = openingQ - storedUnitsNb;
             self.externalAvailableQ = openingQ - storedUnitsNb;
@@ -254,8 +254,8 @@ export class Warehouse extends IObject.IObject {
     onBeforeReady() { };
 
     get closingQ(): number {
-        var allInQ = this.openingQ + this.inQ;
-        var allOutQ = this.outQ + this.lostQ + this.spoiledQ;
+        let allInQ = this.openingQ + this.inQ;
+        let allOutQ = this.outQ + this.lostQ + this.spoiledQ;
 
         if (allInQ < allOutQ) {
             console.warn("something strange with closingQ as we have in %d vs. out %d", allInQ, allOutQ);
@@ -276,7 +276,7 @@ export class Warehouse extends IObject.IObject {
             return this.stockedItem.inventoryUnitValue;
         }
 
-        var cmup = (this.openingValue + this.inValue) / (this.openingQ + this.inQ);
+        let cmup = (this.openingValue + this.inValue) / (this.openingQ + this.inQ);
 
         return cmup;
     }
@@ -306,7 +306,7 @@ export class Warehouse extends IObject.IObject {
     }
 
     get storageCost(): number {
-        var storageUnitCost = this.params.costs.storageUnitCost;
+        let storageUnitCost = this.params.costs.storageUnitCost;
 
         if (this.stockedItem.economy) {
             let inflationImpact = this.stockedItem.economy.PPIOverheads;
@@ -322,7 +322,7 @@ export class Warehouse extends IObject.IObject {
     }
 
     get administrativeCost(): number {
-        var fixedAdministrativeCost = this.params.costs.fixedAdministrativeCost;
+        let fixedAdministrativeCost = this.params.costs.fixedAdministrativeCost;
 
         if (this.stockedItem.economy) {
             let inflationImpact = this.stockedItem.economy.PPIOverheads;
@@ -372,11 +372,11 @@ export class Warehouse extends IObject.IObject {
         this.outQ += quantity;
         this.availableQ = Utils.correctFloat(this.availableQ - quantity);
 
-        var fromInternalStocksQ: number = quantity - this.externalAvailableQ;
+        let fromInternalStocksQ: number = quantity - this.externalAvailableQ;
         this.externalAvailableQ = Utils.correctFloat(this.externalAvailableQ - (quantity - fromInternalStocksQ));
 
         if (this.space) {
-            var spaceUsed = (this.stockedItem && this.stockedItem.params.spaceNeeded || 0) * fromInternalStocksQ;
+            let spaceUsed = (this.stockedItem && this.stockedItem.params.spaceNeeded || 0) * fromInternalStocksQ;
 
             this.space.freeSpace(spaceUsed, ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.STOCKS]);
 
@@ -398,14 +398,14 @@ export class Warehouse extends IObject.IObject {
         spaceNeededByUnit = isNaN(spaceNeededByUnit) ? this.stockedItem.params.spaceNeeded : spaceNeededByUnit;
 
         // to use diminutif unité 0.01 m => 1 cm
-        var decimalsNb = Utils.getDecimalPart(unitsNb);
-        var base = Math.pow(10, decimalsNb);
+        let decimalsNb = Utils.getDecimalPart(unitsNb);
+        let base = Math.pow(10, decimalsNb);
 
-        var unitsQ = Math.floor(unitsNb * base);
-        var spaceNeededByQ = spaceNeededByUnit / base;
+        let unitsQ = Math.floor(unitsNb * base);
+        let spaceNeededByQ = spaceNeededByUnit / base;
 
-        var isSpaceAvailable: boolean;
-        var count = 0;
+        let isSpaceAvailable: boolean;
+        let count = 0;
 
         for (let i = 0; i < unitsQ; i++) {
             isSpaceAvailable = this.space.useSpace(spaceNeededByQ, ENUMS.SPACE_USAGES[ENUMS.SPACE_USAGES.STOCKS]);
@@ -417,8 +417,8 @@ export class Warehouse extends IObject.IObject {
             ++count;
         }
 
-        var storedUnitsNb = count / base;
-        var externalStoredUnitsNb = unitsNb - storedUnitsNb;
+        let storedUnitsNb = count / base;
+        let externalStoredUnitsNb = unitsNb - storedUnitsNb;
 
         if (externalStoredUnitsNb > 0) {
             this.externalAvailableQ = Utils.correctFloat(this.externalAvailableQ + externalStoredUnitsNb);
@@ -430,9 +430,9 @@ export class Warehouse extends IObject.IObject {
     }
 
     releaseExternalStocks(): boolean {
-        var externalStocksAvailableQ = this.externalAvailableQ;
+        let externalStocksAvailableQ = this.externalAvailableQ;
 
-        var storedUnitsNb = this.store(externalStocksAvailableQ);
+        let storedUnitsNb = this.store(externalStocksAvailableQ);
         this.externalAvailableQ = Utils.correctFloat(this.externalAvailableQ  - storedUnitsNb);
 
         return this.externalAvailableQ > 0;
@@ -448,7 +448,7 @@ export class Warehouse extends IObject.IObject {
             return 0;
         }
 
-        var storedUnitsNb,
+        let storedUnitsNb,
             spaceNeededByUnit;
             
 
@@ -523,7 +523,7 @@ export class RMWarehouse extends Warehouse {
     onFinish() {
         super.onFinish();
 
-        var losses = (this.spoiledQ + this.lostQ) * this.stockedItem.inventoryUnitValue;
+        let losses = (this.spoiledQ + this.lostQ) * this.stockedItem.inventoryUnitValue;
 
         this.insurance && this.insurance.claims(losses);
     }

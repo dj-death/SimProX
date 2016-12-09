@@ -13,10 +13,10 @@ import Utils = require('../../utils/Utils');
 import FinUtils = require('../../utils/FinUtils');
 
 
-var linear = require('everpolate').linear;
+let linear = require('everpolate').linear;
 
 import $jStat = require("jstat");
-var jStat = $jStat.jStat;
+let jStat = $jStat.jStat;
 
 
 import Q = require('q');
@@ -46,7 +46,7 @@ class Compte {
     }
 
     addElement(dept, element, isMinus = false) {
-        var value = dept[element];
+        let value = dept[element];
 
         if (isNaN(value) || !isFinite(value)) {
             console.warn("warning Company accounting @", dept.departmentName, element);
@@ -198,7 +198,7 @@ export class Company {
 
 
     prepareCompanyBankFile(): ENUMS.Company_BankFile {
-        var self = this;
+        let self = this;
 
         return {
             property: self.propertyValue,
@@ -210,14 +210,14 @@ export class Company {
     }
 
     get propertyValue(): number {
-        var lands = this.ProductionDept.landNetValue;
-        var buildings = this.ProductionDept.buildingsNetValue;
+        let lands = this.ProductionDept.landNetValue;
+        let buildings = this.ProductionDept.buildingsNetValue;
 
         return lands + buildings;
     }
 
     get nonCurrentAssetsTotalValue(): number {
-        var machines = this.ProductionDept.machineryNetValue;
+        let machines = this.ProductionDept.machineryNetValue;
 
         return this.propertyValue + machines;
     }
@@ -254,7 +254,7 @@ export class Company {
     }
 
     get productionCost(): number {
-        var compte = new Compte();
+        let compte = new Compte();
 
         compte.addElement(this.ProductionDept, "inventoriesOpeningValue");
         compte.addElement(this.ProductionDept, "inventoriesClosingValue", true);
@@ -270,7 +270,7 @@ export class Company {
     }
 
     get administrativeExpensesTotalCost(): number {
-        var compte = new Compte();
+        let compte = new Compte();
 
         compte.addElement(this.MarketingDept, "advertisingCost");
         compte.addElement(this.MarketingDept, "salesForceCost");
@@ -300,16 +300,16 @@ export class Company {
     }
 
     get grossProfit(): number {
-        var totalRevenues = this.MarketingDept.salesOffice.salesRevenue;
-        var productionCosts = this.productionCost;
+        let totalRevenues = this.MarketingDept.salesOffice.salesRevenue;
+        let productionCosts = this.productionCost;
 
-        var grossProfit = totalRevenues - productionCosts;
+        let grossProfit = totalRevenues - productionCosts;
 
         return grossProfit;
     }
 
     get operatingProfitLoss(): number {
-        var result = this.grossProfit;
+        let result = this.grossProfit;
 
         result += this.FinanceDept.insurancesReceipts;
 
@@ -320,7 +320,7 @@ export class Company {
     }
 
     get beforeTaxProfitLoss(): number {
-        var result = this.operatingProfitLoss;
+        let result = this.operatingProfitLoss;
 
         result += this.FinanceDept.interestReceived;
         result -= this.FinanceDept.interestPaid;
@@ -703,7 +703,7 @@ export class Company {
     }
 
     get previousTaxableProfitLoss(): number {
-        var value;
+        let value;
 
         // case of loss last year
         if (this.currentQuarter === 1) {
@@ -768,7 +768,7 @@ export class Company {
     }
 
     get currPeriodProfitLoss(): number {
-        var result = this.beforeTaxProfitLoss - this.taxAssessed;
+        let result = this.beforeTaxProfitLoss - this.taxAssessed;
 
         return result;
     }
@@ -790,8 +790,8 @@ export class Company {
     }
 
     get equityTotalValue(): number {
-        var capital = this.FinanceDept.capital;
-        var value = capital.shareCapital + capital.sharePremiumAccount + this.retainedEarnings;
+        let capital = this.FinanceDept.capital;
+        let value = capital.shareCapital + capital.sharePremiumAccount + this.retainedEarnings;
 
         return value;
     }
@@ -846,7 +846,7 @@ export class Company {
         let deferred = Q.defer();
 
 
-        var endState = {};
+        let endState = {};
 
         let that = this;
 
@@ -854,7 +854,7 @@ export class Company {
 
             that._marketValuePerShare = that.economy.stockMarket.evaluate(that);
 
-            for (var key in that) {
+            for (let key in that) {
 
                 if (key[0] === '_') {
                     continue;
@@ -875,8 +875,8 @@ export class Company {
                         console.warn("GES @ Comp : %s is NaN", key);
                     }
 
-                    key = prefix ? (prefix + key) : key;
-                    endState[key] = value;
+                    let newKey = prefix ? (prefix + key) : key;
+                    endState[newKey] = value;
 
                 } catch (e) {
                     console.error(e, "exception @ Comp %s", key);

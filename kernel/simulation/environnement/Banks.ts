@@ -1,7 +1,7 @@
 ﻿import { Bank } from '../../engine/ComputeEngine/Environnement';
 import ENUMS = require('../../engine/ComputeEngine/ENUMS');
 
-var eurobank = new Bank({
+let eurobank = new Bank({
     id: "bank1",
     label: "bank1",
 

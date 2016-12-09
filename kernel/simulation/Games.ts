@@ -3,7 +3,7 @@
 import ENUMS = require('../engine/ComputeEngine/ENUMS');
 
 
-var GMCGame = new Game({
+let GMCGame = new Game({
     index100Value: 1000,
     stage: {
         nb: 5,

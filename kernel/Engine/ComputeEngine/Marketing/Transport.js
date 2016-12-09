@@ -1,62 +1,40 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var IObject = require('../IObject');
-var Transport = (function (_super) {
-    __extends(Transport, _super);
-    function Transport(params) {
-        _super.call(this, params);
+const IObject = require('../IObject');
+class Transport extends IObject.IObject {
+    constructor(params) {
+        super(params);
         this.departmentName = "marketing";
     }
-    Transport.prototype.init = function (market, economy) {
-        _super.prototype.init.call(this);
+    init(market, economy) {
+        super.init();
         this.market = market;
         this.economy = economy;
-    };
-    Transport.prototype.reset = function () {
-        _super.prototype.reset.call(this);
+    }
+    reset() {
+        super.reset();
         this.totalContainersNb = 0;
-    };
-    Object.defineProperty(Transport.prototype, "containerDaysNb", {
-        get: function () {
-            return Math.ceil(this.journeyLength / this.params.distanceLimit) * this.loadsNb;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Transport.prototype, "loadsNb", {
-        // results
-        get: function () {
-            return Math.ceil(this.totalContainersNb);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Transport.prototype, "journeyLength", {
-        get: function () {
-            return this.params.shipmentDistance * 2;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Transport.prototype, "hiredTransportCost", {
-        // cost
-        get: function () {
-            var inflationImpact = this.economy.PPIServices;
-            var containerDailyHireCost = Math.round(this.params.costs.containerShipmentCost * inflationImpact);
-            var containerShipmentCost = Math.round(this.params.costs.containerShipmentCost * inflationImpact);
-            var cost = 0;
-            cost += this.containerDaysNb * containerDailyHireCost;
-            cost += this.loadsNb * containerShipmentCost;
-            return cost;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Transport.prototype.load = function (containersNb) {
+    }
+    get containerDaysNb() {
+        return Math.ceil(this.journeyLength / this.params.distanceLimit) * this.loadsNb;
+    }
+    // results
+    get loadsNb() {
+        return Math.ceil(this.totalContainersNb);
+    }
+    get journeyLength() {
+        return this.params.shipmentDistance * 2;
+    }
+    // cost
+    get hiredTransportCost() {
+        let inflationImpact = this.economy.PPIServices;
+        let containerDailyHireCost = Math.round(this.params.costs.containerShipmentCost * inflationImpact);
+        let containerShipmentCost = Math.round(this.params.costs.containerShipmentCost * inflationImpact);
+        let cost = 0;
+        cost += this.containerDaysNb * containerDailyHireCost;
+        cost += this.loadsNb * containerShipmentCost;
+        return cost;
+    }
+    load(containersNb) {
         if (!this.isInitialised()) {
             return false;
         }
@@ -64,22 +42,17 @@ var Transport = (function (_super) {
             containersNb = Math.ceil(containersNb); // forget me 0.5 container no just integral containers
         }
         this.totalContainersNb += containersNb;
-    };
-    Transport.prototype.onFinish = function () {
+    }
+    onFinish() {
         this.CashFlow.addPayment(this.hiredTransportCost, this.params.payments, 'hiredTransport');
-    };
-    Object.defineProperty(Transport.prototype, "state", {
-        get: function () {
-            return {
-                "journeyLength": this.journeyLength,
-                "loadsNb": this.loadsNb
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Transport;
-}(IObject.IObject));
+    }
+    get state() {
+        return {
+            "journeyLength": this.journeyLength,
+            "loadsNb": this.loadsNb
+        };
+    }
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Transport;
 //# sourceMappingURL=Transport.js.map
