@@ -16,18 +16,18 @@ let config = {
         }
     },
     server: {
-        port: 80,
-        host: "localhost",
-        mongo_conn: 'mongodb://127.0.0.1:27017/iEtales'
+        port: process.env.SERVER_PORT || 80,
+        host: process.env.SERVER_HOST || "localhost",
+        mongo_conn: process.env.MONGO_CONN || 'mongodb://127.0.0.1:27017/iEtales'
     },
-    domain: 'bridgeplus.cn',
+    domain: process.env.DOMAIN || 'bridgeplus.cn',
     bbs: {
-        service: 'http://community.hcd.com:4567/',
-        token: '7d70d2de-4b09-4bf8-baf7-cd506e52f1ac'
+        service: process.env.BBS_SERVICE || 'http://community.hcd.com:4567/',
+        token: process.env.BBS_TOKEN || '7d70d2de-4b09-4bf8-baf7-cd506e52f1ac'
     },
     messageConfig: {
-        appid: 10129,
-        appkey: '4868d6fa40cd727640518011e3549b29',
+        appid: process.env.MESSAGE_APPID || 10129,
+        appkey: process.env.MESSAGE_APPKEY || '4868d6fa40cd727640518011e3549b29',
         signtype: 'normal'
     }
 };

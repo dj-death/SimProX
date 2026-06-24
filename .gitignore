@@ -200,26 +200,22 @@ FakesAssemblies/
 
 
 # typescript project
-api/*.js
-api/*.map
-api/*~.js
-api/*~.map
+# NOTE: scope compiled output to the TypeScript source dirs only.
+# Do NOT use a global **/*.js — public/app/js holds hand-written
+# AngularJS source, not compiled output.
 
-kernel/*.js
-kernel/*.map
-kernel/~*.js
-kernel/~*.map
-
-routes/*.js
-routes/*.map
-routes/~*.js
-routes/~*.map
-
-utils/*.js
-utils/*.map
-utils/~*.js
-utils/~*.map
-
+# Source maps are pure build artifacts and never needed at runtime.
+api/**/*.js.map
+api/**/*.map
+kernel/**/*.js.map
+kernel/**/*.map
+routes/**/*.js.map
+routes/**/*.map
+utils/**/*.js.map
+utils/**/*.map
+config.js.map
+server.js.map
+*~.js
 ~*.js
 ~*.map
 

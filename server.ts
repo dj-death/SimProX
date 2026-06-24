@@ -1,5 +1,7 @@
 ﻿global.debug_data = global.debug_data || {};
-process.env.JWT_SECRET = 'didi';
+// Read the JWT secret from the environment; fall back to a dev value only
+// when none is supplied. Set JWT_SECRET in production — do not ship 'didi'.
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'didi';
 
 
 import http = require('http');
