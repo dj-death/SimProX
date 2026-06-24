@@ -239,6 +239,9 @@ undertaking and worth scoping carefully before any code is written.
    ✅ **Done** — see [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md): full REST
    table, the 3 socket events, auth model, response shapes, and the gaps to
    resolve before building UI.
+   ✅ **Step 2 done** — see [`packages/api-types`](packages/api-types) (shared
+   TypeScript types for the four UI payloads + sockets) and
+   [`docs/openapi.yaml`](docs/openapi.yaml) (machine-readable REST spec).
 2. **Stand up a React app** (Vite + TypeScript + React Query) alongside the
    Angular app, served under a separate path. Reuse the existing JSON API.
 3. **Migrate feature-by-feature**, lowest-risk first: auth/login → B2C/profile

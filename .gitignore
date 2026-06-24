@@ -145,6 +145,14 @@ publish/
 **/packages/*
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
+# except our source workspaces (e.g. packages/api-types) — these are project
+# source, not restored NuGet packages. Track sources, ignore build output.
+!/packages/
+!/packages/*/
+!/packages/**/*.ts
+!/packages/**/*.json
+!/packages/**/*.md
+/packages/*/dist/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
 

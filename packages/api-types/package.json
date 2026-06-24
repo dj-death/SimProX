@@ -1,0 +1,13 @@
+{
+  "name": "@simprox/api-types",
+  "version": "0.1.0",
+  "description": "Shared TypeScript types for the SimProX REST + socket API. Source of truth for both server and any frontend client (AngularJS today, React/React Native target). Derived from api/assemblers and api/models — see docs/API_CONTRACT.md.",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}
