@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "lib": ["es2015", "es2016", "dom"],
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "allowJs": false,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "typeRoots": ["./Scripts/typings", "./node_modules/@types"]
+  },
+  "include": [
+    "server.ts",
+    "config.ts",
+    "api/**/*.ts",
+    "kernel/**/*.ts",
+    "routes/**/*.ts",
+    "utils/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "public",
+    "**/*.d.ts"
+  ]
+}

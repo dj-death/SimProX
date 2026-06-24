@@ -1,6 +1,6 @@
 "use strict";
 global.debug_data = global.debug_data || {};
-process.env.JWT_SECRET = 'didi';
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'didi';
 const http = require('http');
 const path = require('path');
 let express = require('express');
