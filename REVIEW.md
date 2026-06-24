@@ -251,6 +251,10 @@ undertaking and worth scoping carefully before any code is written.
 3. **Migrate feature-by-feature**, lowest-risk first: auth/login → B2C/profile
    pages → reports (read-only) → decision forms (most complex; heavy validation
    in `SIM_D_*` directives) → realtime/socket features.
+   🔨 **In progress** — auth/login done (step 3); **reports (read-only)** added
+   (`client/src/reports`): report picker over all `REPORT_NAMES`, React Query
+   data fetching, and a transposed table renderer mirroring the Angular
+   `tablereport*.html` partials, with server-side company filtering preserved.
 4. **Strangle the Angular app**: route migrated features to React, retire
    Angular partials as they are replaced.
 5. **If true mobile is required**, build the React layer with **React Native for

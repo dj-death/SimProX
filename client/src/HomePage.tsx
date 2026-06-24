@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext';
 
 // Placeholder landing screen behind auth. The next migration slices (reports,
@@ -9,8 +10,11 @@ export function HomePage() {
       <h1>SimProX</h1>
       <p>Signed in as <strong>{user?.username}</strong>{user?.roleName ? ` (${user.roleName})` : ''}.</p>
       <p style={{ color: '#666' }}>
-        React migration skeleton. Reports, charts and decision forms will be added as subsequent slices.
+        React migration skeleton. Charts and decision forms will be added as subsequent slices.
       </p>
+      <ul>
+        <li><Link to="/reports">Reports</Link></li>
+      </ul>
       <button onClick={() => void logout()}>Sign out</button>
     </main>
   );
