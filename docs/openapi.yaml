@@ -1,0 +1,308 @@
+openapi: 3.0.3
+info:
+  title: SimProX API (core / simulation surface)
+  version: 0.1.0
+  description: >
+    Machine-readable contract for the player-facing simulation endpoints and the
+    facilitator controls that drive them. This is the canonical spec for the four
+    payloads the UI renders (decision, report, chart, finalscore) plus the
+    save/lock/run flows. The full endpoint inventory (admin CRUD, B2C, etc.) is
+    documented in docs/API_CONTRACT.md; this file intentionally covers the core
+    simulation surface first. Schemas mirror @simprox/api-types.
+servers:
+  - url: /
+components:
+  securitySchemes:
+    accessToken:
+      type: apiKey
+      in: header
+      name: x-access-token
+      description: JWT. Also accepted via body/query/cookie (see API_CONTRACT §2).
+  parameters:
+    SeminarIdQuery:
+      name: seminarId
+      in: query
+      schema: { type: string }
+    CompanyIdQuery:
+      name: companyId
+      in: query
+      schema: { type: integer }
+    PeriodQuery:
+      name: period
+      in: query
+      schema: { type: integer }
+  responses:
+    DataError:
+      description: Domain/validation error
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/DataError' }
+    Unauthorized:
+      description: >
+        Invalid/expired JWT. NOTE: the current server REDIRECTS instead of
+        returning JSON (API_CONTRACT §1) — a rewrite should make this a JSON 401.
+  schemas:
+    MessageResponse:
+      type: object
+      properties:
+        message: { type: string }
+      required: [message]
+    DataError:
+      type: object
+      properties:
+        title: { type: string, example: '400 Data Error' }
+        message: { type: string }
+        errorCode: {}
+      required: [title, message]
+    SubMarketDecision:
+      type: object
+      properties:
+        advertisingBudget: { type: number }
+        price: { type: number }
+        deliveredQ: { type: number }
+    MarketDecision:
+      type: object
+      properties:
+        corporateComBudget: { type: number }
+        products:
+          type: array
+          items: { $ref: '#/components/schemas/SubMarketDecision' }
+    ProductDecision:
+      type: object
+      properties:
+        manufacturingTime: { type: number }
+        assemblyTime: { type: number }
+        improvementsTakeup: { type: boolean }
+        developmentBudget: { type: number }
+        premiumMaterialPropertion: { type: number }
+    WorkerDecision:
+      type: object
+      properties:
+        hourlyWageRate: { type: number }
+        hire: { type: number }
+        trainedNb: { type: number }
+    Decision:
+      type: object
+      description: >
+        Inner per-period inputs. Numeric fields: -1 means "not set / inherit".
+        Full field list and min/max bounds in @simprox/api-types Decision.
+      properties:
+        markets:
+          type: array
+          items: { $ref: '#/components/schemas/MarketDecision' }
+        products:
+          type: array
+          items: { $ref: '#/components/schemas/ProductDecision' }
+        workers:
+          type: array
+          items: { $ref: '#/components/schemas/WorkerDecision' }
+        shiftLevel: { type: number }
+        sharesVariation: { type: number }
+        dividend: { type: number }
+        staffTrainingDays: { type: number }
+        managementBudget: { type: number }
+        orderMarketSharesInfo: { type: boolean }
+        orderCorporateActivityInfo: { type: boolean }
+      additionalProperties: true
+    CompanyDecision:
+      type: object
+      properties:
+        seminarId: { type: string }
+        period: { type: integer }
+        d_CID: { type: integer }
+        d_CompanyName: { type: string }
+        decision: { $ref: '#/components/schemas/Decision' }
+      additionalProperties: true
+    CompanyDecisionUpdate:
+      type: object
+      required: [company_data, companyId]
+      properties:
+        company_data:
+          type: object
+          properties:
+            decision: { $ref: '#/components/schemas/Decision' }
+        companyId: { type: integer }
+        periodId: { type: integer, description: facilitator-only }
+        seminarId: { type: string, description: facilitator-only }
+    SeriesChart:
+      type: object
+      properties:
+        periods: { type: array, items: { type: number } }
+        companyNames: { type: array, items: { type: string } }
+        chartData:
+          type: array
+          items: { type: array, items: { type: number } }
+    CompanyScore:
+      type: object
+      properties:
+        companyId: { type: integer }
+        originalSOM: { type: number }
+        originalProfit: { type: number }
+        originalBudget: { type: number }
+        scaledSOM: { type: number }
+        scaledProfit: { type: number }
+        scaledBudget: { type: number }
+        finalScore: { type: number }
+    FinalScoreResponse:
+      type: object
+      properties:
+        simulation_span: { type: integer }
+        showLastPeriodScore: { type: boolean }
+        scoreData:
+          type: array
+          items:
+            type: object
+            properties:
+              period: { type: integer }
+              seminarId: { type: string }
+              scores:
+                type: array
+                items: { $ref: '#/components/schemas/CompanyScore' }
+    RunSimulationRequest:
+      type: object
+      required: [goingToNewPeriod, decisionsOverwriteSwitchers]
+      properties:
+        goingToNewPeriod: { type: boolean }
+        decisionsOverwriteSwitchers:
+          type: array
+          items: { type: boolean }
+security:
+  - accessToken: []
+paths:
+  /stratege/api/login:
+    post:
+      summary: Student login
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username: { type: string }
+                password: { type: string }
+                rememberme: { type: boolean }
+      responses:
+        '200':
+          description: User (with token); also set as x-access-token cookie
+        '400': { description: Seminar not open or bad password }
+  /stratege/api/company:
+    get:
+      summary: Get the current company decision document
+      parameters:
+        - $ref: '#/components/parameters/SeminarIdQuery'
+        - $ref: '#/components/parameters/CompanyIdQuery'
+        - $ref: '#/components/parameters/PeriodQuery'
+      responses:
+        '200':
+          description: Decision document
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CompanyDecision' }
+        '400': { $ref: '#/components/responses/DataError' }
+  /stratege/api/company/decision:
+    put:
+      summary: Save the company decision for the period
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CompanyDecisionUpdate' }
+      responses:
+        '200':
+          description: '{ message: "update success." }'
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MessageResponse' }
+        '400': { $ref: '#/components/responses/DataError' }
+  /stratege/api/company/decision/lock:
+    put:
+      summary: Lock the decision (records lock time / spend hours)
+      responses:
+        '200': { description: Updated seminar document }
+        '400': { $ref: '#/components/responses/DataError' }
+  /stratege/api/report/{report_name}:
+    get:
+      summary: Table report (student view; filtered for some reports)
+      parameters:
+        - name: report_name
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - company_status
+              - financial_report
+              - profitability_evolution
+              - competitor_intelligence
+              - segment_distribution
+              - market_trends
+              - market_indicators
+        - $ref: '#/components/parameters/SeminarIdQuery'
+        - $ref: '#/components/parameters/CompanyIdQuery'
+      responses:
+        '200':
+          description: report.reportData (report-specific tabular data)
+        '400': { $ref: '#/components/responses/DataError' }
+  /stratege/api/chart/{chart_name}:
+    get:
+      summary: Chart data
+      parameters:
+        - name: chart_name
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: '#/components/parameters/SeminarIdQuery'
+        - $ref: '#/components/parameters/CompanyIdQuery'
+      responses:
+        '200':
+          description: Series chart (some chart names are disabled — see API_CONTRACT §6.2)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SeriesChart' }
+        '400': { $ref: '#/components/responses/DataError' }
+  /stratege/api/finalscore:
+    get:
+      summary: Final scores per period
+      parameters:
+        - $ref: '#/components/parameters/SeminarIdQuery'
+      responses:
+        '200':
+          description: Scores
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FinalScoreResponse' }
+        '400': { $ref: '#/components/responses/DataError' }
+  /stratege/api/admin/seminar/{seminar_id}/init:
+    post:
+      summary: Initialize a seminar's simulation (facilitator)
+      parameters:
+        - name: seminar_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: '{ message: "initialize success" }'
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MessageResponse' }
+  /stratege/api/admin/seminar/{seminar_id}/runsimulation:
+    post:
+      summary: Run a simulation round (facilitator)
+      parameters:
+        - name: seminar_id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RunSimulationRequest' }
+      responses:
+        '200':
+          description: '{ message: "run simulation success." }'
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MessageResponse' }
