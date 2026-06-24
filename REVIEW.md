@@ -244,6 +244,10 @@ undertaking and worth scoping carefully before any code is written.
    [`docs/openapi.yaml`](docs/openapi.yaml) (machine-readable REST spec).
 2. **Stand up a React app** (Vite + TypeScript + React Query) alongside the
    Angular app, served under a separate path. Reuse the existing JSON API.
+   ✅ **Step 3 done** — see [`client/`](client): React skeleton wired to
+   `@simprox/api-types`, with the **auth/login** vertical slice (fetch wrapper +
+   error normalization, auth context, protected routing, dev proxy to Express).
+   Typechecks and builds clean.
 3. **Migrate feature-by-feature**, lowest-risk first: auth/login → B2C/profile
    pages → reports (read-only) → decision forms (most complex; heavy validation
    in `SIM_D_*` directives) → realtime/socket features.
