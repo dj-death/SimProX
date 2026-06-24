@@ -4,8 +4,17 @@
   "description": "Shared TypeScript types for the SimProX REST + socket API. Source of truth for both server and any frontend client (AngularJS today, React/React Native target). Derived from api/assemblers and api/models — see docs/API_CONTRACT.md.",
   "license": "UNLICENSED",
   "private": true,
+  "type": "module",
   "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
